@@ -44,3 +44,9 @@ Thumbs.db
 .commandcode/
 .azure/
 .copilot-azure/
+
+# Asset workspace editor backups / caches
+assets/**/*.blend1
+assets/**/*.blend2
+assets/**/cache/
+assets/**/tmp/

@@ -40,6 +40,16 @@ src/
 
 `game/` 与 `ui/` 只通过 `shared/events` 中的类型化事件通信，React 不直接操作 PlayCanvas 实体。
 
+## 资产工作区
+
+所有 3D 模型、贴图、动画和音频的生成提示词、技术规格与验收记录都在 `assets/`：
+
+- 入口：[assets/README.md](./assets/README.md)
+- 原始源文件与生成记录：`assets/`
+- 清理后的运行资产：`public/assets/`
+
+每个资产一个文件夹，README 中可直接复制英文生成提示词与负向提示词。
+
 ## 当前已完成
 
 - Vite + React + TypeScript 严格模式工程
