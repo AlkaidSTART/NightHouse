@@ -1,4 +1,3 @@
-import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './app/App';
 import './app/app.css';
@@ -8,8 +7,6 @@ if (!container) {
   throw new Error('缺少根节点 #root');
 }
 
-createRoot(container).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+// PlayCanvas owns the WebGL canvas. StrictMode's simulated unmount would destroy
+// that context between dev remounts, so the game shell is mounted once.
+createRoot(container).render(<App />);
