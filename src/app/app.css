@@ -176,6 +176,16 @@ button {
   background: rgba(160, 60, 45, 0.26);
 }
 
+.screen-loading {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  background: #050607;
+  color: #7f796b;
+  font-size: 13px;
+  letter-spacing: 0.24em;
+}
+
 .game-view {
   position: relative;
   width: 100%;
