@@ -45,6 +45,7 @@ export class GameBootstrap {
   private lastPrompt: string | null = null;
   private autosaveTimer: number | null = null;
   private started = false;
+  private hasEntered = false;
   private destroyed = false;
 
   private constructor(
@@ -127,6 +128,7 @@ export class GameBootstrap {
     this.started = true;
 
     document.addEventListener('pointerlockchange', this.handlePointerLockChange);
+    document.addEventListener('pointerlockerror', this.handlePointerLockError);
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('resize', this.handleResize);
     window.addEventListener('beforeunload', this.handleBeforeUnload);
@@ -170,6 +172,7 @@ export class GameBootstrap {
     }
 
     document.removeEventListener('pointerlockchange', this.handlePointerLockChange);
+    document.removeEventListener('pointerlockerror', this.handlePointerLockError);
     window.removeEventListener('keydown', this.handleKeyDown);
     window.removeEventListener('resize', this.handleResize);
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
@@ -201,6 +204,9 @@ export class GameBootstrap {
     }
 
     const paused = document.pointerLockElement !== this.canvas;
+    if (!paused) {
+      this.hasEntered = true;
+    }
     this.player.setPaused(paused);
     this.events.emit('pause.changed', { paused });
 
@@ -209,6 +215,15 @@ export class GameBootstrap {
       this.events.emit('interaction.prompt', { text: null });
       void this.persist();
     }
+  };
+
+  private readonly handlePointerLockError = (): void => {
+    if (this.destroyed) {
+      return;
+    }
+    this.events.emit('game.error', {
+      message: '无法锁定鼠标，请再次点击开始探索。',
+    });
   };
 
   private readonly handleKeyDown = (event: KeyboardEvent): void => {
@@ -230,7 +245,7 @@ export class GameBootstrap {
   };
 
   private async persist(): Promise<void> {
-    if (this.destroyed) {
+    if (this.destroyed || !this.hasEntered) {
       return;
     }
 
