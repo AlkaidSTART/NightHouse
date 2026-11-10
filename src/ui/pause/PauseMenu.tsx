@@ -1,9 +1,14 @@
-interface PauseMenuProps {
+import { useGameStore } from '../../stores/gameStore';
+
+export interface PauseMenuProps {
   onResume: () => void;
-  onExit: () => void;
+  onExit?: () => void;
 }
 
 export function PauseMenu({ onResume, onExit }: PauseMenuProps) {
+  const storeExit = useGameStore((s) => s.exitToHome);
+  const handleExit = onExit ?? storeExit;
+
   return (
     <div className="overlay">
       <div className="overlay-panel">
@@ -16,7 +21,7 @@ export function PauseMenu({ onResume, onExit }: PauseMenuProps) {
           <button type="button" className="button button-primary" onClick={onResume}>
             继续游戏
           </button>
-          <button type="button" className="button" onClick={onExit}>
+          <button type="button" className="button" onClick={handleExit}>
             返回首页
           </button>
         </div>

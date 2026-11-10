@@ -1,4 +1,5 @@
 import * as pc from 'playcanvas';
+import { useStoryStore } from '../../stores/storyStore';
 import type { SaveData } from '../../shared/types/save';
 import { InteractionSystem } from '../interaction/InteractionSystem';
 import { PlayerController } from '../player/PlayerController';
@@ -25,9 +26,12 @@ export class GameBootstrap {
       ? await options.saveManager.loadSave().catch(() => null)
       : null;
 
+    const initialSave = loaded ?? createNewSave();
+    useStoryStore.getState().loadFromSave(initialSave);
+
     return new GameBootstrap(
       options,
-      loaded ?? createNewSave(),
+      initialSave,
       settings.mouseSensitivity,
     );
   }

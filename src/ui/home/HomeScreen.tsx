@@ -1,16 +1,23 @@
-interface HomeScreenProps {
-  hasSave: boolean;
-  notice: string | null;
-  onStart: () => void;
-  onContinue: () => void;
+import { useGameStore } from '../../stores/gameStore';
+
+export interface HomeScreenProps {
+  hasSave?: boolean;
+  notice?: string | null;
+  onStart?: () => void;
+  onContinue?: () => void;
 }
 
-export function HomeScreen({
-  hasSave,
-  notice,
-  onStart,
-  onContinue,
-}: HomeScreenProps) {
+export function HomeScreen(props: HomeScreenProps = {}) {
+  const storeHasSave = useGameStore((s) => s.hasSave);
+  const storeNotice = useGameStore((s) => s.saveNotice);
+  const storeStart = useGameStore((s) => s.startNewGame);
+  const storeContinue = useGameStore((s) => s.continueGame);
+
+  const hasSave = props.hasSave !== undefined ? props.hasSave : storeHasSave;
+  const notice = props.notice !== undefined ? props.notice : storeNotice;
+  const onStart = props.onStart ?? storeStart;
+  const onContinue = props.onContinue ?? storeContinue;
+
   return (
     <div className="home-screen">
       <div className="home-atmosphere" aria-hidden="true" />

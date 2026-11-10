@@ -1,9 +1,14 @@
-interface StartOverlayProps {
-  ready: boolean;
+import { useGameStore } from '../../stores/gameStore';
+
+export interface StartOverlayProps {
+  ready?: boolean;
   onStart: () => void;
 }
 
-export function StartOverlay({ ready, onStart }: StartOverlayProps) {
+export function StartOverlay({ ready: readyProp, onStart }: StartOverlayProps) {
+  const storeReady = useGameStore((s) => s.ready);
+  const ready = readyProp !== undefined ? readyProp : storeReady;
+
   return (
     <div className="overlay">
       <div className="overlay-panel">

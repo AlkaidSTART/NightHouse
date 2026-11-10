@@ -1,10 +1,20 @@
-interface GameHudProps {
-  prompt: string | null;
-  toast: string | null;
-  error: string | null;
+import { useGameStore } from '../../stores/gameStore';
+
+export interface GameHudProps {
+  prompt?: string | null;
+  toast?: string | null;
+  error?: string | null;
 }
 
-export function GameHud({ prompt, toast, error }: GameHudProps) {
+export function GameHud(props: GameHudProps = {}) {
+  const storePrompt = useGameStore((s) => s.prompt);
+  const storeToast = useGameStore((s) => s.toast);
+  const storeError = useGameStore((s) => s.error);
+
+  const prompt = props.prompt !== undefined ? props.prompt : storePrompt;
+  const toast = props.toast !== undefined ? props.toast : storeToast;
+  const error = props.error !== undefined ? props.error : storeError;
+
   return (
     <>
       <div className="hud-crosshair" aria-hidden="true" />
