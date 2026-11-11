@@ -56,17 +56,6 @@ assets/**/*.blend2
 assets/**/cache/
 assets/**/tmp/
 
-# Non-essential reference assets & moodboards
-**/references/*.jpg
-**/references/*.jpeg
-**/references/*.png
-**/references/*.webp
-**/references/*.bmp
-**/references/*.gif
-**/references/*.tga
-**/references/*.psd
-!**/references/README.md
-
 # Temporary reference directories & staging assets
 **/temp_ref/
 **/temp_refs/
@@ -76,24 +65,39 @@ assets/**/tmp/
 **/renders/
 **/screenshots/
 
-# Build & asset generation scripts (local tooling)
+# Scripts & tooling
 tools/
+scripts/
+*.py
+*.sh
+*.bash
+*.zsh
+*.bat
+*.cmd
+*.ps1
+__pycache__/
+*.pyc
 
-# Viewport captures & work-in-progress preview captures (images only)
-*Viewport.png
-*Viewport.jpg
-*viewport.png
-*viewport.jpg
-*_viewport.png
-*_viewport.jpg
-*_preview.png
-*_preview.jpg
-*_showcase.png
-*_showcase.jpg
+# All image assets (reference, renders, textures, previews, three-views, etc.)
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.bmp
+*.gif
+*.tga
+*.psd
+*.tif
+*.tiff
+*.hdr
+*.exr
+*.dds
 
-# Explicitly ensure 3D model files & game runtime assets are tracked
+# Explicitly preserve 3D model assets and necessary structure
 !*.glb
 !*.gltf
 !*.blend
-!public/assets/**
+!**/README.md
+!**/.gitkeep
+
 

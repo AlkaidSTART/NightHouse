@@ -1,6 +1,6 @@
 # SM_Furniture_StorageCabinet_01 · 储物柜
 
-> 资产类型：静态 3D 模型 ｜ 优先级：P1 ｜ 状态：待生成
+> 资产类型：静态 3D 模型 ｜ 优先级：P1 ｜ 状态：已建模 (Blender PBR)
 
 | 项目 | 内容 |
 |---|---|
@@ -64,3 +64,13 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 | 署名要求 | 待确认 |
 | 下载 / 生成日期 | 待填写 |
 | 修改说明 | 待填写 |
+
+
+## 5. 三视图工程图纸与模型交付
+
+![SM_Furniture_StorageCabinet_01 三视图工程图](./SM_Furniture_StorageCabinet_01_three_views.png)
+
+- **Blender 生产源文件**：`assets/models/furniture/sm_furniture_storage_cabinet/SM_Furniture_StorageCabinet_01.blend`
+- **运行导出路径**：`public/assets/models/furniture/SM_Furniture_StorageCabinet_01.glb`
+- **交付实测规格**：尺寸 `1.20 m × 0.50 m × 1.80 m`，三角面预算 `2,680`，材质槽 `2 (深灰绿漆面木板 / 工业铸铁长条合页与把手)`
+- **原点规范**：底面几何中心 `(0, 0, 0)`，正面朝向 `+Z` (PlayCanvas)
