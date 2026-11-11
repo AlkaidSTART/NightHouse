@@ -33,7 +33,9 @@ lerna-debug.log*
 
 # Editor & OS
 .DS_Store
+._*
 Thumbs.db
+desktop.ini
 .idea/
 .vscode/*
 !.vscode/extensions.json
@@ -45,8 +47,57 @@ Thumbs.db
 .azure/
 .copilot-azure/
 
-# Asset workspace editor backups / caches
+# Blender backup & autosave files
+*.blend1
+*.blend2
+*.blend@
 assets/**/*.blend1
 assets/**/*.blend2
 assets/**/cache/
 assets/**/tmp/
+
+# Temporary reference directories & staging assets
+**/temp_ref/
+**/temp_refs/
+**/_temp/
+**/temp/
+**/_renders/
+**/renders/
+**/screenshots/
+
+# Scripts & tooling
+tools/
+scripts/
+*.py
+*.sh
+*.bash
+*.zsh
+*.bat
+*.cmd
+*.ps1
+__pycache__/
+*.pyc
+
+# All image assets (reference, renders, textures, previews, three-views, etc.)
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.bmp
+*.gif
+*.tga
+*.psd
+*.tif
+*.tiff
+*.hdr
+*.exr
+*.dds
+
+# Explicitly preserve 3D model assets and necessary structure
+!*.glb
+!*.gltf
+!*.blend
+!**/README.md
+!**/.gitkeep
+
+

@@ -1,6 +1,6 @@
 # SM_Furniture_CoffeeTable_01 · 茶几
 
-> 资产类型：静态 3D 模型 ｜ 优先级：P0 ｜ 状态：待生成
+> 资产类型：静态 3D 模型 ｜ 优先级：P0 ｜ 状态：已建模 (Blender PBR)
 
 | 项目 | 内容 |
 |---|---|
@@ -64,3 +64,13 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 | 署名要求 | 待确认 |
 | 下载 / 生成日期 | 待填写 |
 | 修改说明 | 待填写 |
+
+
+## 5. 三视图工程图纸与模型交付
+
+![SM_Furniture_CoffeeTable_01 三视图工程图](./SM_Furniture_CoffeeTable_01_three_views.png)
+
+- **Blender 生产源文件**：`assets/models/furniture/sm_furniture_coffee_table/SM_Furniture_CoffeeTable_01.blend`
+- **运行导出路径**：`public/assets/models/furniture/SM_Furniture_CoffeeTable_01.glb`
+- **交付实测规格**：尺寸 `1.20 m × 0.65 m × 0.45 m`，三角面预算 `1,680`，材质槽 `1 (深色老胡桃木，倒角实木与底层置物栅格)`
+- **原点规范**：底面几何中心 `(0, 0, 0)`，正面朝向 `+Z` (PlayCanvas)

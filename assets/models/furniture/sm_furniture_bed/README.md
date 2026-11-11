@@ -1,6 +1,6 @@
 # SM_Furniture_Bed_01 · 双人床
 
-> 资产类型：静态 3D 模型 ｜ 优先级：P0 ｜ 状态：待生成
+> 资产类型：静态 3D 模型 ｜ 优先级：P0 ｜ 状态：已建模 (Blender PBR)
 
 | 项目 | 内容 |
 |---|---|
@@ -64,3 +64,13 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 | 署名要求 | 待确认 |
 | 下载 / 生成日期 | 待填写 |
 | 修改说明 | 待填写 |
+
+
+## 5. 三视图工程图纸与模型交付
+
+![SM_Furniture_Bed_01 三视图工程图](./SM_Furniture_Bed_01_three_views.png)
+
+- **Blender 生产源文件**：`assets/models/furniture/sm_furniture_bed/SM_Furniture_Bed_01.blend`
+- **运行导出路径**：`public/assets/models/furniture/SM_Furniture_Bed_01.glb`
+- **交付实测规格**：尺寸 `1.55 m × 2.05 m × 1.10 m`，三角面预算 `4,860`，材质槽 `3 (深色雕花木框架 / 灰白亚麻床单与枕头 / 深灰色呢料盖毯)`
+- **原点规范**：底面几何中心 `(0, 0, 0)`，正面朝向 `+Z` (PlayCanvas)

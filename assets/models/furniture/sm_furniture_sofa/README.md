@@ -1,6 +1,6 @@
 # SM_Furniture_Sofa_01 · 三人沙发
 
-> 资产类型：静态 3D 模型 ｜ 优先级：P0 ｜ 状态：待生成
+> 资产类型：静态 3D 模型 ｜ 优先级：P0 ｜ 状态：已建模 (Blender PBR)
 
 | 项目 | 内容 |
 |---|---|
@@ -68,3 +68,13 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 ## 6. 备注
 
 优先寻找授权清晰的免费模型；如果自己生成，重点检查坐垫体积和靠背比例。
+
+
+## 5. 三视图工程图纸与模型交付
+
+![SM_Furniture_Sofa_01 三视图工程图](./SM_Furniture_Sofa_01_three_views.png)
+
+- **Blender 生产源文件**：`assets/models/furniture/sm_furniture_sofa/SM_Furniture_Sofa_01.blend`
+- **运行导出路径**：`public/assets/models/furniture/SM_Furniture_Sofa_01.glb`
+- **交付实测规格**：尺寸 `2.20 m × 0.95 m × 0.85 m`，三角面预算 `4,320`，材质槽 `3 (勃艮第丝绒 / 深色胡桃木 / 做旧黄铜脚套)`
+- **原点规范**：底面几何中心 `(0, 0, 0)`，正面朝向 `+Z` (PlayCanvas)
