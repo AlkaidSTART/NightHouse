@@ -13,6 +13,11 @@ declare module 'node:assert/strict' {
     notEqual(actual: unknown, expected: unknown, message?: string): void;
     deepEqual(actual: unknown, expected: unknown, message?: string): void;
     throws(fn: () => unknown, message?: string): void;
+    rejects(
+      promise: Promise<unknown> | (() => Promise<unknown>),
+      error?: RegExp | ErrorConstructor,
+      message?: string,
+    ): Promise<void>;
   }
   const assert: Assert;
   export default assert;

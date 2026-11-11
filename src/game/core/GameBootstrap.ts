@@ -14,6 +14,7 @@ import { createNewSave, type SaveManager } from '../save/SaveManager';
 import { DEFAULT_SETTINGS } from '../save/defaults';
 import { DoorSystem } from '../scene/DoorSystem.ts';
 import { DOOR_THICKNESS } from '../scene/sceneGeometry.ts';
+import { NightSky, NIGHT_CLEAR_COLOR } from '../scene/NightSky';
 import { SceneManager } from '../scene/SceneManager';
 import type { GameEventBus } from './GameEvents';
 
@@ -75,6 +76,7 @@ export class GameBootstrap {
   private readonly saveManager: SaveManager;
   private readonly save: SaveData;
   private readonly sceneManager: SceneManager;
+  private readonly nightSky: NightSky;
   private readonly player: PlayerController;
   private readonly doors: DoorSystem;
   private readonly interaction: InteractionSystem;
@@ -126,6 +128,11 @@ export class GameBootstrap {
 
     this.sceneManager = new SceneManager(app);
     const scene = this.sceneManager.build(villaGreybox);
+    if (villaGreybox.modelUrl) {
+      void this.sceneManager.loadModel(villaGreybox.modelUrl).catch((error: unknown) => {
+        console.warn('场景 GLB 加载失败，继续使用灰盒几何：', error);
+      });
+    }
     this.sceneId = scene.sceneId;
     this.doors = new DoorSystem({
       doors: villaGreybox.doors,
@@ -138,13 +145,14 @@ export class GameBootstrap {
     const playerRoot = new pc.Entity('player');
     const camera = new pc.Entity('player_camera');
     camera.addComponent('camera', {
-      clearColor: new pc.Color(0.015, 0.017, 0.02),
+      clearColor: NIGHT_CLEAR_COLOR,
       fov: 70,
       nearClip: 0.1,
       farClip: 160,
     });
     playerRoot.addChild(camera);
     app.root.addChild(playerRoot);
+    this.nightSky = new NightSky(app, camera);
 
     const [x, y, z] = save.player.position;
     playerRoot.setPosition(x, y, z);
@@ -263,6 +271,7 @@ export class GameBootstrap {
 
     this.player.dispose();
     this.interaction.clear();
+    this.nightSky.destroy();
     this.sceneManager.destroy();
     this.app.destroy();
   }

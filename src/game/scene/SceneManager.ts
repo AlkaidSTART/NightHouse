@@ -1,4 +1,5 @@
 import * as pc from 'playcanvas';
+import { MATERIALS, TEXTURE_SETS, type MaterialSpec } from '../../content/scenes/sceneMaterials.ts';
 import type { Vec3Tuple } from '../../shared/types/save';
 import type {
   SceneDefinition,
@@ -6,6 +7,7 @@ import type {
   SceneMaterialId,
   SceneNpcSpot,
 } from '../../shared/types/scene';
+import { loadSceneModel, type SceneModel } from './SceneModelLoader.ts';
 import { DOOR_THICKNESS, doorCenter } from './sceneGeometry.ts';
 
 export interface SceneInteractableHandle {
@@ -28,204 +30,12 @@ export interface BuiltScene {
   doors: SceneDoorHandle[];
 }
 
-type TextureSetId =
-  | 'plaster'
-  | 'wood'
-  | 'fabric'
-  | 'tile'
-  | 'grime'
-  | 'docLetter'
-  | 'docPhoto';
-
-interface TextureSetPaths {
-  baseColor: string;
-  normal?: string;
-  roughness?: string;
-  ao?: string;
+interface DoorEntry {
+  pivot: pc.Entity;
+  /** 当前显示的门扇：先是代码生成的方盒，GLB 就绪后换成 GLB 里的门扇。 */
+  leaf: pc.Entity;
+  swing: number;
 }
-
-const TEXTURE_SETS: Record<TextureSetId, TextureSetPaths> = {
-  plaster: {
-    baseColor: '/assets/textures/T_Wall_OldPlaster_01_BaseColor.png',
-    normal: '/assets/textures/T_Wall_OldPlaster_01_Normal.png',
-    roughness: '/assets/textures/T_Wall_OldPlaster_01_Roughness.png',
-    ao: '/assets/textures/T_Wall_OldPlaster_01_AO.png',
-  },
-  wood: {
-    baseColor: '/assets/textures/T_Floor_WoodWorn_01_BaseColor.png',
-    normal: '/assets/textures/T_Floor_WoodWorn_01_Normal.png',
-    roughness: '/assets/textures/T_Floor_WoodWorn_01_Roughness.png',
-    ao: '/assets/textures/T_Floor_WoodWorn_01_AO.png',
-  },
-  fabric: {
-    baseColor: '/assets/textures/T_Fabric_Worn_01_BaseColor.png',
-    normal: '/assets/textures/T_Fabric_Worn_01_Normal.png',
-    roughness: '/assets/textures/T_Fabric_Worn_01_Roughness.png',
-    ao: '/assets/textures/T_Fabric_Worn_01_AO.png',
-  },
-  tile: {
-    baseColor: '/assets/textures/T_Tile_Bathroom_01_BaseColor.png',
-    normal: '/assets/textures/T_Tile_Bathroom_01_Normal.png',
-    roughness: '/assets/textures/T_Tile_Bathroom_01_Roughness.png',
-    ao: '/assets/textures/T_Tile_Bathroom_01_AO.png',
-  },
-  grime: {
-    baseColor: '/assets/textures/T_Grime_DustWear_Set_01_BaseColor.png',
-    normal: '/assets/textures/T_Grime_DustWear_Set_01_Normal.png',
-    roughness: '/assets/textures/T_Grime_DustWear_Set_01_Roughness.png',
-    ao: '/assets/textures/T_Grime_DustWear_Set_01_AO.png',
-  },
-  docLetter: {
-    baseColor: '/assets/textures/documents/TEX_Document_LetterPage.png',
-  },
-  docPhoto: {
-    baseColor: '/assets/textures/documents/TEX_Document_PhotoImage.png',
-  },
-};
-
-interface MaterialSpec {
-  /** 贴图未就绪时的回退颜色。 */
-  color: Vec3Tuple;
-  /** 贴图就绪后乘在 diffuseMap 上的色调系数。 */
-  mapTint?: Vec3Tuple;
-  emissive?: Vec3Tuple;
-  gloss?: number;
-  metalness?: number;
-  bumpiness?: number;
-  textureSet?: TextureSetId;
-  /** 世界空间平铺尺度（米 / 次重复）；未定义或 <= 0 时每个面保持 0..1 UV。 */
-  tileSize?: number;
-}
-
-const MATERIALS: Record<SceneMaterialId, MaterialSpec> = {
-  wall: {
-    color: [0.2, 0.2, 0.22],
-    mapTint: [0.46, 0.46, 0.49],
-    gloss: 0.9,
-    bumpiness: 0.75,
-    textureSet: 'plaster',
-    tileSize: 2.4,
-  },
-  floor: {
-    color: [0.16, 0.12, 0.09],
-    mapTint: [0.85, 0.78, 0.72],
-    gloss: 0.95,
-    bumpiness: 0.8,
-    textureSet: 'wood',
-    tileSize: 2.2,
-  },
-  ceiling: {
-    color: [0.11, 0.11, 0.12],
-    mapTint: [0.3, 0.3, 0.33],
-    gloss: 0.85,
-    bumpiness: 0.5,
-    textureSet: 'plaster',
-    tileSize: 2.8,
-  },
-  ground: {
-    color: [0.06, 0.07, 0.07],
-    mapTint: [0.28, 0.32, 0.3],
-    gloss: 0.85,
-    bumpiness: 0.9,
-    textureSet: 'grime',
-    tileSize: 3.5,
-  },
-  roof: {
-    color: [0.08, 0.08, 0.1],
-    mapTint: [0.32, 0.34, 0.4],
-    gloss: 0.85,
-    bumpiness: 0.7,
-    textureSet: 'grime',
-    tileSize: 3.0,
-  },
-  wood: {
-    color: [0.26, 0.18, 0.11],
-    mapTint: [0.95, 0.8, 0.66],
-    gloss: 0.95,
-    bumpiness: 0.65,
-    textureSet: 'wood',
-    tileSize: 1.4,
-  },
-  fabric: {
-    color: [0.2, 0.14, 0.15],
-    mapTint: [0.92, 0.82, 0.84],
-    gloss: 0.9,
-    bumpiness: 0.6,
-    textureSet: 'fabric',
-    tileSize: 1.2,
-  },
-  tile: {
-    color: [0.26, 0.29, 0.28],
-    mapTint: [0.7, 0.74, 0.72],
-    gloss: 0.95,
-    bumpiness: 0.85,
-    textureSet: 'tile',
-    tileSize: 1.4,
-  },
-  stone: {
-    color: [0.3, 0.3, 0.31],
-    mapTint: [0.75, 0.75, 0.78],
-    gloss: 0.9,
-    bumpiness: 0.85,
-    textureSet: 'grime',
-    tileSize: 2.0,
-  },
-  metal: {
-    color: [0.32, 0.28, 0.2],
-    mapTint: [0.9, 0.78, 0.56],
-    gloss: 0.95,
-    metalness: 0.65,
-    bumpiness: 0.55,
-    textureSet: 'grime',
-    tileSize: 1.0,
-  },
-  paper: {
-    color: [0.62, 0.56, 0.44],
-    mapTint: [0.85, 0.82, 0.76],
-    emissive: [0.06, 0.05, 0.03],
-    gloss: 0.2,
-    textureSet: 'docLetter',
-  },
-  photo: {
-    color: [0.55, 0.5, 0.42],
-    mapTint: [0.88, 0.85, 0.8],
-    emissive: [0.05, 0.04, 0.03],
-    gloss: 0.3,
-    textureSet: 'docPhoto',
-  },
-  mirror: {
-    color: [0.3, 0.36, 0.4],
-    emissive: [0.04, 0.05, 0.06],
-    gloss: 0.88,
-    metalness: 0.85,
-  },
-  foliage: {
-    color: [0.07, 0.1, 0.07],
-    mapTint: [0.24, 0.38, 0.26],
-    gloss: 0.85,
-    bumpiness: 0.8,
-    textureSet: 'fabric',
-    tileSize: 1.5,
-  },
-  sea: {
-    color: [0.02, 0.04, 0.07],
-    gloss: 0.75,
-    metalness: 0.2,
-  },
-  door: {
-    color: [0.22, 0.13, 0.08],
-    mapTint: [0.78, 0.6, 0.46],
-    gloss: 0.95,
-    bumpiness: 0.75,
-    textureSet: 'wood',
-    tileSize: 1.6,
-  },
-  windowLit: { color: [0.9, 0.7, 0.4], emissive: [0.95, 0.68, 0.34] },
-  windowDark: { color: [0.02, 0.025, 0.035], gloss: 0.7 },
-  npcArthur: { color: [0.2, 0.3, 0.55], emissive: [0.06, 0.1, 0.2] },
-  npcHousekeeper: { color: [0.5, 0.42, 0.2], emissive: [0.18, 0.14, 0.05] },
-  npcDoctor: { color: [0.22, 0.45, 0.32], emissive: [0.06, 0.16, 0.1] },
-};
 
 const NPC_MATERIAL: Record<SceneNpcSpot['npcId'], SceneMaterialId> = {
   npc_arthur: 'npcArthur',
@@ -241,11 +51,19 @@ const NPC_NAME: Record<SceneNpcSpot['npcId'], string> = {
 
 const NPC_PLACEHOLDER_HEIGHT = 1.75;
 const DOOR_ANCHOR_HEIGHT = 1.4;
+const UNIT_BOX_KEY = 'unit_box';
 
-/** 把内容层的场景定义搭成 PlayCanvas 实体，并负责释放。 */
+/**
+ * 把内容层的场景定义搭成 PlayCanvas 实体，并负责释放。
+ *
+ * 先用代码生成的方盒立即搭出可玩的场景；`loadModel` 加载 GLB 成功后再整体换成 GLB 的几何，
+ * 失败则保留方盒。交互点、站位、灯光、碰撞始终来自内容数据，不依赖 GLB。
+ */
 export class SceneManager {
   private readonly app: pc.Application;
   private readonly entities: pc.Entity[] = [];
+  /** 代码生成的场景几何（不含 NPC 站位占位），GLB 接管时整体移除。 */
+  private readonly proceduralVisuals: pc.Entity[] = [];
   private readonly materials = new Map<SceneMaterialId, pc.StandardMaterial>();
   private readonly meshes = new Map<string, pc.Mesh>();
   private readonly textures = new Map<string, pc.Texture>();
@@ -253,7 +71,10 @@ export class SceneManager {
     string,
     Array<(texture: pc.Texture) => void>
   >();
-  private readonly doorPivots = new Map<string, { pivot: pc.Entity; swing: number }>();
+  private readonly doorPivots = new Map<string, DoorEntry>();
+  private readonly loadAbort = new AbortController();
+  private model: SceneModel | null = null;
+  private proceduralReleased = false;
   private destroyed = false;
 
   constructor(app: pc.Application) {
@@ -263,7 +84,9 @@ export class SceneManager {
   build(scene: SceneDefinition): BuiltScene {
     for (const box of scene.boxes) {
       if (box.visible) {
-        this.createBox(box.id, box.min, box.max, box.material);
+        this.proceduralVisuals.push(
+          this.createBox(box.id, box.min, box.max, box.material),
+        );
       }
     }
 
@@ -284,7 +107,7 @@ export class SceneManager {
     moon.addComponent('light', {
       type: 'directional',
       color: new pc.Color(0.4, 0.46, 0.62),
-      intensity: 0.45,
+      intensity: 0.6,
       castShadows: false,
     });
     moon.setEulerAngles(-55, 25, 0);
@@ -311,6 +134,53 @@ export class SceneManager {
     return { sceneId: scene.id, interactables, doors };
   }
 
+  /**
+   * 加载场景 GLB 并替换代码生成的几何。
+   * reject 时场景保持原样（方盒版本），调用方只需要决定是否提示玩家。
+   * 门扇不齐全时整体放弃，不做「一半 GLB 一半方盒」的混合状态。
+   */
+  async loadModel(url: string): Promise<void> {
+    if (this.destroyed || this.model) {
+      return;
+    }
+    const model = await loadSceneModel(this.app, url, this.loadAbort.signal);
+    if (this.destroyed) {
+      model.dispose();
+      return;
+    }
+
+    const leaves = new Map<string, pc.Entity>();
+    for (const doorId of this.doorPivots.keys()) {
+      const leaf = model.findDoorLeaf(doorId);
+      if (!leaf) {
+        model.dispose();
+        throw new Error(`场景模型缺少门扇节点：${doorId}_leaf`);
+      }
+      leaves.set(doorId, leaf);
+    }
+
+    this.model = model;
+    this.app.root.addChild(model.root);
+
+    for (const entity of this.proceduralVisuals) {
+      entity.destroy();
+    }
+    this.proceduralVisuals.length = 0;
+
+    for (const [doorId, entry] of this.doorPivots) {
+      const leaf = leaves.get(doorId);
+      if (!leaf) {
+        continue;
+      }
+      // 门扇保留 GLB 里的局部变换（合页在 pivot 原点），挂到已有的合页 pivot 上继续转动。
+      entry.leaf.destroy();
+      leaf.reparent(entry.pivot);
+      entry.leaf = leaf;
+    }
+
+    this.releaseProceduralResources();
+  }
+
   setDoorOpen(doorId: string, open: boolean): void {
     const entry = this.doorPivots.get(doorId);
     if (!entry) {
@@ -321,13 +191,20 @@ export class SceneManager {
 
   destroy(): void {
     this.destroyed = true;
+    // 取消仍在进行的 GLB 加载；加载器会自行释放已创建的资源。
+    this.loadAbort.abort();
     this.pendingTextureCallbacks.clear();
 
     for (const entity of this.entities) {
       entity.destroy();
     }
     this.entities.length = 0;
+    this.proceduralVisuals.length = 0;
     this.doorPivots.clear();
+
+    // 先销毁实体再释放容器资源，避免渲染组件引用已销毁的网格。
+    this.model?.dispose();
+    this.model = null;
 
     for (const mesh of this.meshes.values()) {
       mesh.destroy();
@@ -338,6 +215,35 @@ export class SceneManager {
       material.destroy();
     }
     this.materials.clear();
+
+    for (const texture of this.textures.values()) {
+      texture.destroy();
+    }
+    this.textures.clear();
+  }
+
+  /**
+   * GLB 接管后，代码生成几何用到的网格、材质和贴图不再需要。
+   * NPC 站位占位仍是代码生成的，保留它们的材质和共用的单位方盒网格。
+   */
+  private releaseProceduralResources(): void {
+    this.proceduralReleased = true;
+    this.pendingTextureCallbacks.clear();
+
+    for (const [key, mesh] of this.meshes) {
+      if (key !== UNIT_BOX_KEY) {
+        mesh.destroy();
+        this.meshes.delete(key);
+      }
+    }
+
+    const npcMaterials = new Set<SceneMaterialId>(Object.values(NPC_MATERIAL));
+    for (const [id, material] of this.materials) {
+      if (!npcMaterials.has(id)) {
+        material.destroy();
+        this.materials.delete(id);
+      }
+    }
 
     for (const texture of this.textures.values()) {
       texture.destroy();
@@ -386,7 +292,7 @@ export class SceneManager {
       leaf.setLocalScale(DOOR_THICKNESS, door.height, door.width);
     }
     pivot.addChild(leaf);
-    this.doorPivots.set(door.id, { pivot, swing: door.swing });
+    this.doorPivots.set(door.id, { pivot, leaf, swing: door.swing });
     this.setDoorOpen(door.id, door.startsOpen && !door.sealed);
 
     const anchor = this.track(new pc.Entity(`${door.id}_anchor`));
@@ -432,7 +338,7 @@ export class SceneManager {
     const key =
       tileSize > 0
         ? `${Math.round(sx * 50)}_${Math.round(sy * 50)}_${Math.round(sz * 50)}_${tileSize}`
-        : 'unit_box';
+        : UNIT_BOX_KEY;
     const cached = this.meshes.get(key);
     if (cached) {
       return cached;
@@ -576,7 +482,8 @@ export class SceneManager {
     image.onload = () => {
       const callbacks = this.pendingTextureCallbacks.get(url);
       this.pendingTextureCallbacks.delete(url);
-      if (this.destroyed) {
+      // GLB 接管后，代码生成几何的材质已销毁，不能再往上挂贴图。
+      if (this.destroyed || this.proceduralReleased) {
         return;
       }
 

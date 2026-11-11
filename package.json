@@ -9,6 +9,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
+    "export:glb": "node scripts/exportVillaGlb.ts",
     "lint": "eslint .",
     "test": "node --test \"tests/**/*.test.ts\""
   },

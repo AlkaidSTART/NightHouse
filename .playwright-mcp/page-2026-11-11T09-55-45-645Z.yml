@@ -1,0 +1,14 @@
+- main [ref=e4]:
+  - paragraph [ref=e5]: 单人第一人称悬疑探索
+  - heading "午夜别墅" [level=1] [ref=e6]
+  - paragraph [ref=e7]: MIDNIGHT VILLA
+  - generic [ref=e8]:
+    - button "开始新游戏" [ref=e9] [cursor=pointer]
+    - button "继续游戏" [disabled] [ref=e10]
+  - paragraph [ref=e11]: 暂无本地存档，开始新游戏后会自动保存进度。
+  - generic [ref=e12]:
+    - generic [ref=e13]: W A S D 移动
+    - generic [ref=e14]: 鼠标 环视
+    - generic [ref=e15]: E 交互
+    - generic [ref=e16]: Esc 暂停
+  - paragraph [ref=e17]: MVP 脚手架 · v0.1

@@ -97,7 +97,9 @@ function npcHead(id: string): Vec3Tuple {
   return [spot.position[0], spot.position[1] + 1.6, spot.position[2]];
 }
 
-const SPAWN: Vec3Tuple = [0, 0, 38.5];
+/** 前院比宅邸地坪低 0.75 m（台基）。 */
+const YARD = -0.75;
+const SPAWN: Vec3Tuple = [0, YARD, 38.5];
 
 const TO_HALL: Waypoint[] = [[0, 34], [-3.5, 24], [-3.5, 19], [0, 12], [0, 8], [0, 5.6]];
 const ACT_ONE: Waypoint[] = [
@@ -276,8 +278,8 @@ test('C2：从车道能看到二层那扇不亮的窗', () => {
     (windowBox.min[1] + windowBox.max[1]) / 2,
     windowBox.max[2],
   ];
-  assert.ok(sightClear(world, [0, EYE, 30], center));
-  assert.ok(sightClear(world, [-3.5, EYE, 21], center));
+  assert.ok(sightClear(world, [0, YARD + EYE, 30], center));
+  assert.ok(sightClear(world, [-3.5, YARD + EYE, 21], center));
 });
 
 test('画框背面和镜框背面只能从侧面看到', () => {
@@ -305,7 +307,8 @@ test('每个交互点都能从某个可站立的位置对准', () => {
   const world = openWorld('all');
   for (const item of villaGreybox.interactables) {
     const [x, y, z] = item.position;
-    const floor = y > 3 ? F2 : y < -0.2 ? -1.2 : 0;
+    // 前院（台基南缘 z = 9.45 以南）的交互点站在下沉的院子里看。
+    const floor = y > 3 ? F2 : y < -0.2 ? -1.2 : z > 9.45 ? YARD : 0;
     let reachable = false;
     for (let angle = 0; angle < 360 && !reachable; angle += 15) {
       for (const range of [0.8, 1.2, 1.6, 2]) {

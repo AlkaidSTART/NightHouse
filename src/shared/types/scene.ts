@@ -116,6 +116,8 @@ export interface SceneSpawn {
 
 export interface SceneDefinition {
   id: string;
+  /** 整场景 GLB 的静态资源路径；加载成功后替换代码生成的方盒与门扇。 */
+  modelUrl?: string;
   boxes: SceneBox[];
   surfaces: WalkSurface[];
   regions: SceneRegion[];

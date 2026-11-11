@@ -19,6 +19,11 @@ import type {
  */
 
 const F2 = 3.4;
+/** 前院地面标高：宅邸坐在 0.75 m 的台基上，门廊前 5 级踏步（4 个踏面）下到前院。 */
+const YARD = -0.75;
+/** 台基南缘（柱廊平台外沿）与台阶底端的 z。 */
+const PLINTH_EDGE_Z = 9.45;
+const PORCH_STEPS_END_Z = 10.65;
 const F2_TOP = 6.6;
 const SLAB_BOTTOM = 3.1;
 const ROOF_TOP = 9.4;
@@ -155,14 +160,15 @@ box('slab_corridor', [-11, SLAB_BOTTOM, -2], [-4, F2, 0], 'ceiling', visualOnly)
 box('slab_gallery', [-4, SLAB_BOTTOM, -2], [0, F2, 0], 'ceiling', visualOnly);
 box('slab_study', [-11, SLAB_BOTTOM, -8], [-6, F2, -2], 'ceiling', visualOnly);
 box('slab_storage', [-6, SLAB_BOTTOM, -6], [-3, F2, -2], 'ceiling', visualOnly);
-box('ground', [-17, -0.3, -12], [14, 0, 44], 'ground', visualOnly);
+box('ground', [-17, -0.3, -12], [14, 0, PLINTH_EDGE_Z], 'ground', visualOnly);
+box('ground_yard', [-17, YARD - 0.3, PLINTH_EDGE_Z], [14, YARD, 44], 'ground', visualOnly);
 box('floor_house', [-11, 0, -8], [11, 0.02, 7], 'floor', visualOnly);
 box('floor_gallery_2f', [-4, F2, -2], [0, F2 + 0.02, 0], 'floor', visualOnly);
 box('floor_corridor_2f', [-11, F2, -2], [-4, F2 + 0.02, 0], 'floor', visualOnly);
 box('floor_evelyn_2f', [-11, F2, 0], [-6, F2 + 0.02, 7], 'floor', visualOnly);
 box('floor_bathroom_2f', [-6, F2, -6], [-3, F2 + 0.02, -2], 'tile', visualOnly);
 box('floor_terrace', [-17, 0, -4], [-11, 0.03, 4], 'stone', visualOnly);
-box('floor_driveway', [-2.5, 0, 9.2], [2.5, 0.02, 40], 'stone', visualOnly);
+box('floor_driveway', [-2.5, YARD, PORCH_STEPS_END_Z], [2.5, YARD + 0.02, 40], 'stone', visualOnly);
 
 // ───────────────────────── 主楼梯与回廊 ─────────────────────────
 
@@ -195,7 +201,10 @@ box('gallery_rail_south', [-4, F2, -0.08], [0, F2 + 1, 0], 'wood');
 box('gallery_rail_east', [0, F2, -0.6], [0.08, F2 + 1, 0], 'wood');
 
 const surfaces: WalkSurface[] = [
-  { id: 'ground', minX: -17, maxX: 14, minZ: -12, maxZ: 44, y0: 0, y1: 0, axis: 'x' },
+  { id: 'ground', minX: -17, maxX: 14, minZ: -12, maxZ: PLINTH_EDGE_Z, y0: 0, y1: 0, axis: 'x' },
+  // 台基比前院高 0.75 m，超过 MAX_DROP / STEP_UP，只能经门廊台阶上下。
+  { id: 'yard', minX: -17, maxX: 14, minZ: PLINTH_EDGE_Z, maxZ: 44, y0: YARD, y1: YARD, axis: 'x' },
+  { id: 'porch_steps', minX: -2.5, maxX: 2.5, minZ: PLINTH_EDGE_Z, maxZ: PORCH_STEPS_END_Z, y0: 0, y1: YARD, axis: 'z' },
   { id: 'stair_a', minX: 2.6, maxX: 4, minZ: -0.5, maxZ: 2, y0: LANDING_Y, y1: 0, axis: 'z' },
   { id: 'stair_landing', minX: 2.6, maxX: 4, minZ: -2, maxZ: -0.5, y0: LANDING_Y, y1: LANDING_Y, axis: 'x' },
   { id: 'stair_b', minX: 0, maxX: 2.6, minZ: -2, maxZ: -0.6, y0: F2, y1: LANDING_Y, axis: 'x' },
@@ -209,17 +218,43 @@ const surfaces: WalkSurface[] = [
 
 // ───────────────────────── 室外抵达段 scene_gate ─────────────────────────
 
-prop('hedge_west', -6.2, -6, 7, 40.2, 0, 1.8, 'foliage');
-prop('hedge_east', 6, 6.2, 7, 40.2, 0, 1.8, 'foliage');
-prop('hedge_south', -6.2, 6.2, 40, 40.2, 0, 1.8, 'foliage');
-prop('gate_fence_west', -6, -2, 35.95, 36.05, 0, 2.2, 'metal');
-prop('gate_fence_east', 2, 6, 35.95, 36.05, 0, 2.2, 'metal');
-prop('gate_pier_west', -2, -1.5, 35.75, 36.25, 0, 2.6, 'stone');
-prop('gate_pier_east', 1.5, 2, 35.75, 36.25, 0, 2.6, 'stone');
-prop('fountain', -1.5, 1.5, 20, 23, 0, 0.8, 'stone');
+// 前院按鸟瞰参考图改为开阔的环形喷泉前院：树篱围在外圈（x = ±12），
+// 北端用短折返接到柱廊前栏（veranda_bound_front_*），院子保持封闭。
+prop('hedge_west', -12.2, -12, 9.2, 40.2, YARD, 1.8 - YARD, 'foliage');
+prop('hedge_east', 12, 12.2, 9.2, 40.2, YARD, 1.8 - YARD, 'foliage');
+prop('hedge_south', -12.2, 12.2, 40, 40.2, YARD, 1.8 - YARD, 'foliage');
+prop('hedge_return_west', -12.2, -11.05, 9, PLINTH_EDGE_Z, YARD, 1.8 - YARD, 'foliage');
+prop('hedge_return_east', 11.05, 12.2, 9, PLINTH_EDGE_Z, YARD, 1.8 - YARD, 'foliage');
+prop('gate_fence_west', -12, -2, 35.95, 36.05, YARD, 2.2, 'metal');
+prop('gate_fence_east', 2, 12, 35.95, 36.05, YARD, 2.2, 'metal');
+prop('gate_pier_west', -2, -1.5, 35.75, 36.25, YARD, 2.6, 'stone');
+prop('gate_pier_east', 1.5, 2, 35.75, 36.25, YARD, 2.6, 'stone');
+prop('fountain', -1.5, 1.5, 20, 23, YARD, 0.8, 'stone');
 prop('porch_roof', -2.5, 2.5, 7.1, 9.2, 2.7, 0.2, 'stone', visualOnly);
 prop('porch_pillar_west', -2.5, -2.2, 8.9, 9.2, 0, 2.7, 'stone');
 prop('porch_pillar_east', 2.2, 2.5, 8.9, 9.2, 0, 2.7, 'stone');
+
+// 南立面柱廊（只在 Blender 精模里有几何）的栏杆与柱列碰撞：入口两柱之间留空，
+// 两端侧栏封住柱廊，只能从车道正面进出。前栏 z 范围同时罩住柱础（半宽 0.2 m）。
+const verandaBound: BoxOptions = { visible: false };
+box('veranda_bound_front_west', [-11.05, 0, 8.8], [-2.5, 1.2, 9.2], 'stone', verandaBound);
+box('veranda_bound_front_east', [2.5, 0, 8.8], [11.05, 1.2, 9.2], 'stone', verandaBound);
+
+// 门廊台阶：5 级踏步、4 个踏面，每级 0.15 m × 0.3 m；两侧挡墙（含末端墩柱，故比台阶长 0.4 m）防止从台阶侧面跨出。
+for (let index = 0; index < 4; index += 1) {
+  const z0 = PLINTH_EDGE_Z + 0.3 * index;
+  box(
+    `porch_step${index}`,
+    [-2.5, YARD, z0],
+    [2.5, -0.15 * (index + 1), z0 + 0.3],
+    'stone',
+    visualOnly,
+  );
+}
+box('porch_steps_wall_west', [-2.8, YARD, PLINTH_EDGE_Z], [-2.5, 0.45, PORCH_STEPS_END_Z + 0.4], 'stone');
+box('porch_steps_wall_east', [2.5, YARD, PLINTH_EDGE_Z], [2.8, 0.45, PORCH_STEPS_END_Z + 0.4], 'stone');
+box('veranda_bound_side_west', [-10.91, 0, 7.1], [-10.79, 1.2, 8.8], 'stone', verandaBound);
+box('veranda_bound_side_east', [10.79, 0, 7.1], [10.91, 1.2, 8.8], 'stone', verandaBound);
 
 // 南立面的窗：只做发光面片。二层西南那一扇是伊芙琳卧室，不亮（故事线 §1.5）。
 const windowOptions: BoxOptions = { collide: false };
@@ -390,7 +425,7 @@ function door(
 
 // 解锁条件取自故事线 §2.1 的「开放条件」列。
 const doors: SceneDoor[] = [
-  door('DOOR_gate', '铁门', [-1.5, 0, 36], 'x', 3, 2.2),
+  door('DOOR_gate', '铁门', [-1.5, YARD, 36], 'x', 3, 2.2),
   door('DOOR_front', '正门', [-0.8, 0, 7], 'x', 1.6, 2.4),
   door('DOOR_parlor', '客厅门', [-4, 0, 2.7], 'z', 1.6, 2.4, { startsOpen: true }),
   door('DOOR_dining', '餐厅门', [4, 0, 2.7], 'z', 1.6, 2.4, {
@@ -436,7 +471,7 @@ function interact(
 
 const interactables: SceneInteractable[] = [
   // 室外
-  interact('INT_prop_gate_plaque', [1.75, 1.5, 36.31], 0.25, '查看铜牌', '铁门铜牌。'),
+  interact('INT_prop_gate_plaque', [1.75, 1.5 + YARD, 36.31], 0.25, '查看铜牌', '铁门铜牌。'),
   // 门厅
   interact('INT_prop_longcase_clock', [-2.5, 1.4, -1.38], 0.45, '查看落地钟', '落地钟，puzzle_clock 的操作位置。'),
   interact('INT_prop_cloak', [-3.74, 1.5, 6], 0.25, '查看最里侧的斗篷', '衣帽架最里侧的旧斗篷。'),
@@ -530,7 +565,7 @@ const regions: SceneRegion[] = [
   { id: 'villa_evelyn_room', name: '伊芙琳的卧室', volumes: [{ min: [-11, FLOOR_SPLIT, 0], max: [-6, 7, 7] }] },
   { id: 'villa_bathroom', name: '浴室', volumes: [{ min: [-6, FLOOR_SPLIT, -6], max: [-3, 7, -2] }] },
   { id: 'villa_cliff', name: '西侧露台', volumes: [{ min: [-24, -2, -7], max: [-11, 3, 5] }] },
-  { id: 'scene_gate', name: '车道', volumes: [{ min: [-8, -1, 7], max: [8, 3, 41] }] },
+  { id: 'scene_gate', name: '车道', volumes: [{ min: [-12.5, -1, 7], max: [12.5, 3, 41] }] },
 ];
 
 // ───────────────────────── 灯光（占位，不投影） ─────────────────────────
@@ -551,7 +586,7 @@ function light(
 }
 
 const lights: SceneLight[] = [
-  light('LIGHT_gate_lamp', [1.75, 2.9, 36.4], WARM, 1, 9),
+  light('LIGHT_gate_lamp', [1.75, 2.9 + YARD, 36.4], WARM, 1, 9),
   light('LIGHT_porch_lantern', [0, 2.4, 8.3], WARM, 1.5, 11),
   light('LIGHT_hall_chandelier', [0, 5, 3], ELECTRIC, 1.5, 14),
   light('LIGHT_hall_under_gallery', [-2, 2.6, -1], WARM, 0.6, 6),
@@ -574,6 +609,7 @@ const lights: SceneLight[] = [
 
 export const villaGreybox: SceneDefinition = {
   id: 'villa_greybox',
+  modelUrl: '/assets/scenes/scene_villa_full.glb',
   boxes,
   surfaces,
   regions,
@@ -581,5 +617,5 @@ export const villaGreybox: SceneDefinition = {
   interactables,
   npcSpots,
   lights,
-  spawns: [{ id: 'SPAWN_gate_start', position: [0, 0, 38.5], yaw: 0 }],
+  spawns: [{ id: 'SPAWN_gate_start', position: [0, YARD, 38.5], yaw: 0 }],
 };

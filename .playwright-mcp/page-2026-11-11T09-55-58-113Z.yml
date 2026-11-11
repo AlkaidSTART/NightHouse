@@ -1,0 +1,10 @@
+- generic [ref=e18]:
+  - generic: 车道
+  - generic:
+    - generic: E
+    - generic: 打开铁门
+  - generic [ref=e21]:
+    - paragraph [ref=e22]: 别墅入口
+    - heading "进入午夜别墅" [level=2] [ref=e23]
+    - paragraph [ref=e24]: 进入后浏览器会锁定鼠标，使用 W A S D 移动、鼠标环视、E 交互。 按 Esc 随时暂停。
+    - button "开始探索" [ref=e26] [cursor=pointer]

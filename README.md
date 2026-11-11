@@ -20,6 +20,7 @@ npm run typecheck  # TypeScript 类型检查
 npm run lint       # ESLint
 npm test           # 单元测试与灰盒验收测试（Node 内置测试运行器，无额外依赖）
 npm run build      # 类型检查 + 生产构建
+npm run export:glb # 把全宅灰盒导出为 public/assets/scenes/scene_villa_full.glb
 npm run preview    # 预览构建产物
 ```
 
