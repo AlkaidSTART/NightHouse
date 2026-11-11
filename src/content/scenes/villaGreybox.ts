@@ -81,6 +81,7 @@ function wall(
   y0: number,
   y1: number,
   openings: Opening[] = [],
+  material: SceneMaterialId = 'wall',
 ): void {
   const span = (a: number, b: number, bottom: number, suffix: string): void => {
     if (b - a < 1e-6 || y1 - bottom < 1e-6) {
@@ -92,7 +93,7 @@ function wall(
         : [fixed - HALF_WALL, bottom, a];
     const max: Vec3Tuple =
       axis === 'x' ? [b, y1, fixed + HALF_WALL] : [fixed + HALF_WALL, y1, b];
-    box(`${id}_${suffix}`, min, max, 'wall');
+    box(`${id}_${suffix}`, min, max, material);
   };
 
   let cursor = from;
@@ -132,8 +133,8 @@ box('mass_service_1f', [4, 0, -7], [11, F2, 0], 'wall');
 
 wall('ext_south_2f', 'x', 7, -11, 11, F2, F2_TOP);
 wall('ext_west_2f', 'z', -11, -8, 7, F2, F2_TOP);
-wall('bathroom_north', 'x', -6, -6, -3, F2, F2_TOP);
-wall('bathroom_east', 'z', -3, -6, -2, F2, F2_TOP);
+wall('bathroom_north', 'x', -6, -6, -3, F2, F2_TOP, [], 'tile');
+wall('bathroom_east', 'z', -3, -6, -2, F2, F2_TOP, [], 'tile');
 wall('corridor_north_2f', 'x', -2, -6, 4, F2, F2_TOP, [
   { from: -5.2, to: -4.2, top: F2 + 2.2 },
 ]);
@@ -156,6 +157,10 @@ box('slab_study', [-11, SLAB_BOTTOM, -8], [-6, F2, -2], 'ceiling', visualOnly);
 box('slab_storage', [-6, SLAB_BOTTOM, -6], [-3, F2, -2], 'ceiling', visualOnly);
 box('ground', [-17, -0.3, -12], [14, 0, 44], 'ground', visualOnly);
 box('floor_house', [-11, 0, -8], [11, 0.02, 7], 'floor', visualOnly);
+box('floor_gallery_2f', [-4, F2, -2], [0, F2 + 0.02, 0], 'floor', visualOnly);
+box('floor_corridor_2f', [-11, F2, -2], [-4, F2 + 0.02, 0], 'floor', visualOnly);
+box('floor_evelyn_2f', [-11, F2, 0], [-6, F2 + 0.02, 7], 'floor', visualOnly);
+box('floor_bathroom_2f', [-6, F2, -6], [-3, F2 + 0.02, -2], 'tile', visualOnly);
 box('floor_terrace', [-17, 0, -4], [-11, 0.03, 4], 'stone', visualOnly);
 box('floor_driveway', [-2.5, 0, 9.2], [2.5, 0.02, 40], 'stone', visualOnly);
 
@@ -246,7 +251,7 @@ prop('hall_chandelier', -0.4, 0.4, 2.6, 3.4, 5.2, 0.6, 'metal', visualOnly);
 
 prop('parlor_fireplace', -10.9, -10.4, 2.6, 4.4, 0, 1.25, 'stone');
 prop('parlor_mantel_clock', -10.75, -10.55, 3.4, 3.6, 1.25, 0.25, 'metal', visualOnly);
-prop('parlor_family_portrait', -10.9, -10.85, 2.8, 4.2, 1.7, 0.9, 'paper', visualOnly);
+prop('parlor_family_portrait', -10.9, -10.85, 2.8, 4.2, 1.7, 0.9, 'photo', visualOnly);
 // 帆船油画离墙留出缝隙，背面的题字只能从侧面看到（故事线 §3.2）。
 prop('parlor_ship_painting', -6.2, -5, 0.34, 0.38, 1.3, 0.8, 'paper');
 prop('parlor_sofa', -8.5, -6.5, 4.6, 5.5, 0, 0.8, 'fabric');
@@ -326,7 +331,7 @@ prop('bathroom_towel_rack', -5.9, -5.8, -4.4, -3.4, F2 + 0.9, 0.4, 'metal', visu
 
 // ───────────────────────── 二层走廊 ─────────────────────────
 
-prop('corridor_family_photos', -7.6, -6.6, -1.99, -1.95, F2 + 1.3, 0.6, 'paper', visualOnly);
+prop('corridor_family_photos', -7.6, -6.6, -1.99, -1.95, F2 + 1.3, 0.6, 'photo', visualOnly);
 
 // ───────────────────────── 西侧露台 / 崖边 villa_cliff ─────────────────────────
 
