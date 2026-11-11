@@ -67,4 +67,7 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 
 ## 6. 备注
 
-钥匙体积小但辨识度要求高，优先保证轮廓和金属质感，避免过度细节。
+- 本资产是通用黄铜门钥匙，用于门锁、储物箱和抽屉。
+- **钟钥匙**（`clue_clock_key`）使用独立资产 `SM_Prop_ClockKey_01`：更小的黄铜钥匙，柄上刻钟面图案，从书房书桌抽屉取得。
+- **储物间钥匙串**（`SM_Prop_StorageKeyRing_01`）可用本模型加钥匙环和 2–3 把钥匙的组合变体，挂在门厅衣钩上。
+- 钥匙体积小但辨识度要求高，优先保证轮廓和金属质感，避免过度细节。

@@ -64,3 +64,8 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 | 署名要求 | 待确认 |
 | 下载 / 生成日期 | 待填写 |
 | 修改说明 | 待填写 |
+
+## 6. 备注
+
+- 本资产用于客厅主地毯、走廊窄长地毯和卧室地毯；走廊可用同一模型的长宽变体。
+- 书房壁炉前需要 **换过的 Persian 地毯 + 黑墨水渍** 变体（`clue_burned_pages` 辅助观察点）：复用本模型，替换贴图并加一块深色污渍遮罩，不单独建高模。

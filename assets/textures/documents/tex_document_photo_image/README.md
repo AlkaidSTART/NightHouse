@@ -1,6 +1,6 @@
 # TEX_Document_PhotoImage · 照片图像内容（2D 内容）
 
-> 资产类型：PBR 贴图 / 2D 图像 ｜ 优先级：P1 ｜ 状态：待剧本确认
+> 资产类型：PBR 贴图 / 2D 图像 ｜ 优先级：P1 ｜ 状态：待生成
 
 | 项目 | 内容 |
 |---|---|
@@ -25,7 +25,7 @@ readable text, handwriting, calligraphy, signature, watermark, logo, shadow, per
 
 ## 2. 用途
 
-提供照片道具的视觉内容；人物和事件待剧本确认。
+提供通用照片道具的视觉内容。人物、年代和构图以世界观 V0.7 与故事线 V0.7 为准；**全家福** 与 **被剪半张照片** 使用独立贴图 `TEX_Document_FamilyPortrait`、`TEX_Document_CutPhoto`。
 
 ## 3. 技术规格
 
@@ -62,4 +62,4 @@ readable text, handwriting, calligraphy, signature, watermark, logo, shadow, per
 
 ## 6. 备注
 
-照片内容会直接传递剧情信息，必须在人物关系和事件确认后再制作；当前只保留可替换的空照片载体。
+照片内容会直接传递剧情信息。本贴图只做通用照片；全家福、半张照片和油画分别使用独立贴图，不要把不同剧情信息混在同一张图里。

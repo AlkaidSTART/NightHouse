@@ -4,5 +4,11 @@
 
 | 优先级 | 资产 ID | 名称 | 状态 |
 |---|---|---|---|
-| P0 | [SK_NPC_Base_01](./sk_npc_base/README.md) | NPC 基础人形 | 可先生成基础体 |
-| P1 | [SK_NPC_Outfit_TBD](./sk_npc_outfit_tbd/README.md) | NPC 服装与配饰（待定） | 待剧本确认 |
+| P0 | [SK_NPC_Base_01](./sk_npc_base/README.md) | NPC 绑定与比例母版（1.72 m 基准） | 可先生成基础体 |
+| P0 | [SK_NPC_Outfit_TBD](./sk_npc_outfit_tbd/README.md) | 三名 NPC 服装与配饰 | 待生成（目录名为遗留） |
+| P0 | SK_NPC_Arthur_01 | 亚瑟·阿什克罗夫特（32 岁，1.80 m） | 待建 |
+| P0 | SK_NPC_Housekeeper_01 | 霍尔太太（58 岁，1.58 m） | 待建 |
+| P0 | SK_NPC_Grey_01 | 埃利亚斯·格雷医生（61 岁，1.72 m） | 待建 |
+| P2 | SK_Player_Hands_01 | 玩家双手（第一人称取物 / 翻页 / 签字） | 待建 |
+
+三名 NPC 已由世界观 V0.7 与故事线 V0.7 确认，不再用一份中性基础体代替全部角色。制作时先统一骨架与比例，再分别为三人制作头部、发型、服装和配饰变体，不要把三套服装合并成不可替换网格。

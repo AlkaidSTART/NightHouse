@@ -1,11 +1,11 @@
-# SK_NPC_Base_01 · NPC 基础人形
+# SK_NPC_Base_01 · NPC 绑定与比例母版
 
 > 资产类型：骨骼角色模型 ｜ 优先级：P0 ｜ 状态：可先生成基础体
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 所有 NPC 的基础体；具体身份和服装待剧本确认 |
-| 依赖 / 复用 | 剧本确认人物数量与身份 |
+| 使用位置 | 三名已确认 NPC 的统一绑定与比例母版 |
+| 依赖 / 复用 | `SK_NPC_Arthur_01`、`SK_NPC_Housekeeper_01`、`SK_NPC_Grey_01` 共用本骨架 |
 
 ## 快速使用
 
@@ -14,7 +14,7 @@
 ## 1. 英文生成提示词（复制以下内容，可直接用于 Meshy / Tripo / Rodin 等）
 
 ```text
-A realistic adult human character for an old villa mystery game, full body, neutral A-pose, about 1.75 m tall, average build, short dark hair, plain neutral clothing, blank expression, clean symmetrical anatomy, separate head and hands, photorealistic realistic adult human, full body, neutral A-pose, blank expression, game-ready topology, clean UVs, PBR skin and fabric, no baked lighting, isolated on neutral background, real-world scale, about 1.75 meters tall.
+A realistic adult human character for an old villa mystery game, full body, neutral A-pose, about 1.72 m tall, average build, short dark hair, plain neutral clothing, blank expression, clean symmetrical anatomy, separate head and hands, photorealistic realistic adult human, full body, neutral A-pose, blank expression, game-ready topology, clean UVs, PBR skin and fabric, no baked lighting, isolated on neutral background, real-world scale, about 1.72 meters tall.
 ```
 
 **负向提示词（Negative prompt）**
@@ -31,7 +31,7 @@ extra limbs, extra fingers, deformed hands, distorted face, text, logo, watermar
 
 | 项目 | 要求 |
 |---|---|
-| 身高 | 约 1.75 m（可按最终设定调整） |
+| 身高 | 约 1.72 m 基准；亚瑟 1.80 m、霍尔太太 1.58 m、格雷医生 1.72 m |
 | 面数预算 | 15k–30k tris |
 | 骨骼 | 标准人形骨架；命名与 Mixamo/Blender 兼容 |
 | 姿态 | A-pose 或 T-pose（导出前确认重定向方案） |
@@ -50,7 +50,7 @@ extra limbs, extra fingers, deformed hands, distorted face, text, logo, watermar
 - [ ] 法线方向正确，无穿插和重复面
 - [ ] UV 已展开，皮肤和服装贴图路径完整
 - [ ] 提供胶囊体代理碰撞，不直接用高模
-- [ ] 未绑定具体剧情身份或不可替换服装
+- [ ] 未绑定具体剧情身份或不可替换服装（身份和服装在各自角色资产中制作）
 - [ ] 在 PlayCanvas 中加载并播放 Idle 测试通过
 - [ ] 来源与许可证已记录
 
@@ -68,4 +68,6 @@ extra limbs, extra fingers, deformed hands, distorted face, text, logo, watermar
 
 ## 6. 备注
 
-AI 生成通常只给静态网格。骨骼绑定、权重和动画建议在 Blender / Mixamo 中完成；不要过早制作多套服装。
+- 三名 NPC 已由世界观 V0.7 §4.1 与故事线 V0.7 §5 确认：亚瑟·阿什克罗夫特（32 岁，1.80 m）、霍尔太太（58 岁，1.58 m）、埃利亚斯·格雷医生（61 岁，1.72 m）。
+- 本资产只做统一骨架和比例母版，不承载角色身份。头部、发型、服装和配饰分别在 `SK_NPC_Arthur_01`、`SK_NPC_Housekeeper_01`、`SK_NPC_Grey_01` 中制作。
+- AI 生成通常只给静态网格。骨骼绑定、权重和动画建议在 Blender / Mixamo 中完成；不要过早制作多套服装。

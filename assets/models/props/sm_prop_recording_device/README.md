@@ -1,11 +1,13 @@
-# SM_Prop_RecordingDevice_01 · 录音设备
+# SM_Prop_Phonograph_01 · 蜡筒留声机
 
-> 资产类型：静态 3D 模型 ｜ 优先级：P1 ｜ 状态：待生成
+> 资产类型：静态 3D 模型 ｜ 优先级：P0 ｜ 状态：待生成
+>
+> **目录名说明：** 本目录沿用旧的 `sm_prop_recording_device`。资产已由「现代卡带录音机」修正为 1897 年蜡筒留声机，资产 ID 与运行路径以本文档为准；后续迁移目录时同步更新 `assets/README.md` 与 `assets/models/props/README.md` 的链接。
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 书房、储物区 |
-| 依赖 / 复用 | 无 |
+| 使用位置 | 书房（播放伊芙琳留言） |
+| 依赖 / 复用 | 与 `SM_Prop_WaxCylinder_01` 配套；线索 `clue_gramophone_cylinder` |
 
 ## 快速使用
 
@@ -14,37 +16,42 @@
 ## 1. 英文生成提示词（复制以下内容，可直接用于 Meshy / Tripo / Rodin 等）
 
 ```text
-A vintage portable cassette recorder, 0.11 m wide, 0.06 m deep and 0.035 m high, dark grey plastic and brushed metal, worn buttons, small speaker grille, photorealistic, realistic old villa, muted desaturated palette, subtle age and wear, game-ready topology, clean UVs, physically based material, no baked lighting, isolated object, no scene, real-world scale.
+A late 19th century wax cylinder phonograph on a wooden base, 0.35 m wide, 0.3 m deep and 0.45 m tall including the brass horn, dark walnut wood, tarnished brass horn and mechanism, black iron crank, a small wax cylinder mounted on the carriage, worn surfaces, no readable text, photorealistic, realistic old villa, muted desaturated palette, subtle age and wear, game-ready topology, clean UVs, physically based material, no baked lighting, isolated object, no scene, real-world scale.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-text, words, letters, handwriting, watermark, logo, signature, background scene, room, floor plane, multiple separate objects, people, hands, cartoon, stylized, anime, low detail, blurry, high-poly sculpt, dense triangulation, shiny plastic, pristine unused surfaces, bright saturated colors, baked shadows, baked lighting
+text, words, letters, handwriting, watermark, logo, signature, background scene, room, floor plane, multiple separate objects, people, hands, cartoon, stylized, anime, low detail, blurry, high-poly sculpt, dense triangulation, shiny plastic, pristine unused surfaces, bright saturated colors, baked shadows, baked lighting, cassette, tape deck, modern electronics, radio, loudspeaker
 ```
 
 ## 2. 用途
 
-可选的音频型线索载体。
+书房音频线索的核心载体：玩家从卧室取得蜡筒后回到书房播放，获得 `clue_gramophone_cylinder`。模型必须让玩家一眼看出「放蜡筒 → 摇柄 → 听声音」的操作关系。
 
 ## 3. 技术规格
 
 | 项目 | 要求 |
 |---|---|
-| 尺寸 | 0.11 m × 0.06 m × 0.035 m（宽 × 深 × 高） |
+| 尺寸 | 约 0.35 m × 0.30 m × 0.45 m（宽 × 深 × 高，含喇叭） |
 | 单位 | 米；Y 轴向上；1 单位 = 1 m |
-| 面数预算 | 500–2000 tris |
-| 材质槽 | 2–3（塑料 / 金属 / 橡胶） |
+| 面数预算 | 2000–6000 tris |
+| 材质槽 | 3–4（深色木 / 做旧黄铜 / 黑色铸铁 / 蜡筒） |
 | 贴图 | 1K–2K PBR |
 | 碰撞体 | 盒体代理碰撞 |
-| 原点 / 朝向 | 底面中心；正面朝 +Z |
+| 原点 / 朝向 | 底面中心；喇叭朝向书房动线，正面朝 +Z |
 | 导出格式 | GLB / glTF |
-| 运行路径 | public/assets/models/props/SM_Prop_RecordingDevice_01.glb |
+| 运行路径 | public/assets/models/props/SM_Prop_Phonograph_01.glb |
+
+**交互节点：** `phonograph_crank`（摇柄，可旋转）、`cylinder_carriage`（蜡筒托架，可放置）、`horn_mouth`（音频定位点）、`base`（静态底座）。
+
+**配套蜡筒 `SM_Prop_WaxCylinder_01`：** 圆柱蜡筒 + 木盒，盒盖写「E. — 别放」。尺寸约 0.06 m 直径 × 0.12 m 长；1000–2500 tris；可携带；运行路径 `public/assets/models/props/SM_Prop_WaxCylinder_01.glb`。盒盖文字用可替换贴图 `TEX_Document_WaxCylinderLabel`，不烘焙进网格。
 
 ## 4. 生成后检查
 
 - [ ] 尺寸与真实比例一致（1 单位 = 1 m）
 - [ ] 原点、朝向和枢轴符合规格
+- [ ] 摇柄、蜡筒托架、喇叭节点命名稳定
 - [ ] 法线方向正确，无明显穿插和重复面
 - [ ] UV 已展开，贴图路径完整
 - [ ] 材质槽数量符合预算
@@ -67,4 +74,6 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 
 ## 6. 备注
 
-录音内容属于剧情内容，等剧本确认后再制作音频；模型本身可先作为通用道具。
+- 留声机播放的语音属于剧情内容，由 `AudioManager` 播放，不烘焙进模型。
+- 喇叭内部不要做高模声学结构，保持外轮廓和开口可读即可。
+- 不要生成现代唱盘、黑胶唱片或卡带结构。

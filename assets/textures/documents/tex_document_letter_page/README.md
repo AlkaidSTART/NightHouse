@@ -25,7 +25,7 @@ readable text, handwriting, calligraphy, signature, watermark, logo, shadow, per
 
 ## 2. 用途
 
-提供可阅读的信件页面；正文内容待剧本确认。
+提供可阅读的信件页面。同一纸张底图需支持三个文本变体：**伊芙琳的警告信**（`clue_evelyn_letter`，含信封背面与邮戳）、**举报信初稿** 和 **保险商信稿**。
 
 ## 3. 技术规格
 
@@ -62,4 +62,4 @@ readable text, handwriting, calligraphy, signature, watermark, logo, shadow, per
 
 ## 6. 备注
 
-正文属于剧情内容，等剧本确认后再排版。建议用独立文字层或 UI 渲染，不要把最终文案直接烘焙进图片。
+正文属于剧情内容，文本以故事线 V0.7 为准。建议用独立文字层或 UI 渲染，不要把最终文案直接烘焙进底图；三个变体共用纸张底图，只替换文字层。

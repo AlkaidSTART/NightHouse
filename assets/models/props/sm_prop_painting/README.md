@@ -35,7 +35,7 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 | 单位 | 米；Y 轴向上；1 单位 = 1 m |
 | 面数预算 | 100–600 tris |
 | 材质槽 | 2 |
-| 贴图 | 2K 画布贴图；内容待确认 |
+| 贴图 | 2K 画布贴图；通用风景画，内容可替换 |
 | 碰撞体 | 盒体代理碰撞 |
 | 原点 / 朝向 | 背面中心；画面朝 +Z |
 | 导出格式 | GLB / glTF |
@@ -67,4 +67,6 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 
 ## 6. 备注
 
-当前使用通用氛围画面作为占位；若剧本赋予挂画线索意义，再替换为明确内容。
+本资产只做通用氛围挂画，用于客厅、走廊和书房的墙面节奏。剧情关键画作 **帆船油画** 使用独立资产 `SM_Prop_ShipPainting_01`（正面船名、背面日期，需可从侧面查看），不要用本模型替代。
+
+当前使用通用风景画面作为占位；纸张、画布上不烘焙可读文字。

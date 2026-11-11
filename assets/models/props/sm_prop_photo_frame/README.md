@@ -64,3 +64,7 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 | 署名要求 | 待确认 |
 | 下载 / 生成日期 | 待填写 |
 | 修改说明 | 待填写 |
+
+## 6. 备注
+
+本资产是 0.16 m × 0.21 m 的小型通用相框，用于走廊、卧室床头和玄关。客厅壁炉上方的 **全家福** 尺寸更大且需要表现被剪掉的人物，使用独立资产 `SM_Prop_FamilyPortrait_01`，不要用本模型放大替代。

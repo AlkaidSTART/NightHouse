@@ -67,4 +67,7 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 
 ## 6. 备注
 
-建议直接用低面数平面，正文通过独立贴图或 UI 显示，不要在高模上烘焙文字。
+- 本资产是通用信纸载体，用于三个文本变体：**伊芙琳的警告信**（开场随身阅读，`clue_evelyn_letter`）、**举报信初稿** 和 **保险商信稿**（储物间行李箱）。
+- 正文通过 `TEX_Document_LetterPage` 或 UI 显示，不要在高模上烘焙文字。
+- 警告信需要表现信封背面与邮戳：可用同一纸张模型加信封变体，或单独做低面数信封。
+- 建议直接用低面数平面，便于替换内容。
