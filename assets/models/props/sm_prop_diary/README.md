@@ -67,4 +67,6 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 
 ## 6. 备注
 
-日记正文不建模、不烘焙文字。内容通过 UI 或可替换页面贴图呈现，等剧本确认后再制作。
+- 本资产代表 **伊芙琳的日记本**（`clue_evelyn_diary`），放在卧室床头柜。最后几页写满日期、船名与四人名单，是 `clue_crew_names` 的辅助载体。
+- 日记正文不建模、不烘焙文字。内容通过 UI 或可替换页面贴图 `TEX_Document_DiaryPage` 呈现。
+- 不要使用现代笔记本装订、塑料封皮或可读书名。

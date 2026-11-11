@@ -9,6 +9,8 @@
 | MAT_Fabric_Worn | T_Fabric_Worn_01 | 沙发、床品 | 高粗糙度，无金属度 |
 | MAT_Wood_Dark | T_Floor_WoodWorn_01（调整色调） | 家具、门、相框 | 中粗糙度，低金属度 |
 | MAT_Metal_Tarnished | T_Grime_DustWear_Set_01（叠加） | 灯具、钥匙、把手 | 中金属度，高粗糙度 |
+| MAT_Metal_Brass_Aged | T_Grime_DustWear_Set_01（叠加） | 钟面、上弦钥匙、门牌 | 黄铜色，高粗糙度，弱反射 |
+| MAT_Tile_Bathroom | T_Tile_Bathroom_01 | 浴室墙地砖 | 高粗糙度，注意接缝与湿痕 |
 | MAT_Glass_Dirty | 无（引擎材质） | 窗玻璃、灯罩 | 透明，低粗糙度，注意排序 |
 
 ## 注意事项

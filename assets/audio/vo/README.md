@@ -1,10 +1,10 @@
 # 语音
 
-NPC 语音尚未确认角色与台词，仅保留占位资产。剧本冻结前不要录制或生成正式语音。
+NPC 身份与台词已由故事线 V0.7 确认，但 MVP 是否启用完整配音尚未决定。当前只保留占位资产，不录制或生成正式语音；先以文本对话和界面反馈验证流程。
 
 | 优先级 | 资产 ID | 名称 | 用途 | 状态 |
 |---|---|---|---|---|
-| 待定 | [VO_NPC_Placeholder](./vo_npc_placeholder/README.md) | NPC 语音（待定） | NPC 对话 | 待剧本确认 |
+| 待定 | [VO_NPC_Placeholder](./vo_npc_placeholder/README.md) | NPC 语音（占位） | NPC 对话 | 待音频方案确认 |
 
 ## 通用规范
 

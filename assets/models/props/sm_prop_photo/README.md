@@ -35,7 +35,7 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 | 单位 | 米；Y 轴向上；1 单位 = 1 m |
 | 面数预算 | 4–60 tris |
 | 材质槽 | 1 |
-| 贴图 | 2K 照片贴图；内容待剧本确认 |
+| 贴图 | 2K 照片贴图；内容由 `TEX_Document_*` 替换 |
 | 碰撞体 | 不需要 |
 | 原点 / 朝向 | 中心；正面朝 +Z |
 | 导出格式 | GLB / glTF |
@@ -67,4 +67,7 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 
 ## 6. 备注
 
-照片内容属于剧情信息，等剧本确认后再生成或拍摄；当前只做可替换的空照片载体。
+- 本资产作为可替换照片载体，尺寸 0.1 m × 0.15 m，适合桌面、相框和抽屉。
+- **被剪半张照片**（`clue_family_photo`）使用本模型的变体：伊芙琳单人像，右侧留出剪痕，衬硬纸板，藏在梳妆镜框背面；贴图使用 `TEX_Document_CutPhoto`。
+- **全家福** 是大幅横框，使用独立资产 `SM_Prop_FamilyPortrait_01`，不要用本模型放大替代。
+- 照片内容属于剧情信息，正文通过贴图或 UI 呈现，不烘焙进网格。

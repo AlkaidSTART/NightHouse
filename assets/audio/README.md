@@ -7,7 +7,7 @@
 | 环境音 | 区域底噪、天气、空间氛围 | 6 | [ambience/README.md](./ambience/README.md) |
 | 音效 | 交互、材质、钟表、留声机、剧情瞬间 | 29 | [sfx/README.md](./sfx/README.md) |
 | 音乐 / 紧张层 | 可叠加的 tension stem | 4 | [music/README.md](./music/README.md) |
-| 语音 | NPC 对话（待剧本确认） | 1 | [vo/README.md](./vo/README.md) |
+| 语音 | NPC 对话（是否启用待音频方案确认） | 1 | [vo/README.md](./vo/README.md) |
 
 ## 通用规范
 

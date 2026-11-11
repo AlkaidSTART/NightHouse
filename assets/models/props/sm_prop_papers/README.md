@@ -67,4 +67,6 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 
 ## 6. 备注
 
-不要把所有纸张做成一个高面数网格；建议 3–5 张独立面片叠放，便于替换内容和拾取。
+- 本资产是通用纸张堆，用于 **诊疗记录**（`clue_medical_record`）、**保险单**（`clue_insurance_policy`）、**遗嘱**（`clue_will_clause`）和 **船员名单**（`clue_crew_names`）等书证载体；正文使用对应的 `TEX_Document_*` 贴图或 UI。
+- 遗嘱不需要单独建独特模型，用本资产 + 2D 文本即可；签字动作由交互系统处理。
+- 不要把所有纸张做成一个高面数网格；建议 3–5 张独立面片叠放，便于替换内容和拾取。

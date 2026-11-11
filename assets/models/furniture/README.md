@@ -11,8 +11,17 @@
 | P0 | [SM_Furniture_Desk_01](./sm_furniture_desk/README.md) | 书桌 | 待生成 |
 | P0 | [SM_Furniture_Chair_01](./sm_furniture_chair/README.md) | 书桌椅 | 待生成 |
 | P0 | [SM_Furniture_Bookshelf_01](./sm_furniture_bookshelf/README.md) | 书柜 | 待生成 |
-| P1 | [SM_Furniture_Bed_01](./sm_furniture_bed/README.md) | 双人床 | 待生成 |
-| P1 | [SM_Furniture_Nightstand_01](./sm_furniture_nightstand/README.md) | 床头柜 | 待生成 |
-| P1 | [SM_Furniture_Wardrobe_01](./sm_furniture_wardrobe/README.md) | 衣柜 | 待生成 |
+| P0 | [SM_Furniture_Bed_01](./sm_furniture_bed/README.md) | 双人床 | 待生成 |
+| P0 | [SM_Furniture_Nightstand_01](./sm_furniture_nightstand/README.md) | 床头柜 | 待生成 |
+| P0 | [SM_Furniture_Wardrobe_01](./sm_furniture_wardrobe/README.md) | 衣柜 | 待生成 |
 | P1 | [SM_Furniture_StorageCabinet_01](./sm_furniture_storage_cabinet/README.md) | 储物柜 | 待生成 |
 | P1 | [SM_Furniture_StorageBox_01](./sm_furniture_storage_box/README.md) | 储物木箱 | 待生成 |
+| P1 | SM_Furniture_Armchair_01 | 扶手椅 | 待建 |
+| P1 | SM_Furniture_DiningTable_01 | 长餐桌（12–14 座） | 待建 |
+| P1 | SM_Furniture_DiningChair_01 | 餐椅（复用 13 把） | 待建 |
+| P1 | SM_Furniture_Bathtub_01 | 独立式铸铁浴缸 | 待建 |
+| P0 | SM_Furniture_Safe_01 | 保险箱（密码 `0314`） | 待建 |
+| P0 | SM_Furniture_Vanity_01 | 梳妆台 | 待建 |
+| P1 | SM_Furniture_Piano_01 | 立式钢琴（可选，与音乐盒二选一） | 待建 |
+
+新增资产的尺寸和交互节点见 [V1.1 清单](../../../docs/午夜别墅_3D资产与建模清单_v1.1.md) 第 5–10 节。

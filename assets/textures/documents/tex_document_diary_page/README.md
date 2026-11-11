@@ -25,7 +25,7 @@ readable text, handwriting, calligraphy, signature, watermark, logo, shadow, per
 
 ## 2. 用途
 
-提供日记页面的纸张和排版底图；正文内容待剧本确认。
+提供伊芙琳日记页面的纸张和排版底图。最后几页记录日期、船名与四人名单，对应 `clue_evelyn_diary` 和 `clue_crew_names`。
 
 ## 3. 技术规格
 
@@ -62,4 +62,4 @@ readable text, handwriting, calligraphy, signature, watermark, logo, shadow, per
 
 ## 6. 备注
 
-日记正文待剧本确认；生成空白页即可，后续用 UI 排版或替换贴图。
+日记正文以故事线 V0.7 为准。先生成空白页底图，后续用 UI 排版或替换文字层；不要把长段剧情文案烘焙进底图。

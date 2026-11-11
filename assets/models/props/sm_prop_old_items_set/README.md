@@ -64,3 +64,7 @@ text, words, letters, handwriting, watermark, logo, signature, background scene,
 | 署名要求 | 待确认 |
 | 下载 / 生成日期 | 待填写 |
 | 修改说明 | 待填写 |
+
+## 6. 备注
+
+本资产只用于填充储物箱、储物柜和阁楼的生活痕迹，不承载剧情信息。剪刀、旧报纸、船模、药瓶、行李箱等剧情道具均有独立资产，不能用本套装替代。
