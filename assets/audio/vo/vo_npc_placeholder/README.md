@@ -27,7 +27,7 @@
 | 格式 | 单声道 / 48 kHz / 24-bit |
 | 响度 | 对白约 -18 LUFS |
 | 循环 | 不循环 |
-| 运行路径 | public/assets/audio/VO_NPC_Placeholder.ogg |
+| 运行路径 | public/assets/audio/vo/VO_NPC_Placeholder.ogg |
 
 ## 4. 生成后检查
 

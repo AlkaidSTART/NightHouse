@@ -37,7 +37,7 @@ music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible
 | 格式 | 立体声 / 48 kHz / 24-bit |
 | 响度 | 约 -20 LUFS，峰值低于 -3 dBFS |
 | 循环 | 无缝循环 |
-| 运行路径 | public/assets/audio/AMB_HouseNight_Loop.ogg |
+| 运行路径 | public/assets/audio/ambience/AMB_HouseNight_Loop.ogg |
 
 ## 4. 生成后检查
 

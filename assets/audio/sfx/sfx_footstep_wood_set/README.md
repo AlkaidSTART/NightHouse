@@ -37,7 +37,7 @@ music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible
 | 格式 | 单声道 / 48 kHz / 24-bit |
 | 响度 | 峰值低于 -6 dBFS；按脚步类型统一 |
 | 循环 | 不循环 |
-| 运行路径 | public/assets/audio/SFX_FootstepWood_Set.ogg |
+| 运行路径 | public/assets/audio/sfx/SFX_FootstepWood_Set.ogg |
 
 ## 4. 生成后检查
 

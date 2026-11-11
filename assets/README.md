@@ -6,7 +6,7 @@
 - 运行资产：清理优化后导出到 `public/assets/`，由 Vite 随构建发布。
 - 运行目录结构见仓库根目录的 `README.md`。
 
-> 说明：`models/`、`animations/`、`textures/`、`audio/` 下每个资产生成一个文件夹；`materials/`、`fx/`、`scenes/` 是实现说明与组合规则，不是单独的生成目标。
+> 说明：`models/`、`animations/`、`textures/`、`audio/` 下按分类建立子目录，每个资产生成一个文件夹；`materials/`、`fx/`、`scenes/` 是实现说明与组合规则，不是单独的生成目标。
 
 ## 先读：当前阶段
 
@@ -98,7 +98,7 @@
 
 ### 音频
 
-→ [audio/README.md](./audio/README.md)（10 个音频资产，每个子目录一个 README）
+→ [audio/README.md](./audio/README.md)（40 个音频资产，按环境音 / 音效 / 音乐 / 语音分类）
 
 ### 材质组合
 

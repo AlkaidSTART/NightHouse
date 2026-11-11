@@ -37,7 +37,7 @@ music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible
 | 格式 | 单声道 / 48 kHz / 24-bit |
 | 响度 | 峰值低于 -8 dBFS |
 | 循环 | 不循环 |
-| 运行路径 | public/assets/audio/SFX_PickupKey.ogg |
+| 运行路径 | public/assets/audio/sfx/SFX_PickupKey.ogg |
 
 ## 4. 生成后检查
 

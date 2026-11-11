@@ -37,7 +37,7 @@ music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible
 | 格式 | 立体声 / 48 kHz / 24-bit |
 | 响度 | 峰值低于 -12 dBFS |
 | 循环 | 不循环 |
-| 运行路径 | public/assets/audio/SFX_UI_Confirm.ogg |
+| 运行路径 | public/assets/audio/sfx/SFX_UI_Confirm.ogg |
 
 ## 4. 生成后检查
 
