@@ -33,7 +33,9 @@ lerna-debug.log*
 
 # Editor & OS
 .DS_Store
+._*
 Thumbs.db
+desktop.ini
 .idea/
 .vscode/*
 !.vscode/extensions.json
@@ -45,8 +47,53 @@ Thumbs.db
 .azure/
 .copilot-azure/
 
-# Asset workspace editor backups / caches
+# Blender backup & autosave files
+*.blend1
+*.blend2
+*.blend@
 assets/**/*.blend1
 assets/**/*.blend2
 assets/**/cache/
 assets/**/tmp/
+
+# Non-essential reference assets & moodboards
+**/references/*.jpg
+**/references/*.jpeg
+**/references/*.png
+**/references/*.webp
+**/references/*.bmp
+**/references/*.gif
+**/references/*.tga
+**/references/*.psd
+!**/references/README.md
+
+# Temporary reference directories & staging assets
+**/temp_ref/
+**/temp_refs/
+**/_temp/
+**/temp/
+**/_renders/
+**/renders/
+**/screenshots/
+
+# Build & asset generation scripts (local tooling)
+tools/
+
+# Viewport captures & work-in-progress preview captures (images only)
+*Viewport.png
+*Viewport.jpg
+*viewport.png
+*viewport.jpg
+*_viewport.png
+*_viewport.jpg
+*_preview.png
+*_preview.jpg
+*_showcase.png
+*_showcase.jpg
+
+# Explicitly ensure 3D model files & game runtime assets are tracked
+!*.glb
+!*.gltf
+!*.blend
+!public/assets/**
+
