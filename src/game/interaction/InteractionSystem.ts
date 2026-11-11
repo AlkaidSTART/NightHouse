@@ -1,4 +1,12 @@
 import * as pc from 'playcanvas';
+import { isOccluded } from './occlusion.ts';
+
+/** 返回视线命中最近障碍的距离；未命中返回 null。 */
+export type OcclusionQuery = (
+  origin: pc.Vec3,
+  direction: pc.Vec3,
+  maxDistance: number,
+) => number | null;
 
 export interface InteractionContext {
   camera: pc.Entity;
@@ -9,6 +17,11 @@ export interface Interactable {
   id: string;
   entity: pc.Entity;
   radius: number;
+  /**
+   * 交互点位于自身碰撞体内部时（例如门的锚点在门扇厚度中间），
+   * 需要额外放宽这段距离，否则会被自己挡住。
+   */
+  occlusionSlack?: number;
   getPrompt(context: InteractionContext): string | null;
   canInteract(context: InteractionContext): boolean;
   interact(context: InteractionContext): void;
@@ -22,9 +35,11 @@ export class InteractionSystem {
   private current: Interactable | null = null;
   private currentContext: InteractionContext | null = null;
   private readonly maxDistance: number;
+  private readonly occlusion: OcclusionQuery | null;
 
-  constructor(maxDistance = 3) {
+  constructor(maxDistance = 3, occlusion: OcclusionQuery | null = null) {
     this.maxDistance = maxDistance;
+    this.occlusion = occlusion;
   }
 
   register(interactable: Interactable): void {
@@ -43,6 +58,10 @@ export class InteractionSystem {
     const context: InteractionContext = { camera, playerPosition };
     const origin = this.origin.copy(camera.getPosition());
     const direction = camera.forward;
+    // 视线对所有目标相同，遮挡只需查询一次。
+    const hitDistance = this.occlusion
+      ? this.occlusion(origin, direction, this.maxDistance + 1)
+      : null;
 
     let nearest: Interactable | null = null;
     let nearestDistance = Number.POSITIVE_INFINITY;
@@ -74,6 +93,12 @@ export class InteractionSystem {
           : projection + halfChord;
 
       if (distance > this.maxDistance || distance >= nearestDistance) {
+        continue;
+      }
+
+      if (
+        isOccluded(hitDistance, projection - (interactable.occlusionSlack ?? 0))
+      ) {
         continue;
       }
 

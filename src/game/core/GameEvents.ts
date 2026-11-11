@@ -7,6 +7,7 @@ export interface GameEventMap {
   'interaction.prompt': { text: string | null };
   'interaction.activated': { id: string; message: string };
   'pause.changed': { paused: boolean };
+  'region.changed': { regionId: string; name: string };
   'player.position': { position: Vec3Tuple; rotation: Vec3Tuple };
 }
 

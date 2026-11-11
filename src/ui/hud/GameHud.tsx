@@ -4,6 +4,7 @@ export interface GameHudProps {
   prompt?: string | null;
   toast?: string | null;
   error?: string | null;
+  region?: string | null;
 }
 
 export function GameHud(props: GameHudProps = {}) {
@@ -18,6 +19,7 @@ export function GameHud(props: GameHudProps = {}) {
   return (
     <>
       <div className="hud-crosshair" aria-hidden="true" />
+      {props.region && <div className="hud-region">{props.region}</div>}
       {prompt && (
         <div className="hud-prompt">
           <span className="hud-key">E</span>

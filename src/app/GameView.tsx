@@ -27,6 +27,7 @@ export function GameView({
   const [ready, setReady] = useState(false);
   const [prompt, setPrompt] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [region, setRegion] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -50,6 +51,9 @@ export function GameView({
         setToast(null);
         toastTimer = null;
       }, 3500);
+    });
+    const offRegion = events.on('region.changed', ({ name }) => {
+      setRegion(name);
     });
     const offPause = events.on('pause.changed', ({ paused }) => {
       setPhase(paused ? 'paused' : 'playing');
@@ -82,6 +86,7 @@ export function GameView({
       disposed = true;
       offPrompt();
       offActivated();
+      offRegion();
       offPause();
       offError();
       offReady();
@@ -100,7 +105,7 @@ export function GameView({
   return (
     <div className="game-view">
       <canvas ref={canvasRef} className="game-canvas" />
-      <GameHud prompt={prompt} toast={toast} error={error} />
+      <GameHud prompt={prompt} toast={toast} error={error} region={region} />
       {phase === 'ready' && (
         <StartOverlay ready={ready} onStart={handleStart} />
       )}

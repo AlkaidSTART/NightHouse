@@ -1,14 +1,37 @@
 import * as pc from 'playcanvas';
+import { villaGreybox } from '../../content/scenes/villaGreybox';
 import { useStoryStore } from '../../stores/storyStore';
-import type { SaveData } from '../../shared/types/save';
+import type { SaveData, Vec3Tuple } from '../../shared/types/save';
+import type { SceneRegion, SceneSpawn } from '../../shared/types/scene';
+import {
+  createCollisionWorld,
+  PLAYER_RADIUS,
+  type CollisionWorld,
+} from '../collision/CollisionWorld.ts';
 import { InteractionSystem } from '../interaction/InteractionSystem';
 import { PlayerController } from '../player/PlayerController';
 import { createNewSave, type SaveManager } from '../save/SaveManager';
 import { DEFAULT_SETTINGS } from '../save/defaults';
+import { DoorSystem } from '../scene/DoorSystem.ts';
+import { DOOR_THICKNESS } from '../scene/sceneGeometry.ts';
 import { SceneManager } from '../scene/SceneManager';
 import type { GameEventBus } from './GameEvents';
 
 const AUTOSAVE_INTERVAL_MS = 5000;
+const EYE_HEIGHT = 1.7;
+const INTERACTION_DISTANCE = 3;
+const DOOR_INTERACTION_MIN_RADIUS = 0.6;
+
+/**
+ * 灰盒走查用：开发构建下以 `?unlock=all` 打开页面时忽略门的剧情解锁条件。
+ * 对话与线索系统尚未实现，没有它就无法走进上锁的区域。生产构建中不生效。
+ */
+function isUnlockAllRequested(): boolean {
+  return (
+    import.meta.env.DEV &&
+    new URLSearchParams(window.location.search).get('unlock') === 'all'
+  );
+}
 
 export interface GameBootstrapOptions {
   canvas: HTMLCanvasElement;
@@ -27,12 +50,22 @@ export class GameBootstrap {
       : null;
 
     const initialSave = loaded ?? createNewSave();
+    const collision = createCollisionWorld(villaGreybox);
+    const spawn = villaGreybox.spawns[0];
+    if (!spawn) {
+      throw new Error('场景缺少出生点。');
+    }
+    // 新游戏从出生点开始；旧存档的位置如果已不可站立（例如布局变更后落在墙里），也回到出生点。
+    if (!loaded || !isSavedPositionValid(initialSave, collision)) {
+      placeAtSpawn(initialSave, spawn);
+    }
     useStoryStore.getState().loadFromSave(initialSave);
 
     return new GameBootstrap(
       options,
       initialSave,
       settings.mouseSensitivity,
+      collision,
     );
   }
 
@@ -43,9 +76,12 @@ export class GameBootstrap {
   private readonly save: SaveData;
   private readonly sceneManager: SceneManager;
   private readonly player: PlayerController;
-  private readonly interaction = new InteractionSystem(3);
+  private readonly doors: DoorSystem;
+  private readonly interaction: InteractionSystem;
   private readonly playerPosition = new pc.Vec3();
   private readonly sceneId: string;
+  private readonly regions: readonly SceneRegion[];
+  private currentRegionId: string | null = null;
   private lastPrompt: string | null = null;
   private autosaveTimer: number | null = null;
   private started = false;
@@ -56,11 +92,26 @@ export class GameBootstrap {
     options: GameBootstrapOptions,
     save: SaveData,
     sensitivity: number,
+    collision: CollisionWorld,
   ) {
     this.canvas = options.canvas;
     this.events = options.events;
     this.saveManager = options.saveManager;
     this.save = save;
+    this.regions = villaGreybox.regions;
+    this.interaction = new InteractionSystem(
+      INTERACTION_DISTANCE,
+      (origin, direction, maxDistance) =>
+        collision.raycast(
+          origin.x,
+          origin.y,
+          origin.z,
+          direction.x,
+          direction.y,
+          direction.z,
+          maxDistance,
+        ),
+    );
 
     const app = new pc.Application(options.canvas, {
       mouse: new pc.Mouse(options.canvas),
@@ -70,12 +121,19 @@ export class GameBootstrap {
     app.setCanvasFillMode(pc.FILLMODE_FILL_WINDOW);
     app.setCanvasResolution(pc.RESOLUTION_AUTO);
     app.graphicsDevice.maxPixelRatio = Math.min(window.devicePixelRatio, 2);
-    app.scene.ambientLight = new pc.Color(0.07, 0.075, 0.09);
+    app.scene.ambientLight = new pc.Color(0.1, 0.105, 0.125);
     this.app = app;
 
     this.sceneManager = new SceneManager(app);
-    const scene = this.sceneManager.buildGreybox();
+    const scene = this.sceneManager.build(villaGreybox);
     this.sceneId = scene.sceneId;
+    this.doors = new DoorSystem({
+      doors: villaGreybox.doors,
+      collision,
+      getFlags: () => useStoryStore.getState().storyFlags,
+      unlockAll: isUnlockAllRequested(),
+      onChange: (doorId, open) => this.sceneManager.setDoorOpen(doorId, open),
+    });
 
     const playerRoot = new pc.Entity('player');
     const camera = new pc.Entity('player_camera');
@@ -83,7 +141,7 @@ export class GameBootstrap {
       clearColor: new pc.Color(0.015, 0.017, 0.02),
       fov: 70,
       nearClip: 0.1,
-      farClip: 120,
+      farClip: 160,
     });
     playerRoot.addChild(camera);
     app.root.addChild(playerRoot);
@@ -98,13 +156,35 @@ export class GameBootstrap {
       camera,
       sensitivity,
       rotation: save.player.rotation,
-      bounds: {
-        minX: -6.3,
-        maxX: 6.3,
-        minZ: -5.3,
-        maxZ: 5.3,
-      },
+      collision,
+      eyeHeight: EYE_HEIGHT,
     });
+
+    for (const handle of scene.doors) {
+      const doorId = handle.door.id;
+      this.interaction.register({
+        id: doorId,
+        entity: handle.anchor,
+        // 宽门（双开门、铁门）的可对准范围随门宽放大。
+        radius: Math.max(DOOR_INTERACTION_MIN_RADIUS, handle.door.width * 0.5),
+        occlusionSlack: DOOR_THICKNESS / 2 + 0.02,
+        getPrompt: () => this.doors.getPrompt(doorId),
+        canInteract: () => true,
+        interact: (context) => {
+          const result = this.doors.use(
+            doorId,
+            context.playerPosition.x,
+            context.playerPosition.z,
+          );
+          if (result.kind === 'locked' || result.kind === 'blocked') {
+            this.events.emit('interaction.activated', {
+              id: doorId,
+              message: result.message,
+            });
+          }
+        },
+      });
+    }
 
     for (const descriptor of scene.interactables) {
       this.interaction.register({
@@ -200,7 +280,25 @@ export class GameBootstrap {
       this.lastPrompt = prompt;
       this.events.emit('interaction.prompt', { text: prompt });
     }
+
+    this.updateRegion();
   };
+
+  private updateRegion(): void {
+    const x = this.playerPosition.x;
+    const y = this.playerPosition.y - EYE_HEIGHT;
+    const z = this.playerPosition.z;
+    const region = findRegion(this.regions, x, y, z);
+    // 门洞等不属于任何区域的缝隙里保持上一个区域，避免提示闪烁。
+    if (!region || region.id === this.currentRegionId) {
+      return;
+    }
+    this.currentRegionId = region.id;
+    this.events.emit('region.changed', {
+      regionId: region.id,
+      name: region.name,
+    });
+  }
 
   private readonly handlePointerLockChange = (): void => {
     if (this.destroyed) {
@@ -264,4 +362,51 @@ export class GameBootstrap {
       console.error('保存进度失败', error);
     }
   }
+}
+
+function findRegion(
+  regions: readonly SceneRegion[],
+  x: number,
+  y: number,
+  z: number,
+): SceneRegion | null {
+  for (const region of regions) {
+    for (const volume of region.volumes) {
+      if (
+        x >= volume.min[0] &&
+        x <= volume.max[0] &&
+        y >= volume.min[1] &&
+        y < volume.max[1] &&
+        z >= volume.min[2] &&
+        z <= volume.max[2]
+      ) {
+        return region;
+      }
+    }
+  }
+  return null;
+}
+
+function isSavedPositionValid(
+  save: SaveData,
+  collision: CollisionWorld,
+): boolean {
+  const [x, eyeY, z] = save.player.position;
+  const feetY = eyeY - EYE_HEIGHT;
+  const ground = collision.groundHeight(x, z, feetY);
+  return (
+    ground !== null &&
+    Math.abs(ground - feetY) < 0.05 &&
+    collision.isStandable(x, z, feetY, PLAYER_RADIUS)
+  );
+}
+
+function placeAtSpawn(save: SaveData, spawn: SceneSpawn): void {
+  const position: Vec3Tuple = [
+    spawn.position[0],
+    spawn.position[1] + EYE_HEIGHT,
+    spawn.position[2],
+  ];
+  save.player.position = position;
+  save.player.rotation = [spawn.yaw, 0, 0];
 }

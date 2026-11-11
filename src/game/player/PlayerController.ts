@@ -1,17 +1,11 @@
 import * as pc from 'playcanvas';
 import type { Vec3Tuple } from '../../shared/types/save';
+import { PLAYER_RADIUS, type CollisionWorld } from '../collision/CollisionWorld.ts';
 
 const WALK_SPEED = 2.6;
 const RUN_SPEED = 4.4;
 const PITCH_LIMIT = 89;
 const DEGREES_PER_PIXEL = 0.15;
-
-export interface MovementBounds {
-  minX: number;
-  maxX: number;
-  minZ: number;
-  maxZ: number;
-}
 
 export interface PlayerControllerOptions {
   app: pc.Application;
@@ -20,7 +14,9 @@ export interface PlayerControllerOptions {
   camera: pc.Entity;
   sensitivity: number;
   rotation: Vec3Tuple;
-  bounds: MovementBounds;
+  collision: CollisionWorld;
+  /** 视点相对脚底的高度；root 实体位于视点处。 */
+  eyeHeight: number;
 }
 
 export class PlayerController {
@@ -29,7 +25,9 @@ export class PlayerController {
 
   private readonly app: pc.Application;
   private readonly canvas: HTMLCanvasElement;
-  private readonly bounds: MovementBounds;
+  private readonly collision: CollisionWorld;
+  private readonly eyeHeight: number;
+  private readonly moved: Vec3Tuple = [0, 0, 0];
   private readonly move = new pc.Vec3();
   private readonly forward = new pc.Vec3();
   private readonly right = new pc.Vec3();
@@ -44,7 +42,8 @@ export class PlayerController {
     this.canvas = options.canvas;
     this.root = options.root;
     this.camera = options.camera;
-    this.bounds = options.bounds;
+    this.collision = options.collision;
+    this.eyeHeight = options.eyeHeight;
     this.sensitivity = options.sensitivity;
     this.yaw = options.rotation[0];
     this.pitch = options.rotation[1];
@@ -119,10 +118,20 @@ export class PlayerController {
     this.move.mulScalar(speed * dt);
 
     this.position.copy(this.root.getPosition());
-    this.position.add(this.move);
-    this.position.x = clamp(this.position.x, this.bounds.minX, this.bounds.maxX);
-    this.position.z = clamp(this.position.z, this.bounds.minZ, this.bounds.maxZ);
-    this.root.setPosition(this.position);
+    this.collision.move(
+      this.moved,
+      this.position.x,
+      this.position.y - this.eyeHeight,
+      this.position.z,
+      this.move.x,
+      this.move.z,
+      PLAYER_RADIUS,
+    );
+    this.root.setPosition(
+      this.moved[0],
+      this.moved[1] + this.eyeHeight,
+      this.moved[2],
+    );
   }
 
   getPosition(): Vec3Tuple {

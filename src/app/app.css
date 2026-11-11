@@ -214,6 +214,16 @@ button {
   pointer-events: none;
 }
 
+.hud-region {
+  position: absolute;
+  top: 24px;
+  left: 28px;
+  color: rgba(222, 215, 198, 0.62);
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  pointer-events: none;
+}
+
 .hud-prompt {
   position: absolute;
   bottom: 12%;
