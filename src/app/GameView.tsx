@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { GameBootstrap } from '../game/core/GameBootstrap';
 import type { GameEventBus } from '../game/core/GameEvents';
 import type { SaveManager } from '../game/save/SaveManager';
+import type { DialogueView } from '../shared/types/dialogue';
+import { DialoguePanel } from '../ui/dialogue/DialoguePanel';
 import { GameHud } from '../ui/hud/GameHud';
 import type { MinimapPlayerPose } from '../ui/hud/Minimap';
 import { PauseMenu } from '../ui/pause/PauseMenu';
@@ -31,6 +33,7 @@ export function GameView({
   const [region, setRegion] = useState<string | null>(null);
   const [regionId, setRegionId] = useState<string | null>(null);
   const [playerPose, setPlayerPose] = useState<MinimapPlayerPose | null>(null);
+  const [dialogue, setDialogue] = useState<DialogueView | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -65,6 +68,9 @@ export function GameView({
     const offPause = events.on('pause.changed', ({ paused }) => {
       setPhase(paused ? 'paused' : 'playing');
     });
+    const offDialogue = events.on('dialogue.changed', ({ view }) => {
+      setDialogue(view);
+    });
     const offError = events.on('game.error', ({ message }) => {
       setError(message);
     });
@@ -96,6 +102,7 @@ export function GameView({
       offRegion();
       offPlayerPose();
       offPause();
+      offDialogue();
       offError();
       offReady();
       if (toastTimer !== null) {
@@ -114,18 +121,28 @@ export function GameView({
     <div className="game-view">
       <canvas ref={canvasRef} className="game-canvas" />
       <GameHud
-        prompt={prompt}
+        prompt={dialogue ? null : prompt}
         toast={toast}
         error={error}
         region={region}
         regionId={regionId}
         player={playerPose}
       />
-      {phase === 'ready' && (
+      {phase === 'ready' && !dialogue && (
         <StartOverlay ready={ready} onStart={handleStart} />
       )}
-      {phase === 'paused' && (
+      {phase === 'paused' && !dialogue && (
         <PauseMenu onResume={handleStart} onExit={onExit} />
+      )}
+      {dialogue && (
+        <DialoguePanel
+          view={dialogue}
+          onAdvance={() => bootstrapRef.current?.advanceDialogue()}
+          onChoose={(choiceId) =>
+            bootstrapRef.current?.chooseDialogue(choiceId)
+          }
+          onClose={() => bootstrapRef.current?.closeDialogue()}
+        />
       )}
     </div>
   );

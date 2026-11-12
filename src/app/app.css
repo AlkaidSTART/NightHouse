@@ -757,6 +757,187 @@ button {
   margin: 0 auto;
 }
 
+.overlay-fieldset {
+  margin: 0 0 24px;
+  padding: 0;
+  border: none;
+}
+
+.overlay-fieldset legend {
+  margin-bottom: 10px;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  color: #8b8474;
+}
+
+.overlay-options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.overlay-option {
+  padding: 9px 30px;
+  border: 1px solid rgba(220, 210, 190, 0.2);
+  background: transparent;
+  color: #a9a190;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.overlay-option:hover,
+.overlay-option:focus-visible {
+  border-color: rgba(200, 170, 110, 0.45);
+  color: #e0d8c6;
+  outline: none;
+}
+
+.overlay-option-active {
+  border-color: rgba(200, 150, 100, 0.72);
+  background: rgba(140, 80, 50, 0.18);
+  color: #f0e8d6;
+}
+
+.dialogue-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 24px 48px;
+  background: linear-gradient(to top, rgba(3, 4, 5, 0.55), transparent 46%);
+  pointer-events: none;
+}
+
+.dialogue-panel {
+  width: min(780px, 100%);
+  padding: 20px 26px 22px;
+  border: 1px solid rgba(220, 210, 190, 0.16);
+  background: rgba(7, 8, 10, 0.92);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+}
+
+.dialogue-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.dialogue-speaker {
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: #c8a878;
+}
+
+.dialogue-close {
+  width: 28px;
+  height: 28px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #7f796b;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    color 140ms ease;
+}
+
+.dialogue-close:hover,
+.dialogue-close:focus-visible {
+  border-color: rgba(220, 210, 190, 0.28);
+  color: #e8e0cd;
+  outline: none;
+}
+
+.dialogue-text {
+  min-height: 56px;
+  margin: 0 0 16px;
+  font-size: 16px;
+  line-height: 1.9;
+  letter-spacing: 0.05em;
+  color: #e6dfcd;
+}
+
+.dialogue-text-narration {
+  color: #a8a08e;
+  font-style: italic;
+}
+
+.dialogue-text-player {
+  color: #d8cbb0;
+}
+
+.dialogue-continue {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
+  padding: 4px 0;
+  border: none;
+  background: none;
+  color: #8b8474;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: color 140ms ease;
+}
+
+.dialogue-continue:hover,
+.dialogue-continue:focus-visible {
+  color: #e8e0cd;
+  outline: none;
+}
+
+.dialogue-choices {
+  display: grid;
+  gap: 8px;
+}
+
+.dialogue-choice {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid rgba(220, 210, 190, 0.14);
+  background: rgba(255, 255, 255, 0.02);
+  color: #ded7c6;
+  font-size: 14px;
+  line-height: 1.55;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.dialogue-choice:hover,
+.dialogue-choice:focus-visible {
+  border-color: rgba(200, 170, 110, 0.45);
+  background: rgba(200, 170, 110, 0.06);
+  color: #f0e8d6;
+  outline: none;
+}
+
+.dialogue-choice-index {
+  min-width: 18px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #8b8474;
+}
+
 @media (max-width: 760px) {
   .hud-minimap {
     top: 14px;
@@ -767,6 +948,18 @@ button {
 
   .hud-minimap-level {
     letter-spacing: 0.2em;
+  }
+
+  .dialogue-layer {
+    padding: 0 12px 20px;
+  }
+
+  .dialogue-panel {
+    padding: 16px 18px 18px;
+  }
+
+  .dialogue-text {
+    font-size: 15px;
   }
 }
 

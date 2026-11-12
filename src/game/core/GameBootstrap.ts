@@ -1,13 +1,16 @@
 import * as pc from 'playcanvas';
+import { clueFlagForId } from '../../content/clues';
+import { content } from '../../content';
 import { villaGreybox } from '../../content/scenes/villaGreybox';
 import { useStoryStore } from '../../stores/storyStore';
 import type { SaveData, Vec3Tuple } from '../../shared/types/save';
-import type { SceneRegion, SceneSpawn } from '../../shared/types/scene';
+import type { SceneNpcSpot, SceneRegion, SceneSpawn } from '../../shared/types/scene';
 import {
   createCollisionWorld,
   PLAYER_RADIUS,
   type CollisionWorld,
 } from '../collision/CollisionWorld.ts';
+import { DialogueSystem } from '../dialogue/DialogueSystem';
 import { InteractionSystem } from '../interaction/InteractionSystem';
 import { PlayerController } from '../player/PlayerController';
 import { createNewSave, type SaveManager } from '../save/SaveManager';
@@ -27,7 +30,7 @@ const POSE_EMIT_INTERVAL = 0.05;
 
 /**
  * 灰盒走查用：开发构建下以 `?unlock=all` 打开页面时忽略门的剧情解锁条件。
- * 对话与线索系统尚未实现，没有它就无法走进上锁的区域。生产构建中不生效。
+ * 线索与谜题系统尚未实现，没有它就无法走进上锁的区域。生产构建中不生效。
  */
 function isUnlockAllRequested(): boolean {
   return (
@@ -82,6 +85,7 @@ export class GameBootstrap {
   private readonly player: PlayerController;
   private readonly doors: DoorSystem;
   private readonly interaction: InteractionSystem;
+  private readonly dialogue: DialogueSystem;
   private readonly playerPosition = new pc.Vec3();
   private readonly sceneId: string;
   private readonly regions: readonly SceneRegion[];
@@ -91,6 +95,7 @@ export class GameBootstrap {
   private autosaveTimer: number | null = null;
   private started = false;
   private hasEntered = false;
+  private dialogueOpen = false;
   private destroyed = false;
 
   private constructor(
@@ -117,6 +122,28 @@ export class GameBootstrap {
           maxDistance,
         ),
     );
+    this.dialogue = new DialogueSystem({
+      dialogues: content.dialogues,
+      npcNames: new Map(content.npcs.map((npc) => [npc.id, npc.name])),
+      host: {
+        getFlags: () => useStoryStore.getState().storyFlags,
+        setFlag: (key, value) =>
+          useStoryStore.getState().setStoryFlag(key, value),
+        discoverClue: (clueId) => {
+          const store = useStoryStore.getState();
+          store.discoverClue(clueId);
+          store.setStoryFlag(clueFlagForId(clueId), true);
+        },
+        recordChoice: (nodeId, choiceId) =>
+          useStoryStore.getState().recordChoice(nodeId, choiceId),
+        onChange: (view) => {
+          this.events.emit('dialogue.changed', { view });
+          if (view === null) {
+            this.finishDialogue();
+          }
+        },
+      },
+    });
 
     const app = new pc.Application(options.canvas, {
       mouse: new pc.Mouse(options.canvas),
@@ -205,18 +232,22 @@ export class GameBootstrap {
     }
 
     for (const descriptor of scene.interactables) {
+      const npcId = descriptor.npcId;
       this.interaction.register({
         id: descriptor.id,
         entity: descriptor.entity,
         radius: descriptor.radius,
         getPrompt: () => descriptor.prompt,
         canInteract: () => true,
-        interact: () => {
-          this.events.emit('interaction.activated', {
-            id: descriptor.id,
-            message: descriptor.message,
-          });
-        },
+        interact:
+          descriptor.kind === 'npc' && npcId
+            ? () => this.openDialogue(npcId, descriptor.id)
+            : () => {
+                this.events.emit('interaction.activated', {
+                  id: descriptor.id,
+                  message: descriptor.message,
+                });
+              },
       });
     }
 
@@ -252,6 +283,47 @@ export class GameBootstrap {
 
   setSensitivity(sensitivity: number): void {
     this.player.setSensitivity(sensitivity);
+  }
+
+  advanceDialogue(): void {
+    this.dialogue.advance();
+  }
+
+  chooseDialogue(choiceId: string): void {
+    this.dialogue.choose(choiceId);
+  }
+
+  closeDialogue(): void {
+    this.dialogue.close();
+  }
+
+  private openDialogue(npcId: SceneNpcSpot['npcId'], spotId: string): void {
+    if (this.dialogue.active) {
+      return;
+    }
+    if (!this.dialogue.openForNpc(npcId, spotId)) {
+      this.events.emit('interaction.activated', {
+        id: spotId,
+        message: '现在还不是说话的时候。',
+      });
+      return;
+    }
+
+    this.dialogueOpen = true;
+    this.player.setPaused(true);
+    this.lastPrompt = null;
+    this.events.emit('interaction.prompt', { text: null });
+    if (document.pointerLockElement === this.canvas) {
+      document.exitPointerLock();
+    }
+  }
+
+  private finishDialogue(): void {
+    if (!this.dialogueOpen) {
+      return;
+    }
+    this.dialogueOpen = false;
+    this.player.requestPointerLock();
   }
 
   destroy(): void {
@@ -329,6 +401,37 @@ export class GameBootstrap {
       regionId: region.id,
       name: region.name,
     });
+    this.applyStoryProgress(region.id);
+  }
+
+  private applyStoryProgress(regionId: string): void {
+    const store = useStoryStore.getState();
+    const flags = store.storyFlags;
+
+    if (regionId === 'villa_hall' && flags['story.arrived'] !== true) {
+      store.setStoryFlag('story.arrived', true);
+      store.setStoryFlag('story.has_letter', true);
+      store.discoverClue('clue_evelyn_letter');
+      store.setStoryFlag(clueFlagForId('clue_evelyn_letter'), true);
+      this.events.emit('interaction.activated', {
+        id: 'story.arrived',
+        message: '门厅的座钟停在十一点五十五分。你口袋里的那封信忽然有了重量。',
+      });
+    }
+
+    const insideHouse =
+      regionId !== 'scene_gate' && regionId !== 'villa_cliff';
+    if (
+      insideHouse &&
+      flags['story.met_arthur'] === true &&
+      flags['story.met_doctor'] !== true
+    ) {
+      store.setStoryFlag('story.met_doctor', true);
+      this.events.emit('interaction.activated', {
+        id: 'story.doctor_arrived',
+        message: '格雷医生到了。他在门厅跺掉靴子上的泥。',
+      });
+    }
   }
 
   private readonly handlePointerLockChange = (): void => {
@@ -337,6 +440,10 @@ export class GameBootstrap {
     }
 
     const paused = document.pointerLockElement !== this.canvas;
+    if (this.dialogueOpen) {
+      this.player.setPaused(true);
+      return;
+    }
     if (!paused) {
       this.hasEntered = true;
     }
@@ -354,12 +461,17 @@ export class GameBootstrap {
     if (this.destroyed) {
       return;
     }
+    this.events.emit('pause.changed', { paused: true });
     this.events.emit('game.error', {
-      message: '无法锁定鼠标，请再次点击开始探索。',
+      message: '无法锁定鼠标，请点击继续游戏后重试。',
     });
   };
 
   private readonly handleKeyDown = (event: KeyboardEvent): void => {
+    if (this.dialogue.active) {
+      this.handleDialogueKey(event);
+      return;
+    }
     if (event.repeat || event.code !== 'KeyE') {
       return;
     }
@@ -368,6 +480,51 @@ export class GameBootstrap {
     }
     this.interaction.interact();
   };
+
+  private handleDialogueKey(event: KeyboardEvent): void {
+    if (event.repeat) {
+      return;
+    }
+
+    if (event.code === 'Escape') {
+      event.preventDefault();
+      this.dialogue.close();
+      return;
+    }
+
+    const view = this.dialogue.view();
+    if (!view) {
+      return;
+    }
+
+    if (
+      event.code === 'KeyE' ||
+      event.code === 'Enter' ||
+      event.code === 'Space'
+    ) {
+      event.preventDefault();
+      if (view.canContinue) {
+        this.dialogue.advance();
+      } else if (view.choices.length === 1) {
+        const only = view.choices[0];
+        if (only) {
+          this.dialogue.choose(only.id);
+        }
+      }
+      return;
+    }
+
+    const digit = /^Digit([1-9])$/.exec(event.code);
+    if (!digit) {
+      return;
+    }
+    const index = Number(digit[1]) - 1;
+    const choice = view.canContinue ? undefined : view.choices[index];
+    if (choice) {
+      event.preventDefault();
+      this.dialogue.choose(choice.id);
+    }
+  }
 
   private readonly handleResize = (): void => {
     this.app.resizeCanvas();
@@ -385,6 +542,14 @@ export class GameBootstrap {
     this.save.currentSceneId = this.sceneId;
     this.save.player.position = this.player.getPosition();
     this.save.player.rotation = this.player.getRotation();
+
+    const story = useStoryStore.getState();
+    this.save.storyFlags = { ...story.storyFlags };
+    this.save.discoveredClueIds = [...story.discoveredClueIds];
+    this.save.completedPuzzleIds = [...story.completedPuzzleIds];
+    this.save.completedQuestIds = [...story.completedQuestIds];
+    this.save.npcStates = { ...story.npcStates };
+    this.save.choices = { ...story.choices };
 
     try {
       await this.saveManager.writeSave(this.save);

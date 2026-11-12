@@ -27,6 +27,8 @@ export interface SceneInteractableHandle {
   radius: number;
   prompt: string;
   message: string;
+  kind: 'prop' | 'npc';
+  npcId?: SceneNpcSpot['npcId'];
 }
 
 export interface SceneDoorHandle {
@@ -144,6 +146,7 @@ export class SceneManager {
         radius: item.radius,
         prompt: item.prompt,
         message: item.message,
+        kind: 'prop',
       });
     }
 
@@ -396,10 +399,12 @@ export class SceneManager {
       id: spot.id,
       entity: anchor,
       radius: 0.5,
-      prompt: `站位：${name} · ${spot.label}`,
+      prompt: `交谈：${name}`,
       message: spot.pending
         ? `占位：${name}的站位。${spot.pending}。`
         : `占位：${name}的站位。`,
+      kind: 'npc',
+      npcId: spot.npcId,
     };
   }
 
