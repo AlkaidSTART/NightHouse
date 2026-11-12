@@ -14,6 +14,8 @@ import {
   type SceneModel,
 } from './SceneModelLoader.ts';
 import { DOOR_THICKNESS, doorCenter } from './sceneGeometry.ts';
+import { selectNpcStations } from './npcStations.ts';
+import type { StoryFlags } from '../story/conditions.ts';
 import {
   advanceDoorSwing,
   createDoorSwingState,
@@ -54,8 +56,15 @@ interface DoorEntry {
 interface NpcSpotHandle {
   spot: SceneNpcSpot;
   root: pc.Entity;
-  placeholder: pc.Entity;
-  characterInstance: pc.Entity | null;
+  /** 角色模型就绪后销毁；模型加载失败时保留为可见占位。 */
+  placeholder: pc.Entity | null;
+}
+
+interface NpcRoleRuntime {
+  container: CharacterContainer | null;
+  instance: pc.Entity | null;
+  activeSpotId: string | null;
+  talking: boolean;
 }
 
 const NPC_MATERIAL: Record<SceneNpcSpot['npcId'], SceneMaterialId> = {
@@ -94,6 +103,7 @@ export class SceneManager {
   >();
   private readonly doorPivots = new Map<string, DoorEntry>();
   private readonly npcSpotHandles = new Map<string, NpcSpotHandle>();
+  private readonly npcRoles = new Map<SceneNpcSpot['npcId'], NpcRoleRuntime>();
   private readonly characterContainers = new Map<string, CharacterContainer>();
   private readonly loadAbort = new AbortController();
   private readonly characterLoadAbort = new AbortController();
@@ -151,6 +161,14 @@ export class SceneManager {
     }
 
     for (const spot of scene.npcSpots) {
+      if (!this.npcRoles.has(spot.npcId)) {
+        this.npcRoles.set(spot.npcId, {
+          container: null,
+          instance: null,
+          activeSpotId: null,
+          talking: false,
+        });
+      }
       interactables.push(this.createNpcSpot(spot));
     }
 
@@ -208,7 +226,8 @@ export class SceneManager {
 
   /**
    * 加载 NPC 角色模型并替换占位方盒。
-   * 每个角色类型的 GLB 只加载一次容器资源，并在该角色的所有站位上分别实例化。
+   * 每个角色类型的 GLB 只加载一次容器资源；同一角色只保留一个实例，
+   * 由 `applyStoryFlags` 决定它当前站在哪个站位上。
    * 角色模型在 Blender 中正面指向 +Z，挂载到 root 后绕 Y 轴转 180° 使其与向前的偏航角对齐。
    */
   async loadCharacterModels(
@@ -218,13 +237,8 @@ export class SceneManager {
       return;
     }
 
-    const uniqueRoles = new Set<SceneNpcSpot['npcId']>();
-    for (const handle of this.npcSpotHandles.values()) {
-      uniqueRoles.add(handle.spot.npcId);
-    }
-
     const loadTasks: Promise<void>[] = [];
-    for (const npcId of uniqueRoles) {
+    for (const npcId of this.npcRoles.keys()) {
       const url = urls[npcId];
       if (!url) {
         continue;
@@ -241,21 +255,24 @@ export class SceneManager {
               container.dispose();
               return;
             }
-            this.characterContainers.set(npcId, container);
-
-            for (const handle of this.npcSpotHandles.values()) {
-              if (handle.spot.npcId !== npcId || handle.characterInstance) {
-                continue;
-              }
-              const instance = container.instantiate();
-              instance.setLocalEulerAngles(0, 180, 0);
-              instance.setLocalPosition(0, 0, 0);
-              handle.root.addChild(instance);
-              handle.characterInstance = instance;
-
-              // 移除占位方盒
-              handle.placeholder.destroy();
+            const runtime = this.npcRoles.get(npcId);
+            if (!runtime) {
+              container.dispose();
+              return;
             }
+
+            this.characterContainers.set(npcId, container);
+            runtime.container = container;
+
+            // 模型接管后不再需要方盒占位。
+            for (const handle of this.npcSpotHandles.values()) {
+              if (handle.spot.npcId === npcId && handle.placeholder) {
+                handle.placeholder.destroy();
+                handle.placeholder = null;
+              }
+            }
+
+            this.syncNpcInstance(npcId);
           } catch (error) {
             console.warn(`NPC 模型加载失败 [${npcId} 挂载至 ${url}]：`, error);
           }
@@ -264,6 +281,55 @@ export class SceneManager {
     }
 
     await Promise.allSettled(loadTasks);
+  }
+
+  /**
+   * 按剧情标记刷新每名 NPC 的站位。剧情标记变化时由宿主调用；
+   * 同一角色只显示一个站位，没有匹配站位的角色保持隐藏。
+   */
+  applyStoryFlags(flags: StoryFlags): void {
+    if (this.destroyed) {
+      return;
+    }
+
+    const selected = selectNpcStations(
+      [...this.npcSpotHandles.values()].map((handle) => handle.spot),
+      flags,
+    );
+
+    for (const [spotId, handle] of this.npcSpotHandles) {
+      handle.root.enabled = selected.get(handle.spot.npcId)?.id === spotId;
+    }
+
+    for (const [npcId, runtime] of this.npcRoles) {
+      const nextSpotId = selected.get(npcId)?.id ?? null;
+      if (runtime.activeSpotId === nextSpotId) {
+        continue;
+      }
+      runtime.activeSpotId = nextSpotId;
+      this.syncNpcInstance(npcId);
+    }
+  }
+
+  /** 该站位当前是否生成了 NPC，用于交互系统关闭不可见站位的提示。 */
+  isNpcSpotActive(spotId: string): boolean {
+    const handle = this.npcSpotHandles.get(spotId);
+    if (!handle) {
+      return false;
+    }
+    return this.npcRoles.get(handle.spot.npcId)?.activeSpotId === spotId;
+  }
+
+  /** 对话打开/关闭时切换 NPC 的待机与说话动作；传入 null 让所有角色回到待机。 */
+  setNpcTalking(npcId: SceneNpcSpot['npcId'] | null): void {
+    for (const [id, runtime] of this.npcRoles) {
+      const talking = id === npcId && runtime.activeSpotId !== null;
+      if (runtime.talking === talking) {
+        continue;
+      }
+      runtime.talking = talking;
+      this.applyNpcAnimation(runtime);
+    }
   }
 
   setDoorOpen(doorId: string, open: boolean): void {
@@ -295,6 +361,7 @@ export class SceneManager {
       container.dispose();
     }
     this.characterContainers.clear();
+    this.npcRoles.clear();
     this.npcSpotHandles.clear();
 
     for (const entity of this.entities) {
@@ -353,6 +420,85 @@ export class SceneManager {
     this.textures.clear();
   }
 
+  /** 把角色实例挂到当前启用的站位；没有启用站位时隐藏，等剧情推进后再启用。 */
+  private syncNpcInstance(npcId: SceneNpcSpot['npcId']): void {
+    const runtime = this.npcRoles.get(npcId);
+    if (!runtime?.container) {
+      return;
+    }
+
+    const handle = runtime.activeSpotId
+      ? this.npcSpotHandles.get(runtime.activeSpotId)
+      : undefined;
+
+    if (!handle) {
+      if (runtime.instance) {
+        runtime.instance.enabled = false;
+      }
+      return;
+    }
+
+    if (!runtime.instance) {
+      runtime.instance = runtime.container.instantiate();
+      this.setupNpcAnimation(runtime);
+    }
+
+    runtime.instance.reparent(handle.root);
+    runtime.instance.setLocalPosition(0, 0, 0);
+    runtime.instance.setLocalEulerAngles(0, 180, 0);
+    runtime.instance.enabled = true;
+  }
+
+  private setupNpcAnimation(runtime: NpcRoleRuntime): void {
+    const instance = runtime.instance;
+    const container = runtime.container;
+    if (!instance || !container) {
+      return;
+    }
+
+    const idle = findAnimationTrack(container, 'Idle');
+    const talk = findAnimationTrack(container, 'Talk');
+    if (!idle && !talk) {
+      return;
+    }
+
+    instance.addComponent('anim', { activate: true });
+    const anim = instance.anim;
+    if (!anim) {
+      return;
+    }
+    if (idle) {
+      anim.assignAnimation('Idle', idle);
+    }
+    if (talk) {
+      anim.assignAnimation('Talk', talk);
+    }
+
+    this.applyNpcAnimation(runtime);
+  }
+
+  /** 首次绑定动作时直接落到目标状态；之后在待机与说话之间做短混合。 */
+  private applyNpcAnimation(runtime: NpcRoleRuntime): void {
+    const layer = runtime.instance?.anim?.baseLayer;
+    if (!layer) {
+      return;
+    }
+
+    const target = runtime.talking ? 'Talk' : 'Idle';
+    if (!layer.states.includes(target)) {
+      return;
+    }
+    if (layer.activeState === target) {
+      return;
+    }
+
+    if (layer.activeState === pc.ANIM_STATE_START) {
+      layer.play(target);
+    } else {
+      layer.transition(target, 0.25);
+    }
+  }
+
   private createNpcSpot(spot: SceneNpcSpot): SceneInteractableHandle {
     const [x, y, z] = spot.position;
     const root = this.track(new pc.Entity(spot.id));
@@ -360,6 +506,8 @@ export class SceneManager {
     if (spot.yaw !== undefined) {
       root.setEulerAngles(0, spot.yaw, 0);
     }
+    // 等 applyStoryFlags 选出当前站位后再显示。
+    root.enabled = false;
 
     // 默认创建方盒占位（作为 root 的子节点，位于脚底之上）
     const placeholder = this.track(new pc.Entity(`${spot.id}_placeholder`));
@@ -391,7 +539,6 @@ export class SceneManager {
       spot,
       root,
       placeholder,
-      characterInstance: null,
     });
 
     const name = NPC_NAME[spot.npcId];
@@ -657,4 +804,21 @@ export class SceneManager {
     };
     image.src = url;
   }
+}
+
+function findAnimationTrack(
+  container: CharacterContainer,
+  name: string,
+): pc.AnimTrack | null {
+  // 容器资源的动画资产名是 `.../animation/0` 这类路径，动作名在 AnimTrack 上。
+  for (const asset of container.resource.animations ?? []) {
+    const resource: unknown = asset.resource;
+    if (
+      resource instanceof pc.AnimTrack &&
+      resource.name.toLowerCase() === name.toLowerCase()
+    ) {
+      return resource;
+    }
+  }
+  return null;
 }

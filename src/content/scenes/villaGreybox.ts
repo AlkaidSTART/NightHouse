@@ -457,7 +457,9 @@ const doors: SceneDoor[] = [
   door('DOOR_sealed_2f_south', '房门', [-5.5, F2, 0], 'x', 1, 2.2, { sealed: true }),
 ];
 
-// ───────────────────────── 交互点（占位） ─────────────────────────
+// ───────────────────────── 交互点 ─────────────────────────
+// 交互点的正文在 src/content/inspectables.ts，按 ID 一一对应；
+// message 只在缺少检视内容时作为兜底提示。
 
 function interact(
   id: string,
@@ -466,7 +468,7 @@ function interact(
   prompt: string,
   message: string,
 ): SceneInteractable {
-  return { id, position, radius, prompt, message: `占位：${message}` };
+  return { id, position, radius, prompt, message };
 }
 
 const interactables: SceneInteractable[] = [
@@ -495,6 +497,8 @@ const interactables: SceneInteractable[] = [
   interact('INT_prop_study_rug', [-9.4, 0.12, -5], 0.4, '查看炉前地毯', '炉前地毯（clue_burned_pages）。'),
   interact('INT_prop_safe', [-7.95, 0.6, -7.34], 0.35, '查看保险箱', '保险箱，puzzle_safe 的操作位置。'),
   interact('INT_prop_phonograph', [-6.4, 0.95, -3.14], 0.3, '查看留声机', '蜡筒留声机（clue_gramophone_cylinder 的播放位置）。'),
+  interact('INT_prop_study_bookshelf', [-9.7, 1.5, -7.35], 0.4, '查看书架', '书架上半是航海年鉴，下半是装订成册的账簿。'),
+  interact('INT_prop_study_book', [-9.9, 2.35, -7.38], 0.2, '翻开《航海保险条款》', '书页停在船舶险一章，页边有铅笔批注。'),
   // 储物间
   interact('INT_prop_luggage', [-3.55, 0.55, -3.3], 0.35, '查看行李箱', '行李箱（clue_evelyn_luggage）。'),
   interact('INT_prop_newspaper_stack', [-3.35, 0.5, -5], 0.3, '翻看旧报纸', '旧报纸堆（clue_newspaper）。'),
@@ -526,22 +530,47 @@ const interactables: SceneInteractable[] = [
 const D2_EARLY = 'D2 待裁决：仅当格雷开场即在场时使用';
 const D2_LATE = 'D2 待裁决：仅当格雷 B4 才到场时使用';
 
+/**
+ * 同一角色的多个站位靠 `activeWhen` + `priority` 取舍：任一时刻只生成一个人，
+ * 剧情推进后旧的站位自动让位。没有 `activeWhen` 的站位是待裁决或不参与垂直切片的规划数据。
+ *
+ * 朝向约定：角色模型正面为 +Z，实例绕 Y 轴转 180° 后，root yaw 0 面向 −Z，
+ * 90 面向 −X，180 面向 +Z，−90 面向 +X。
+ */
 const npcSpots: SceneNpcSpot[] = [
-  { id: 'NPC_housekeeper_front_door', npcId: 'npc_housekeeper', label: '正门内侧（B1）', position: [1.3, 0, 6.2], yaw: 190 },
-  { id: 'NPC_housekeeper_corridor_mouth', npcId: 'npc_housekeeper', label: '走廊口（十三下之后）', position: [-3.4, 0, 0.5], yaw: 45 },
-  { id: 'NPC_housekeeper_hall_door_b10', npcId: 'npc_housekeeper', label: '门边（B10）', position: [-1.6, 0, 6.3], yaw: 210 },
-  { id: 'NPC_housekeeper_dining_door', npcId: 'npc_housekeeper', label: '餐厅门边（B3）', position: [4.6, 0, 2.2], yaw: -90 },
-  { id: 'NPC_arthur_parlor_fireplace', npcId: 'npc_arthur', label: '客厅壁炉旁（B2）', position: [-9, 0, 3], yaw: 90 },
-  { id: 'NPC_arthur_dining_head', npcId: 'npc_arthur', label: '餐厅主位（B3）', position: [5.57, 0, 3.5], yaw: -90 },
-  { id: 'NPC_arthur_gallery_rail', npcId: 'npc_arthur', label: '二楼栏杆边（十三下之后）', position: [-2.5, F2, -0.5], yaw: 160 },
-  { id: 'NPC_arthur_study_desk', npcId: 'npc_arthur', label: '书桌椅（B9 对质）', position: [-7.5, 0, -6.25], yaw: 180 },
-  { id: 'NPC_arthur_signing_table', npcId: 'npc_arthur', label: '签字桌边（B10）', position: [1.4, 0, 3.7], yaw: -45 },
-  { id: 'NPC_doctor_dining_door', npcId: 'npc_doctor', label: '餐厅门口（十三下之后）', position: [3.3, 0, 3.5], yaw: -90 },
+  // 霍尔太太：开门迎客 → 晚宴门边 → 十三下后走廊口 → B10 门边
+  { id: 'NPC_housekeeper_front_door', npcId: 'npc_housekeeper', label: '正门内侧（B1）', position: [1.3, 0, 6.2], yaw: 115, priority: 10, activeWhen: [[{ flag: 'story.arrived' }]] },
+  { id: 'NPC_housekeeper_dining_door', npcId: 'npc_housekeeper', label: '餐厅门边（B3）', position: [4.45, 0, 4.6], yaw: -50, priority: 20, activeWhen: [[{ flag: 'story.met_arthur' }]] },
+  { id: 'NPC_housekeeper_corridor_mouth', npcId: 'npc_housekeeper', label: '走廊口（十三下之后）', position: [-3.4, 0, 0.5], yaw: -120, priority: 30, activeWhen: [[{ flag: 'story.clock_repaired' }]] },
+  { id: 'NPC_housekeeper_hall_door_b10', npcId: 'npc_housekeeper', label: '门边（B10）', position: [-1.6, 0, 6.3], yaw: -30, priority: 40, activeWhen: [[{ flag: 'story.midnight' }]] },
+
+  // 亚瑟：客厅壁炉旁 → 餐厅主位 → 书房对质 → 二楼栏杆边 → B10 签字桌
+  { id: 'NPC_arthur_parlor_fireplace', npcId: 'npc_arthur', label: '客厅壁炉旁（B2）', position: [-9.4, 0, 3.1], yaw: -90, priority: 10, activeWhen: [[{ flag: 'story.arrived' }]] },
+  { id: 'NPC_arthur_dining_head', npcId: 'npc_arthur', label: '餐厅主位（B3）', position: [5.1, 0, 3.5], yaw: -90, priority: 20, activeWhen: [[{ flag: 'story.met_arthur' }]] },
+  {
+    id: 'NPC_arthur_study_desk',
+    npcId: 'npc_arthur',
+    label: '书桌椅（B9 对质）',
+    position: [-7.5, 0, -6.8],
+    yaw: 0,
+    priority: 35,
+    activeWhen: [
+      [{ flag: 'story.knows_coverup' }],
+      [{ flag: 'clue.shipping_ledger' }],
+    ],
+  },
+  { id: 'NPC_arthur_gallery_rail', npcId: 'npc_arthur', label: '二楼栏杆边（十三下之后）', position: [-2.5, F2, -0.5], yaw: -160, priority: 30, activeWhen: [[{ flag: 'story.clock_repaired' }]] },
+  { id: 'NPC_arthur_signing_table', npcId: 'npc_arthur', label: '签字桌边（B10）', position: [0, 0, 3.15], yaw: 180, priority: 40, activeWhen: [[{ flag: 'story.midnight' }]] },
+
+  // 格雷医生：B4 到访 → 十三下后餐厅门口 → B10 楼梯口（D2 未裁决，仅使用晚到的一组）
+  { id: 'NPC_doctor_front_door_b4', npcId: 'npc_doctor', label: '正门内侧（B4 到访）', position: [-1.35, 0, 6], yaw: -25, priority: 10, pending: D2_LATE, activeWhen: [[{ flag: 'story.met_doctor' }]] },
+  { id: 'NPC_doctor_dining_door', npcId: 'npc_doctor', label: '餐厅门口（十三下之后）', position: [3.3, 0, 3.5], yaw: 90, priority: 30, activeWhen: [[{ flag: 'story.clock_repaired' }]] },
+  { id: 'NPC_doctor_stair_foot', npcId: 'npc_doctor', label: '楼梯口（B10）', position: [2.1, 0, 2.6], yaw: 125, priority: 40, activeWhen: [[{ flag: 'story.midnight' }]] },
+
+  // 未启用：保险箱失败桥段尚未实现；D2 未裁决的早到站位暂不生成。
   { id: 'NPC_doctor_study_door_outside', npcId: 'npc_doctor', label: '书房门外（保险箱三次失败）', position: [-8.5, 0, -1.1], yaw: 0 },
-  { id: 'NPC_doctor_stair_foot', npcId: 'npc_doctor', label: '楼梯口（B10）', position: [2.1, 0, 2.6], yaw: -135 },
-  { id: 'NPC_doctor_parlor_armchair', npcId: 'npc_doctor', label: '客厅扶手椅（B2）', position: [-8.7, 0, 5], pending: D2_EARLY, yaw: 20 },
-  { id: 'NPC_doctor_dining_side', npcId: 'npc_doctor', label: '餐厅侧席（B3）', position: [7, 0, 2.62], pending: D2_EARLY, yaw: -90 },
-  { id: 'NPC_doctor_front_door_b4', npcId: 'npc_doctor', label: '正门内侧（B4 到访）', position: [-0.9, 0, 6.2], pending: D2_LATE, yaw: 0 },
+  { id: 'NPC_doctor_parlor_armchair', npcId: 'npc_doctor', label: '客厅扶手椅（B2）', position: [-8.9, 0, 4.2], pending: D2_EARLY, yaw: -90 },
+  { id: 'NPC_doctor_dining_side', npcId: 'npc_doctor', label: '餐厅侧席（B3）', position: [7, 0, 2.2], pending: D2_EARLY, yaw: 180 },
 ];
 
 // ───────────────────────── 区域 ─────────────────────────

@@ -6,6 +6,7 @@ import {
   resolveMinimapLevel,
   worldToMinimap,
 } from './minimapModel';
+import { findRegion, regionCenter } from './objectiveRoute';
 
 export interface MinimapPlayerPose {
   position: Vec3Tuple;
@@ -15,12 +16,18 @@ export interface MinimapPlayerPose {
 export interface MinimapProps {
   regionId: string | null;
   player: MinimapPlayerPose | null;
+  /** 当前任务目标所在区域，用于在小地图上标出路线终点。 */
+  objectiveRegionId?: string | null;
 }
 
 const MIN_LABEL_WIDTH = 30;
 const MIN_LABEL_HEIGHT = 13;
 
-export function Minimap({ regionId, player }: MinimapProps) {
+export function Minimap({
+  regionId,
+  player,
+  objectiveRegionId,
+}: MinimapProps) {
   const feetY = player?.position[1] ?? 0;
   const level = resolveMinimapLevel(regionId, feetY);
   const model = useMemo(() => buildMinimapLevel(villaGreybox, level), [level]);
@@ -28,6 +35,22 @@ export function Minimap({ regionId, player }: MinimapProps) {
   const marker = player
     ? worldToMinimap(model.viewport, player.position[0], player.position[2])
     : null;
+
+  const objectiveMarker = useMemo(() => {
+    if (!objectiveRegionId) {
+      return null;
+    }
+    const region = findRegion(objectiveRegionId);
+    if (!region) {
+      return null;
+    }
+    const center = regionCenter(region);
+    // 目标在别的楼层时不画在当前层，避免指针落在错误的位置。
+    if (resolveMinimapLevel(objectiveRegionId, center[1]) !== model.id) {
+      return null;
+    }
+    return worldToMinimap(model.viewport, center[0], center[2]);
+  }, [objectiveRegionId, model]);
 
   return (
     <div className="hud-minimap">
@@ -92,6 +115,18 @@ export function Minimap({ regionId, player }: MinimapProps) {
             y2={door.y2}
           />
         ))}
+        {objectiveMarker && (
+          <g
+            className="minimap-objective"
+            transform={`translate(${objectiveMarker.x.toFixed(2)} ${objectiveMarker.y.toFixed(2)})`}
+          >
+            <circle className="minimap-objective-halo" r={6.5} />
+            <path
+              className="minimap-objective-pin"
+              d="M0 -5 L5 0 L0 5 L-5 0 Z"
+            />
+          </g>
+        )}
         {marker && player && (
           <g
             className="minimap-player"

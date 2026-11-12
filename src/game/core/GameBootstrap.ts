@@ -11,6 +11,7 @@ import {
   type CollisionWorld,
 } from '../collision/CollisionWorld.ts';
 import { DialogueSystem } from '../dialogue/DialogueSystem';
+import { InspectionSystem } from '../inspection/InspectionSystem';
 import { InteractionSystem } from '../interaction/InteractionSystem';
 import { PlayerController } from '../player/PlayerController';
 import { createNewSave, type SaveManager } from '../save/SaveManager';
@@ -86,6 +87,9 @@ export class GameBootstrap {
   private readonly doors: DoorSystem;
   private readonly interaction: InteractionSystem;
   private readonly dialogue: DialogueSystem;
+  private readonly inspection: InspectionSystem;
+  private readonly clueTitles: ReadonlyMap<string, string>;
+  private readonly unsubscribeStory: () => void;
   private readonly playerPosition = new pc.Vec3();
   private readonly sceneId: string;
   private readonly regions: readonly SceneRegion[];
@@ -145,6 +149,32 @@ export class GameBootstrap {
       },
     });
 
+    this.clueTitles = new Map(content.clues.map((clue) => [clue.id, clue.title]));
+    this.inspection = new InspectionSystem({
+      inspectables: content.inspectables,
+      host: {
+        getFlags: () => useStoryStore.getState().storyFlags,
+        setFlag: (key, value) =>
+          useStoryStore.getState().setStoryFlag(key, value),
+        discoverClue: (clueId) => {
+          const store = useStoryStore.getState();
+          if (store.discoveredClueIds.includes(clueId)) {
+            return false;
+          }
+          store.discoverClue(clueId);
+          store.setStoryFlag(clueFlagForId(clueId), true);
+          return true;
+        },
+        getClueTitle: (clueId) => this.clueTitles.get(clueId) ?? null,
+        onChange: (view) => {
+          this.events.emit('inspection.changed', { view });
+          if (view === null) {
+            this.finishInspection();
+          }
+        },
+      },
+    });
+
     const app = new pc.Application(options.canvas, {
       mouse: new pc.Mouse(options.canvas),
       keyboard: new pc.Keyboard(window),
@@ -158,6 +188,11 @@ export class GameBootstrap {
 
     this.sceneManager = new SceneManager(app);
     const scene = this.sceneManager.build(villaGreybox);
+    this.sceneManager.applyStoryFlags(useStoryStore.getState().storyFlags);
+    // 剧情标记变化后重新选择 NPC 站位；同一角色始终只显示一个人。
+    this.unsubscribeStory = useStoryStore.subscribe((state) => {
+      this.sceneManager.applyStoryFlags(state.storyFlags);
+    });
     if (villaGreybox.modelUrl) {
       void this.sceneManager.loadModel(villaGreybox.modelUrl).catch((error: unknown) => {
         console.warn('场景 GLB 加载失败，继续使用灰盒几何：', error);
@@ -233,21 +268,34 @@ export class GameBootstrap {
 
     for (const descriptor of scene.interactables) {
       const npcId = descriptor.npcId;
+      if (descriptor.kind === 'npc' && npcId) {
+        this.interaction.register({
+          id: descriptor.id,
+          entity: descriptor.entity,
+          radius: descriptor.radius,
+          getPrompt: () => descriptor.prompt,
+          canInteract: () => this.sceneManager.isNpcSpotActive(descriptor.id),
+          interact: () => this.openDialogue(npcId, descriptor.id),
+        });
+        continue;
+      }
+
       this.interaction.register({
         id: descriptor.id,
         entity: descriptor.entity,
         radius: descriptor.radius,
         getPrompt: () => descriptor.prompt,
         canInteract: () => true,
-        interact:
-          descriptor.kind === 'npc' && npcId
-            ? () => this.openDialogue(npcId, descriptor.id)
-            : () => {
-                this.events.emit('interaction.activated', {
-                  id: descriptor.id,
-                  message: descriptor.message,
-                });
-              },
+        interact: () => {
+          if (this.inspection.has(descriptor.id)) {
+            this.beginInspection(descriptor.id);
+            return;
+          }
+          this.events.emit('interaction.activated', {
+            id: descriptor.id,
+            message: descriptor.message,
+          });
+        },
       });
     }
 
@@ -310,6 +358,7 @@ export class GameBootstrap {
     }
 
     this.dialogueOpen = true;
+    this.sceneManager.setNpcTalking(npcId);
     this.player.setPaused(true);
     this.lastPrompt = null;
     this.events.emit('interaction.prompt', { text: null });
@@ -323,6 +372,7 @@ export class GameBootstrap {
       return;
     }
     this.dialogueOpen = false;
+    this.sceneManager.setNpcTalking(null);
     this.player.requestPointerLock();
   }
 
@@ -351,6 +401,7 @@ export class GameBootstrap {
     window.removeEventListener('resize', this.handleResize);
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
 
+    this.unsubscribeStory();
     this.player.dispose();
     this.interaction.clear();
     this.nightSky.destroy();

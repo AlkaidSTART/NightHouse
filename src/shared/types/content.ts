@@ -62,14 +62,53 @@ export interface ClueDefinition {
   storyFlags?: string[];
 }
 
+export type InspectTextStyle = 'body' | 'quote' | 'note' | 'signature';
+
+/** 检视面板中的一段正文。段落之间保留空行，适合信纸、日志和书籍排版。 */
+export interface InspectSection {
+  heading?: string;
+  style?: InspectTextStyle;
+  paragraphs: readonly string[];
+}
+
+/**
+ * 同一检视对象在不同剧情状态下的内容。按顺序取第一个 `when` 全部满足的变体；
+ * 没有 `when` 的变体是兜底，必须放在最后。
+ */
+export interface InspectVariant {
+  when?: readonly StoryCondition[];
+  sections: readonly InspectSection[];
+  /** 阅读时执行；重复阅读是幂等的。 */
+  effects?: readonly StoryEffect[];
+}
+
+/** 可检视对象，`id` 与场景交互点 ID 一致。 */
+export interface InspectableDefinition {
+  id: string;
+  title: string;
+  /** 面板上方的类别标签，如「信件」「文件」「书籍」。 */
+  category: string;
+  variants: readonly InspectVariant[];
+}
+
+export interface QuestStep {
+  id: string;
+  /** 目标面板上显示的一句话目标。 */
+  objective: string;
+  /** 路线提示，说明玩家下一步该往哪走。 */
+  hint: string;
+  /** 目标所在区域 ID，用于小地图标记与方向指引。 */
+  locationId: string;
+  /** 满足任一条件组即视为该步完成（外层「或」，内层「且」）。 */
+  doneWhen: StoryCondition[][];
+}
+
 export interface QuestDefinition {
   id: string;
   title: string;
   description: string;
-  objectives: string[];
-  prerequisites?: StoryCondition[];
-  completionConditions: StoryCondition[];
-  completionEvent?: string;
+  /** 按顺序推进；第一个未完成的步骤就是当前目标。 */
+  steps: QuestStep[];
 }
 
 export interface PuzzleDefinition {

@@ -1,5 +1,9 @@
+import { content } from '../../content';
+import { resolveActiveObjective } from '../../game/story/questProgress';
 import { useGameStore } from '../../stores/gameStore';
+import { useStoryStore } from '../../stores/storyStore';
 import { Minimap, type MinimapPlayerPose } from './Minimap';
+import { ObjectivePanel } from './ObjectivePanel';
 
 export interface GameHudProps {
   prompt?: string | null;
@@ -19,12 +23,23 @@ export function GameHud(props: GameHudProps = {}) {
   const toast = props.toast !== undefined ? props.toast : storeToast;
   const error = props.error !== undefined ? props.error : storeError;
 
+  const storyFlags = useStoryStore((s) => s.storyFlags);
+  const activeObjective = resolveActiveObjective(storyFlags, content.quests);
+  const regionId = props.regionId ?? null;
+  const player = props.player ?? null;
+
   return (
     <>
       <div className="hud-crosshair" aria-hidden="true" />
       <Minimap
-        regionId={props.regionId ?? null}
-        player={props.player ?? null}
+        regionId={regionId}
+        player={player}
+        objectiveRegionId={activeObjective?.step.locationId ?? null}
+      />
+      <ObjectivePanel
+        active={activeObjective}
+        regionId={regionId}
+        player={player}
       />
       {props.region && <div className="hud-region">{props.region}</div>}
       {prompt && (

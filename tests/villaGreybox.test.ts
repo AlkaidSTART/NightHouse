@@ -13,7 +13,7 @@ import type { Vec3Tuple } from '../src/shared/types/save';
 // 这些测试对应《场景建模方案》§5.1 的灰盒验收清单。
 
 const EYE = 1.7;
-const WALK_SPEED = 2.6;
+const WALK_SPEED = 4.4;
 const F2 = 3.4;
 
 type Waypoint = [x: number, z: number];

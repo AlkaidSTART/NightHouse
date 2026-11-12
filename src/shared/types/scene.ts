@@ -97,6 +97,14 @@ export interface SceneNpcSpot {
   position: Vec3Tuple;
   /** 朝向角度（偏航角 yaw，度数），可选。 */
   yaw?: number;
+  /**
+   * 满足任一条件组（外层或、内层且）时该站位才会生成 NPC。
+   * 同一 NPC 的多个可用站位取 `priority` 最高者；缺省表示该站位
+   * 目前只作规划数据，不参与运行时生成。
+   */
+  activeWhen?: StoryCondition[][];
+  /** 同一 NPC 多个站位同时可用时的取舍依据，值越大越优先。默认 0。 */
+  priority?: number;
   /** 取决于尚未裁决的事项时填写，裁决后删除多余站位。 */
   pending?: string;
 }

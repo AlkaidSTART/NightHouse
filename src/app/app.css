@@ -648,6 +648,117 @@ button {
   stroke-width: 0.7;
 }
 
+.minimap-objective-pin {
+  fill: #d6aa78;
+  stroke: rgba(0, 0, 0, 0.6);
+  stroke-width: 0.8;
+}
+
+.minimap-objective-halo {
+  fill: none;
+  stroke: rgba(214, 170, 120, 0.55);
+  stroke-width: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: minimap-objective-pulse 2s ease-out infinite;
+}
+
+@keyframes minimap-objective-pulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.1);
+  }
+}
+
+.hud-objective {
+  position: absolute;
+  top: 260px;
+  right: 24px;
+  width: 208px;
+  padding: 10px 12px 12px;
+  border: 1px solid rgba(220, 210, 190, 0.13);
+  border-left: 2px solid rgba(200, 170, 110, 0.55);
+  background: rgba(6, 7, 8, 0.68);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+
+.hud-objective-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 6px;
+}
+
+.hud-objective-kicker {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: #c8a878;
+}
+
+.hud-objective-progress {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #7f796b;
+}
+
+.hud-objective-quest {
+  margin-bottom: 7px;
+  color: #8b8474;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+
+.hud-objective-task {
+  display: flex;
+  gap: 8px;
+  color: #e6dfcd;
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  animation: objective-task-in 320ms ease;
+}
+
+.hud-objective-dot {
+  flex: none;
+  color: #c8a878;
+  font-size: 11px;
+  line-height: 1.75;
+}
+
+.hud-objective-meta {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(220, 210, 190, 0.1);
+  color: #c8a878;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.hud-objective-hint {
+  margin-top: 4px;
+  color: #8b8474;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+}
+
+@keyframes objective-task-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .hud-prompt {
   position: absolute;
   bottom: 12%;
@@ -948,6 +1059,17 @@ button {
 
   .hud-minimap-level {
     letter-spacing: 0.2em;
+  }
+
+  .hud-objective {
+    top: 196px;
+    right: 14px;
+    width: 156px;
+    padding: 8px 9px 9px;
+  }
+
+  .hud-objective-task {
+    font-size: 12px;
   }
 
   .dialogue-layer {

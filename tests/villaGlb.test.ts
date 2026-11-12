@@ -33,6 +33,8 @@ interface GltfJson {
   accessors: GltfAccessor[];
   bufferViews: { byteOffset: number; byteLength: number }[];
   buffers: { byteLength: number }[];
+  skins?: { joints: number[] }[];
+  animations?: { name?: string; channels: unknown[] }[];
 }
 
 const FAKE_PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 1, 2, 3]);
@@ -266,6 +268,26 @@ test('导出的 NPC 角色 GLB：文件齐全、身高符合设定且面数与�
     assert.ok(exported.json.meshes.length > 0, `${modelUrl} 缺少网格`);
     assert.ok(exported.json.materials.length > 0, `${modelUrl} 缺少材质`);
     assert.ok(exported.json.images.length > 0, `${modelUrl} 缺少贴图`);
+
+    // 绑定骨骼与两段动作是 NPC 有呼吸和说话动作的前提。
+    assert.equal(exported.json.skins?.length, 1, `${modelUrl} 缺少蒙皮`);
+    assert.equal(exported.json.skins?.[0]?.joints.length, 17, `${modelUrl} 骨骼数不符`);
+    for (const mesh of exported.json.meshes) {
+      for (const primitive of mesh.primitives) {
+        assert.ok(
+          primitive.attributes.JOINTS_0 !== undefined &&
+            primitive.attributes.WEIGHTS_0 !== undefined,
+          `${modelUrl} 的网格缺少蒙皮权重`,
+        );
+      }
+    }
+    const animationNames = (exported.json.animations ?? [])
+      .map((animation) => animation.name)
+      .sort();
+    assert.deepEqual(animationNames, ['Idle', 'Talk'], `${modelUrl} 动作不齐`);
+    for (const animation of exported.json.animations ?? []) {
+      assert.ok(animation.channels.length >= 17 * 3, `${modelUrl} 动作通道不足`);
+    }
 
     let minY = Infinity;
     let maxY = -Infinity;

@@ -6,8 +6,8 @@ import {
   type CollisionWorld,
 } from '../collision/CollisionWorld.ts';
 
-const WALK_SPEED = 2.6;
-const RUN_SPEED = 4.4;
+const WALK_SPEED = 4.4;
+const RUN_SPEED = 7.0;
 const CROUCH_SPEED = 1.3;
 const GRAVITY = 24;
 /** 起跳初速度按约 0.9 m 跳跃高度设定。 */
