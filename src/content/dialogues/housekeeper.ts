@@ -152,6 +152,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     id: 'npc_housekeeper_warm',
     npcId: 'npc_housekeeper',
     lines: [
+      { speaker: 'npc', text: '……不用谢，{honorific}。' },
       { speaker: 'npc', text: '安静，是因为人都走了。' },
       { speaker: 'npc', text: '……您和小姐说话的口气有点像。' },
     ],
@@ -176,7 +177,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
       {
         id: 'warm_up',
         text: '抱歉，我路上有些累。',
-        next: 'npc_housekeeper_warm',
+        next: 'npc_housekeeper_intro',
         effects: [flag('story.housekeeper_warm')],
       },
       {

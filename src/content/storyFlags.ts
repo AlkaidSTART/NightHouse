@@ -15,6 +15,7 @@ export const STORY_FLAGS = [
   'story.met_arthur',
   'story.met_housekeeper',
   'story.met_doctor',
+  'story.doctor_talked',
   'story.housekeeper_warm',
   'story.housekeeper_cold',
   'story.letter_shown',

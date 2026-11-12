@@ -34,6 +34,10 @@ interface Session {
   nodeId: string;
   /** 下一条要显示的台词；等于 lines.length 时表示进入选项阶段。 */
   lineIndex: number;
+  /** 本次会话里已经展示过的节点；返回这类节点时直接进入选项阶段，避免重播台词。 */
+  visited: Set<string>;
+  /** 跳过当前节点台词时不再显示最后一句，避免把上一话题的台词当成新的回应。 */
+  hideLine: boolean;
 }
 
 const SPEAKER_PREFIX = /^【([^】]+)】\s*(.*)$/;
@@ -73,11 +77,17 @@ export class DialogueSystem {
   }
 
   openForNpc(npcId: string, spotId: string): boolean {
-    const entryId = resolveDialogueEntry(npcId, spotId, this.host.getFlags());
-    return entryId !== null && this.open(entryId);
+    const entry = resolveDialogueEntry(npcId, spotId, this.host.getFlags());
+    return (
+      entry !== null &&
+      this.open(entry.nodeId, { skipOpeningLines: entry.skipOpeningLines })
+    );
   }
 
-  open(entryId: string): boolean {
+  open(
+    entryId: string,
+    options: { skipOpeningLines?: boolean } = {},
+  ): boolean {
     const node = this.nodes.get(entryId);
     if (!node) {
       return false;
@@ -85,11 +95,18 @@ export class DialogueSystem {
     if (!areConditionsMet(this.host.getFlags(), node.conditions ?? [])) {
       return false;
     }
-    if (node.lines.length === 0 && this.availableChoices(node).length === 0) {
+    const choices = this.availableChoices(node);
+    if (node.lines.length === 0 && choices.length === 0) {
       return false;
     }
 
-    this.session = { nodeId: node.id, lineIndex: 0 };
+    const hideLine = options.skipOpeningLines === true && choices.length > 0;
+    this.session = {
+      nodeId: node.id,
+      lineIndex: hideLine ? node.lines.length : 0,
+      visited: new Set([node.id]),
+      hideLine,
+    };
     this.emit();
     return true;
   }
@@ -157,9 +174,17 @@ export class DialogueSystem {
       return false;
     }
 
+    const revisited = session.visited.has(next.id);
     session.nodeId = next.id;
-    session.lineIndex = 0;
-    if (next.lines.length === 0 && this.availableChoices(next).length === 0) {
+    // 返回已经看过的节点时跳过台词，直接给出该节点的选项；
+    // 否则「返回上一层」会把开场白或已听过的证词整段重播。
+    session.lineIndex = revisited ? next.lines.length : 0;
+    session.hideLine = revisited;
+    session.visited.add(next.id);
+    if (
+      session.lineIndex >= next.lines.length &&
+      this.availableChoices(next).length === 0
+    ) {
       this.close();
       return true;
     }
@@ -188,7 +213,8 @@ export class DialogueSystem {
     const npcName = this.npcNames.get(node.npcId) ?? node.npcId;
     const lines = node.lines.map((line) => this.resolveLine(line, npcName));
     const lineIndex = Math.min(session.lineIndex, lines.length - 1);
-    const line = lines.length > 0 ? lines[lineIndex] ?? null : null;
+    const line =
+      session.hideLine || lines.length === 0 ? null : lines[lineIndex] ?? null;
     const canContinue = session.lineIndex < node.lines.length;
     const choices: DialogueChoiceView[] = canContinue
       ? []

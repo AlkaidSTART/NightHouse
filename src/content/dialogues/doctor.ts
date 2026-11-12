@@ -22,21 +22,25 @@ export const doctorDialogues: readonly DialogueNode[] = [
         id: 'polite',
         text: '麻烦您了，格雷医生。',
         next: 'npc_doctor_purpose',
+        effects: [flag('story.doctor_talked')],
       },
       {
         id: 'ask_summer',
         text: '您记得那个夏天？',
         next: 'npc_doctor_summer_01',
+        effects: [flag('story.doctor_talked')],
       },
       {
         id: 'ask_evelyn',
         text: '伊芙琳的事，您在场。',
         next: 'npc_doctor_evelyn_01',
+        effects: [flag('story.doctor_talked')],
       },
       {
         id: 'refuse',
         text: '我没事。',
         next: null,
+        effects: [flag('story.doctor_talked')],
       },
     ],
   },
@@ -53,7 +57,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
     choices: [
       {
         id: 'back',
-        text: '她后来也这样？',
+        text: '我明白了。',
         next: 'npc_doctor_intro',
         effects: [flag('story.summer_mentioned')],
       },
@@ -69,7 +73,10 @@ export const doctorDialogues: readonly DialogueNode[] = [
     id: 'npc_doctor_purpose',
     npcId: 'npc_doctor',
     lines: [
-      { speaker: 'npc', text: '算是（见证）。也是来看看亚瑟——他这一年，睡得不好。' },
+      {
+        speaker: 'npc',
+        text: '不用客气，{honorific}。算是见证吧——也是来看看亚瑟，他这一年睡得不好。',
+      },
     ],
     choices: [
       {
@@ -131,7 +138,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
       {
         id: 'back',
         text: '那就不打扰了。',
-        next: 'npc_doctor_intro',
+        next: null,
       },
     ],
   },

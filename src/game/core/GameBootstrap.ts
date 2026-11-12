@@ -250,6 +250,8 @@ export class GameBootstrap {
     });
 
     const playerRoot = new pc.Entity('player');
+    // 相机效果层：步伐摇晃和冲击震动只写这一层，相机本体保持基准姿态。
+    const cameraOffset = new pc.Entity('player_camera_offset');
     const camera = new pc.Entity('player_camera');
     camera.addComponent('camera', {
       clearColor: NIGHT_CLEAR_COLOR,
@@ -257,7 +259,8 @@ export class GameBootstrap {
       nearClip: 0.1,
       farClip: 160,
     });
-    playerRoot.addChild(camera);
+    playerRoot.addChild(cameraOffset);
+    cameraOffset.addChild(camera);
     app.root.addChild(playerRoot);
     this.nightSky = new NightSky(app, camera);
 
@@ -268,6 +271,7 @@ export class GameBootstrap {
       app,
       canvas: options.canvas,
       root: playerRoot,
+      offset: cameraOffset,
       camera,
       sensitivity,
       rotation: save.player.rotation,

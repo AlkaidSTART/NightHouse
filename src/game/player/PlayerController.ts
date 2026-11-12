@@ -318,9 +318,13 @@ export class PlayerController {
     }
 
     if (this.verticalVelocity <= 0 && ground !== null && nextY <= ground) {
+      const impact = -this.verticalVelocity;
       this.feet.y = ground;
       this.verticalVelocity = 0;
       this.grounded = true;
+      if (impact > 2) {
+        this.addShake(Math.min(0.7, 0.15 + (impact - 2) * 0.1));
+      }
       return;
     }
 
@@ -329,12 +333,17 @@ export class PlayerController {
 
   private updateBob(dt: number, speed: number): void {
     const bobbing = this.bobScale > 0 && this.grounded && speed > 0;
-    const target = bobbing ? (this.crouched ? 0.5 : 1) : 0;
+    const speedScale = this.crouched
+      ? 0.5
+      : speed > WALK_SPEED + 0.01
+        ? BOB_RUN_SCALE
+        : 1;
+    const target = bobbing ? speedScale : 0;
     this.bobAmount += (target - this.bobAmount) * (1 - Math.exp(-BOB_BLEND_RESPONSE * dt));
 
     if (bobbing) {
-      const bobSpeed = Math.min(speed, BOB_MAX_SPEED);
-      this.bobPhase += bobSpeed * dt * BOB_PHASE_PER_METER;
+      // 相位按移动距离累计：跑动时步频自然更高，停下则平滑归位。
+      this.bobPhase += speed * dt * BOB_PHASE_PER_METER;
       const step = Math.floor(this.bobPhase / BOB_STEP_PHASE);
       if (step !== this.bobStep) {
         this.bobStep = step;
@@ -352,22 +361,25 @@ export class PlayerController {
     this.bobGain += (this.bobGainTarget - this.bobGain) * gainBlend;
   }
 
+  /** 步伐摇晃与冲击震动都叠加在 offset 层，相机本体只保留基准俯仰。 */
   private applyCameraPose(): void {
     const amount = this.bobAmount * this.bobGain;
     const swing = Math.sin(this.bobPhase);
     // 只在每个落脚点向下压，不让视点浮到站立高度之上。
     const dip = (Math.cos(this.bobPhase * 2) - 1) * 0.5;
+    const [shakePitch, shakeYaw, shakeRoll] = this.shake.getOffset();
 
-    this.camera.setLocalPosition(
+    this.offset.setLocalPosition(
       BOB_LATERAL * swing * amount,
       BOB_VERTICAL * dip * amount,
       0,
     );
-    this.camera.setLocalEulerAngles(
-      this.pitch + BOB_PITCH * Math.cos(this.bobPhase * 2) * amount,
-      0,
-      0,
+    this.offset.setLocalEulerAngles(
+      BOB_PITCH * Math.cos(this.bobPhase * 2) * amount + shakePitch,
+      shakeYaw,
+      shakeRoll,
     );
+    this.camera.setLocalEulerAngles(this.pitch, 0, 0);
   }
 
   private syncRoot(): void {
