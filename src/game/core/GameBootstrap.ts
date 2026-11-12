@@ -22,6 +22,8 @@ const AUTOSAVE_INTERVAL_MS = 5000;
 const EYE_HEIGHT = 1.7;
 const INTERACTION_DISTANCE = 3;
 const DOOR_INTERACTION_MIN_RADIUS = 0.6;
+/** 小地图位置刷新间隔（秒）。不必每帧都推给 React。 */
+const POSE_EMIT_INTERVAL = 0.05;
 
 /**
  * 灰盒走查用：开发构建下以 `?unlock=all` 打开页面时忽略门的剧情解锁条件。
@@ -85,6 +87,7 @@ export class GameBootstrap {
   private readonly regions: readonly SceneRegion[];
   private currentRegionId: string | null = null;
   private lastPrompt: string | null = null;
+  private poseEmitElapsed = 0;
   private autosaveTimer: number | null = null;
   private started = false;
   private hasEntered = false;
@@ -289,6 +292,7 @@ export class GameBootstrap {
     }
 
     this.player.update(dt);
+    this.sceneManager.update(dt);
 
     this.playerPosition.copy(this.player.camera.getPosition());
     const prompt = this.interaction.update(this.player.camera, this.playerPosition);
@@ -298,7 +302,20 @@ export class GameBootstrap {
     }
 
     this.updateRegion();
+    this.emitPlayerPose(dt);
   };
+
+  private emitPlayerPose(dt: number): void {
+    this.poseEmitElapsed += dt;
+    if (this.poseEmitElapsed < POSE_EMIT_INTERVAL) {
+      return;
+    }
+    this.poseEmitElapsed = 0;
+    this.events.emit('player.position', {
+      position: this.player.getFeetPosition(),
+      rotation: this.player.getRotation(),
+    });
+  }
 
   private updateRegion(): void {
     const [x, y, z] = this.player.getFeetPosition();

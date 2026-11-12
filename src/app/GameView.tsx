@@ -3,6 +3,7 @@ import { GameBootstrap } from '../game/core/GameBootstrap';
 import type { GameEventBus } from '../game/core/GameEvents';
 import type { SaveManager } from '../game/save/SaveManager';
 import { GameHud } from '../ui/hud/GameHud';
+import type { MinimapPlayerPose } from '../ui/hud/Minimap';
 import { PauseMenu } from '../ui/pause/PauseMenu';
 import { StartOverlay } from '../ui/pause/StartOverlay';
 
@@ -28,6 +29,8 @@ export function GameView({
   const [prompt, setPrompt] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [region, setRegion] = useState<string | null>(null);
+  const [regionId, setRegionId] = useState<string | null>(null);
+  const [playerPose, setPlayerPose] = useState<MinimapPlayerPose | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -52,8 +55,12 @@ export function GameView({
         toastTimer = null;
       }, 3500);
     });
-    const offRegion = events.on('region.changed', ({ name }) => {
+    const offRegion = events.on('region.changed', ({ regionId: nextId, name }) => {
       setRegion(name);
+      setRegionId(nextId);
+    });
+    const offPlayerPose = events.on('player.position', ({ position, rotation }) => {
+      setPlayerPose({ position, yaw: rotation[0] });
     });
     const offPause = events.on('pause.changed', ({ paused }) => {
       setPhase(paused ? 'paused' : 'playing');
@@ -87,6 +94,7 @@ export function GameView({
       offPrompt();
       offActivated();
       offRegion();
+      offPlayerPose();
       offPause();
       offError();
       offReady();
@@ -105,7 +113,14 @@ export function GameView({
   return (
     <div className="game-view">
       <canvas ref={canvasRef} className="game-canvas" />
-      <GameHud prompt={prompt} toast={toast} error={error} region={region} />
+      <GameHud
+        prompt={prompt}
+        toast={toast}
+        error={error}
+        region={region}
+        regionId={regionId}
+        player={playerPose}
+      />
       {phase === 'ready' && (
         <StartOverlay ready={ready} onStart={handleStart} />
       )}

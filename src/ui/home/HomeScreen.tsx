@@ -1,4 +1,5 @@
 import { useGameStore } from '../../stores/gameStore';
+import { CharacterArchive } from './CharacterArchive';
 
 export interface HomeScreenProps {
   hasSave?: boolean;
@@ -61,6 +62,7 @@ export function HomeScreen(props: HomeScreenProps = {}) {
 
         <p className="home-version">MVP 脚手架 · v0.1</p>
       </main>
+      <CharacterArchive />
     </div>
   );
 }

@@ -1,10 +1,13 @@
 import { useGameStore } from '../../stores/gameStore';
+import { Minimap, type MinimapPlayerPose } from './Minimap';
 
 export interface GameHudProps {
   prompt?: string | null;
   toast?: string | null;
   error?: string | null;
   region?: string | null;
+  regionId?: string | null;
+  player?: MinimapPlayerPose | null;
 }
 
 export function GameHud(props: GameHudProps = {}) {
@@ -19,6 +22,10 @@ export function GameHud(props: GameHudProps = {}) {
   return (
     <>
       <div className="hud-crosshair" aria-hidden="true" />
+      <Minimap
+        regionId={props.regionId ?? null}
+        player={props.player ?? null}
+      />
       {props.region && <div className="hud-region">{props.region}</div>}
       {prompt && (
         <div className="hud-prompt">

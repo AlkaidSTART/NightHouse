@@ -99,5 +99,6 @@ __pycache__/
 !*.blend
 !**/README.md
 !**/.gitkeep
-
+.claude
+.agents
 

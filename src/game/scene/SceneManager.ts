@@ -14,6 +14,12 @@ import {
   type SceneModel,
 } from './SceneModelLoader.ts';
 import { DOOR_THICKNESS, doorCenter } from './sceneGeometry.ts';
+import {
+  advanceDoorSwing,
+  createDoorSwingState,
+  retargetDoorSwing,
+  type DoorSwingState,
+} from './doorSwing.ts';
 
 export interface SceneInteractableHandle {
   id: string;
@@ -40,6 +46,7 @@ interface DoorEntry {
   /** 当前显示的门扇：先是代码生成的方盒，GLB 就绪后换成 GLB 里的门扇。 */
   leaf: pc.Entity;
   swing: number;
+  motion: DoorSwingState;
 }
 
 interface NpcSpotHandle {
@@ -261,7 +268,17 @@ export class SceneManager {
     if (!entry) {
       return;
     }
-    entry.pivot.setLocalEulerAngles(0, open ? 90 * entry.swing : 0, 0);
+    retargetDoorSwing(entry.motion, open ? 90 * entry.swing : 0);
+  }
+
+  /** 推进门扇的开合动画。由游戏循环每帧调用。 */
+  update(dt: number): void {
+    for (const entry of this.doorPivots.values()) {
+      const angle = advanceDoorSwing(entry.motion, dt);
+      if (angle !== null) {
+        entry.pivot.setLocalEulerAngles(0, angle, 0);
+      }
+    }
   }
 
   destroy(): void {
@@ -407,8 +424,16 @@ export class SceneManager {
       leaf.setLocalScale(DOOR_THICKNESS, door.height, door.width);
     }
     pivot.addChild(leaf);
-    this.doorPivots.set(door.id, { pivot, leaf, swing: door.swing });
-    this.setDoorOpen(door.id, door.startsOpen && !door.sealed);
+
+    // 初始状态直接落位，避免载入场景时所有敞开的门一起从 0° 摆过去。
+    const initialAngle = door.startsOpen && !door.sealed ? 90 * door.swing : 0;
+    pivot.setLocalEulerAngles(0, initialAngle, 0);
+    this.doorPivots.set(door.id, {
+      pivot,
+      leaf,
+      swing: door.swing,
+      motion: createDoorSwingState(initialAngle),
+    });
 
     const anchor = this.track(new pc.Entity(`${door.id}_anchor`));
     const center = doorCenter(door);
