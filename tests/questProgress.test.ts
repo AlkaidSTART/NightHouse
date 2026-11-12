@@ -6,6 +6,7 @@ import { KNOWN_STORY_FLAGS } from '../src/content/storyFlags.ts';
 import {
   isStepComplete,
   resolveActiveObjective,
+  resolveActiveStepId,
 } from '../src/game/story/questProgress.ts';
 import type { StoryFlags } from '../src/game/story/conditions.ts';
 import {
@@ -84,6 +85,25 @@ test('任务目标：主线走完后不再显示目标', () => {
 
 test('任务目标：空完成条件不会被误判为已完成', () => {
   assert.equal(isStepComplete({}, []), false);
+});
+
+test('全局进度：当前任务步骤 ID 随剧情标记推导', () => {
+  assert.equal(resolveActiveStepId({}, quests), 'step_arrive');
+  assert.equal(
+    resolveActiveStepId({ 'story.arrived': true }, quests),
+    'step_housekeeper',
+  );
+  const done: StoryFlags = {
+    'story.arrived': true,
+    'story.met_housekeeper': true,
+    'story.met_arthur': true,
+    'story.arthur_talked': true,
+    'story.doctor_slip': true,
+    'story.knows_coverup': true,
+    'story.midnight': true,
+    'choice.midnight': 'sign',
+  };
+  assert.equal(resolveActiveStepId(done, quests), null);
 });
 
 test('任务目标：地点 ID 都对应场景区域，完成条件都使用已登记标记', () => {

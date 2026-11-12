@@ -153,6 +153,7 @@ export class GameBootstrap {
       npcNames: this.npcNames,
       host: {
         getFlags: () => useStoryStore.getState().storyFlags,
+        getActiveTaskId: () => useStoryStore.getState().activeTaskId,
         setFlag: (key, value) =>
           useStoryStore.getState().setStoryFlag(key, value),
         discoverClue: (clueId) => {
@@ -166,7 +167,12 @@ export class GameBootstrap {
           this.events.emit('dialogue.changed', { view });
           if (view === null) {
             this.finishDialogue();
+            return;
           }
+          this.sceneManager.setNpcSpeaking(
+            view.npcId,
+            view.line?.speaker === 'npc',
+          );
         },
         onConversationEnd: (event) => this.handleConversationEnd(event),
       },

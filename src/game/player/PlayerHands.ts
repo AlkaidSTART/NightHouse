@@ -10,11 +10,14 @@ const RELAXED_THUMB = -5;
 const INTERACT_FINGER_01 = -16;
 const INTERACT_FINGER_02 = -20;
 /**
- * 双手整体下移、前移并略微收窄：模型本身按较宽的肩距摆放，
- * 直接使用会像张开双臂的僵直姿势，这里把手臂拉回身体两侧。
+ * 双手在骨骼父空间中的静息偏移：下移、前移并收窄肩距。
+ * 模型本身按较宽的肩距摆放，直接使用会像张开双臂的僵直姿势。
+ * 父空间轴：X 向右，Y 向前，Z 向上。
  */
-const ROOT_POSITION = { x: 0, y: -0.06, z: -0.03 };
-const ROOT_SCALE_X = 0.85;
+const BONE_REST_OFFSETS: Record<string, { x: number; y: number; z: number }> = {
+  forearm_L: { x: 0.03, y: 0.03, z: -0.05 },
+  forearm_R: { x: -0.03, y: 0.03, z: -0.05 },
+};
 
 interface BonePose {
   entity: pc.Entity;
@@ -220,8 +223,6 @@ export class PlayerHands {
       }
       this.asset = asset;
       this.root = root;
-      root.setLocalPosition(ROOT_POSITION.x, ROOT_POSITION.y, ROOT_POSITION.z);
-      root.setLocalScale(ROOT_SCALE_X, 1, 1);
       this.parent.addChild(root);
       this.cacheBones(root);
       this.applyRelaxedPose();
@@ -337,6 +338,8 @@ export class PlayerHands {
 
   /** 模型加载后先摆出放松手型；开启“减少动态效果”时 update 不再叠加微动。 */
   private applyRelaxedPose(): void {
+    this.applyBoneOffset('forearm_L', 0, 0, 0, 0, 0, 0);
+    this.applyBoneOffset('forearm_R', 0, 0, 0, 0, 0, 0);
     for (const side of ['L', 'R'] as const) {
       for (const finger of ['index', 'middle', 'ring', 'pinky'] as const) {
         this.applyBoneOffset(`${finger}_01_${side}`, 0, 0, 0, RELAXED_FINGER_01, 0, 0);
@@ -360,9 +363,9 @@ export class PlayerHands {
       return;
     }
     this.targetPos.set(
-      bone.restPos.x + dx,
-      bone.restPos.y + dy,
-      bone.restPos.z + dz,
+      bone.restPos.x + dx + (BONE_REST_OFFSETS[name]?.x ?? 0),
+      bone.restPos.y + dy + (BONE_REST_OFFSETS[name]?.y ?? 0),
+      bone.restPos.z + dz + (BONE_REST_OFFSETS[name]?.z ?? 0),
     );
     bone.entity.setLocalPosition(this.targetPos);
 

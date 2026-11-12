@@ -38,6 +38,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         id: 'ask_evelyn',
         text: '伊芙琳……她以前住在哪间房？',
         next: 'npc_housekeeper_evelyn_01',
+        taskIds: ['step_housekeeper', 'step_coverup', 'step_confront'],
         effects: [flag('story.met_housekeeper')],
       },
       {
@@ -45,6 +46,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         text: '这封信，是你寄的？',
         next: 'npc_housekeeper_letter_01',
         conditions: [{ flag: 'story.has_letter' }],
+        taskIds: ['step_housekeeper', 'step_coverup'],
         effects: [flag('story.met_housekeeper')],
       },
       {
@@ -52,6 +54,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         text: '书房壁炉里的纸，是你烧的吗？',
         next: 'npc_housekeeper_study_01',
         conditions: [{ flag: 'clue.burned_pages' }],
+        taskIds: ['step_doctor', 'step_coverup', 'step_confront'],
         effects: [flag('story.met_housekeeper')],
       },
       {
@@ -59,6 +62,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         text: '书房里有人清理过，对吗？',
         next: 'npc_housekeeper_study_01',
         conditions: [{ flag: 'clue.shipping_ledger' }],
+        taskIds: ['step_doctor', 'step_coverup', 'step_confront'],
         effects: [flag('story.met_housekeeper')],
       },
       {
@@ -66,6 +70,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         text: '关于那晚，我要一个答案。',
         next: 'npc_housekeeper_confront_01',
         conditions: [{ flag: 'story.knows_coverup' }],
+        taskIds: ['step_confront'],
         effects: [
           flag('story.met_housekeeper'),
           flag('story.housekeeper_confided'),
@@ -410,11 +415,13 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         text: '我需要有人证明那晚发生了什么。',
         next: 'npc_housekeeper_will_testify',
         conditions: [{ flag: 'story.housekeeper_warm' }],
+        taskIds: ['step_confront'],
       },
       {
         id: 'warn_cost',
         text: '说出来，你可能就留不下了。',
         next: 'npc_housekeeper_hesitate',
+        taskIds: ['step_confront'],
       },
       {
         id: 'no_need',

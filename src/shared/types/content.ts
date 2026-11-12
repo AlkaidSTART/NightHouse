@@ -31,6 +31,11 @@ export interface DialogueChoice {
   next: string | null;
   conditions?: StoryCondition[];
   effects?: StoryEffect[];
+  /**
+   * 选项所属的任务步骤。只有当前任务步骤命中时才显示，避免 NPC 一次列出
+   * 所有话题；省略表示常规选项（返回、离开、态度回应），始终显示。
+   */
+  taskIds?: readonly string[];
 }
 
 export interface DialogueNode {

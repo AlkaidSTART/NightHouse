@@ -14,6 +14,11 @@ import {
   type SceneModel,
 } from './SceneModelLoader.ts';
 import { DOOR_THICKNESS, doorCenter } from './sceneGeometry.ts';
+import {
+  DEFAULT_NPC_GESTURE_PROFILE,
+  NpcGesture,
+  type NpcGestureProfile,
+} from './NpcGesture.ts';
 import { selectNpcStations } from './npcStations.ts';
 import type { StoryFlags } from '../story/conditions.ts';
 import {
@@ -65,6 +70,9 @@ interface NpcRoleRuntime {
   instance: pc.Entity | null;
   activeSpotId: string | null;
   talking: boolean;
+  /** 当前台词是否由该 NPC 说出；false 时按倾听状态处理。 */
+  speaking: boolean;
+  gesture: NpcGesture | null;
 }
 
 const NPC_MATERIAL: Record<SceneNpcSpot['npcId'], SceneMaterialId> = {
@@ -78,6 +86,46 @@ const NPC_NAME: Record<SceneNpcSpot['npcId'], string> = {
   npc_housekeeper: '霍尔太太',
   npc_doctor: '格雷医生',
 };
+
+const NPC_IDS = ['npc_arthur', 'npc_housekeeper', 'npc_doctor'] as const;
+
+/**
+ * 对话微动作性格：亚瑟克制，霍尔太太几乎不动，医生疲惫但更爱用手势。
+ * 幅度单位是度，实际播放时还会叠加说话音节与随机小事件。
+ */
+const NPC_GESTURE_PROFILE: Record<SceneNpcSpot['npcId'], NpcGestureProfile> = {
+  npc_arthur: {
+    ...DEFAULT_NPC_GESTURE_PROFILE,
+    energy: 0.85,
+    tempo: 0.95,
+    speech: 0.85,
+    hands: 0.8,
+    weightShift: 0.9,
+    phase: 0.3,
+  },
+  npc_housekeeper: {
+    ...DEFAULT_NPC_GESTURE_PROFILE,
+    energy: 0.65,
+    tempo: 0.8,
+    speech: 0.7,
+    hands: 0.5,
+    weightShift: 0.6,
+    phase: 2.1,
+  },
+  npc_doctor: {
+    ...DEFAULT_NPC_GESTURE_PROFILE,
+    energy: 0.95,
+    tempo: 0.85,
+    speech: 1,
+    hands: 1.1,
+    weightShift: 1,
+    phase: 4.2,
+  },
+};
+
+function isNpcId(value: string): value is SceneNpcSpot['npcId'] {
+  return (NPC_IDS as readonly string[]).includes(value);
+}
 
 const NPC_PLACEHOLDER_HEIGHT = 1.75;
 const DOOR_ANCHOR_HEIGHT = 1.4;
@@ -167,6 +215,8 @@ export class SceneManager {
           instance: null,
           activeSpotId: null,
           talking: false,
+          speaking: false,
+          gesture: null,
         });
       }
       interactables.push(this.createNpcSpot(spot));
@@ -328,7 +378,28 @@ export class SceneManager {
         continue;
       }
       runtime.talking = talking;
+      if (!talking) {
+        runtime.speaking = false;
+      }
       this.applyNpcAnimation(runtime);
+    }
+  }
+
+  /**
+   * 台词切换时更新 NPC 是否正在说话。
+   * 倾听阶段保留对话站姿，但放慢 Talk 动作并收敛程序化手势。
+   */
+  setNpcSpeaking(npcId: string, speaking: boolean): void {
+    if (!isNpcId(npcId)) {
+      return;
+    }
+    const runtime = this.npcRoles.get(npcId);
+    if (!runtime || runtime.speaking === speaking) {
+      return;
+    }
+    runtime.speaking = speaking;
+    if (runtime.talking) {
+      this.applyNpcAnimationSpeed(runtime);
     }
   }
 
@@ -340,13 +411,23 @@ export class SceneManager {
     retargetDoorSwing(entry.motion, open ? 90 * entry.swing : 0);
   }
 
-  /** 推进门扇的开合动画。由游戏循环每帧调用。 */
+  /** 推进门扇与 NPC 对话微动作。由游戏循环每帧调用。 */
   update(dt: number): void {
     for (const entry of this.doorPivots.values()) {
       const angle = advanceDoorSwing(entry.motion, dt);
       if (angle !== null) {
         entry.pivot.setLocalEulerAngles(0, angle, 0);
       }
+    }
+
+    for (const runtime of this.npcRoles.values()) {
+      runtime.gesture?.update(
+        dt,
+        runtime.talking &&
+          runtime.activeSpotId !== null &&
+          runtime.instance?.enabled === true,
+        runtime.speaking,
+      );
     }
   }
 
@@ -356,6 +437,11 @@ export class SceneManager {
     this.loadAbort.abort();
     this.characterLoadAbort.abort();
     this.pendingTextureCallbacks.clear();
+
+    for (const runtime of this.npcRoles.values()) {
+      runtime.gesture?.dispose();
+      runtime.gesture = null;
+    }
 
     for (const container of this.characterContainers.values()) {
       container.dispose();
@@ -441,6 +527,10 @@ export class SceneManager {
     if (!runtime.instance) {
       runtime.instance = runtime.container.instantiate();
       this.setupNpcAnimation(runtime);
+      runtime.gesture = new NpcGesture(
+        runtime.instance,
+        NPC_GESTURE_PROFILE[npcId],
+      );
     }
 
     runtime.instance.reparent(handle.root);
@@ -484,6 +574,8 @@ export class SceneManager {
       return;
     }
 
+    this.applyNpcAnimationSpeed(runtime);
+
     const target = runtime.talking ? 'Talk' : 'Idle';
     if (!layer.states.includes(target)) {
       return;
@@ -497,6 +589,15 @@ export class SceneManager {
     } else {
       layer.transition(target, 0.25);
     }
+  }
+
+  /** 倾听时把 Talk 动作放慢，保留站姿但避免持续做大幅手势。 */
+  private applyNpcAnimationSpeed(runtime: NpcRoleRuntime): void {
+    const anim = runtime.instance?.anim;
+    if (!anim) {
+      return;
+    }
+    anim.speed = runtime.talking && !runtime.speaking ? 0.55 : 1;
   }
 
   private createNpcSpot(spot: SceneNpcSpot): SceneInteractableHandle {

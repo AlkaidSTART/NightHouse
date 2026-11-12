@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { CLUE_FLAGS, CLUE_IDS } from '../src/content/clues.ts';
 import { content } from '../src/content/index.ts';
+import { quests } from '../src/content/quests.ts';
 import { KNOWN_STORY_FLAGS } from '../src/content/storyFlags.ts';
 import type { DialogueNode, StoryCondition } from '../src/shared/types/content.ts';
 
@@ -12,6 +13,9 @@ for (const node of content.dialogues) {
 
 const npcIds = new Set(content.npcs.map((npc) => npc.id));
 const knownFlags = new Set<string>([...KNOWN_STORY_FLAGS, ...CLUE_FLAGS]);
+const questStepIds = new Set(
+  quests.flatMap((quest) => quest.steps.map((step) => step.id)),
+);
 
 function assertKnownConditions(where: string, conditions?: readonly StoryCondition[]): void {
   for (const condition of conditions ?? []) {
@@ -30,6 +34,12 @@ test('对话节点 ID 唯一，且归属已登记的 NPC', () => {
     assertKnownConditions(`${node.id} 节点条件`, node.conditions);
     for (const choice of node.choices) {
       assertKnownConditions(`${node.id}.${choice.id} 选项条件`, choice.conditions);
+      for (const taskId of choice.taskIds ?? []) {
+        assert.ok(
+          questStepIds.has(taskId),
+          `${node.id}.${choice.id} 引用了不存在的任务步骤：${taskId}`,
+        );
+      }
       for (const effect of choice.effects ?? []) {
         switch (effect.type) {
           case 'set-flag':

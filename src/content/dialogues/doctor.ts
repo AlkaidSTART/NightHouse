@@ -22,18 +22,21 @@ export const doctorDialogues: readonly DialogueNode[] = [
         id: 'polite',
         text: '麻烦您了，格雷医生。',
         next: 'npc_doctor_purpose',
+        taskIds: ['step_doctor'],
         effects: [flag('story.doctor_talked')],
       },
       {
         id: 'ask_summer',
         text: '您记得那个夏天？',
         next: 'npc_doctor_summer_01',
+        taskIds: ['step_doctor'],
         effects: [flag('story.doctor_talked')],
       },
       {
         id: 'ask_evelyn',
         text: '伊芙琳的事，您在场。',
         next: 'npc_doctor_evelyn_01',
+        taskIds: ['step_doctor', 'step_coverup'],
         effects: [flag('story.doctor_talked')],
       },
       {
@@ -251,6 +254,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
         text: '请您作证。',
         next: 'npc_doctor_testify',
         conditions: [{ flag: 'story.doctor_confessed' }],
+        taskIds: ['step_midnight'],
       },
       {
         id: 'leave',
@@ -261,6 +265,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
         id: 'threaten',
         text: '那我就把诊疗记录交给律师。',
         next: 'npc_doctor_press',
+        taskIds: ['step_midnight'],
       },
     ],
   },

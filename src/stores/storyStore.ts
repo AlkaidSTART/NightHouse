@@ -1,10 +1,14 @@
 import { create } from 'zustand';
+import { quests } from '../content/quests';
 import type { StoryFlagValue } from '../shared/types/content';
 import type { NPCState, SaveData, Vec3Tuple } from '../shared/types/save';
 import { createNewSave, SAVE_SCHEMA_VERSION } from '../game/save/SaveManager';
+import { resolveActiveStepId } from '../game/story/questProgress';
 
 export interface StoryState {
   currentSceneId: string;
+  /** 当前任务步骤 ID（全局进度共享值），由剧情标记推导，非持久化。 */
+  activeTaskId: string | null;
   storyFlags: Record<string, StoryFlagValue>;
   discoveredClueIds: string[];
   completedPuzzleIds: string[];
@@ -27,6 +31,7 @@ const initialDefault = createNewSave();
 
 export const useStoryStore = create<StoryState>((set, get) => ({
   currentSceneId: initialDefault.currentSceneId,
+  activeTaskId: resolveActiveStepId(initialDefault.storyFlags, quests),
   storyFlags: initialDefault.storyFlags,
   discoveredClueIds: initialDefault.discoveredClueIds,
   completedPuzzleIds: initialDefault.completedPuzzleIds,
@@ -35,9 +40,11 @@ export const useStoryStore = create<StoryState>((set, get) => ({
   choices: initialDefault.choices,
 
   loadFromSave: (save: SaveData) => {
+    const storyFlags = { ...save.storyFlags };
     set({
       currentSceneId: save.currentSceneId,
-      storyFlags: { ...save.storyFlags },
+      activeTaskId: resolveActiveStepId(storyFlags, quests),
+      storyFlags,
       discoveredClueIds: [...save.discoveredClueIds],
       completedPuzzleIds: [...save.completedPuzzleIds],
       completedQuestIds: [...save.completedQuestIds],
@@ -47,12 +54,16 @@ export const useStoryStore = create<StoryState>((set, get) => ({
   },
 
   setStoryFlag: (flag: string, value: StoryFlagValue) => {
-    set((state) => ({
-      storyFlags: {
+    set((state) => {
+      const storyFlags = {
         ...state.storyFlags,
         [flag]: value,
-      },
-    }));
+      };
+      return {
+        storyFlags,
+        activeTaskId: resolveActiveStepId(storyFlags, quests),
+      };
+    });
   },
 
   discoverClue: (clueId: string) => {
@@ -124,6 +135,7 @@ export const useStoryStore = create<StoryState>((set, get) => ({
     const fresh = createNewSave(sceneId);
     set({
       currentSceneId: fresh.currentSceneId,
+      activeTaskId: resolveActiveStepId(fresh.storyFlags, quests),
       storyFlags: fresh.storyFlags,
       discoveredClueIds: fresh.discoveredClueIds,
       completedPuzzleIds: fresh.completedPuzzleIds,

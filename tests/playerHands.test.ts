@@ -64,14 +64,29 @@ test('PlayerHands 加载骨骼并在交互时驱动右手微动与释放资源',
 
   assert.equal(camera.children.includes(mockRoot), true);
   const forearmR = mockRoot.findByName('forearm_R') as pc.Entity;
-  const restZ = forearmR.getLocalPosition().z;
+  const indexR = mockRoot.findByName('index_01_R') as pc.Entity;
 
+  // 静息偏移：收拢肩距、稍向前、稍向下（父空间 X 右 / Y 前 / Z 上）
+  const relaxed = forearmR.getLocalPosition();
+  assert.ok(Math.abs(relaxed.x - 0.07) < 1e-6, `肩距应向内收拢，x=${relaxed.x}`);
+  assert.ok(Math.abs(relaxed.y - 0.23) < 1e-6, `应稍微前移，y=${relaxed.y}`);
+  assert.ok(Math.abs(relaxed.z - 0.25) < 1e-6, `应稍微下移，z=${relaxed.z}`);
+
+  // 手指静息时保持向掌心弯曲（局部 X 负向）
+  const baseCurl = indexR.getLocalRotation().x;
+  assert.ok(baseCurl < 0, `静息手指应轻微弯曲，x=${baseCurl}`);
+
+  const restY = relaxed.y;
   hands.update(0.016);
   hands.triggerInteract();
   hands.update(0.15);
 
-  const interactZ = forearmR.getLocalPosition().z;
-  assert.ok(interactZ < restZ, `交互时右手应向前(-Z)探出，restZ=${restZ}, interactZ=${interactZ}`);
+  const interactY = forearmR.getLocalPosition().y;
+  assert.ok(interactY > restY, `交互时右手应沿局部 +Y（世界前方）探出，restY=${restY}, interactY=${interactY}`);
+  assert.ok(
+    indexR.getLocalRotation().x < baseCurl,
+    '交互时手指应进一步向掌心弯曲',
+  );
 
   hands.dispose();
   assert.ok(loadedAsset !== null);

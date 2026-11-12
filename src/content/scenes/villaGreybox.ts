@@ -565,7 +565,7 @@ const npcSpots: SceneNpcSpot[] = [
     npcId: 'npc_arthur',
     label: '书桌椅（B9 对质）',
     position: [-7.5, 0, -6.8],
-    yaw: 0,
+    yaw: 168,
     priority: 35,
     activeWhen: [
       [{ flag: 'story.knows_coverup' }],

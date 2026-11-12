@@ -24,6 +24,8 @@ export interface ConversationEndEvent {
 
 export interface DialogueHost {
   getFlags(): StoryFlags;
+  /** 当前任务步骤 ID；用于把话题选项收窄到本次任务，未提供时不做过滤。 */
+  getActiveTaskId?: () => string | null;
   setFlag: (key: string, value: StoryFlagValue) => void;
   discoverClue: (clueId: string) => void;
   recordChoice: (nodeId: string, choiceId: string) => void;
@@ -111,6 +113,10 @@ export class DialogueSystem {
     }
     const choices = this.availableChoices(node);
     if (node.lines.length === 0 && choices.length === 0) {
+      return false;
+    }
+    // 重复交谈时若本次任务已没有可聊的话题，不再重播台词。
+    if (options.skipOpeningLines === true && choices.length === 0) {
       return false;
     }
 
@@ -261,9 +267,26 @@ export class DialogueSystem {
 
   private availableChoices(node: DialogueNode): DialogueChoice[] {
     const flags = this.host.getFlags();
-    return node.choices.filter((choice) =>
-      areConditionsMet(flags, choice.conditions ?? []),
+    const activeTaskId = this.host.getActiveTaskId?.() ?? null;
+    return node.choices.filter(
+      (choice) =>
+        areConditionsMet(flags, choice.conditions ?? []) &&
+        this.isChoiceRelevant(choice, activeTaskId),
     );
+  }
+
+  /**
+   * 话题选项只在当前任务步骤命中时显示；未标记任务的选项（返回、离开、
+   * 态度回应）始终保留。任务全部完成（activeTaskId 为 null）时不过滤。
+   */
+  private isChoiceRelevant(
+    choice: DialogueChoice,
+    activeTaskId: string | null,
+  ): boolean {
+    if (!choice.taskIds || choice.taskIds.length === 0) {
+      return true;
+    }
+    return activeTaskId === null || choice.taskIds.includes(activeTaskId);
   }
 
   private applyEffect(effect: StoryEffect): void {

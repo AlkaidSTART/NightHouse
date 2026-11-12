@@ -46,3 +46,14 @@ export function resolveActiveObjective(
   }
   return null;
 }
+
+/**
+ * 当前任务步骤 ID。所有任务都完成或没有任务时返回 null。
+ * 进度完全由剧情标记推导，因此可安全地作为全局共享值使用。
+ */
+export function resolveActiveStepId(
+  flags: StoryFlags,
+  quests: readonly QuestDefinition[],
+): string | null {
+  return resolveActiveObjective(flags, quests)?.step.id ?? null;
+}

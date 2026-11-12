@@ -84,6 +84,21 @@ test('NPC 站位：掌握封口证据后亚瑟回到书房对质', () => {
   assert.equal(stations(clueOnly).npc_arthur, 'NPC_arthur_study_desk');
 });
 
+test('NPC 站位：书房对质时亚瑟正对门口', () => {
+  const spot = villaGreybox.npcSpots.find((entry) => entry.id === 'NPC_arthur_study_desk');
+  const door = villaGreybox.doors.find((entry) => entry.id === 'DOOR_study');
+  assert.ok(spot && door, '书房对质站位与书房门必须存在');
+
+  const yaw = ((spot.yaw ?? 0) * Math.PI) / 180;
+  const facingX = -Math.sin(yaw);
+  const facingZ = -Math.cos(yaw);
+  const toDoorX = door.hinge[0] + door.width / 2 - spot.position[0];
+  const toDoorZ = door.hinge[2] - spot.position[2];
+  const dot =
+    (facingX * toDoorX + facingZ * toDoorZ) / Math.hypot(toDoorX, toDoorZ);
+  assert.ok(dot > 0.99, `亚瑟没有面向书房门（dot=${dot}）`);
+});
+
 test('NPC 站位：午夜进入 B10，签字桌、门边、楼梯口各就各位', () => {
   const flags: StoryFlags = {
     ...ARRIVED,

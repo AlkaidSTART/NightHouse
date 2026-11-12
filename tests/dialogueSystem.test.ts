@@ -22,6 +22,7 @@ interface Fixture {
 
 function createFixture(
   initialFlags: Record<string, StoryFlagValue> = {},
+  activeTaskId: string | null = null,
 ): Fixture {
   const flags: Record<string, StoryFlagValue> = { ...initialFlags };
   const discoveries: string[] = [];
@@ -30,6 +31,7 @@ function createFixture(
   const conversationEnds: ConversationEndEvent[] = [];
   const host: DialogueHost = {
     getFlags: () => flags,
+    getActiveTaskId: () => activeTaskId,
     setFlag: (key, value) => {
       flags[key] = value;
     },
@@ -353,4 +355,53 @@ test('会话结束上报：选择结束选项时只上报一次', () => {
   assert.deepEqual(conversationEnds, [
     { npcId: 'npc_arthur', nodeId: 'npc_arthur_intro', completed: true },
   ]);
+});
+
+test('话题选项按全局任务进度过滤，未标记的返回/离开选项保留', () => {
+  const { system } = createFixture(
+    { 'story.arrived': true, 'player.honorific': 'sir' },
+    'step_arthur',
+  );
+  assert.equal(system.open('npc_arthur_intro'), true);
+  const view = showChoices(system);
+  const ids = view.choices.map((choice) => choice.id);
+  assert.ok(ids.includes('ask_evelyn'));
+  assert.ok(ids.includes('ask_house'));
+  assert.ok(ids.includes('leave'));
+
+  // 同一个 NPC 在其他任务阶段只保留常规退出项。
+  const housekeeper = createFixture(
+    { 'story.arrived': true, 'player.honorific': 'sir' },
+    'step_arthur',
+  );
+  assert.equal(housekeeper.system.open('npc_housekeeper_intro'), true);
+  const housekeeperIds = showChoices(housekeeper.system).choices.map(
+    (choice) => choice.id,
+  );
+  assert.ok(housekeeperIds.includes('leave'));
+  assert.ok(housekeeperIds.includes('warm'));
+  assert.equal(housekeeperIds.includes('ask_evelyn'), false);
+
+  // 霍尔太太在调查阶段重新出现相关话题。
+  const coverup = createFixture(
+    { 'story.arrived': true, 'player.honorific': 'sir' },
+    'step_coverup',
+  );
+  assert.equal(coverup.system.open('npc_housekeeper_intro'), true);
+  const coverupIds = showChoices(coverup.system).choices.map((c) => c.id);
+  assert.ok(coverupIds.includes('ask_evelyn'));
+  assert.ok(coverupIds.includes('warm'));
+  assert.ok(coverupIds.includes('leave'));
+});
+
+test('任务全部完成（无当前任务）时不过滤话题选项', () => {
+  const { system } = createFixture(
+    { 'story.arrived': true, 'player.honorific': 'sir' },
+    null,
+  );
+  assert.equal(system.open('npc_arthur_intro'), true);
+  const ids = showChoices(system).choices.map((choice) => choice.id);
+  assert.ok(ids.includes('ask_evelyn'));
+  assert.ok(ids.includes('ask_will'));
+  assert.ok(ids.includes('ask_house'));
 });
