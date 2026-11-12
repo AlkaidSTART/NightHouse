@@ -14,6 +14,14 @@ import type { StoryFlags } from '../story/conditions.ts';
 import { areConditionsMet } from '../story/conditions.ts';
 import { resolveDialogueEntry } from './dialogueEntries.ts';
 
+export interface ConversationEndEvent {
+  npcId: string;
+  /** 打开对话时使用的入口节点 ID。 */
+  nodeId: string;
+  /** 玩家至少推进过一句台词或做出过一次选择；只打开就关闭不算谈完。 */
+  completed: boolean;
+}
+
 export interface DialogueHost {
   getFlags(): StoryFlags;
   setFlag: (key: string, value: StoryFlagValue) => void;
@@ -21,6 +29,8 @@ export interface DialogueHost {
   recordChoice: (nodeId: string, choiceId: string) => void;
   /** 会话内容变化时回调；关闭会话时传 null。 */
   onChange: (view: DialogueView | null) => void;
+  /** 会话关闭后回调，宿主据此推进剧情与 NPC 出场。 */
+  onConversationEnd?: (event: ConversationEndEvent) => void;
   unlockDialogue?: (dialogueId: string) => void;
 }
 
@@ -32,12 +42,16 @@ export interface DialogueSystemOptions {
 
 interface Session {
   nodeId: string;
+  entryNodeId: string;
+  npcId: string;
   /** 下一条要显示的台词；等于 lines.length 时表示进入选项阶段。 */
   lineIndex: number;
   /** 本次会话里已经展示过的节点；返回这类节点时直接进入选项阶段，避免重播台词。 */
   visited: Set<string>;
   /** 跳过当前节点台词时不再显示最后一句，避免把上一话题的台词当成新的回应。 */
   hideLine: boolean;
+  /** 玩家是否推进过台词或做过选择，用于区分「谈完」和「打开就关」。 */
+  engaged: boolean;
 }
 
 const SPEAKER_PREFIX = /^【([^】]+)】\s*(.*)$/;
@@ -103,9 +117,12 @@ export class DialogueSystem {
     const hideLine = options.skipOpeningLines === true && choices.length > 0;
     this.session = {
       nodeId: node.id,
+      entryNodeId: node.id,
+      npcId: node.npcId,
       lineIndex: hideLine ? node.lines.length : 0,
       visited: new Set([node.id]),
       hideLine,
+      engaged: false,
     };
     this.emit();
     return true;
@@ -127,6 +144,7 @@ export class DialogueSystem {
     }
 
     session.lineIndex += 1;
+    session.engaged = true;
     if (
       session.lineIndex >= node.lines.length &&
       this.availableChoices(node).length === 0
@@ -154,6 +172,7 @@ export class DialogueSystem {
       return false;
     }
 
+    session.engaged = true;
     for (const effect of choice.effects ?? []) {
       this.applyEffect(effect);
     }
@@ -193,11 +212,18 @@ export class DialogueSystem {
   }
 
   close(): void {
-    if (!this.session) {
+    const session = this.session;
+    if (!session) {
       return;
     }
     this.session = null;
+    // 先关闭界面并交还控制权，再让宿主推进剧情，避免 NPC 在对话界面里当场换位。
     this.host.onChange(null);
+    this.host.onConversationEnd?.({
+      npcId: session.npcId,
+      nodeId: session.entryNodeId,
+      completed: session.engaged,
+    });
   }
 
   view(): DialogueView | null {

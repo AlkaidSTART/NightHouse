@@ -538,15 +538,28 @@ const D2_LATE = 'D2 待裁决：仅当格雷 B4 才到场时使用';
  * 90 面向 −X，180 面向 +Z，−90 面向 +X。
  */
 const npcSpots: SceneNpcSpot[] = [
-  // 霍尔太太：开门迎客 → 晚宴门边 → 十三下后走廊口 → B10 门边
+  // 霍尔太太：开门迎客 → 晚宴餐厅尽头 → 十三下后走廊口 → B10 门边
   { id: 'NPC_housekeeper_front_door', npcId: 'npc_housekeeper', label: '正门内侧（B1）', position: [1.3, 0, 6.2], yaw: 115, priority: 10, activeWhen: [[{ flag: 'story.arrived' }]] },
-  { id: 'NPC_housekeeper_dining_door', npcId: 'npc_housekeeper', label: '餐厅门边（B3）', position: [4.45, 0, 4.6], yaw: -50, priority: 20, activeWhen: [[{ flag: 'story.met_arthur' }]] },
+  { id: 'NPC_housekeeper_dining_door', npcId: 'npc_housekeeper', label: '餐厅尽头 · 南侧（B3）', position: [10.15, 0, 5], yaw: 76, priority: 20, activeWhen: [[{ flag: 'story.arthur_talked' }]] },
   { id: 'NPC_housekeeper_corridor_mouth', npcId: 'npc_housekeeper', label: '走廊口（十三下之后）', position: [-3.4, 0, 0.5], yaw: -120, priority: 30, activeWhen: [[{ flag: 'story.clock_repaired' }]] },
   { id: 'NPC_housekeeper_hall_door_b10', npcId: 'npc_housekeeper', label: '门边（B10）', position: [-1.6, 0, 6.3], yaw: -30, priority: 40, activeWhen: [[{ flag: 'story.midnight' }]] },
 
-  // 亚瑟：客厅壁炉旁 → 餐厅主位 → 书房对质 → 二楼栏杆边 → B10 签字桌
-  { id: 'NPC_arthur_parlor_fireplace', npcId: 'npc_arthur', label: '客厅壁炉旁（B2）', position: [-9.4, 0, 3.1], yaw: -90, priority: 10, activeWhen: [[{ flag: 'story.arrived' }]] },
-  { id: 'NPC_arthur_dining_head', npcId: 'npc_arthur', label: '餐厅主位（B3）', position: [5.1, 0, 3.5], yaw: -90, priority: 20, activeWhen: [[{ flag: 'story.met_arthur' }]] },
+  // 亚瑟：客厅壁炉旁 → 餐厅尽头 → 书房对质 → 二楼栏杆边 → B10 签字桌
+  // 亚瑟在霍尔太太谈完后出场（或玩家直接走进客厅时兜底出场）；
+  // 只有亚瑟的对话真正结束，他才会让出壁炉边的位置去餐厅尽头。
+  {
+    id: 'NPC_arthur_parlor_fireplace',
+    npcId: 'npc_arthur',
+    label: '客厅壁炉旁（B2）',
+    position: [-9.4, 0, 3.1],
+    yaw: -90,
+    priority: 10,
+    activeWhen: [
+      [{ flag: 'story.arthur_called' }],
+      [{ flag: 'story.met_arthur' }],
+    ],
+  },
+  { id: 'NPC_arthur_dining_head', npcId: 'npc_arthur', label: '餐厅尽头 · 北侧（B3）', position: [10.15, 0, 2.05], yaw: 103, priority: 20, activeWhen: [[{ flag: 'story.arthur_talked' }]] },
   {
     id: 'NPC_arthur_study_desk',
     npcId: 'npc_arthur',
@@ -563,8 +576,10 @@ const npcSpots: SceneNpcSpot[] = [
   { id: 'NPC_arthur_signing_table', npcId: 'npc_arthur', label: '签字桌边（B10）', position: [0, 0, 3.15], yaw: 180, priority: 40, activeWhen: [[{ flag: 'story.midnight' }]] },
 
   // 格雷医生：B4 到访 → 十三下后餐厅门口 → B10 楼梯口（D2 未裁决，仅使用晚到的一组）
-  { id: 'NPC_doctor_front_door_b4', npcId: 'npc_doctor', label: '正门内侧（B4 到访）', position: [-1.35, 0, 6], yaw: -25, priority: 10, pending: D2_LATE, activeWhen: [[{ flag: 'story.met_doctor' }]] },
-  { id: 'NPC_doctor_dining_door', npcId: 'npc_doctor', label: '餐厅门口（十三下之后）', position: [3.3, 0, 3.5], yaw: 90, priority: 30, activeWhen: [[{ flag: 'story.clock_repaired' }]] },
+  // 到访时站在门厅中央、正对客厅门口，与正门保持距离，也不会被门扇扫到。
+  { id: 'NPC_doctor_front_door_b4', npcId: 'npc_doctor', label: '门厅（B4 到访）', position: [1.5, 0, 3.5], yaw: 90, priority: 10, pending: D2_LATE, activeWhen: [[{ flag: 'story.met_doctor' }]] },
+  // 餐厅门口偏北一侧：在门洞的开门扇形之外，避免门扇转动时穿模。
+  { id: 'NPC_doctor_dining_door', npcId: 'npc_doctor', label: '餐厅门口（十三下之后）', position: [3.3, 0, 2.2], yaw: 90, priority: 30, activeWhen: [[{ flag: 'story.clock_repaired' }]] },
   { id: 'NPC_doctor_stair_foot', npcId: 'npc_doctor', label: '楼梯口（B10）', position: [2.1, 0, 2.6], yaw: 125, priority: 40, activeWhen: [[{ flag: 'story.midnight' }]] },
 
   // 未启用：保险箱失败桥段尚未实现；D2 未裁决的早到站位暂不生成。

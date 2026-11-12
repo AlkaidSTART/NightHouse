@@ -4,6 +4,7 @@ import { content } from '../src/content/index.ts';
 import {
   DialogueSystem,
   resolveDialogueText,
+  type ConversationEndEvent,
   type DialogueHost,
 } from '../src/game/dialogue/DialogueSystem.ts';
 import { resolveDialogueEntry } from '../src/game/dialogue/dialogueEntries.ts';
@@ -16,6 +17,7 @@ interface Fixture {
   discoveries: string[];
   choices: Array<[string, string]>;
   views: Array<DialogueView | null>;
+  conversationEnds: ConversationEndEvent[];
 }
 
 function createFixture(
@@ -25,6 +27,7 @@ function createFixture(
   const discoveries: string[] = [];
   const choices: Array<[string, string]> = [];
   const views: Array<DialogueView | null> = [];
+  const conversationEnds: ConversationEndEvent[] = [];
   const host: DialogueHost = {
     getFlags: () => flags,
     setFlag: (key, value) => {
@@ -39,13 +42,16 @@ function createFixture(
     onChange: (view) => {
       views.push(view);
     },
+    onConversationEnd: (event) => {
+      conversationEnds.push(event);
+    },
   };
   const system = new DialogueSystem({
     dialogues: content.dialogues,
     npcNames: new Map(content.npcs.map((npc) => [npc.id, npc.name])),
     host,
   });
-  return { system, flags, discoveries, choices, views };
+  return { system, flags, discoveries, choices, views, conversationEnds };
 }
 
 function currentView(system: DialogueSystem): DialogueView {
@@ -316,4 +322,35 @@ test('霍尔太太的夜间证词链可以推进到掩盖真相', () => {
   system.choose(leave.id);
   assert.equal(flags['story.knows_coverup'], true);
   assert.equal(system.active, false);
+});
+
+test('会话结束上报：只打开就关闭不算谈完', () => {
+  const { system, conversationEnds } = createFixture({ 'story.arrived': true });
+  assert.equal(system.open('npc_arthur_intro'), true);
+  system.close();
+  assert.deepEqual(conversationEnds, [
+    { npcId: 'npc_arthur', nodeId: 'npc_arthur_intro', completed: false },
+  ]);
+});
+
+test('会话结束上报：推进台词后算谈完', () => {
+  const { system, conversationEnds } = createFixture({ 'story.arrived': true });
+  assert.equal(system.open('npc_arthur_intro'), true);
+  system.advance();
+  system.close();
+  assert.deepEqual(conversationEnds, [
+    { npcId: 'npc_arthur', nodeId: 'npc_arthur_intro', completed: true },
+  ]);
+});
+
+test('会话结束上报：选择结束选项时只上报一次', () => {
+  const { system, conversationEnds } = createFixture({ 'story.arrived': true });
+  assert.equal(system.open('npc_arthur_intro'), true);
+  const view = showChoices(system);
+  const leave = view.choices.find((choice) => choice.id === 'leave');
+  assert.ok(leave);
+  assert.equal(system.choose(leave.id), true);
+  assert.deepEqual(conversationEnds, [
+    { npcId: 'npc_arthur', nodeId: 'npc_arthur_intro', completed: true },
+  ]);
 });

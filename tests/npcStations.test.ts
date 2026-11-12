@@ -14,17 +14,35 @@ function stations(flags: StoryFlags): Record<string, string> {
 
 const ARRIVED: StoryFlags = { 'story.arrived': true };
 
-test('NPC 站位：刚进门时管家在门口、亚瑟在客厅，医生尚未到场', () => {
+test('NPC 站位：刚进门时只有管家在门口，亚瑟尚未出场', () => {
   assert.deepEqual(stations(ARRIVED), {
     npc_housekeeper: 'NPC_housekeeper_front_door',
-    npc_arthur: 'NPC_arthur_parlor_fireplace',
   });
 });
 
-test('NPC 站位：见过亚瑟后进入晚宴，医生到访后出现在正门', () => {
+test('NPC 站位：管家谈完后亚瑟出现在客厅', () => {
+  assert.deepEqual(
+    stations({ ...ARRIVED, 'story.arthur_called': true }),
+    {
+      npc_housekeeper: 'NPC_housekeeper_front_door',
+      npc_arthur: 'NPC_arthur_parlor_fireplace',
+    },
+  );
+});
+
+test('NPC 站位：只点了对话选项（已见面）时亚瑟仍留在客厅', () => {
+  assert.equal(
+    stations({ ...ARRIVED, 'story.met_arthur': true }).npc_arthur,
+    'NPC_arthur_parlor_fireplace',
+  );
+});
+
+test('NPC 站位：亚瑟谈完后进入晚宴，医生到访后出现在正门', () => {
   const flags: StoryFlags = {
     ...ARRIVED,
+    'story.arthur_called': true,
     'story.met_arthur': true,
+    'story.arthur_talked': true,
     'story.met_doctor': true,
   };
   assert.deepEqual(stations(flags), {
@@ -37,7 +55,9 @@ test('NPC 站位：见过亚瑟后进入晚宴，医生到访后出现在正门'
 test('NPC 站位：十三下之后三人同时出现在 C5 规定的站位', () => {
   const flags: StoryFlags = {
     ...ARRIVED,
+    'story.arthur_called': true,
     'story.met_arthur': true,
+    'story.arthur_talked': true,
     'story.met_doctor': true,
     'story.clock_repaired': true,
   };
@@ -51,7 +71,9 @@ test('NPC 站位：十三下之后三人同时出现在 C5 规定的站位', () 
 test('NPC 站位：掌握封口证据后亚瑟回到书房对质', () => {
   const flags: StoryFlags = {
     ...ARRIVED,
+    'story.arthur_called': true,
     'story.met_arthur': true,
+    'story.arthur_talked': true,
     'story.met_doctor': true,
     'story.clock_repaired': true,
     'story.knows_coverup': true,
@@ -65,7 +87,9 @@ test('NPC 站位：掌握封口证据后亚瑟回到书房对质', () => {
 test('NPC 站位：午夜进入 B10，签字桌、门边、楼梯口各就各位', () => {
   const flags: StoryFlags = {
     ...ARRIVED,
+    'story.arthur_called': true,
     'story.met_arthur': true,
+    'story.arthur_talked': true,
     'story.met_doctor': true,
     'story.clock_repaired': true,
     'story.knows_coverup': true,
@@ -98,5 +122,42 @@ test('NPC 站位不落在碰撞家具内部', () => {
         z < box.max[2],
     );
     assert.equal(inside, undefined, `${spot.id} 落在 ${inside?.id} 内部`);
+  }
+});
+
+/** 门扇绕合页从关闭位扫到全开位的 90° 扇形。 */
+function insideDoorSwing(
+  door: (typeof villaGreybox.doors)[number],
+  x: number,
+  z: number,
+): boolean {
+  const dx = x - door.hinge[0];
+  const dz = z - door.hinge[2];
+  if (Math.hypot(dx, dz) > door.width) {
+    return false;
+  }
+  const angle =
+    door.axis === 'x'
+      ? door.swing === 1
+        ? Math.atan2(-dz, dx)
+        : Math.atan2(dz, dx)
+      : door.swing === 1
+        ? Math.atan2(dx, dz)
+        : Math.atan2(-dx, dz);
+  return angle >= 0 && angle <= Math.PI / 2;
+}
+
+test('NPC 站位不在任何门的开合扇形里', () => {
+  for (const spot of villaGreybox.npcSpots) {
+    for (const door of villaGreybox.doors) {
+      if (door.sealed) {
+        continue;
+      }
+      assert.equal(
+        insideDoorSwing(door, spot.position[0], spot.position[2]),
+        false,
+        `${spot.id} 位于 ${door.id} 的开合扇形内`,
+      );
+    }
   }
 });

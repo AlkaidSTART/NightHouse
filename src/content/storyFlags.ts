@@ -15,6 +15,9 @@ export const STORY_FLAGS = [
   'story.met_arthur',
   'story.met_housekeeper',
   'story.met_doctor',
+  // 出场阶段：由对话真正结束点亮，驱动下一名 NPC 的渲染与换位。
+  'story.arthur_called',
+  'story.arthur_talked',
   'story.doctor_talked',
   'story.housekeeper_warm',
   'story.housekeeper_cold',

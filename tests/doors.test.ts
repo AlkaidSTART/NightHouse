@@ -5,7 +5,7 @@ import {
   createCollisionWorld,
   PLAYER_RADIUS,
 } from '../src/game/collision/CollisionWorld.ts';
-import { DoorSystem } from '../src/game/scene/DoorSystem.ts';
+import { DoorSystem, AUTO_CLOSE_DELAY } from '../src/game/scene/DoorSystem.ts';
 import {
   areConditionsMet,
   isAnyConditionGroupMet,
@@ -81,4 +81,35 @@ test('走查开关不会打开永久锁闭的装饰门', () => {
   for (const door of villaGreybox.doors.filter((item) => item.sealed)) {
     assert.equal(doors.use(door.id, 0, 0).kind, 'locked');
   }
+});
+
+test('玩家打开的门在无人靠近时自动关上', () => {
+  const { doors } = setup({ 'story.met_arthur': true });
+  assert.deepEqual(doors.use('DOOR_study', -8.5, -1), { kind: 'opened' });
+
+  doors.update(AUTO_CLOSE_DELAY - 0.1, 0, 0);
+  assert.equal(doors.isOpen('DOOR_study'), true, '计时未到不应关门');
+
+  doors.update(0.2, 0, 0);
+  assert.equal(doors.isOpen('DOOR_study'), false);
+  assert.equal(doors.getPrompt('DOOR_study'), '打开书房门');
+});
+
+test('计时到点时玩家还在门边，自动关门会等他走开', () => {
+  const { doors } = setup({ 'story.met_arthur': true });
+  doors.use('DOOR_study', -8.5, -1);
+
+  // 门中心在 (-8.5, -2)，玩家站在门边（距离 0.5 m）。
+  doors.update(AUTO_CLOSE_DELAY + 1, -8.5, -1.5);
+  assert.equal(doors.isOpen('DOOR_study'), true);
+
+  doors.update(0.1, 0, 0);
+  assert.equal(doors.isOpen('DOOR_study'), false);
+});
+
+test('初始就敞开的门不会被自动关上', () => {
+  const { doors } = setup({});
+  assert.equal(doors.isOpen('DOOR_parlor'), true);
+  doors.update(1000, 0, 0);
+  assert.equal(doors.isOpen('DOOR_parlor'), true);
 });

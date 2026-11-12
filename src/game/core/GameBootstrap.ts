@@ -9,10 +9,14 @@ import type { SaveData, Vec3Tuple } from '../../shared/types/save';
 import type { SceneNpcSpot, SceneRegion, SceneSpawn } from '../../shared/types/scene';
 import { createCollisionWorld, PLAYER_RADIUS, type CollisionWorld } from '../collision/CollisionWorld.ts';
 import { buildClueJournalView } from '../clues/clueJournal.ts';
-import { DialogueSystem } from '../dialogue/DialogueSystem';
+import {
+  DialogueSystem,
+  type ConversationEndEvent,
+} from '../dialogue/DialogueSystem';
 import { InspectionSystem } from '../inspection/InspectionSystem';
 import { InteractionSystem } from '../interaction/InteractionSystem';
 import { PlayerController } from '../player/PlayerController';
+import { PlayerHands } from '../player/PlayerHands';
 import { ClockPuzzle } from '../puzzles/ClockPuzzle';
 import type { PuzzleHost } from '../puzzles/PuzzleHost';
 import { SafePuzzle } from '../puzzles/SafePuzzle';
@@ -88,6 +92,7 @@ export class GameBootstrap {
   private readonly sceneManager: SceneManager;
   private readonly nightSky: NightSky;
   private readonly player: PlayerController;
+  private readonly hands: PlayerHands;
   private readonly doors: DoorSystem;
   private readonly interaction: InteractionSystem;
   private readonly dialogue: DialogueSystem;
@@ -163,6 +168,7 @@ export class GameBootstrap {
             this.finishDialogue();
           }
         },
+        onConversationEnd: (event) => this.handleConversationEnd(event),
       },
     });
 
@@ -278,6 +284,7 @@ export class GameBootstrap {
       collision,
       eyeHeight: EYE_HEIGHT,
     });
+    this.hands = new PlayerHands(app, playerRoot);
 
     for (const handle of scene.doors) {
       const doorId = handle.door.id;
@@ -568,6 +575,34 @@ export class GameBootstrap {
     this.player.requestPointerLock();
   }
 
+  /**
+   * 一段对话结束（或玩家中途关掉）后推进出场阶段。
+   * 这里只在玩家真正谈过之后点亮下一个角色的出场条件，
+   * 选项里的 `met_*` 仍只表示「已见面」，不再兼作换位开关。
+   */
+  private handleConversationEnd(event: ConversationEndEvent): void {
+    if (!event.completed) {
+      return;
+    }
+    const store = useStoryStore.getState();
+
+    if (event.npcId === 'npc_housekeeper') {
+      store.setStoryFlag('story.arthur_called', true);
+      return;
+    }
+
+    if (event.npcId === 'npc_arthur') {
+      store.setStoryFlag('story.arthur_talked', true);
+      if (store.storyFlags['story.met_doctor'] !== true) {
+        store.setStoryFlag('story.met_doctor', true);
+        this.events.emit('interaction.activated', {
+          id: 'story.doctor_arrived',
+          message: '格雷医生到了。他在门厅跺掉靴子上的泥。',
+        });
+      }
+    }
+  }
+
   destroy(): void {
     if (this.destroyed) {
       return;
@@ -595,6 +630,7 @@ export class GameBootstrap {
 
     this.unsubscribeStory();
     this.player.dispose();
+    this.hands.dispose();
     this.interaction.clear();
     this.nightSky.destroy();
     this.sceneManager.destroy();
@@ -607,7 +643,11 @@ export class GameBootstrap {
     }
 
     this.player.update(dt);
+    this.hands.update(dt);
     this.sceneManager.update(dt);
+    // 门在 UI 打开时也继续合上，但不能把站在门边的玩家夹住。
+    const [feetX, , feetZ] = this.player.getFeetPosition();
+    this.doors.update(dt, feetX, feetZ);
 
     if (
       this.dialogueOpen ||
@@ -671,18 +711,9 @@ export class GameBootstrap {
       });
     }
 
-    const insideHouse =
-      regionId !== 'scene_gate' && regionId !== 'villa_cliff';
-    if (
-      insideHouse &&
-      flags['story.met_arthur'] === true &&
-      flags['story.met_doctor'] !== true
-    ) {
-      store.setStoryFlag('story.met_doctor', true);
-      this.events.emit('interaction.activated', {
-        id: 'story.doctor_arrived',
-        message: '格雷医生到了。他在门厅跺掉靴子上的泥。',
-      });
+    // 防卡关兜底：玩家跳过霍尔太太直接走进客厅时，亚瑟照常出场。
+    if (regionId === 'villa_parlor' && flags['story.arthur_called'] !== true) {
+      store.setStoryFlag('story.arthur_called', true);
     }
   }
 
@@ -773,7 +804,9 @@ export class GameBootstrap {
     if (document.pointerLockElement !== this.canvas) {
       return;
     }
-    this.interaction.interact();
+    if (this.interaction.interact()) {
+      this.hands.triggerInteract();
+    }
   };
 
   private handleDialogueKey(event: KeyboardEvent): void {

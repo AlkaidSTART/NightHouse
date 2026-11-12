@@ -32,7 +32,7 @@ export const quests: readonly QuestDefinition[] = [
         objective: '在客厅壁炉旁与亚瑟交谈',
         hint: '从门厅往西进入客厅，亚瑟在壁炉边。',
         locationId: 'villa_parlor',
-        doneWhen: [[{ flag: 'story.met_arthur' }]],
+        doneWhen: [[{ flag: 'story.arthur_talked' }]],
       },
       {
         id: 'step_doctor',

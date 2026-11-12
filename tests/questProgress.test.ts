@@ -33,6 +33,15 @@ test('任务目标：剧情标记推进后自动切换到下一步', () => {
       'story.met_housekeeper': true,
       'story.met_arthur': true,
     }),
+    'step_arthur',
+  );
+  assert.equal(
+    activeId({
+      'story.arrived': true,
+      'story.met_housekeeper': true,
+      'story.met_arthur': true,
+      'story.arthur_talked': true,
+    }),
     'step_doctor',
   );
 });
@@ -42,6 +51,7 @@ test('任务目标：医生的任一调查标记都能完成该步', () => {
     'story.arrived': true,
     'story.met_housekeeper': true,
     'story.met_arthur': true,
+    'story.arthur_talked': true,
   };
   for (const flag of [
     'story.summer_mentioned',
@@ -63,6 +73,7 @@ test('任务目标：主线走完后不再显示目标', () => {
     'story.arrived': true,
     'story.met_housekeeper': true,
     'story.met_arthur': true,
+    'story.arthur_talked': true,
     'story.doctor_slip': true,
     'story.knows_coverup': true,
     'story.midnight': true,
