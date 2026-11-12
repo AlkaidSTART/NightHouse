@@ -86,12 +86,18 @@ export class CollisionWorld {
   }
 
   /** 该位置能否站人：有地面，且不与任何障碍重叠。 */
-  isStandable(x: number, z: number, feetY: number, radius: number): boolean {
+  isStandable(
+    x: number,
+    z: number,
+    feetY: number,
+    radius: number,
+    height = PLAYER_HEIGHT,
+  ): boolean {
     const ground = this.groundHeight(x, z, feetY);
     if (ground === null) {
       return false;
     }
-    return this.penetration(x, z, ground, radius) <= PENETRATION_EPSILON;
+    return this.penetration(x, z, ground, radius, height) <= PENETRATION_EPSILON;
   }
 
   /**
@@ -106,6 +112,7 @@ export class CollisionWorld {
     dx: number,
     dz: number,
     radius: number,
+    height = PLAYER_HEIGHT,
   ): void {
     const distance = Math.hypot(dx, dz);
     const steps = Math.max(1, Math.ceil(distance / SUBSTEP));
@@ -118,13 +125,92 @@ export class CollisionWorld {
 
     for (let index = 0; index < steps; index += 1) {
       const moved =
-        this.tryStep(out, out[0] + stepX, out[2] + stepZ, radius) ||
-        this.tryStep(out, out[0] + stepX, out[2], radius) ||
-        this.tryStep(out, out[0], out[2] + stepZ, radius);
+        this.tryStep(out, out[0] + stepX, out[2] + stepZ, radius, height) ||
+        this.tryStep(out, out[0] + stepX, out[2], radius, height) ||
+        this.tryStep(out, out[0], out[2] + stepZ, radius, height);
       if (!moved) {
         return;
       }
     }
+  }
+
+  /**
+   * 从 (x, feetY, z) 尝试空中水平移动 (dx, dz)，只解决与障碍的重叠，
+   * 不做台阶吸附与落差限制。脚底高度保持不变，由调用方处理重力与落地。
+   */
+  moveAirborne(
+    out: Vec3Tuple,
+    x: number,
+    feetY: number,
+    z: number,
+    dx: number,
+    dz: number,
+    radius: number,
+    height = PLAYER_HEIGHT,
+  ): void {
+    const distance = Math.hypot(dx, dz);
+    const steps = Math.max(1, Math.ceil(distance / SUBSTEP));
+    const stepX = dx / steps;
+    const stepZ = dz / steps;
+
+    out[0] = x;
+    out[1] = feetY;
+    out[2] = z;
+
+    for (let index = 0; index < steps; index += 1) {
+      const resolved = this.scratch;
+      resolved[0] = out[0] + stepX;
+      resolved[1] = out[2] + stepZ;
+
+      for (let pass = 0; pass < RESOLVE_PASSES; pass += 1) {
+        if (!this.pushOut(resolved, feetY, radius, height)) {
+          break;
+        }
+      }
+
+      if (
+        this.penetration(resolved[0], resolved[1], feetY, radius, height) >
+        PENETRATION_EPSILON
+      ) {
+        return;
+      }
+      if (
+        Math.abs(resolved[0] - out[0]) < 1e-6 &&
+        Math.abs(resolved[1] - out[2]) < 1e-6
+      ) {
+        return;
+      }
+
+      out[0] = resolved[0];
+      out[2] = resolved[1];
+    }
+  }
+
+  /**
+   * 返回脚下到头顶之间最低的障碍底面高度；没有遮挡时返回 null。
+   * 低于跨步高度的盒子视为台阶或地面家具，不计入头顶遮挡。
+   */
+  ceilingHeight(
+    x: number,
+    z: number,
+    feetY: number,
+    radius: number,
+  ): number | null {
+    let lowest: number | null = null;
+    for (const collider of this.colliders) {
+      if (!collider.enabled || collider.minY <= feetY + STEP_UP) {
+        continue;
+      }
+      const offsetX = x - clamp(x, collider.minX, collider.maxX);
+      const offsetZ = z - clamp(z, collider.minZ, collider.maxZ);
+      if (offsetX * offsetX + offsetZ * offsetZ >= radius * radius) {
+        continue;
+      }
+      if (lowest === null || collider.minY < lowest) {
+        lowest = collider.minY;
+      }
+    }
+    return lowest;
   }
 
   /** 返回射线命中最近障碍的距离；未命中返回 null。起点在盒内的障碍被忽略。 */
@@ -170,6 +256,7 @@ export class CollisionWorld {
     targetX: number,
     targetZ: number,
     radius: number,
+    height: number,
   ): boolean {
     const feetY = state[1];
     const resolved = this.scratch;
@@ -177,14 +264,14 @@ export class CollisionWorld {
     resolved[1] = targetZ;
 
     for (let pass = 0; pass < RESOLVE_PASSES; pass += 1) {
-      if (!this.pushOut(resolved, feetY, radius)) {
+      if (!this.pushOut(resolved, feetY, radius, height)) {
         break;
       }
     }
 
     const x = resolved[0];
     const z = resolved[1];
-    if (this.penetration(x, z, feetY, radius) > PENETRATION_EPSILON) {
+    if (this.penetration(x, z, feetY, radius, height) > PENETRATION_EPSILON) {
       return false;
     }
 
@@ -211,10 +298,11 @@ export class CollisionWorld {
     position: [number, number],
     feetY: number,
     radius: number,
+    height: number,
   ): boolean {
     let pushed = false;
     for (const collider of this.colliders) {
-      if (!overlapsBody(collider, feetY)) {
+      if (!overlapsBody(collider, feetY, height)) {
         continue;
       }
       const x = position[0];
@@ -260,10 +348,11 @@ export class CollisionWorld {
     z: number,
     feetY: number,
     radius: number,
+    height: number,
   ): number {
     let deepest = 0;
     for (const collider of this.colliders) {
-      if (!overlapsBody(collider, feetY)) {
+      if (!overlapsBody(collider, feetY, height)) {
         continue;
       }
       const offsetX = x - clamp(x, collider.minX, collider.maxX);
@@ -306,11 +395,15 @@ function surfaceHeight(surface: WalkSurface, x: number, z: number): number {
   return surface.y0 + (surface.y1 - surface.y0) * t;
 }
 
-function overlapsBody(collider: Collider, feetY: number): boolean {
+function overlapsBody(
+  collider: Collider,
+  feetY: number,
+  height: number,
+): boolean {
   return (
     collider.enabled &&
     collider.maxY > feetY + STEP_UP &&
-    collider.minY < feetY + PLAYER_HEIGHT
+    collider.minY < feetY + height
   );
 }
 

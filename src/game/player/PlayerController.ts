@@ -1,9 +1,20 @@
 import * as pc from 'playcanvas';
 import type { Vec3Tuple } from '../../shared/types/save';
-import { PLAYER_RADIUS, type CollisionWorld } from '../collision/CollisionWorld.ts';
+import {
+  PLAYER_HEIGHT,
+  PLAYER_RADIUS,
+  type CollisionWorld,
+} from '../collision/CollisionWorld.ts';
 
 const WALK_SPEED = 2.6;
 const RUN_SPEED = 4.4;
+const CROUCH_SPEED = 1.3;
+const GRAVITY = 24;
+/** 起跳初速度按约 0.9 m 跳跃高度设定。 */
+const JUMP_SPEED = 6.6;
+const CROUCH_HEIGHT = 1.2;
+const CROUCH_EYE_HEIGHT = 0.95;
+const EYE_HEIGHT_RESPONSE = 14;
 const PITCH_LIMIT = 89;
 const DEGREES_PER_PIXEL = 0.15;
 
@@ -15,7 +26,7 @@ export interface PlayerControllerOptions {
   sensitivity: number;
   rotation: Vec3Tuple;
   collision: CollisionWorld;
-  /** 视点相对脚底的高度；root 实体位于视点处。 */
+  /** 站立时视点相对脚底的高度；root 实体位于视点处。 */
   eyeHeight: number;
 }
 
@@ -26,16 +37,22 @@ export class PlayerController {
   private readonly app: pc.Application;
   private readonly canvas: HTMLCanvasElement;
   private readonly collision: CollisionWorld;
-  private readonly eyeHeight: number;
+  private readonly standingEyeHeight: number;
+  private readonly feet = new pc.Vec3();
   private readonly moved: Vec3Tuple = [0, 0, 0];
   private readonly move = new pc.Vec3();
   private readonly forward = new pc.Vec3();
   private readonly right = new pc.Vec3();
-  private readonly position = new pc.Vec3();
   private sensitivity: number;
   private yaw: number;
   private pitch: number;
   private paused = true;
+  private eyeHeight: number;
+  private bodyHeight = PLAYER_HEIGHT;
+  private crouched = false;
+  private crouchToggled = false;
+  private verticalVelocity = 0;
+  private grounded = true;
 
   constructor(options: PlayerControllerOptions) {
     this.app = options.app;
@@ -43,10 +60,14 @@ export class PlayerController {
     this.root = options.root;
     this.camera = options.camera;
     this.collision = options.collision;
+    this.standingEyeHeight = options.eyeHeight;
     this.eyeHeight = options.eyeHeight;
     this.sensitivity = options.sensitivity;
     this.yaw = options.rotation[0];
     this.pitch = options.rotation[1];
+
+    const position = this.root.getPosition();
+    this.feet.set(position.x, position.y - this.eyeHeight, position.z);
 
     this.applyRotation();
     document.addEventListener('pointermove', this.handlePointerMove);
@@ -87,6 +108,8 @@ export class PlayerController {
       return;
     }
 
+    this.updateStance(dt, keyboard);
+
     this.forward.copy(this.root.forward);
     this.forward.y = 0;
     this.forward.normalize();
@@ -109,34 +132,32 @@ export class PlayerController {
       this.move.sub(this.right);
     }
 
-    if (this.move.lengthSq() === 0) {
-      return;
+    let dx = 0;
+    let dz = 0;
+    if (this.move.lengthSq() > 0) {
+      const speed = this.crouched
+        ? CROUCH_SPEED
+        : keyboard.isPressed(pc.KEY_SHIFT)
+          ? RUN_SPEED
+          : WALK_SPEED;
+      this.move.normalize().mulScalar(speed * dt);
+      dx = this.move.x;
+      dz = this.move.z;
     }
 
-    this.move.normalize();
-    const speed = keyboard.isPressed(pc.KEY_SHIFT) ? RUN_SPEED : WALK_SPEED;
-    this.move.mulScalar(speed * dt);
-
-    this.position.copy(this.root.getPosition());
-    this.collision.move(
-      this.moved,
-      this.position.x,
-      this.position.y - this.eyeHeight,
-      this.position.z,
-      this.move.x,
-      this.move.z,
-      PLAYER_RADIUS,
-    );
-    this.root.setPosition(
-      this.moved[0],
-      this.moved[1] + this.eyeHeight,
-      this.moved[2],
-    );
+    this.moveHorizontal(dx, dz);
+    this.updateVertical(dt, keyboard);
+    this.syncRoot();
   }
 
+  /** 脚底位置。区域判定与视线高度无关，需要单独暴露。 */
+  getFeetPosition(): Vec3Tuple {
+    return [this.feet.x, this.feet.y, this.feet.z];
+  }
+
+  /** 存档统一记录站立视线高度，避免蹲下时保存导致重载后脚底下陷。 */
   getPosition(): Vec3Tuple {
-    this.position.copy(this.root.getPosition());
-    return [this.position.x, this.position.y, this.position.z];
+    return [this.feet.x, this.feet.y + this.standingEyeHeight, this.feet.z];
   }
 
   getRotation(): Vec3Tuple {
@@ -145,6 +166,124 @@ export class PlayerController {
 
   dispose(): void {
     document.removeEventListener('pointermove', this.handlePointerMove);
+  }
+
+  private updateStance(dt: number, keyboard: pc.Keyboard): void {
+    if (keyboard.wasPressed(pc.KEY_C)) {
+      this.crouchToggled = !this.crouchToggled;
+    }
+    const wantsCrouch = this.crouchToggled || keyboard.isPressed(pc.KEY_CONTROL);
+
+    if (wantsCrouch && !this.crouched) {
+      this.crouched = true;
+      this.bodyHeight = CROUCH_HEIGHT;
+    } else if (!wantsCrouch && this.crouched && this.hasStandingRoom()) {
+      this.crouched = false;
+      this.bodyHeight = PLAYER_HEIGHT;
+    }
+
+    const target = this.crouched ? CROUCH_EYE_HEIGHT : this.standingEyeHeight;
+    const blend = 1 - Math.exp(-EYE_HEIGHT_RESPONSE * dt);
+    this.eyeHeight += (target - this.eyeHeight) * blend;
+  }
+
+  private hasStandingRoom(): boolean {
+    const ceiling = this.collision.ceilingHeight(
+      this.feet.x,
+      this.feet.z,
+      this.feet.y,
+      PLAYER_RADIUS,
+    );
+    return ceiling === null || ceiling - this.feet.y >= PLAYER_HEIGHT - 1e-3;
+  }
+
+  private moveHorizontal(dx: number, dz: number): void {
+    if (dx === 0 && dz === 0) {
+      return;
+    }
+
+    const out = this.moved;
+    if (this.grounded) {
+      this.collision.move(
+        out,
+        this.feet.x,
+        this.feet.y,
+        this.feet.z,
+        dx,
+        dz,
+        PLAYER_RADIUS,
+        this.bodyHeight,
+      );
+      this.feet.set(out[0], out[1], out[2]);
+    } else {
+      this.collision.moveAirborne(
+        out,
+        this.feet.x,
+        this.feet.y,
+        this.feet.z,
+        dx,
+        dz,
+        PLAYER_RADIUS,
+        this.bodyHeight,
+      );
+      this.feet.x = out[0];
+      this.feet.z = out[2];
+    }
+  }
+
+  private updateVertical(dt: number, keyboard: pc.Keyboard): void {
+    if (this.grounded) {
+      const ground = this.collision.groundHeight(
+        this.feet.x,
+        this.feet.z,
+        this.feet.y,
+      );
+      if (ground !== null) {
+        this.feet.y = ground;
+      }
+      if (!keyboard.wasPressed(pc.KEY_SPACE) || this.crouched) {
+        return;
+      }
+      this.verticalVelocity = JUMP_SPEED;
+      this.grounded = false;
+    }
+
+    this.verticalVelocity -= GRAVITY * dt;
+    const ground = this.collision.groundHeight(
+      this.feet.x,
+      this.feet.z,
+      this.feet.y,
+    );
+    let nextY = this.feet.y + this.verticalVelocity * dt;
+
+    const ceiling = this.collision.ceilingHeight(
+      this.feet.x,
+      this.feet.z,
+      this.feet.y,
+      PLAYER_RADIUS,
+    );
+    if (ceiling !== null) {
+      const maxY = Math.max(this.feet.y, ceiling - this.bodyHeight);
+      if (nextY > maxY) {
+        nextY = maxY;
+        if (this.verticalVelocity > 0) {
+          this.verticalVelocity = 0;
+        }
+      }
+    }
+
+    if (this.verticalVelocity <= 0 && ground !== null && nextY <= ground) {
+      this.feet.y = ground;
+      this.verticalVelocity = 0;
+      this.grounded = true;
+      return;
+    }
+
+    this.feet.y = nextY;
+  }
+
+  private syncRoot(): void {
+    this.root.setPosition(this.feet.x, this.feet.y + this.eyeHeight, this.feet.z);
   }
 
   private readonly handlePointerMove = (event: PointerEvent): void => {

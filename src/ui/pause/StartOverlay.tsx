@@ -15,8 +15,8 @@ export function StartOverlay({ ready: readyProp, onStart }: StartOverlayProps) {
         <p className="overlay-eyebrow">别墅入口</p>
         <h2 className="overlay-title">进入午夜别墅</h2>
         <p className="overlay-text">
-          进入后浏览器会锁定鼠标，使用 W A S D 移动、鼠标环视、E 交互。
-          按 Esc 随时暂停。
+          进入后浏览器会锁定鼠标，使用 W A S D 移动、Shift 奔跑、空格跳跃、
+          C 或 Ctrl 蹲下、鼠标环视、E 交互。按 Esc 随时暂停。
         </p>
         <div className="overlay-actions">
           <button

@@ -133,6 +133,13 @@ export class GameBootstrap {
         console.warn('场景 GLB 加载失败，继续使用灰盒几何：', error);
       });
     }
+    if (villaGreybox.characterModelUrls) {
+      void this.sceneManager
+        .loadCharacterModels(villaGreybox.characterModelUrls)
+        .catch((error: unknown) => {
+          console.warn('NPC 角色模型加载失败，继续使用占位方盒：', error);
+        });
+    }
     this.sceneId = scene.sceneId;
     this.doors = new DoorSystem({
       doors: villaGreybox.doors,
@@ -294,9 +301,7 @@ export class GameBootstrap {
   };
 
   private updateRegion(): void {
-    const x = this.playerPosition.x;
-    const y = this.playerPosition.y - EYE_HEIGHT;
-    const z = this.playerPosition.z;
+    const [x, y, z] = this.player.getFeetPosition();
     const region = findRegion(this.regions, x, y, z);
     // 门洞等不属于任何区域的缝隙里保持上一个区域，避免提示闪烁。
     if (!region || region.id === this.currentRegionId) {

@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import {
   CollisionWorld,
   MAX_DROP,
+  PLAYER_HEIGHT,
   PLAYER_RADIUS,
 } from '../src/game/collision/CollisionWorld.ts';
 import { isOccluded } from '../src/game/interaction/occlusion.ts';
@@ -85,6 +86,44 @@ test('落差超过上限时停在边缘，不会坠落', () => {
   world.move(out, 1, 3, 0, 3, 0, PLAYER_RADIUS);
   assert.ok(out[0] <= 2 + 1e-6, `越过了边缘：${out[0]}`);
   assert.equal(out[1], 3);
+});
+
+test('空中移动不做落差限制，也不吸附地面', () => {
+  const world = new CollisionWorld();
+  world.addSurface({ id: 'ledge', minX: 0, maxX: 2, minZ: -1, maxZ: 1, y0: 3, y1: 3, axis: 'x' });
+  world.addSurface({ id: 'lower', minX: -5, maxX: 8, minZ: -5, maxZ: 5, y0: 0, y1: 0, axis: 'x' });
+  const out: Vec3Tuple = [0, 0, 0];
+  world.moveAirborne(out, 1, 3, 0, 4, 0, PLAYER_RADIUS);
+  assert.ok(Math.abs(out[0] - 5) < 1e-6, `x=${out[0]}`);
+  assert.equal(out[1], 3, '脚底高度应由调用方的重力控制');
+});
+
+test('空中移动仍会被墙挡住', () => {
+  const world = flatWorld();
+  world.addBox('wall', [2, 0, -5], [2.2, 3, 5]);
+  const out: Vec3Tuple = [0, 0, 0];
+  world.moveAirborne(out, 0, 0.5, 0, 5, 0, PLAYER_RADIUS);
+  assert.ok(Math.abs(out[0] - (2 - PLAYER_RADIUS)) < 1e-3, `停在 ${out[0]}`);
+});
+
+test('蹲下可以从低矮横梁下通过，站立不能', () => {
+  const world = flatWorld();
+  world.addBox('beam', [2, 1.4, -5], [4, 3, 5]);
+  const standing: Vec3Tuple = [0, 0, 0];
+  world.move(standing, 0, 0, 0, 6, 0, PLAYER_RADIUS, PLAYER_HEIGHT);
+  assert.ok(standing[0] < 2, `站立不应穿过，x=${standing[0]}`);
+  const crouched: Vec3Tuple = [0, 0, 0];
+  world.move(crouched, 0, 0, 0, 6, 0, PLAYER_RADIUS, 1.2);
+  assert.ok(crouched[0] > 4, `蹲下应能通过，x=${crouched[0]}`);
+});
+
+test('头顶高度返回最低障碍底面，并忽略台阶高度的盒子', () => {
+  const world = flatWorld();
+  world.addBox('low', [-1, 0, -1], [1, 0.3, 1]);
+  world.addBox('beam', [-1, 1.5, -1], [1, 3, 1]);
+  assert.equal(world.ceilingHeight(0, 0, 0, PLAYER_RADIUS), 1.5);
+  assert.equal(world.ceilingHeight(5, 0, 0, PLAYER_RADIUS), null);
+  assert.equal(world.ceilingHeight(0, 0, 2, PLAYER_RADIUS), null);
 });
 
 test('没有地面的地方不能走过去', () => {

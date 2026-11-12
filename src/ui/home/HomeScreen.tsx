@@ -52,6 +52,9 @@ export function HomeScreen(props: HomeScreenProps = {}) {
         <div className="home-controls">
           <span>W A S D 移动</span>
           <span>鼠标 环视</span>
+          <span>Shift 奔跑</span>
+          <span>空格 跳跃</span>
+          <span>C / Ctrl 蹲下</span>
           <span>E 交互</span>
           <span>Esc 暂停</span>
         </div>

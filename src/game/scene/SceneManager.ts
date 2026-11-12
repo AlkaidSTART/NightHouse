@@ -7,7 +7,12 @@ import type {
   SceneMaterialId,
   SceneNpcSpot,
 } from '../../shared/types/scene';
-import { loadSceneModel, type SceneModel } from './SceneModelLoader.ts';
+import {
+  loadCharacterContainer,
+  loadSceneModel,
+  type CharacterContainer,
+  type SceneModel,
+} from './SceneModelLoader.ts';
 import { DOOR_THICKNESS, doorCenter } from './sceneGeometry.ts';
 
 export interface SceneInteractableHandle {
@@ -35,6 +40,13 @@ interface DoorEntry {
   /** 当前显示的门扇：先是代码生成的方盒，GLB 就绪后换成 GLB 里的门扇。 */
   leaf: pc.Entity;
   swing: number;
+}
+
+interface NpcSpotHandle {
+  spot: SceneNpcSpot;
+  root: pc.Entity;
+  placeholder: pc.Entity;
+  characterInstance: pc.Entity | null;
 }
 
 const NPC_MATERIAL: Record<SceneNpcSpot['npcId'], SceneMaterialId> = {
@@ -72,7 +84,10 @@ export class SceneManager {
     Array<(texture: pc.Texture) => void>
   >();
   private readonly doorPivots = new Map<string, DoorEntry>();
+  private readonly npcSpotHandles = new Map<string, NpcSpotHandle>();
+  private readonly characterContainers = new Map<string, CharacterContainer>();
   private readonly loadAbort = new AbortController();
+  private readonly characterLoadAbort = new AbortController();
   private model: SceneModel | null = null;
   private proceduralReleased = false;
   private destroyed = false;
@@ -181,6 +196,66 @@ export class SceneManager {
     this.releaseProceduralResources();
   }
 
+  /**
+   * 加载 NPC 角色模型并替换占位方盒。
+   * 每个角色类型的 GLB 只加载一次容器资源，并在该角色的所有站位上分别实例化。
+   * 角色模型在 Blender 中正面指向 +Z，挂载到 root 后绕 Y 轴转 180° 使其与向前的偏航角对齐。
+   */
+  async loadCharacterModels(
+    urls: Partial<Record<SceneNpcSpot['npcId'], string>>,
+  ): Promise<void> {
+    if (this.destroyed) {
+      return;
+    }
+
+    const uniqueRoles = new Set<SceneNpcSpot['npcId']>();
+    for (const handle of this.npcSpotHandles.values()) {
+      uniqueRoles.add(handle.spot.npcId);
+    }
+
+    const loadTasks: Promise<void>[] = [];
+    for (const npcId of uniqueRoles) {
+      const url = urls[npcId];
+      if (!url) {
+        continue;
+      }
+      loadTasks.push(
+        (async () => {
+          try {
+            const container = await loadCharacterContainer(
+              this.app,
+              url,
+              this.characterLoadAbort.signal,
+            );
+            if (this.destroyed) {
+              container.dispose();
+              return;
+            }
+            this.characterContainers.set(npcId, container);
+
+            for (const handle of this.npcSpotHandles.values()) {
+              if (handle.spot.npcId !== npcId || handle.characterInstance) {
+                continue;
+              }
+              const instance = container.instantiate();
+              instance.setLocalEulerAngles(0, 180, 0);
+              instance.setLocalPosition(0, 0, 0);
+              handle.root.addChild(instance);
+              handle.characterInstance = instance;
+
+              // 移除占位方盒
+              handle.placeholder.destroy();
+            }
+          } catch (error) {
+            console.warn(`NPC 模型加载失败 [${npcId} 挂载至 ${url}]：`, error);
+          }
+        })(),
+      );
+    }
+
+    await Promise.allSettled(loadTasks);
+  }
+
   setDoorOpen(doorId: string, open: boolean): void {
     const entry = this.doorPivots.get(doorId);
     if (!entry) {
@@ -191,9 +266,16 @@ export class SceneManager {
 
   destroy(): void {
     this.destroyed = true;
-    // 取消仍在进行的 GLB 加载；加载器会自行释放已创建的资源。
+    // 取消仍在进行的场景模型与角色模型加载
     this.loadAbort.abort();
+    this.characterLoadAbort.abort();
     this.pendingTextureCallbacks.clear();
+
+    for (const container of this.characterContainers.values()) {
+      container.dispose();
+    }
+    this.characterContainers.clear();
+    this.npcSpotHandles.clear();
 
     for (const entity of this.entities) {
       entity.destroy();
@@ -253,16 +335,49 @@ export class SceneManager {
 
   private createNpcSpot(spot: SceneNpcSpot): SceneInteractableHandle {
     const [x, y, z] = spot.position;
-    const entity = this.createBox(
-      spot.id,
-      [x - 0.22, y, z - 0.15],
-      [x + 0.22, y + NPC_PLACEHOLDER_HEIGHT, z + 0.15],
-      NPC_MATERIAL[spot.npcId],
+    const root = this.track(new pc.Entity(spot.id));
+    root.setPosition(x, y, z);
+    if (spot.yaw !== undefined) {
+      root.setEulerAngles(0, spot.yaw, 0);
+    }
+
+    // 默认创建方盒占位（作为 root 的子节点，位于脚底之上）
+    const placeholder = this.track(new pc.Entity(`${spot.id}_placeholder`));
+    const sx = 0.44;
+    const sy = NPC_PLACEHOLDER_HEIGHT;
+    const sz = 0.3;
+    const mesh = this.getBoxMesh(
+      sx,
+      sy,
+      sz,
+      MATERIALS[NPC_MATERIAL[spot.npcId]].tileSize ?? 0,
     );
+    placeholder.addComponent('render', {
+      meshInstances: [
+        new pc.MeshInstance(mesh, this.getMaterial(NPC_MATERIAL[spot.npcId])),
+      ],
+      castShadows: false,
+      receiveShadows: false,
+    });
+    placeholder.setLocalPosition(0, NPC_PLACEHOLDER_HEIGHT / 2, 0);
+    root.addChild(placeholder);
+
+    // 交互对准锚点位于胸口高度（y + NPC_PLACEHOLDER_HEIGHT / 2），保持与灰盒射线对准判定一致
+    const anchor = this.track(new pc.Entity(`${spot.id}_anchor`));
+    anchor.setLocalPosition(0, NPC_PLACEHOLDER_HEIGHT / 2, 0);
+    root.addChild(anchor);
+
+    this.npcSpotHandles.set(spot.id, {
+      spot,
+      root,
+      placeholder,
+      characterInstance: null,
+    });
+
     const name = NPC_NAME[spot.npcId];
     return {
       id: spot.id,
-      entity,
+      entity: anchor,
       radius: 0.5,
       prompt: `站位：${name} · ${spot.label}`,
       message: spot.pending

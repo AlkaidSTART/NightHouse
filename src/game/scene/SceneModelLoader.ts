@@ -175,3 +175,106 @@ export function loadSceneModel(
     host.assets.load(asset);
   });
 }
+
+/** 已加载的角色模型容器，支持多次实例化并在 dispose 时释放容器及其子资源。 */
+export class CharacterContainer {
+  readonly host: AssetHost;
+  readonly asset: pc.Asset;
+  readonly resource: ContainerLikeResource;
+  private disposed = false;
+
+  constructor(
+    host: AssetHost,
+    asset: pc.Asset,
+    resource: ContainerLikeResource,
+  ) {
+    this.host = host;
+    this.asset = asset;
+    this.resource = resource;
+  }
+
+  instantiate(): pc.Entity {
+    if (this.disposed) {
+      throw new Error('角色模型容器已被释放。');
+    }
+    const entity = this.resource.instantiateRenderEntity({
+      castShadows: false,
+      receiveShadows: false,
+    });
+    stripMarkerGroups(entity);
+    return entity;
+  }
+
+  dispose(): void {
+    if (this.disposed) {
+      return;
+    }
+    this.disposed = true;
+    releaseAsset(this.host, this.asset);
+  }
+}
+
+/**
+ * 加载角色 GLB 容器资源。
+ * 成功后返回 CharacterContainer，可多次调用 instantiate() 并在宿主清理时统一释放。
+ * 失败或取消时释放资源并 reject。
+ */
+export function loadCharacterContainer(
+  host: AssetHost,
+  url: string,
+  signal: AbortSignal,
+): Promise<CharacterContainer> {
+  return new Promise<CharacterContainer>((resolve, reject) => {
+    if (signal.aborted) {
+      reject(new Error('角色模型加载已取消。'));
+      return;
+    }
+
+    const asset = new pc.Asset(url, 'container', { url });
+    let settled = false;
+
+    const finish = (action: () => void): void => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      signal.removeEventListener('abort', onAbort);
+      asset.off('load', onLoad);
+      asset.off('error', onError);
+      action();
+    };
+
+    const onAbort = (): void => {
+      finish(() => {
+        releaseAsset(host, asset);
+        reject(new Error('角色模型加载已取消。'));
+      });
+    };
+
+    const onError = (error: unknown): void => {
+      finish(() => {
+        releaseAsset(host, asset);
+        reject(new Error(`角色模型加载失败：${String(error)}`));
+      });
+    };
+
+    const onLoad = (): void => {
+      finish(() => {
+        const resource: unknown = asset.resource;
+        if (!isContainerResource(resource)) {
+          releaseAsset(host, asset);
+          reject(new Error('角色模型不是有效的 GLB 容器。'));
+          return;
+        }
+        resolve(new CharacterContainer(host, asset, resource));
+      });
+    };
+
+    signal.addEventListener('abort', onAbort);
+    asset.on('load', onLoad);
+    asset.on('error', onError);
+    host.assets.add(asset);
+    host.assets.load(asset);
+  });
+}
+

@@ -527,21 +527,21 @@ const D2_EARLY = 'D2 待裁决：仅当格雷开场即在场时使用';
 const D2_LATE = 'D2 待裁决：仅当格雷 B4 才到场时使用';
 
 const npcSpots: SceneNpcSpot[] = [
-  { id: 'NPC_housekeeper_front_door', npcId: 'npc_housekeeper', label: '正门内侧（B1）', position: [1.3, 0, 6.2] },
-  { id: 'NPC_housekeeper_corridor_mouth', npcId: 'npc_housekeeper', label: '走廊口（十三下之后）', position: [-3.4, 0, 0.5] },
-  { id: 'NPC_housekeeper_hall_door_b10', npcId: 'npc_housekeeper', label: '门边（B10）', position: [-1.6, 0, 6.3] },
-  { id: 'NPC_housekeeper_dining_door', npcId: 'npc_housekeeper', label: '餐厅门边（B3）', position: [4.6, 0, 2.2] },
-  { id: 'NPC_arthur_parlor_fireplace', npcId: 'npc_arthur', label: '客厅壁炉旁（B2）', position: [-9, 0, 3] },
-  { id: 'NPC_arthur_dining_head', npcId: 'npc_arthur', label: '餐厅主位（B3）', position: [5.57, 0, 3.5] },
-  { id: 'NPC_arthur_gallery_rail', npcId: 'npc_arthur', label: '二楼栏杆边（十三下之后）', position: [-2.5, F2, -0.5] },
-  { id: 'NPC_arthur_study_desk', npcId: 'npc_arthur', label: '书桌椅（B9 对质）', position: [-7.5, 0, -6.25] },
-  { id: 'NPC_arthur_signing_table', npcId: 'npc_arthur', label: '签字桌边（B10）', position: [1.4, 0, 3.7] },
-  { id: 'NPC_doctor_dining_door', npcId: 'npc_doctor', label: '餐厅门口（十三下之后）', position: [3.3, 0, 3.5] },
-  { id: 'NPC_doctor_study_door_outside', npcId: 'npc_doctor', label: '书房门外（保险箱三次失败）', position: [-8.5, 0, -1.1] },
-  { id: 'NPC_doctor_stair_foot', npcId: 'npc_doctor', label: '楼梯口（B10）', position: [2.1, 0, 2.6] },
-  { id: 'NPC_doctor_parlor_armchair', npcId: 'npc_doctor', label: '客厅扶手椅（B2）', position: [-8.7, 0, 5], pending: D2_EARLY },
-  { id: 'NPC_doctor_dining_side', npcId: 'npc_doctor', label: '餐厅侧席（B3）', position: [7, 0, 2.62], pending: D2_EARLY },
-  { id: 'NPC_doctor_front_door_b4', npcId: 'npc_doctor', label: '正门内侧（B4 到访）', position: [-0.9, 0, 6.2], pending: D2_LATE },
+  { id: 'NPC_housekeeper_front_door', npcId: 'npc_housekeeper', label: '正门内侧（B1）', position: [1.3, 0, 6.2], yaw: 190 },
+  { id: 'NPC_housekeeper_corridor_mouth', npcId: 'npc_housekeeper', label: '走廊口（十三下之后）', position: [-3.4, 0, 0.5], yaw: 45 },
+  { id: 'NPC_housekeeper_hall_door_b10', npcId: 'npc_housekeeper', label: '门边（B10）', position: [-1.6, 0, 6.3], yaw: 210 },
+  { id: 'NPC_housekeeper_dining_door', npcId: 'npc_housekeeper', label: '餐厅门边（B3）', position: [4.6, 0, 2.2], yaw: -90 },
+  { id: 'NPC_arthur_parlor_fireplace', npcId: 'npc_arthur', label: '客厅壁炉旁（B2）', position: [-9, 0, 3], yaw: 90 },
+  { id: 'NPC_arthur_dining_head', npcId: 'npc_arthur', label: '餐厅主位（B3）', position: [5.57, 0, 3.5], yaw: -90 },
+  { id: 'NPC_arthur_gallery_rail', npcId: 'npc_arthur', label: '二楼栏杆边（十三下之后）', position: [-2.5, F2, -0.5], yaw: 160 },
+  { id: 'NPC_arthur_study_desk', npcId: 'npc_arthur', label: '书桌椅（B9 对质）', position: [-7.5, 0, -6.25], yaw: 180 },
+  { id: 'NPC_arthur_signing_table', npcId: 'npc_arthur', label: '签字桌边（B10）', position: [1.4, 0, 3.7], yaw: -45 },
+  { id: 'NPC_doctor_dining_door', npcId: 'npc_doctor', label: '餐厅门口（十三下之后）', position: [3.3, 0, 3.5], yaw: -90 },
+  { id: 'NPC_doctor_study_door_outside', npcId: 'npc_doctor', label: '书房门外（保险箱三次失败）', position: [-8.5, 0, -1.1], yaw: 0 },
+  { id: 'NPC_doctor_stair_foot', npcId: 'npc_doctor', label: '楼梯口（B10）', position: [2.1, 0, 2.6], yaw: -135 },
+  { id: 'NPC_doctor_parlor_armchair', npcId: 'npc_doctor', label: '客厅扶手椅（B2）', position: [-8.7, 0, 5], pending: D2_EARLY, yaw: 20 },
+  { id: 'NPC_doctor_dining_side', npcId: 'npc_doctor', label: '餐厅侧席（B3）', position: [7, 0, 2.62], pending: D2_EARLY, yaw: -90 },
+  { id: 'NPC_doctor_front_door_b4', npcId: 'npc_doctor', label: '正门内侧（B4 到访）', position: [-0.9, 0, 6.2], pending: D2_LATE, yaw: 0 },
 ];
 
 // ───────────────────────── 区域 ─────────────────────────
@@ -607,9 +607,16 @@ const lights: SceneLight[] = [
   light('LIGHT_terrace', [-12, 2.4, -1], WARM, 0.8, 8),
 ];
 
+export const DEFAULT_CHARACTER_MODELS: Record<SceneNpcSpot['npcId'], string> = {
+  npc_arthur: '/assets/models/characters/SK_NPC_Arthur_01.glb',
+  npc_housekeeper: '/assets/models/characters/SK_NPC_Housekeeper_01.glb',
+  npc_doctor: '/assets/models/characters/SK_NPC_Grey_01.glb',
+};
+
 export const villaGreybox: SceneDefinition = {
   id: 'villa_greybox',
   modelUrl: '/assets/scenes/scene_villa_full.glb',
+  characterModelUrls: DEFAULT_CHARACTER_MODELS,
   boxes,
   surfaces,
   regions,

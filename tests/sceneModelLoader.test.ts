@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import * as pc from 'playcanvas';
 import { villaGreybox } from '../src/content/scenes/villaGreybox.ts';
 import {
+  loadCharacterContainer,
   loadSceneModel,
   MARKER_GROUPS,
   stripMarkerGroups,
@@ -211,3 +212,84 @@ test('SceneModelLoader：加载途中被取消时释放资源并忽略后续 loa
   (pendingAsset as pc.Asset).fire('load', pendingAsset);
   assert.equal(fakeState.removed.length, 1);
 });
+
+test('CharacterModelLoader：成功加载容器、多次实例化实体并剔除标记节点，并在 dispose 时释放资源', async () => {
+  const subRender = new pc.Asset('npc_render', 'render');
+  const subMaterial = new pc.Asset('npc_material', 'material');
+  const unloadedNames: string[] = [];
+
+  const trackUnload = (asset: pc.Asset): void => {
+    const originalUnload = asset.unload.bind(asset);
+    asset.unload = (): void => {
+      unloadedNames.push(asset.name);
+      originalUnload();
+    };
+  };
+  trackUnload(subRender);
+  trackUnload(subMaterial);
+
+  let instanceCount = 0;
+  const fakeState = createFakeHost((asset) => {
+    trackUnload(asset);
+    const resource: ContainerLikeResource = {
+      renders: [subRender],
+      materials: [subMaterial],
+      instantiateRenderEntity() {
+        instanceCount += 1;
+        return buildMockGlbHierarchy();
+      },
+    };
+    asset.resource = resource;
+    asset.fire('load', asset);
+  });
+
+  const controller = new AbortController();
+  const url = '/assets/models/characters/SK_NPC_Arthur_01.glb';
+  const container = await loadCharacterContainer(fakeState.host, url, controller.signal);
+
+  assert.equal(fakeState.added.length, 1);
+  assert.equal(fakeState.loaded.length, 1);
+
+  // 支持针对同一角色的多个站位分别实例化
+  const inst1 = container.instantiate();
+  const inst2 = container.instantiate();
+  assert.equal(instanceCount, 2);
+
+  for (const marker of MARKER_GROUPS) {
+    assert.equal(inst1.findByName(marker), null);
+    assert.equal(inst2.findByName(marker), null);
+  }
+
+  inst1.destroy();
+  inst2.destroy();
+
+  container.dispose();
+  assert.equal(fakeState.removed.length, 3);
+  assert.deepEqual(unloadedNames, ['npc_render', 'npc_material', url]);
+
+  // 重复调用 dispose 保持幂等
+  container.dispose();
+  assert.equal(fakeState.removed.length, 3);
+
+  // 释放后再次 instantiate 应抛错
+  assert.throws(() => container.instantiate(), /角色模型容器已被释放/);
+});
+
+test('CharacterModelLoader：加载失败时清理并 reject', async () => {
+  let unloaded = 0;
+  const fakeState = createFakeHost((asset) => {
+    asset.unload = (): void => {
+      unloaded += 1;
+    };
+    asset.fire('error', '404 Not Found');
+  });
+
+  const controller = new AbortController();
+  await assert.rejects(
+    loadCharacterContainer(fakeState.host, '/missing_npc.glb', controller.signal),
+    /角色模型加载失败/,
+  );
+  assert.equal(fakeState.removed.length, 1);
+  assert.equal(unloaded, 1);
+});
+

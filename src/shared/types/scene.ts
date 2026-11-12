@@ -95,6 +95,8 @@ export interface SceneNpcSpot {
   label: string;
   /** 脚底位置。 */
   position: Vec3Tuple;
+  /** 朝向角度（偏航角 yaw，度数），可选。 */
+  yaw?: number;
   /** 取决于尚未裁决的事项时填写，裁决后删除多余站位。 */
   pending?: string;
 }
@@ -118,6 +120,8 @@ export interface SceneDefinition {
   id: string;
   /** 整场景 GLB 的静态资源路径；加载成功后替换代码生成的方盒与门扇。 */
   modelUrl?: string;
+  /** NPC 角色模型的静态资源路径映射。加载成功后替换方盒占位。 */
+  characterModelUrls?: Partial<Record<SceneNpcSpot['npcId'], string>>;
   boxes: SceneBox[];
   surfaces: WalkSurface[];
   regions: SceneRegion[];
