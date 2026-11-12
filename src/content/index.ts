@@ -11,6 +11,7 @@ import { clues } from './clues.ts';
 import { dialogues } from './dialogues/index.ts';
 import { inspectables } from './inspectables.ts';
 import { npcs } from './npcs.ts';
+import { clockPuzzleContent, safePuzzleContent } from './puzzles.ts';
 import { quests } from './quests.ts';
 
 export interface ContentRegistry {
@@ -29,6 +30,6 @@ export const content: ContentRegistry = {
   clues,
   inspectables,
   quests,
-  puzzles: [],
+  puzzles: [clockPuzzleContent.definition, safePuzzleContent.definition],
   endings: [],
 };

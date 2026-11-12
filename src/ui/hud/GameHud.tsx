@@ -12,12 +12,14 @@ export interface GameHudProps {
   region?: string | null;
   regionId?: string | null;
   player?: MinimapPlayerPose | null;
+  showJournalHint?: boolean;
 }
 
 export function GameHud(props: GameHudProps = {}) {
   const storePrompt = useGameStore((s) => s.prompt);
   const storeToast = useGameStore((s) => s.toast);
   const storeError = useGameStore((s) => s.error);
+  const clueCount = useStoryStore((s) => s.discoveredClueIds.length);
 
   const prompt = props.prompt !== undefined ? props.prompt : storePrompt;
   const toast = props.toast !== undefined ? props.toast : storeToast;
@@ -42,6 +44,13 @@ export function GameHud(props: GameHudProps = {}) {
         player={player}
       />
       {props.region && <div className="hud-region">{props.region}</div>}
+      {props.showJournalHint && (
+        <div className="hud-journal-hint">
+          <span className="hud-key">J</span>
+          <span>线索</span>
+          <span className="hud-journal-count">{clueCount}</span>
+        </div>
+      )}
       {prompt && (
         <div className="hud-prompt">
           <span className="hud-key">E</span>

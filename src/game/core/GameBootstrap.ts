@@ -1,19 +1,21 @@
 import * as pc from 'playcanvas';
 import { clueFlagForId } from '../../content/clues';
 import { content } from '../../content';
+import { clockPuzzleContent, safePuzzleContent } from '../../content/puzzles';
 import { villaGreybox } from '../../content/scenes/villaGreybox';
 import { useStoryStore } from '../../stores/storyStore';
+import type { PuzzleView } from '../../shared/types/puzzle';
 import type { SaveData, Vec3Tuple } from '../../shared/types/save';
 import type { SceneNpcSpot, SceneRegion, SceneSpawn } from '../../shared/types/scene';
-import {
-  createCollisionWorld,
-  PLAYER_RADIUS,
-  type CollisionWorld,
-} from '../collision/CollisionWorld.ts';
+import { createCollisionWorld, PLAYER_RADIUS, type CollisionWorld } from '../collision/CollisionWorld.ts';
+import { buildClueJournalView } from '../clues/clueJournal.ts';
 import { DialogueSystem } from '../dialogue/DialogueSystem';
 import { InspectionSystem } from '../inspection/InspectionSystem';
 import { InteractionSystem } from '../interaction/InteractionSystem';
 import { PlayerController } from '../player/PlayerController';
+import { ClockPuzzle } from '../puzzles/ClockPuzzle';
+import type { PuzzleHost } from '../puzzles/PuzzleHost';
+import { SafePuzzle } from '../puzzles/SafePuzzle';
 import { createNewSave, type SaveManager } from '../save/SaveManager';
 import { DEFAULT_SETTINGS } from '../save/defaults';
 import { DoorSystem } from '../scene/DoorSystem.ts';
@@ -26,6 +28,8 @@ const AUTOSAVE_INTERVAL_MS = 5000;
 const EYE_HEIGHT = 1.7;
 const INTERACTION_DISTANCE = 3;
 const DOOR_INTERACTION_MIN_RADIUS = 0.6;
+const CLOCK_INTERACTABLE_ID = 'INT_prop_longcase_clock';
+const SAFE_INTERACTABLE_ID = 'INT_prop_safe';
 /** 小地图位置刷新间隔（秒）。不必每帧都推给 React。 */
 const POSE_EMIT_INTERVAL = 0.05;
 
@@ -88,7 +92,11 @@ export class GameBootstrap {
   private readonly interaction: InteractionSystem;
   private readonly dialogue: DialogueSystem;
   private readonly inspection: InspectionSystem;
+  private readonly clockPuzzle: ClockPuzzle;
+  private readonly safePuzzle: SafePuzzle;
   private readonly clueTitles: ReadonlyMap<string, string>;
+  private readonly regionNames: ReadonlyMap<string, string>;
+  private readonly npcNames: ReadonlyMap<string, string>;
   private readonly unsubscribeStory: () => void;
   private readonly playerPosition = new pc.Vec3();
   private readonly sceneId: string;
@@ -101,6 +109,8 @@ export class GameBootstrap {
   private hasEntered = false;
   private dialogueOpen = false;
   private inspectionOpen = false;
+  private journalOpen = false;
+  private activePuzzle: 'clock' | 'safe' | null = null;
   private destroyed = false;
 
   private constructor(
@@ -127,9 +137,15 @@ export class GameBootstrap {
           maxDistance,
         ),
     );
+    this.clueTitles = new Map(content.clues.map((clue) => [clue.id, clue.title]));
+    this.regionNames = new Map(
+      villaGreybox.regions.map((region) => [region.id, region.name]),
+    );
+    this.npcNames = new Map(content.npcs.map((npc) => [npc.id, npc.name]));
+
     this.dialogue = new DialogueSystem({
       dialogues: content.dialogues,
-      npcNames: new Map(content.npcs.map((npc) => [npc.id, npc.name])),
+      npcNames: this.npcNames,
       host: {
         getFlags: () => useStoryStore.getState().storyFlags,
         setFlag: (key, value) =>
@@ -150,7 +166,6 @@ export class GameBootstrap {
       },
     });
 
-    this.clueTitles = new Map(content.clues.map((clue) => [clue.id, clue.title]));
     this.inspection = new InspectionSystem({
       inspectables: content.inspectables,
       host: {
@@ -175,6 +190,25 @@ export class GameBootstrap {
         },
       },
     });
+
+    const puzzleHost: PuzzleHost = {
+      getFlags: () => useStoryStore.getState().storyFlags,
+      setFlag: (key, value) =>
+        useStoryStore.getState().setStoryFlag(key, value),
+      discoverClue: (clueId) => {
+        const store = useStoryStore.getState();
+        if (store.discoveredClueIds.includes(clueId)) {
+          return null;
+        }
+        store.discoverClue(clueId);
+        store.setStoryFlag(clueFlagForId(clueId), true);
+        return this.clueTitles.get(clueId) ?? clueId;
+      },
+      completePuzzle: (puzzleId) =>
+        useStoryStore.getState().completePuzzle(puzzleId),
+    };
+    this.clockPuzzle = new ClockPuzzle(clockPuzzleContent, puzzleHost);
+    this.safePuzzle = new SafePuzzle(safePuzzleContent, puzzleHost);
 
     const app = new pc.Application(options.canvas, {
       mouse: new pc.Mouse(options.canvas),
@@ -288,6 +322,14 @@ export class GameBootstrap {
         getPrompt: () => descriptor.prompt,
         canInteract: () => true,
         interact: () => {
+          if (descriptor.id === CLOCK_INTERACTABLE_ID) {
+            this.beginClockPuzzle();
+            return;
+          }
+          if (descriptor.id === SAFE_INTERACTABLE_ID) {
+            this.beginSafePuzzle();
+            return;
+          }
           if (this.inspection.has(descriptor.id)) {
             this.beginInspection(descriptor.id);
             return;
@@ -350,8 +392,117 @@ export class GameBootstrap {
     this.inspection.close();
   }
 
+  closeClueJournal(): void {
+    if (!this.journalOpen) {
+      return;
+    }
+    this.journalOpen = false;
+    this.events.emit('clues.changed', { view: null });
+    this.player.requestPointerLock();
+  }
+
+  closePuzzle(): void {
+    if (!this.activePuzzle) {
+      return;
+    }
+    this.activePuzzle = null;
+    this.events.emit('puzzle.changed', { view: null });
+    this.player.requestPointerLock();
+  }
+
+  actPuzzle(actionId: string): void {
+    if (this.activePuzzle !== 'clock') {
+      return;
+    }
+    this.events.emit('puzzle.changed', {
+      view: this.clockPuzzle.act(actionId),
+    });
+  }
+
+  submitPuzzleCode(code: string): void {
+    if (this.activePuzzle !== 'safe') {
+      return;
+    }
+    this.events.emit('puzzle.changed', {
+      view: this.safePuzzle.submit(code),
+    });
+  }
+
+  private beginClockPuzzle(): void {
+    if (this.clockPuzzle.isSolved()) {
+      this.beginInspection(CLOCK_INTERACTABLE_ID);
+      return;
+    }
+    this.openPuzzle('clock', this.clockPuzzle.open());
+  }
+
+  private beginSafePuzzle(): void {
+    if (this.safePuzzle.isSolved()) {
+      this.beginInspection(SAFE_INTERACTABLE_ID);
+      return;
+    }
+    this.openPuzzle('safe', this.safePuzzle.open());
+  }
+
+  private openPuzzle(kind: 'clock' | 'safe', view: PuzzleView): void {
+    if (
+      this.dialogueOpen ||
+      this.inspectionOpen ||
+      this.journalOpen ||
+      this.activePuzzle
+    ) {
+      return;
+    }
+
+    this.activePuzzle = kind;
+    this.player.setPaused(true);
+    this.lastPrompt = null;
+    this.events.emit('interaction.prompt', { text: null });
+    this.events.emit('puzzle.changed', { view });
+    if (document.pointerLockElement === this.canvas) {
+      document.exitPointerLock();
+    }
+  }
+
+  private openClueJournal(): void {
+    if (
+      this.dialogueOpen ||
+      this.inspectionOpen ||
+      this.journalOpen ||
+      this.activePuzzle
+    ) {
+      return;
+    }
+
+    this.journalOpen = true;
+    this.player.setPaused(true);
+    this.lastPrompt = null;
+    this.events.emit('interaction.prompt', { text: null });
+    this.emitClueJournal();
+    if (document.pointerLockElement === this.canvas) {
+      document.exitPointerLock();
+    }
+  }
+
+  private emitClueJournal(): void {
+    const store = useStoryStore.getState();
+    this.events.emit('clues.changed', {
+      view: buildClueJournalView({
+        clues: content.clues,
+        discoveredClueIds: store.discoveredClueIds,
+        regionNames: this.regionNames,
+        npcNames: this.npcNames,
+      }),
+    });
+  }
+
   private beginInspection(id: string): void {
-    if (this.dialogueOpen || this.inspection.active) {
+    if (
+      this.dialogueOpen ||
+      this.journalOpen ||
+      this.activePuzzle ||
+      this.inspection.active
+    ) {
       return;
     }
 
@@ -378,7 +529,12 @@ export class GameBootstrap {
   }
 
   private openDialogue(npcId: SceneNpcSpot['npcId'], spotId: string): void {
-    if (this.dialogue.active) {
+    if (
+      this.dialogue.active ||
+      this.inspectionOpen ||
+      this.journalOpen ||
+      this.activePuzzle
+    ) {
       return;
     }
     if (!this.dialogue.openForNpc(npcId, spotId)) {
@@ -449,7 +605,12 @@ export class GameBootstrap {
     this.player.update(dt);
     this.sceneManager.update(dt);
 
-    if (this.dialogueOpen || this.inspectionOpen) {
+    if (
+      this.dialogueOpen ||
+      this.inspectionOpen ||
+      this.journalOpen ||
+      this.activePuzzle
+    ) {
       return;
     }
 
@@ -527,7 +688,12 @@ export class GameBootstrap {
     }
 
     const paused = document.pointerLockElement !== this.canvas;
-    if (this.dialogueOpen || this.inspectionOpen) {
+    if (
+      this.dialogueOpen ||
+      this.inspectionOpen ||
+      this.journalOpen ||
+      this.activePuzzle
+    ) {
       this.player.setPaused(true);
       return;
     }
@@ -555,6 +721,23 @@ export class GameBootstrap {
   };
 
   private readonly handleKeyDown = (event: KeyboardEvent): void => {
+    if (this.activePuzzle) {
+      if (!event.repeat && event.code === 'Escape') {
+        event.preventDefault();
+        this.closePuzzle();
+      }
+      return;
+    }
+    if (this.journalOpen) {
+      if (
+        !event.repeat &&
+        (event.code === 'Escape' || event.code === 'KeyJ')
+      ) {
+        event.preventDefault();
+        this.closeClueJournal();
+      }
+      return;
+    }
     if (this.inspection.active) {
       if (
         !event.repeat &&
@@ -569,7 +752,18 @@ export class GameBootstrap {
       this.handleDialogueKey(event);
       return;
     }
-    if (event.repeat || event.code !== 'KeyE') {
+    if (event.repeat) {
+      return;
+    }
+    if (event.code === 'KeyJ') {
+      if (document.pointerLockElement !== this.canvas) {
+        return;
+      }
+      event.preventDefault();
+      this.openClueJournal();
+      return;
+    }
+    if (event.code !== 'KeyE') {
       return;
     }
     if (document.pointerLockElement !== this.canvas) {

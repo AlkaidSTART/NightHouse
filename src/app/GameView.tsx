@@ -3,11 +3,15 @@ import { GameBootstrap } from '../game/core/GameBootstrap';
 import type { GameEventBus } from '../game/core/GameEvents';
 import type { SaveManager } from '../game/save/SaveManager';
 import type { DialogueView } from '../shared/types/dialogue';
+import type { ClueJournalView } from '../shared/types/clueJournal';
 import type { InspectionView } from '../shared/types/inspection';
+import type { PuzzleView } from '../shared/types/puzzle';
+import { CluePanel } from '../ui/clues/CluePanel';
 import { DialoguePanel } from '../ui/dialogue/DialoguePanel';
 import { GameHud } from '../ui/hud/GameHud';
 import { InspectPanel } from '../ui/inspection/InspectPanel';
 import type { MinimapPlayerPose } from '../ui/hud/Minimap';
+import { PuzzlePanel } from '../ui/puzzles/PuzzlePanel';
 import { PrologueOverlay } from '../ui/intro/PrologueOverlay';
 import { PauseMenu } from '../ui/pause/PauseMenu';
 import { StartOverlay } from '../ui/pause/StartOverlay';
@@ -38,6 +42,8 @@ export function GameView({
   const [playerPose, setPlayerPose] = useState<MinimapPlayerPose | null>(null);
   const [dialogue, setDialogue] = useState<DialogueView | null>(null);
   const [inspection, setInspection] = useState<InspectionView | null>(null);
+  const [clues, setClues] = useState<ClueJournalView | null>(null);
+  const [puzzle, setPuzzle] = useState<PuzzleView | null>(null);
   const [error, setError] = useState<string | null>(null);
   // 新游戏先读序章；继续游戏时玩家已经知道来龙去脉，直接进入称谓选择。
   const [prologueDone, setPrologueDone] = useState(resume);
@@ -80,6 +86,12 @@ export function GameView({
     const offInspection = events.on('inspection.changed', ({ view }) => {
       setInspection(view);
     });
+    const offClues = events.on('clues.changed', ({ view }) => {
+      setClues(view);
+    });
+    const offPuzzle = events.on('puzzle.changed', ({ view }) => {
+      setPuzzle(view);
+    });
     const offError = events.on('game.error', ({ message }) => {
       setError(message);
     });
@@ -113,6 +125,8 @@ export function GameView({
       offPause();
       offDialogue();
       offInspection();
+      offClues();
+      offPuzzle();
       offError();
       offReady();
       if (toastTimer !== null) {
@@ -131,21 +145,24 @@ export function GameView({
     <div className="game-view">
       <canvas ref={canvasRef} className="game-canvas" />
       <GameHud
-        prompt={dialogue || inspection ? null : prompt}
+        prompt={dialogue || inspection || clues || puzzle ? null : prompt}
         toast={toast}
         error={error}
         region={region}
         regionId={regionId}
         player={playerPose}
+        showJournalHint={
+          phase === 'playing' && !dialogue && !inspection && !clues && !puzzle
+        }
       />
-      {phase === 'ready' && !dialogue && !inspection && (
+      {phase === 'ready' && !dialogue && !inspection && !clues && !puzzle && (
         prologueDone ? (
           <StartOverlay ready={ready} onStart={handleStart} />
         ) : (
           <PrologueOverlay onStart={() => setPrologueDone(true)} />
         )
       )}
-      {phase === 'paused' && !dialogue && !inspection && (
+      {phase === 'paused' && !dialogue && !inspection && !clues && !puzzle && (
         <PauseMenu onResume={handleStart} onExit={onExit} />
       )}
       {dialogue && (
@@ -162,6 +179,24 @@ export function GameView({
         <InspectPanel
           view={inspection}
           onClose={() => bootstrapRef.current?.closeInspection()}
+        />
+      )}
+      {clues && (
+        <CluePanel
+          view={clues}
+          onClose={() => bootstrapRef.current?.closeClueJournal()}
+        />
+      )}
+      {puzzle && (
+        <PuzzlePanel
+          view={puzzle}
+          onAction={(actionId) =>
+            bootstrapRef.current?.actPuzzle(actionId)
+          }
+          onSubmitCode={(code) =>
+            bootstrapRef.current?.submitPuzzleCode(code)
+          }
+          onClose={() => bootstrapRef.current?.closePuzzle()}
         />
       )}
     </div>

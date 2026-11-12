@@ -207,6 +207,7 @@ export const inspectables: readonly InspectableDefinition[] = [
             '玻璃罩内侧有一圈干净的布痕，显然常被人拿起来对时。',
           ),
         ],
+        effects: [setFlag('story.saw_mantel_clock')],
       },
     ],
   },
