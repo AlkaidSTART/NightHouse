@@ -42,6 +42,11 @@ export interface DialogueNode {
   id: string;
   npcId: string;
   conditions?: StoryCondition[];
+  /**
+   * 节点所属的任务步骤。只有当前任务步骤命中时才允许进入，
+   * 用于把 NPC 的对话按情节分段，避免上一段的入口在后续情节被重复触发。
+   */
+  taskIds?: readonly string[];
   lines: DialogueLine[];
   choices: DialogueChoice[];
 }

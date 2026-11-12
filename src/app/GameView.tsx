@@ -3,11 +3,13 @@ import { GameBootstrap } from '../game/core/GameBootstrap';
 import type { GameEventBus } from '../game/core/GameEvents';
 import type { SaveManager } from '../game/save/SaveManager';
 import type { DialogueView } from '../shared/types/dialogue';
+import type { EndingView } from '../shared/types/ending';
 import type { ClueJournalView } from '../shared/types/clueJournal';
 import type { InspectionView } from '../shared/types/inspection';
 import type { PuzzleView } from '../shared/types/puzzle';
 import { CluePanel } from '../ui/clues/CluePanel';
 import { DialoguePanel } from '../ui/dialogue/DialoguePanel';
+import { EndingOverlay } from '../ui/ending/EndingOverlay';
 import { GameHud } from '../ui/hud/GameHud';
 import { InspectPanel } from '../ui/inspection/InspectPanel';
 import type { MinimapPlayerPose } from '../ui/hud/Minimap';
@@ -44,6 +46,7 @@ export function GameView({
   const [inspection, setInspection] = useState<InspectionView | null>(null);
   const [clues, setClues] = useState<ClueJournalView | null>(null);
   const [puzzle, setPuzzle] = useState<PuzzleView | null>(null);
+  const [ending, setEnding] = useState<EndingView | null>(null);
   const [error, setError] = useState<string | null>(null);
   // 新游戏先读序章；继续游戏时玩家已经知道来龙去脉，直接进入称谓选择。
   const [prologueDone, setPrologueDone] = useState(resume);
@@ -92,6 +95,9 @@ export function GameView({
     const offPuzzle = events.on('puzzle.changed', ({ view }) => {
       setPuzzle(view);
     });
+    const offEnding = events.on('ending.changed', ({ view }) => {
+      setEnding(view);
+    });
     const offError = events.on('game.error', ({ message }) => {
       setError(message);
     });
@@ -127,6 +133,7 @@ export function GameView({
       offInspection();
       offClues();
       offPuzzle();
+      offEnding();
       offError();
       offReady();
       if (toastTimer !== null) {
@@ -145,26 +152,42 @@ export function GameView({
     <div className="game-view">
       <canvas ref={canvasRef} className="game-canvas" />
       <GameHud
-        prompt={dialogue || inspection || clues || puzzle ? null : prompt}
+        prompt={dialogue || inspection || clues || puzzle || ending ? null : prompt}
         toast={toast}
         error={error}
         region={region}
         regionId={regionId}
         player={playerPose}
         showJournalHint={
-          phase === 'playing' && !dialogue && !inspection && !clues && !puzzle
+          phase === 'playing' &&
+          !dialogue &&
+          !inspection &&
+          !clues &&
+          !puzzle &&
+          !ending
         }
       />
-      {phase === 'ready' && !dialogue && !inspection && !clues && !puzzle && (
-        prologueDone ? (
-          <StartOverlay ready={ready} onStart={handleStart} />
-        ) : (
-          <PrologueOverlay onStart={() => setPrologueDone(true)} />
-        )
-      )}
-      {phase === 'paused' && !dialogue && !inspection && !clues && !puzzle && (
-        <PauseMenu onResume={handleStart} onExit={onExit} />
-      )}
+      {phase === 'ready' &&
+        !dialogue &&
+        !inspection &&
+        !clues &&
+        !puzzle &&
+        !ending && (
+          prologueDone ? (
+            <StartOverlay ready={ready} onStart={handleStart} />
+          ) : (
+            <PrologueOverlay onStart={() => setPrologueDone(true)} />
+          )
+        )}
+      {phase === 'paused' &&
+        !dialogue &&
+        !inspection &&
+        !clues &&
+        !puzzle &&
+        !ending && (
+          <PauseMenu onResume={handleStart} onExit={onExit} />
+        )}
+      {ending && <EndingOverlay ending={ending} onExit={onExit} />}
       {dialogue && (
         <DialoguePanel
           view={dialogue}

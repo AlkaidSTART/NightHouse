@@ -1,6 +1,7 @@
 import * as pc from 'playcanvas';
 import { clueFlagForId } from '../../content/clues';
 import { content } from '../../content';
+import { presentEnding } from '../../content/endings';
 import { clockPuzzleContent, safePuzzleContent } from '../../content/puzzles';
 import { villaGreybox } from '../../content/scenes/villaGreybox';
 import { useStoryStore } from '../../stores/storyStore';
@@ -26,6 +27,7 @@ import { DoorSystem } from '../scene/DoorSystem.ts';
 import { DOOR_THICKNESS } from '../scene/sceneGeometry.ts';
 import { NightSky, NIGHT_CLEAR_COLOR } from '../scene/NightSky';
 import { SceneManager } from '../scene/SceneManager';
+import { resolveEnding } from '../story/endingResolver';
 import type { GameEventBus } from './GameEvents';
 
 const AUTOSAVE_INTERVAL_MS = 5000;
@@ -116,6 +118,8 @@ export class GameBootstrap {
   private inspectionOpen = false;
   private journalOpen = false;
   private activePuzzle: 'clock' | 'safe' | null = null;
+  private endingShown = false;
+  private pendingEnding = false;
   private destroyed = false;
 
   private constructor(
@@ -359,6 +363,13 @@ export class GameBootstrap {
       });
     }
 
+    // 读档进入一个已经做过午夜抉择的存档时，直接回到结局演出，
+    // 避免停在一个任务全部完成、却没有任何目标的空世界。
+    const resumedChoice = save.storyFlags['choice.midnight'];
+    this.pendingEnding =
+      options.resume &&
+      (resumedChoice === 'sign' || resumedChoice === 'refuse');
+
     app.on('update', this.handleUpdate);
   }
 
@@ -590,6 +601,8 @@ export class GameBootstrap {
     if (!event.completed) {
       return;
     }
+    // 午夜抉择写在选项上；等对话真正结束再结算结局，避免在拒签分支里当场弹出。
+    this.pendingEnding = true;
     const store = useStoryStore.getState();
 
     if (event.npcId === 'npc_housekeeper') {
@@ -606,6 +619,34 @@ export class GameBootstrap {
           message: '格雷医生到了。他在门厅跺掉靴子上的泥。',
         });
       }
+    }
+  }
+
+  /**
+   * 午夜抉择落地后结算结局：按优先级命中第一个满足条件的结局，
+   * 暂停玩家并交给 React 层播放演出。只结算一次。
+   */
+  private maybeShowEnding(): void {
+    if (this.endingShown || this.destroyed) {
+      return;
+    }
+    const flags = useStoryStore.getState().storyFlags;
+    const definition = resolveEnding(flags, content.endings);
+    if (!definition) {
+      return;
+    }
+    const view = presentEnding(definition.id, flags);
+    if (!view) {
+      return;
+    }
+
+    this.endingShown = true;
+    this.player.setPaused(true);
+    this.lastPrompt = null;
+    this.events.emit('interaction.prompt', { text: null });
+    this.events.emit('ending.changed', { view });
+    if (document.pointerLockElement === this.canvas) {
+      document.exitPointerLock();
     }
   }
 
@@ -648,6 +689,11 @@ export class GameBootstrap {
       return;
     }
 
+    if (this.pendingEnding) {
+      this.pendingEnding = false;
+      this.maybeShowEnding();
+    }
+
     this.player.update(dt);
     this.hands.update(dt);
     this.sceneManager.update(dt);
@@ -659,7 +705,8 @@ export class GameBootstrap {
       this.dialogueOpen ||
       this.inspectionOpen ||
       this.journalOpen ||
-      this.activePuzzle
+      this.activePuzzle ||
+      this.endingShown
     ) {
       return;
     }
@@ -728,6 +775,15 @@ export class GameBootstrap {
       return;
     }
 
+    // 结局面板需要鼠标操作；若锁定请求在面板出现后才落定，立刻释放。
+    if (this.endingShown) {
+      this.player.setPaused(true);
+      if (document.pointerLockElement === this.canvas) {
+        document.exitPointerLock();
+      }
+      return;
+    }
+
     const paused = document.pointerLockElement !== this.canvas;
     if (
       this.dialogueOpen ||
@@ -762,6 +818,9 @@ export class GameBootstrap {
   };
 
   private readonly handleKeyDown = (event: KeyboardEvent): void => {
+    if (this.endingShown) {
+      return;
+    }
     if (this.activePuzzle) {
       if (!event.repeat && event.code === 'Escape') {
         event.preventDefault();

@@ -1836,3 +1836,57 @@ button {
   font-size: 13px;
   line-height: 1.7;
 }
+
+/* 结局演出：与序章同样的阅读节奏，但更克制，不留操作干扰。 */
+.ending-overlay {
+  z-index: 60;
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgba(6, 7, 9, 0.72),
+    rgba(2, 3, 4, 0.96)
+  );
+}
+
+.ending-panel {
+  width: min(560px, 100%);
+  text-align: left;
+}
+
+.ending-panel .overlay-eyebrow,
+.ending-panel .overlay-title {
+  text-align: center;
+}
+
+.ending-panel .overlay-title {
+  margin-bottom: 22px;
+  font-size: 24px;
+  letter-spacing: 0.18em;
+}
+
+.ending-body {
+  max-height: min(56vh, 440px);
+  margin-bottom: 26px;
+  padding-right: 8px;
+  overflow-y: auto;
+}
+
+.ending-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ending-body::-webkit-scrollbar-thumb {
+  background: rgba(200, 170, 110, 0.28);
+}
+
+.ending-body p {
+  margin: 0 0 12px;
+  color: #cfc7b4;
+  font-size: 13px;
+  line-height: 1.95;
+  letter-spacing: 0.05em;
+}
+
+.ending-body p:last-child {
+  margin-bottom: 0;
+}
+

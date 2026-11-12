@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { quests } from '../src/content/quests.ts';
 import { villaGreybox } from '../src/content/scenes/villaGreybox.ts';
+import { CLUE_FLAGS } from '../src/content/clues.ts';
 import { KNOWN_STORY_FLAGS } from '../src/content/storyFlags.ts';
 import {
   isStepComplete,
@@ -47,16 +48,19 @@ test('任务目标：剧情标记推进后自动切换到下一步', () => {
   );
 });
 
-test('任务目标：医生的任一调查标记都能完成该步', () => {
+test('任务目标：医生必须追问到场时间或伤势才能完成该步', () => {
   const base: StoryFlags = {
     'story.arrived': true,
     'story.met_housekeeper': true,
     'story.met_arthur': true,
     'story.arthur_talked': true,
   };
+
+  // 泛泛而谈不再推进任务，避免一次闲聊就跳过调查。
+  assert.equal(activeId({ ...base, 'story.summer_mentioned': true }), 'step_doctor');
+  assert.equal(activeId({ ...base, 'story.doctor_slip': true }), 'step_doctor');
+
   for (const flag of [
-    'story.summer_mentioned',
-    'story.doctor_slip',
     'story.doctor_time_conflict',
     'story.doctor_admits_exam',
     'story.doctor_confessed',
@@ -69,14 +73,41 @@ test('任务目标：医生的任一调查标记都能完成该步', () => {
   }
 });
 
+test('任务目标：对质前必须先取得一条核心证据', () => {
+  const base: StoryFlags = {
+    'story.arrived': true,
+    'story.met_housekeeper': true,
+    'story.met_arthur': true,
+    'story.arthur_talked': true,
+    'story.doctor_time_conflict': true,
+    'story.knows_coverup': true,
+  };
+  assert.equal(activeId(base), 'step_evidence');
+
+  for (const flag of [
+    'clue.medical_record',
+    'clue.bathroom_trace',
+    'clue.shipping_ledger',
+    'clue.insurance_policy',
+    'story.heard_recording',
+  ]) {
+    assert.equal(
+      activeId({ ...base, [flag]: true }),
+      'step_confront',
+      `${flag} 未推进到对质`,
+    );
+  }
+});
+
 test('任务目标：主线走完后不再显示目标', () => {
   const flags: StoryFlags = {
     'story.arrived': true,
     'story.met_housekeeper': true,
     'story.met_arthur': true,
     'story.arthur_talked': true,
-    'story.doctor_slip': true,
+    'story.doctor_time_conflict': true,
     'story.knows_coverup': true,
+    'clue.medical_record': true,
     'story.midnight': true,
     'choice.midnight': 'sign',
   };
@@ -98,8 +129,9 @@ test('全局进度：当前任务步骤 ID 随剧情标记推导', () => {
     'story.met_housekeeper': true,
     'story.met_arthur': true,
     'story.arthur_talked': true,
-    'story.doctor_slip': true,
+    'story.doctor_time_conflict': true,
     'story.knows_coverup': true,
+    'clue.medical_record': true,
     'story.midnight': true,
     'choice.midnight': 'sign',
   };
@@ -117,7 +149,8 @@ test('任务目标：地点 ID 都对应场景区域，完成条件都使用已�
       for (const group of step.doneWhen) {
         for (const condition of group) {
           assert.ok(
-            KNOWN_STORY_FLAGS.has(condition.flag),
+            KNOWN_STORY_FLAGS.has(condition.flag) ||
+              CLUE_FLAGS.has(condition.flag),
             `${step.id} 使用了未登记的标记 ${condition.flag}`,
           );
         }

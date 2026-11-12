@@ -36,12 +36,10 @@ export const quests: readonly QuestDefinition[] = [
       },
       {
         id: 'step_doctor',
-        objective: '向格雷医生打听伊芙琳的死',
-        hint: '格雷医生已经到了，在门厅正门内侧。',
+        objective: '向格雷医生追问伊芙琳的死',
+        hint: '格雷医生已经到了，在门厅正门内侧。先问清他到场的时间。',
         locationId: 'villa_hall',
         doneWhen: [
-          [{ flag: 'story.summer_mentioned' }],
-          [{ flag: 'story.doctor_slip' }],
           [{ flag: 'story.doctor_time_conflict' }],
           [{ flag: 'story.doctor_admits_exam' }],
           [{ flag: 'story.doctor_confessed' }],
@@ -53,6 +51,19 @@ export const quests: readonly QuestDefinition[] = [
         hint: '她会在餐厅门边。先让她信任你，再问那晚的事。',
         locationId: 'villa_dining',
         doneWhen: [[{ flag: 'story.knows_coverup' }]],
+      },
+      {
+        id: 'step_evidence',
+        objective: '在宅子里搜集能推翻「意外」的证据',
+        hint: '书房抽屉、浴室药柜和书房保险箱都会留下痕迹。至少带回一条。',
+        locationId: 'villa_study',
+        doneWhen: [
+          [{ flag: 'clue.medical_record' }],
+          [{ flag: 'clue.bathroom_trace' }],
+          [{ flag: 'clue.shipping_ledger' }],
+          [{ flag: 'clue.insurance_policy' }],
+          [{ flag: 'story.heard_recording' }],
+        ],
       },
       {
         id: 'step_confront',

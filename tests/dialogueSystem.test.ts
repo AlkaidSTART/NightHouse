@@ -369,18 +369,13 @@ test('话题选项按全局任务进度过滤，未标记的返回/离开选项�
   assert.ok(ids.includes('ask_house'));
   assert.ok(ids.includes('leave'));
 
-  // 同一个 NPC 在其他任务阶段只保留常规退出项。
+  // 不属于当前情节的入口节点整段不可进入（例如餐厅阶段的霍尔太太）。
   const housekeeper = createFixture(
     { 'story.arrived': true, 'player.honorific': 'sir' },
-    'step_arthur',
+    'step_doctor',
   );
-  assert.equal(housekeeper.system.open('npc_housekeeper_intro'), true);
-  const housekeeperIds = showChoices(housekeeper.system).choices.map(
-    (choice) => choice.id,
-  );
-  assert.ok(housekeeperIds.includes('leave'));
-  assert.ok(housekeeperIds.includes('warm'));
-  assert.equal(housekeeperIds.includes('ask_evelyn'), false);
+  assert.equal(housekeeper.system.open('npc_housekeeper_intro'), false);
+  assert.equal(housekeeper.system.active, false);
 
   // 霍尔太太在调查阶段重新出现相关话题。
   const coverup = createFixture(
@@ -392,6 +387,35 @@ test('话题选项按全局任务进度过滤，未标记的返回/离开选项�
   assert.ok(coverupIds.includes('ask_evelyn'));
   assert.ok(coverupIds.includes('warm'));
   assert.ok(coverupIds.includes('leave'));
+});
+
+test('情节分段：同一 NPC 只显示当前阶段的话题', () => {
+  const meeting = createFixture(
+    {
+      'story.arrived': true,
+      'story.has_letter': true,
+      'player.honorific': 'sir',
+    },
+    'step_housekeeper',
+  );
+  assert.equal(meeting.system.open('npc_housekeeper_intro'), true);
+  const meetingIds = showChoices(meeting.system).choices.map((c) => c.id);
+  assert.ok(meetingIds.includes('warm'));
+  assert.ok(meetingIds.includes('ask_evelyn'));
+  assert.equal(meetingIds.includes('show_letter'), false);
+
+  const coverup = createFixture(
+    {
+      'story.arrived': true,
+      'story.has_letter': true,
+      'player.honorific': 'sir',
+    },
+    'step_coverup',
+  );
+  assert.equal(coverup.system.open('npc_housekeeper_intro'), true);
+  const coverupIds = showChoices(coverup.system).choices.map((c) => c.id);
+  assert.ok(coverupIds.includes('show_letter'));
+  assert.ok(coverupIds.includes('ask_evelyn'));
 });
 
 test('任务全部完成（无当前任务）时不过滤话题选项', () => {

@@ -10,6 +10,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
     id: 'npc_arthur_intro',
     npcId: 'npc_arthur',
     conditions: [{ flag: 'story.arrived' }],
+    taskIds: ['step_arthur', 'step_coverup'],
     lines: [
       { speaker: 'npc', text: '你来了。路上不好走吧——桥断了。' },
       {
@@ -44,7 +45,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
         text: '书房里的账本，我看了。',
         next: 'npc_arthur_business_01',
         conditions: [{ flag: 'clue.shipping_ledger' }],
-        taskIds: ['step_doctor', 'step_coverup', 'step_confront'],
+        taskIds: ['step_coverup'],
         effects: [flag('story.met_arthur')],
       },
       {
@@ -315,6 +316,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
     id: 'npc_arthur_dinner_01',
     npcId: 'npc_arthur',
     conditions: [{ flag: 'story.met_arthur' }],
+    taskIds: ['step_doctor', 'step_coverup'],
     lines: [
       {
         speaker: 'npc',
@@ -330,21 +332,25 @@ export const arthurDialogues: readonly DialogueNode[] = [
         id: 'ask_seat',
         text: '为什么多摆了一副餐具？',
         next: 'npc_arthur_dinner_seat',
+        taskIds: ['step_doctor', 'step_coverup'],
       },
       {
         id: 'ask_evelyn',
         text: '伊芙琳那晚是什么状态？',
         next: 'npc_arthur_dinner_evelyn',
+        taskIds: ['step_doctor', 'step_coverup'],
       },
       {
         id: 'look_will',
         text: '桌上这份遗嘱，我能看吗？',
         next: 'npc_arthur_dinner_will',
+        taskIds: ['step_doctor', 'step_coverup'],
       },
       {
         id: 'watch',
         text: '先不说话，看看他们。',
         next: 'npc_arthur_dinner_watch',
+        taskIds: ['step_doctor', 'step_coverup'],
       },
       {
         id: 'leave',
@@ -452,6 +458,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_confront_01',
     npcId: 'npc_arthur',
+    taskIds: ['step_confront'],
     lines: [{ speaker: 'npc', text: '你把所有人叫到这儿，是想干什么？' }],
     choices: [
       {
@@ -680,6 +687,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
     id: 'npc_arthur_midnight_01',
     npcId: 'npc_arthur',
     conditions: [{ flag: 'story.midnight' }],
+    taskIds: ['step_midnight'],
     lines: [
       { speaker: 'npc', text: '到点了。笔在这儿。' },
       { speaker: 'npc', text: '签吧。然后我们都去睡一觉。' },

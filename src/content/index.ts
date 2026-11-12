@@ -9,6 +9,7 @@ import type {
 } from '../shared/types/content';
 import { clues } from './clues.ts';
 import { dialogues } from './dialogues/index.ts';
+import { endings } from './endings.ts';
 import { inspectables } from './inspectables.ts';
 import { npcs } from './npcs.ts';
 import { clockPuzzleContent, safePuzzleContent } from './puzzles.ts';
@@ -31,5 +32,5 @@ export const content: ContentRegistry = {
   inspectables,
   quests,
   puzzles: [clockPuzzleContent.definition, safePuzzleContent.definition],
-  endings: [],
+  endings,
 };

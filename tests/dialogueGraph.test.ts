@@ -32,6 +32,12 @@ test('对话节点 ID 唯一，且归属已登记的 NPC', () => {
     assert.ok(npcIds.has(node.npcId), `${node.id} 的 npcId 未登记：${node.npcId}`);
     assert.ok(node.lines.length > 0 || node.choices.length > 0, `${node.id} 是空节点`);
     assertKnownConditions(`${node.id} 节点条件`, node.conditions);
+    for (const taskId of node.taskIds ?? []) {
+      assert.ok(
+        questStepIds.has(taskId),
+        `${node.id} 引用了不存在的任务步骤：${taskId}`,
+      );
+    }
     for (const choice of node.choices) {
       assertKnownConditions(`${node.id}.${choice.id} 选项条件`, choice.conditions);
       for (const taskId of choice.taskIds ?? []) {

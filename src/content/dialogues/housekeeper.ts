@@ -11,6 +11,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     id: 'npc_housekeeper_intro',
     npcId: 'npc_housekeeper',
     conditions: [{ flag: 'story.arrived' }],
+    taskIds: ['step_housekeeper', 'step_coverup', 'step_confront'],
     lines: [
       { speaker: 'npc', text: '您到了。外套给我吧，{honorific}。' },
       { speaker: 'npc', text: '房间已经收拾好了。晚餐在餐厅。' },
@@ -20,6 +21,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         id: 'warm',
         text: '谢谢你，霍尔太太。',
         next: 'npc_housekeeper_warm',
+        taskIds: ['step_housekeeper', 'step_coverup'],
         effects: [
           flag('story.met_housekeeper'),
           flag('story.housekeeper_warm'),
@@ -29,6 +31,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         id: 'cold',
         text: '我自己来。',
         next: 'npc_housekeeper_cold',
+        taskIds: ['step_housekeeper', 'step_coverup'],
         effects: [
           flag('story.met_housekeeper'),
           flag('story.housekeeper_cold'),
@@ -46,7 +49,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         text: '这封信，是你寄的？',
         next: 'npc_housekeeper_letter_01',
         conditions: [{ flag: 'story.has_letter' }],
-        taskIds: ['step_housekeeper', 'step_coverup'],
+        taskIds: ['step_coverup', 'step_confront'],
         effects: [flag('story.met_housekeeper')],
       },
       {
@@ -54,7 +57,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         text: '书房壁炉里的纸，是你烧的吗？',
         next: 'npc_housekeeper_study_01',
         conditions: [{ flag: 'clue.burned_pages' }],
-        taskIds: ['step_doctor', 'step_coverup', 'step_confront'],
+        taskIds: ['step_coverup', 'step_confront'],
         effects: [flag('story.met_housekeeper')],
       },
       {
@@ -62,7 +65,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         text: '书房里有人清理过，对吗？',
         next: 'npc_housekeeper_study_01',
         conditions: [{ flag: 'clue.shipping_ledger' }],
-        taskIds: ['step_doctor', 'step_coverup', 'step_confront'],
+        taskIds: ['step_coverup', 'step_confront'],
         effects: [flag('story.met_housekeeper')],
       },
       {

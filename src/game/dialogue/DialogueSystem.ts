@@ -108,6 +108,9 @@ export class DialogueSystem {
     if (!node) {
       return false;
     }
+    if (!this.isTaskRelevant(node.taskIds, this.getActiveTaskId())) {
+      return false;
+    }
     if (!areConditionsMet(this.host.getFlags(), node.conditions ?? [])) {
       return false;
     }
@@ -265,28 +268,32 @@ export class DialogueSystem {
     };
   }
 
+  private getActiveTaskId(): string | null {
+    return this.host.getActiveTaskId?.() ?? null;
+  }
+
   private availableChoices(node: DialogueNode): DialogueChoice[] {
     const flags = this.host.getFlags();
-    const activeTaskId = this.host.getActiveTaskId?.() ?? null;
+    const activeTaskId = this.getActiveTaskId();
     return node.choices.filter(
       (choice) =>
         areConditionsMet(flags, choice.conditions ?? []) &&
-        this.isChoiceRelevant(choice, activeTaskId),
+        this.isTaskRelevant(choice.taskIds, activeTaskId),
     );
   }
 
   /**
-   * 话题选项只在当前任务步骤命中时显示；未标记任务的选项（返回、离开、
-   * 态度回应）始终保留。任务全部完成（activeTaskId 为 null）时不过滤。
+   * 节点与话题选项只在当前任务步骤命中时可用；未标记任务的选项（返回、
+   * 离开、态度回应）始终保留。任务全部完成（activeTaskId 为 null）时不过滤。
    */
-  private isChoiceRelevant(
-    choice: DialogueChoice,
+  private isTaskRelevant(
+    taskIds: readonly string[] | undefined,
     activeTaskId: string | null,
   ): boolean {
-    if (!choice.taskIds || choice.taskIds.length === 0) {
+    if (!taskIds || taskIds.length === 0) {
       return true;
     }
-    return activeTaskId === null || choice.taskIds.includes(activeTaskId);
+    return activeTaskId === null || taskIds.includes(activeTaskId);
   }
 
   private applyEffect(effect: StoryEffect): void {

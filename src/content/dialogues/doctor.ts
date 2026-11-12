@@ -10,6 +10,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
     id: 'npc_doctor_intro',
     npcId: 'npc_doctor',
     conditions: [{ flag: 'story.met_doctor' }],
+    taskIds: ['step_doctor', 'step_coverup', 'step_confront'],
     lines: [
       {
         speaker: 'npc',
@@ -36,7 +37,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
         id: 'ask_evelyn',
         text: '伊芙琳的事，您在场。',
         next: 'npc_doctor_evelyn_01',
-        taskIds: ['step_doctor', 'step_coverup'],
+        taskIds: ['step_doctor', 'step_coverup', 'step_confront'],
         effects: [flag('story.doctor_talked')],
       },
       {
@@ -245,6 +246,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
     id: 'npc_doctor_midnight_01',
     npcId: 'npc_doctor',
     conditions: [{ flag: 'story.midnight' }],
+    taskIds: ['step_midnight'],
     lines: [
       { speaker: 'npc', text: '我只是个医生。你们家的事，我不该管。' },
     ],
