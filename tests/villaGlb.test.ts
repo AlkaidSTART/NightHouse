@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { test } from 'node:test';
 import { villaGreybox } from '../src/content/scenes/villaGreybox.ts';
+import { characterArchive } from '../src/content/characters.ts';
 import { buildVillaGlb } from '../scripts/villaGlb.ts';
 
 // 导出脚本的验收：GLB 结构自洽，且节点与场景数据一一对应。
@@ -247,4 +248,54 @@ test('Blender 导出的 scene_villa_full.glb：节点齐全、门扇位置准确
     totalTriangles > 10000 && totalTriangles < 300000,
     `精模三角面数异常：${totalTriangles}`,
   );
+});
+
+test('导出的 NPC 角色 GLB：文件齐全、身高符合设定且面数与贴图在预算内', () => {
+  const urls = villaGreybox.characterModelUrls;
+  assert.ok(urls, 'villaGreybox 缺少 characterModelUrls');
+
+  for (const entry of characterArchive) {
+    const modelUrl = urls[entry.id];
+    assert.ok(modelUrl, `缺少角色 ${entry.id} 的 GLB 映射`);
+    const filePath = resolve('public', modelUrl.replace(/^\/+/, ''));
+    const fileBytes = readFileSync(filePath);
+    const exported = parseGlb(
+      new Uint8Array(fileBytes.buffer, fileBytes.byteOffset, fileBytes.byteLength),
+    );
+
+    assert.ok(exported.json.meshes.length > 0, `${modelUrl} 缺少网格`);
+    assert.ok(exported.json.materials.length > 0, `${modelUrl} 缺少材质`);
+    assert.ok(exported.json.images.length > 0, `${modelUrl} 缺少贴图`);
+
+    let minY = Infinity;
+    let maxY = -Infinity;
+    let totalTriangles = 0;
+    for (const mesh of exported.json.meshes) {
+      for (const primitive of mesh.primitives) {
+        const posAccessor =
+          exported.json.accessors[primitive.attributes.POSITION ?? -1];
+        assert.ok(posAccessor?.min && posAccessor.max, `${modelUrl} 缺少包围盒`);
+        minY = Math.min(minY, posAccessor.min[1] ?? Infinity);
+        maxY = Math.max(maxY, posAccessor.max[1] ?? -Infinity);
+
+        const idxAccessor = exported.json.accessors[primitive.indices];
+        assert.ok(idxAccessor, `${modelUrl} 缺少索引 accessor`);
+        totalTriangles += Math.floor(idxAccessor.count / 3);
+      }
+    }
+
+    const height = maxY - minY;
+    assert.ok(
+      Math.abs(minY) < 0.02,
+      `${modelUrl} 脚底未落地（minY=${minY.toFixed(4)}）`,
+    );
+    assert.ok(
+      Math.abs(height - entry.heightM) < 0.02,
+      `${modelUrl} 身高 ${height.toFixed(3)}m 与设定 ${entry.heightM}m 不符`,
+    );
+    assert.ok(
+      totalTriangles > 5000 && totalTriangles <= 50000,
+      `${modelUrl} 三角面数超出游戏预算：${totalTriangles}`,
+    );
+  }
 });
