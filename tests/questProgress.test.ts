@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { quests } from '../src/content/quests.ts';
+import { villaGreybox } from '../src/content/scenes/villaGreybox.ts';
+import { KNOWN_STORY_FLAGS } from '../src/content/storyFlags.ts';
 import {
   isStepComplete,
   resolveActiveObjective,
@@ -71,6 +73,26 @@ test('任务目标：主线走完后不再显示目标', () => {
 
 test('任务目标：空完成条件不会被误判为已完成', () => {
   assert.equal(isStepComplete({}, []), false);
+});
+
+test('任务目标：地点 ID 都对应场景区域，完成条件都使用已登记标记', () => {
+  const regionIds = new Set(villaGreybox.regions.map((region) => region.id));
+  for (const quest of quests) {
+    for (const step of quest.steps) {
+      assert.ok(
+        regionIds.has(step.locationId),
+        `${step.id} 的地点 ${step.locationId} 不存在`,
+      );
+      for (const group of step.doneWhen) {
+        for (const condition of group) {
+          assert.ok(
+            KNOWN_STORY_FLAGS.has(condition.flag),
+            `${step.id} 使用了未登记的标记 ${condition.flag}`,
+          );
+        }
+      }
+    }
+  }
 });
 
 test('路线指引：八方向计算以 −Z 为北', () => {

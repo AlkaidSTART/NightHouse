@@ -100,6 +100,7 @@ export class GameBootstrap {
   private started = false;
   private hasEntered = false;
   private dialogueOpen = false;
+  private inspectionOpen = false;
   private destroyed = false;
 
   private constructor(
@@ -345,6 +346,37 @@ export class GameBootstrap {
     this.dialogue.close();
   }
 
+  closeInspection(): void {
+    this.inspection.close();
+  }
+
+  private beginInspection(id: string): void {
+    if (this.dialogueOpen || this.inspection.active) {
+      return;
+    }
+
+    this.inspectionOpen = true;
+    this.player.setPaused(true);
+    this.lastPrompt = null;
+    this.events.emit('interaction.prompt', { text: null });
+    if (!this.inspection.open(id)) {
+      this.inspectionOpen = false;
+      this.player.requestPointerLock();
+      return;
+    }
+    if (document.pointerLockElement === this.canvas) {
+      document.exitPointerLock();
+    }
+  }
+
+  private finishInspection(): void {
+    if (!this.inspectionOpen) {
+      return;
+    }
+    this.inspectionOpen = false;
+    this.player.requestPointerLock();
+  }
+
   private openDialogue(npcId: SceneNpcSpot['npcId'], spotId: string): void {
     if (this.dialogue.active) {
       return;
@@ -416,6 +448,10 @@ export class GameBootstrap {
 
     this.player.update(dt);
     this.sceneManager.update(dt);
+
+    if (this.dialogueOpen || this.inspectionOpen) {
+      return;
+    }
 
     this.playerPosition.copy(this.player.camera.getPosition());
     const prompt = this.interaction.update(this.player.camera, this.playerPosition);
@@ -491,7 +527,7 @@ export class GameBootstrap {
     }
 
     const paused = document.pointerLockElement !== this.canvas;
-    if (this.dialogueOpen) {
+    if (this.dialogueOpen || this.inspectionOpen) {
       this.player.setPaused(true);
       return;
     }
@@ -519,6 +555,16 @@ export class GameBootstrap {
   };
 
   private readonly handleKeyDown = (event: KeyboardEvent): void => {
+    if (this.inspection.active) {
+      if (
+        !event.repeat &&
+        (event.code === 'Escape' || event.code === 'KeyE')
+      ) {
+        event.preventDefault();
+        this.closeInspection();
+      }
+      return;
+    }
     if (this.dialogue.active) {
       this.handleDialogueKey(event);
       return;

@@ -3,9 +3,12 @@ import { GameBootstrap } from '../game/core/GameBootstrap';
 import type { GameEventBus } from '../game/core/GameEvents';
 import type { SaveManager } from '../game/save/SaveManager';
 import type { DialogueView } from '../shared/types/dialogue';
+import type { InspectionView } from '../shared/types/inspection';
 import { DialoguePanel } from '../ui/dialogue/DialoguePanel';
 import { GameHud } from '../ui/hud/GameHud';
+import { InspectPanel } from '../ui/inspection/InspectPanel';
 import type { MinimapPlayerPose } from '../ui/hud/Minimap';
+import { PrologueOverlay } from '../ui/intro/PrologueOverlay';
 import { PauseMenu } from '../ui/pause/PauseMenu';
 import { StartOverlay } from '../ui/pause/StartOverlay';
 
@@ -34,7 +37,10 @@ export function GameView({
   const [regionId, setRegionId] = useState<string | null>(null);
   const [playerPose, setPlayerPose] = useState<MinimapPlayerPose | null>(null);
   const [dialogue, setDialogue] = useState<DialogueView | null>(null);
+  const [inspection, setInspection] = useState<InspectionView | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // 新游戏先读序章；继续游戏时玩家已经知道来龙去脉，直接进入称谓选择。
+  const [prologueDone, setPrologueDone] = useState(resume);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -71,6 +77,9 @@ export function GameView({
     const offDialogue = events.on('dialogue.changed', ({ view }) => {
       setDialogue(view);
     });
+    const offInspection = events.on('inspection.changed', ({ view }) => {
+      setInspection(view);
+    });
     const offError = events.on('game.error', ({ message }) => {
       setError(message);
     });
@@ -103,6 +112,7 @@ export function GameView({
       offPlayerPose();
       offPause();
       offDialogue();
+      offInspection();
       offError();
       offReady();
       if (toastTimer !== null) {
@@ -121,17 +131,21 @@ export function GameView({
     <div className="game-view">
       <canvas ref={canvasRef} className="game-canvas" />
       <GameHud
-        prompt={dialogue ? null : prompt}
+        prompt={dialogue || inspection ? null : prompt}
         toast={toast}
         error={error}
         region={region}
         regionId={regionId}
         player={playerPose}
       />
-      {phase === 'ready' && !dialogue && (
-        <StartOverlay ready={ready} onStart={handleStart} />
+      {phase === 'ready' && !dialogue && !inspection && (
+        prologueDone ? (
+          <StartOverlay ready={ready} onStart={handleStart} />
+        ) : (
+          <PrologueOverlay onStart={() => setPrologueDone(true)} />
+        )
       )}
-      {phase === 'paused' && !dialogue && (
+      {phase === 'paused' && !dialogue && !inspection && (
         <PauseMenu onResume={handleStart} onExit={onExit} />
       )}
       {dialogue && (
@@ -142,6 +156,12 @@ export function GameView({
             bootstrapRef.current?.chooseDialogue(choiceId)
           }
           onClose={() => bootstrapRef.current?.closeDialogue()}
+        />
+      )}
+      {inspection && (
+        <InspectPanel
+          view={inspection}
+          onClose={() => bootstrapRef.current?.closeInspection()}
         />
       )}
     </div>

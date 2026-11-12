@@ -59,6 +59,37 @@ export const inspectables: readonly InspectableDefinition[] = [
     category: '钟表',
     variants: [
       {
+        when: [{ flag: 'story.clock_repaired' }],
+        sections: [
+          body(
+            '钟门开着，钟摆重新挂回了摆杆。钟面停在十一点五十五分，等着走到午夜。',
+            '钟座侧板向内弹开，露出一个狭长的暗格。',
+          ),
+          {
+            heading: '船长日志',
+            paragraphs: ['署名「船长马丁·肖（Capt. Martin Shaw）」。最后三页字迹潦草：'],
+          },
+          quote(
+            '3 月 13 日，夜。货舱进水，是人为的。老板要我们换小船走，说潮水会替我们把船收走。',
+            '3 月 14 日，凌晨。风变了。小艇放不下去。布伦南、麦凯、里德和那个孤儿院来的孩子克罗斯还在下面。麦凯留在机舱给锅炉泄压，不然整条船都会炸开。',
+            '如果有人读到这个——不是风暴。是我们自己。',
+          ),
+          {
+            heading: '四名船员的名字',
+            paragraphs: [
+              '一张折过很多次的纸，伊芙琳的字迹：托马斯·布伦南，大副，44 岁；休·麦凯，轮机长，51 岁；乔纳森·里德，二等水手，26 岁；塞缪尔·克罗斯，舱面学徒，16 岁。',
+            ],
+          },
+          note('下面一行小字：「请把他们的名字念出来。」'),
+        ],
+        effects: [
+          clue('clue_captains_log'),
+          clue('clue_crew_names'),
+          setFlag('story.knows_shipwreck'),
+          setFlag('story.knows_crew_names'),
+        ],
+      },
+      {
         sections: [
           body(
             '钟面停在十二点差一点的位置，指针上落了薄灰。',
@@ -354,6 +385,31 @@ export const inspectables: readonly InspectableDefinition[] = [
     category: '陈设',
     variants: [
       {
+        when: [{ flag: 'story.safe_opened' }],
+        sections: [
+          body('箱门开着，里面只剩下一叠用细绳捆好的文件。'),
+          {
+            heading: '航运账本',
+            paragraphs: [
+              '1893–1897 年的家族航运账。1893 年起连续赤字；1896 年 4 月的一笔「北方联合保险」赔款刚好覆盖当年全部欠款。',
+            ],
+          },
+          note('赔款条目旁有一行小字：「珀耳塞福涅号，全额。」'),
+          {
+            heading: '保险赔付单',
+            paragraphs: [
+              '保单副本。投保金额是船价的四倍；受益人是埃德蒙·阿什克罗夫特。',
+              '附带的赔付确认单日期为 1896 年 4 月 2 日，签字人正是埃德蒙。',
+            ],
+          },
+        ],
+        effects: [
+          clue('clue_shipping_ledger'),
+          clue('clue_insurance_policy'),
+          setFlag('story.knows_insurance_fraud'),
+        ],
+      },
+      {
         sections: [
           body(
             '一只老式四位数字保险箱嵌在书架旁，箱门冰凉。',
@@ -483,8 +539,10 @@ export const inspectables: readonly InspectableDefinition[] = [
     variants: [
       {
         sections: [
-          body('木箱里塞着旧相框、卷边的明信片和一把裁纸剪。'),
-          '剪刀刃口内侧卡着几粒相纸碎屑，边缘发白。',
+          body(
+            '木箱里塞着旧相框、卷边的明信片和一把裁纸剪。',
+            '剪刀刃口内侧卡着几粒相纸碎屑，边缘发白。',
+          ),
           note('箱底压着半张被剪坏的照片衬纸。'),
         ],
         effects: [
