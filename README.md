@@ -24,6 +24,23 @@ npm run export:glb # 把全宅灰盒导出为 public/assets/scenes/scene_villa_f
 npm run preview    # 预览构建产物
 ```
 
+### 生产构建
+
+生产构建会把 PlayCanvas、React 和其余第三方依赖拆成独立 chunk；首页只加载 React 壳，进入游戏后才请求 PlayCanvas。`public/` 中用于建模、参考和后续制作的资产不会全部进入部署产物，目前只发布以下运行时目录：
+
+- `public/assets/scenes/`
+- `public/assets/models/characters/`
+- `public/assets/renders/`
+- `public/assets/textures/`
+
+新增运行时资产类型时，需要同步更新 `vite.config.ts` 中的 `RUNTIME_PUBLIC_ASSET_ROOTS`。
+
+## 部署到 Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAlkaidSTART%2FNightHouse&project-name=midnight-villa&repository-name=midnight-villa)
+
+仓库已包含 `vercel.json`，Vercel 会自动执行 `npm ci && npm run build`，发布 `dist/`。部署不需要后端、账号系统或环境变量；游戏进度仍保存在玩家浏览器的 IndexedDB 中。
+
 ## 目录结构
 
 ```text

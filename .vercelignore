@@ -1,0 +1,7 @@
+/assets/
+/docs/
+/tests/
+/.serena/
+/.playwright-mcp/
+/dist/
+*.log

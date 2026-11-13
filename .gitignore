@@ -43,6 +43,7 @@ desktop.ini
 *~
 
 # Local tooling
+.vercel/
 .commandcode/
 .azure/
 .copilot-azure/
