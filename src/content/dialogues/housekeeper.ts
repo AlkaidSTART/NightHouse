@@ -47,7 +47,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
       },
       {
         id: 'ask_evelyn',
-        text: '伊芙琳……她以前住在哪间房？',
+        text: '伊芙琳……她是个什么样的人？',
         next: 'npc_housekeeper_evelyn_01',
         taskIds: ['step_housekeeper'],
         effects: [flag('story.met_housekeeper')],
@@ -164,7 +164,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     choices: [
       {
         id: 'ask_evelyn',
-        text: '伊芙琳……她以前住在哪间房？',
+        text: '伊芙琳的事，你还记得什么？',
         next: 'npc_housekeeper_evelyn_b5',
       },
       {

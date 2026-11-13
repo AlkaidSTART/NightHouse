@@ -539,6 +539,92 @@ test('B1 霍尔太太不会提前说出夜间证词或交出房间钥匙', () =>
   assert.equal(blocked.system.open('npc_housekeeper_night_01'), false);
 });
 
+test('B1 霍尔太太只谈人，不提前把话题引向房间与钥匙', () => {
+  const { system } = createFixture(
+    { 'story.arrived': true, 'player.honorific': 'sir' },
+    'step_housekeeper',
+  );
+  assert.equal(
+    system.openForNpc('npc_housekeeper', 'NPC_housekeeper_front_door'),
+    true,
+  );
+  const view = showChoices(system);
+  const askEvelyn = view.choices.find((choice) => choice.id === 'ask_evelyn');
+  assert.ok(askEvelyn);
+  assert.equal(askEvelyn.text.includes('房间'), false);
+  assert.equal(askEvelyn.text.includes('钥匙'), false);
+});
+
+test('B5 霍尔太太先谈人，房间与钥匙作为后续追问', () => {
+  const { system, flags } = createFixture(
+    {
+      'story.arrived': true,
+      'story.met_housekeeper': true,
+      'story.housekeeper_warm': true,
+      'player.honorific': 'sir',
+    },
+    'step_coverup',
+  );
+  assert.equal(
+    system.openForNpc('npc_housekeeper', 'NPC_housekeeper_dining_door'),
+    true,
+  );
+  let view = showChoices(system);
+  const askEvelyn = view.choices.find((choice) => choice.id === 'ask_evelyn');
+  assert.ok(askEvelyn);
+  assert.equal(askEvelyn.text.includes('房间'), false);
+  system.choose(askEvelyn.id);
+
+  view = showChoices(system);
+  const askRoom = view.choices.find((choice) => choice.id === 'ask_room');
+  assert.ok(askRoom);
+  assert.ok(askRoom.text.includes('房间'));
+  system.choose(askRoom.id);
+
+  view = showChoices(system);
+  const back = view.choices.find((choice) => choice.id === 'back');
+  assert.ok(back);
+  system.choose(back.id);
+  assert.equal(flags['story.housekeeper_key'], true);
+});
+
+test('B10 医生的威胁选项需要先拿到诊疗记录', () => {
+  const withoutRecord = createFixture(
+    {
+      'story.met_doctor': true,
+      'story.midnight': true,
+      'player.honorific': 'sir',
+    },
+    'step_midnight',
+  );
+  assert.equal(
+    withoutRecord.system.openForNpc('npc_doctor', 'NPC_doctor_stair_foot'),
+    true,
+  );
+  assert.equal(
+    showChoices(withoutRecord.system).choices.some((c) => c.id === 'threaten'),
+    false,
+  );
+
+  const withRecord = createFixture(
+    {
+      'story.met_doctor': true,
+      'story.midnight': true,
+      'clue.medical_record': true,
+      'player.honorific': 'sir',
+    },
+    'step_midnight',
+  );
+  assert.equal(
+    withRecord.system.openForNpc('npc_doctor', 'NPC_doctor_stair_foot'),
+    true,
+  );
+  assert.equal(
+    showChoices(withRecord.system).choices.some((c) => c.id === 'threaten'),
+    true,
+  );
+});
+
 test('B5 霍尔太太可以谈夜间证词，但不会出现对质话题', () => {
   const { system } = createFixture(
     {

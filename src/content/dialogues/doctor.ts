@@ -378,6 +378,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
         id: 'threaten',
         text: '那我就把诊疗记录交给律师。',
         next: 'npc_doctor_press',
+        conditions: [{ flag: 'clue.medical_record' }],
       },
     ],
   },
