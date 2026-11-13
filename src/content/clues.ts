@@ -207,6 +207,70 @@ export const clues: readonly ClueDefinition[] = [
     priority: 'supporting',
     storyFlags: ['story.knows_evelyn_investigating'],
   },
+  {
+    id: 'clue_greyharbour',
+    title: '灰港',
+    description:
+      '北海沿岸的小镇，靠渔业与旧码头为生，人口不足两千。阿什克罗夫特宅在镇西的寡妇崖上。',
+    locationId: 'scene_gate',
+    priority: 'ambient',
+  },
+  {
+    id: 'clue_midnight_villa',
+    title: '「午夜别墅」的别称',
+    description:
+      '当地人把阿什克罗夫特宅叫作「午夜别墅」——据说大厅的落地钟偶尔会在午夜多敲一下。',
+    locationId: 'villa_parlor',
+    priority: 'ambient',
+  },
+  {
+    id: 'clue_ashcroft_house',
+    title: '阿什克罗夫特宅',
+    description:
+      '三层石砌宅邸，陡坡屋顶、凸窗、铁艺大门，西侧直面断崖。屋内是深色木护墙板、壁灯、满墙书柜和厚地毯；走廊很长，回声明显。',
+    locationId: 'villa_corridor',
+    priority: 'ambient',
+  },
+  {
+    id: 'clue_ashcroft_shipping',
+    title: '三代人的航运账',
+    description:
+      '阿什克罗夫特家靠北海与波罗的海的货运起家。书架上的航海年鉴与账簿从 1860 年代一直排到 1897 年。',
+    locationId: 'villa_study',
+    priority: 'ambient',
+  },
+  {
+    id: 'clue_1897_technology',
+    title: '1897 年的宅内技术',
+    description:
+      '宅内以煤气灯为主，门厅与书房装了早期电灯；有一部壁挂电话，线路已经被风扯断。没有汽车，出行靠马车，最近的电报站在三英里外。',
+    locationId: 'villa_hall',
+    priority: 'ambient',
+  },
+  {
+    id: 'clue_family_motto',
+    title: '家族箴言',
+    description:
+      '壁炉石楣上刻着 TENE QUOD HABES——「守住你拥有的」。埃德蒙把它当家训，笔画里嵌着擦不净的烟灰。',
+    locationId: 'villa_parlor',
+    priority: 'ambient',
+  },
+  {
+    id: 'clue_widows_cliff',
+    title: '寡妇崖与墓园浅滩',
+    description:
+      '宅邸所在的断崖叫寡妇崖。崖下是暗礁密布的「墓园浅滩」，满潮时崖底的洞穴会被海水完全淹没。',
+    locationId: 'villa_cliff',
+    priority: 'ambient',
+  },
+  {
+    id: 'clue_maritime_orphanage',
+    title: '灰港海事孤儿院',
+    description:
+      '灰港的海事孤儿院收容遇难海员的子女，是镇上少数专门收容海员遗孤的机构。',
+    locationId: 'villa_storage',
+    priority: 'ambient',
+  },
 ];
 
 export const CLUE_IDS: ReadonlySet<string> = new Set(

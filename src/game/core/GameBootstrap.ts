@@ -606,7 +606,13 @@ export class GameBootstrap {
     const store = useStoryStore.getState();
 
     if (event.npcId === 'npc_housekeeper') {
-      store.setStoryFlag('story.arthur_called', true);
+      if (store.storyFlags['story.arthur_called'] !== true) {
+        store.setStoryFlag('story.arthur_called', true);
+        this.events.emit('interaction.activated', {
+          id: 'story.arthur_waiting',
+          message: '客厅的壁炉亮着。亚瑟在那里等你。',
+        });
+      }
       return;
     }
 

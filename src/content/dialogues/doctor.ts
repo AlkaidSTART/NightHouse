@@ -10,7 +10,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
     id: 'npc_doctor_intro',
     npcId: 'npc_doctor',
     conditions: [{ flag: 'story.met_doctor' }],
-    taskIds: ['step_doctor', 'step_coverup', 'step_confront'],
+    taskIds: ['step_doctor'],
     lines: [
       {
         speaker: 'npc',
@@ -18,26 +18,26 @@ export const doctorDialogues: readonly DialogueNode[] = [
       },
       { speaker: 'npc', text: '你小时候在这儿住过。那年夏天。' },
     ],
+    reenterLines: [
+      { speaker: 'npc', text: '还有哪里不舒服吗，{honorific}？' },
+    ],
     choices: [
       {
         id: 'polite',
         text: '麻烦您了，格雷医生。',
         next: 'npc_doctor_purpose',
-        taskIds: ['step_doctor'],
         effects: [flag('story.doctor_talked')],
       },
       {
         id: 'ask_summer',
         text: '您记得那个夏天？',
         next: 'npc_doctor_summer_01',
-        taskIds: ['step_doctor'],
         effects: [flag('story.doctor_talked')],
       },
       {
         id: 'ask_evelyn',
         text: '伊芙琳的事，您在场。',
         next: 'npc_doctor_evelyn_01',
-        taskIds: ['step_doctor', 'step_coverup', 'step_confront'],
         effects: [flag('story.doctor_talked')],
       },
       {
@@ -51,6 +51,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_doctor_summer_01',
     npcId: 'npc_doctor',
+    taskIds: ['step_doctor'],
     lines: [
       {
         speaker: 'npc',
@@ -76,6 +77,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_doctor_purpose',
     npcId: 'npc_doctor',
+    taskIds: ['step_doctor'],
     lines: [
       {
         speaker: 'npc',
@@ -98,6 +100,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_doctor_sleep',
     npcId: 'npc_doctor',
+    taskIds: ['step_doctor'],
     lines: [
       { speaker: 'npc', text: '良心和神经是两回事，但从症状上很难分开。' },
       { speaker: 'npc', text: '……我是说，悲伤。' },
@@ -114,6 +117,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_doctor_evelyn_01',
     npcId: 'npc_doctor',
+    taskIds: ['step_doctor'],
     lines: [
       { speaker: 'npc', text: '我是医生，不是验尸官。那天太晚了，海上又起了雾。' },
       { speaker: 'npc', text: '坠落、溺水。很常见的意外。' },
@@ -131,15 +135,6 @@ export const doctorDialogues: readonly DialogueNode[] = [
         conditions: [{ flag: 'clue.medical_record' }],
       },
       {
-        id: 'ask_towel',
-        text: '浴室里的毛巾，怎么解释？',
-        next: 'npc_doctor_challenge_01',
-        conditions: [
-          { flag: 'clue.bathroom_trace' },
-          { flag: 'clue.medical_record' },
-        ],
-      },
-      {
         id: 'back',
         text: '那就不打扰了。',
         next: null,
@@ -149,6 +144,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_doctor_time_01',
     npcId: 'npc_doctor',
+    taskIds: ['step_doctor'],
     lines: [{ speaker: 'npc', text: '……午夜前后。具体记不清了。' }],
     choices: [
       {
@@ -163,6 +159,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
     id: 'npc_doctor_record_01',
     npcId: 'npc_doctor',
     conditions: [{ flag: 'clue.medical_record' }],
+    taskIds: ['step_doctor'],
     lines: [
       { speaker: 'npc', text: '……你从哪儿拿到这个的？' },
       { speaker: 'npc', text: '记录可能有误。那天我很累。' },
@@ -183,6 +180,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_doctor_record_02',
     npcId: 'npc_doctor',
+    taskIds: ['step_doctor'],
     lines: [
       {
         speaker: 'npc',
@@ -199,6 +197,100 @@ export const doctorDialogues: readonly DialogueNode[] = [
       },
     ],
   },
+  // ── B5 自由调查入口与复查节点 ──
+  {
+    id: 'npc_doctor_b5_01',
+    npcId: 'npc_doctor',
+    conditions: [{ flag: 'story.met_doctor' }],
+    taskIds: ['step_coverup', 'step_evidence'],
+    lines: [{ speaker: 'npc', text: '您还有问题？' }],
+    reenterLines: [{ speaker: 'npc', text: '您还有问题？' }],
+    choices: [
+      {
+        id: 'ask_evelyn',
+        text: '伊芙琳的事，我还有话要问。',
+        next: 'npc_doctor_evelyn_b5',
+      },
+      {
+        id: 'leave',
+        text: '暂时没有。',
+        next: null,
+      },
+    ],
+  },
+  {
+    id: 'npc_doctor_evelyn_b5',
+    npcId: 'npc_doctor',
+    taskIds: ['step_coverup', 'step_evidence'],
+    lines: [
+      { speaker: 'npc', text: '我是医生，不是验尸官。那天太晚了，海上又起了雾。' },
+      { speaker: 'npc', text: '坠落、溺水。很常见的意外。' },
+    ],
+    choices: [
+      {
+        id: 'show_record',
+        text: '这份诊疗记录，是您写的。',
+        next: 'npc_doctor_record_b5_01',
+        conditions: [{ flag: 'clue.medical_record' }],
+      },
+      {
+        id: 'ask_towel',
+        text: '浴室里的毛巾，怎么解释？',
+        next: 'npc_doctor_challenge_01',
+        conditions: [
+          { flag: 'clue.bathroom_trace' },
+          { flag: 'clue.medical_record' },
+        ],
+      },
+      {
+        id: 'back',
+        text: '那就不打扰了。',
+        next: 'npc_doctor_b5_01',
+      },
+    ],
+  },
+  {
+    id: 'npc_doctor_record_b5_01',
+    npcId: 'npc_doctor',
+    conditions: [{ flag: 'clue.medical_record' }],
+    taskIds: ['step_coverup', 'step_evidence'],
+    lines: [
+      { speaker: 'npc', text: '……你从哪儿拿到这个的？' },
+      { speaker: 'npc', text: '记录可能有误。那天我很累。' },
+    ],
+    choices: [
+      {
+        id: 'press',
+        text: '坠海的人，怎么会有后枕挫伤？',
+        next: 'npc_doctor_record_b5_02',
+      },
+      {
+        id: 'back',
+        text: '也许吧。',
+        next: 'npc_doctor_evelyn_b5',
+      },
+    ],
+  },
+  {
+    id: 'npc_doctor_record_b5_02',
+    npcId: 'npc_doctor',
+    taskIds: ['step_coverup', 'step_evidence'],
+    lines: [
+      {
+        speaker: 'npc',
+        text: '你想要我说什么？说我在书房里看见她躺在地上？',
+      },
+      { speaker: 'npc', text: '……我签了字。我只签了字。' },
+    ],
+    choices: [
+      {
+        id: 'back',
+        text: '签字也需要看一眼。',
+        next: 'npc_doctor_evelyn_b5',
+        effects: [flag('story.doctor_admits_exam')],
+      },
+    ],
+  },
   {
     id: 'npc_doctor_challenge_01',
     npcId: 'npc_doctor',
@@ -206,6 +298,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
       { flag: 'clue.bathroom_trace' },
       { flag: 'clue.medical_record' },
     ],
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [
       { speaker: 'npc', text: '那些毛巾……是之前的。她常流鼻血。' },
     ],
@@ -218,13 +311,14 @@ export const doctorDialogues: readonly DialogueNode[] = [
       {
         id: 'back',
         text: '我再想想。',
-        next: 'npc_doctor_evelyn_01',
+        next: 'npc_doctor_evelyn_b5',
       },
     ],
   },
   {
     id: 'npc_doctor_challenge_02',
     npcId: 'npc_doctor',
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [
       { speaker: 'npc', text: '你到底想毁掉什么？这个家？还是你自己那份？' },
       { speaker: 'npc', text: '……她撞到了壁炉。我告诉过亚瑟，没救了。' },
@@ -242,6 +336,24 @@ export const doctorDialogues: readonly DialogueNode[] = [
       },
     ],
   },
+
+  // ── B9 对质期间：医生不再展开调查话题 ──
+  {
+    id: 'npc_doctor_confront_wait_01',
+    npcId: 'npc_doctor',
+    conditions: [{ flag: 'story.met_doctor' }],
+    taskIds: ['step_confront'],
+    lines: [
+      { speaker: 'npc', text: '你想让我说什么？去问亚瑟吧。' },
+    ],
+    choices: [
+      {
+        id: 'leave',
+        text: '我会的。',
+        next: null,
+      },
+    ],
+  },
   {
     id: 'npc_doctor_midnight_01',
     npcId: 'npc_doctor',
@@ -256,7 +368,6 @@ export const doctorDialogues: readonly DialogueNode[] = [
         text: '请您作证。',
         next: 'npc_doctor_testify',
         conditions: [{ flag: 'story.doctor_confessed' }],
-        taskIds: ['step_midnight'],
       },
       {
         id: 'leave',
@@ -267,13 +378,13 @@ export const doctorDialogues: readonly DialogueNode[] = [
         id: 'threaten',
         text: '那我就把诊疗记录交给律师。',
         next: 'npc_doctor_press',
-        taskIds: ['step_midnight'],
       },
     ],
   },
   {
     id: 'npc_doctor_testify',
     npcId: 'npc_doctor',
+    taskIds: ['step_midnight'],
     lines: [
       { speaker: 'npc', text: '……我会重新写一份死亡证明。这是我唯一能做的。' },
     ],
@@ -289,6 +400,7 @@ export const doctorDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_doctor_press',
     npcId: 'npc_doctor',
+    taskIds: ['step_midnight'],
     lines: [{ speaker: 'npc', text: '你在威胁我。……好，好。我写。' }],
     choices: [
       {

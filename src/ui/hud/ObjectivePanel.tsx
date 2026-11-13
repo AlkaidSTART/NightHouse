@@ -6,6 +6,8 @@ export interface ObjectivePanelProps {
   active: ActiveObjective | null;
   regionId: string | null;
   player: MinimapPlayerPose | null;
+  /** 可选的自由探索收集进度：世界档案已发现 / 总数。 */
+  archive?: { found: number; total: number } | null;
 }
 
 /** 右上角任务目标面板。目标由剧情标记推导，对话改变标记后立即刷新。 */
@@ -13,6 +15,7 @@ export function ObjectivePanel({
   active,
   regionId,
   player,
+  archive,
 }: ObjectivePanelProps) {
   if (!active) {
     return null;
@@ -59,6 +62,11 @@ export function ObjectivePanel({
         <div className="hud-objective-meta">{metaParts.join(' · ')}</div>
       )}
       <div className="hud-objective-hint">{active.step.hint}</div>
+      {archive && archive.total > 0 && (
+        <div className="hud-objective-archive">
+          世界档案 {archive.found} / {archive.total}
+        </div>
+      )}
     </div>
   );
 }

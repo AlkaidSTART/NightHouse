@@ -48,6 +48,11 @@ export interface DialogueNode {
    */
   taskIds?: readonly string[];
   lines: DialogueLine[];
+  /**
+   * 重复交谈时替代开场白的短句。入口节点在第二次之后会跳过 `lines`，
+   * 用一两句当前情节的招呼替代，避免不同情节之间没有可感知的对话边界。
+   */
+  reenterLines?: DialogueLine[];
   choices: DialogueChoice[];
 }
 

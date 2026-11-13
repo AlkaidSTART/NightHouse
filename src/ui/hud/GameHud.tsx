@@ -26,7 +26,15 @@ export function GameHud(props: GameHudProps = {}) {
   const error = props.error !== undefined ? props.error : storeError;
 
   const storyFlags = useStoryStore((s) => s.storyFlags);
+  const discoveredClueIds = useStoryStore((s) => s.discoveredClueIds);
   const activeObjective = resolveActiveObjective(storyFlags, content.quests);
+  const archiveTotal = content.clues.filter(
+    (clue) => clue.priority === 'ambient',
+  ).length;
+  const archiveFound = discoveredClueIds.filter(
+    (clueId) =>
+      content.clues.find((clue) => clue.id === clueId)?.priority === 'ambient',
+  ).length;
   const regionId = props.regionId ?? null;
   const player = props.player ?? null;
 
@@ -42,6 +50,7 @@ export function GameHud(props: GameHudProps = {}) {
         active={activeObjective}
         regionId={regionId}
         player={player}
+        archive={{ found: archiveFound, total: archiveTotal }}
       />
       {props.region && <div className="hud-region">{props.region}</div>}
       {props.showJournalHint && (

@@ -26,14 +26,20 @@ export function DialoguePanel({
         aria-label={`与${view.npcName}交谈`}
       >
         <header className="dialogue-header">
-          <span className="dialogue-speaker">{speaker}</span>
+          <div className="dialogue-heading">
+            <span className="dialogue-speaker">{speaker}</span>
+            {view.beatLabel && (
+              <span className="dialogue-beat">{view.beatLabel}</span>
+            )}
+          </div>
           <button
             type="button"
             className="dialogue-close"
             onClick={onClose}
             aria-label="结束交谈"
+            title="结束交谈"
           >
-            ×
+            结束交谈
           </button>
         </header>
 

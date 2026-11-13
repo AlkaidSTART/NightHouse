@@ -5,7 +5,7 @@ import type { ClueJournalView } from '../../shared/types/clueJournal';
 const PRIORITY_LABEL: Record<CluePriority, string> = {
   main: '主线',
   supporting: '辅助',
-  ambient: '环境',
+  ambient: '档案',
 };
 
 export interface CluePanelProps {
@@ -39,6 +39,7 @@ export function CluePanel({ view, onClose }: CluePanelProps) {
             <span>共 {view.total} 条</span>
             <span>主线 {view.mainCount}</span>
             <span>辅助 {view.supportingCount}</span>
+            <span>档案 {view.ambientCount}</span>
           </div>
           <button
             type="button"

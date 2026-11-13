@@ -5,23 +5,31 @@ import { clue, flag } from './effects.ts';
  * 霍尔太太。节点与分支依据故事线 §5.3。
  * 她的信息边界：只谈她亲眼看见的搬运、烧纸、旧信和小姐的日常；
  * 不主动说出亚瑟与伊芙琳争执的细节。
+ *
+ * 每个情节节拍各有一个入口枢纽（B1/B2/B3/B5/B9/B10）。话题节点只挂
+ * 当前节拍的 `taskIds`，避免玩家在抵达时直接问出夜间证词，或在
+ * 午夜重复调查阶段的旧话题。
  */
 export const housekeeperDialogues: readonly DialogueNode[] = [
+  // ── B1 抵达 ──
   {
     id: 'npc_housekeeper_intro',
     npcId: 'npc_housekeeper',
     conditions: [{ flag: 'story.arrived' }],
-    taskIds: ['step_housekeeper', 'step_coverup', 'step_confront'],
+    taskIds: ['step_housekeeper'],
     lines: [
       { speaker: 'npc', text: '您到了。外套给我吧，{honorific}。' },
       { speaker: 'npc', text: '房间已经收拾好了。晚餐在餐厅。' },
+    ],
+    reenterLines: [
+      { speaker: 'npc', text: '……还有什么需要我做的吗，{honorific}？' },
     ],
     choices: [
       {
         id: 'warm',
         text: '谢谢你，霍尔太太。',
         next: 'npc_housekeeper_warm',
-        taskIds: ['step_housekeeper', 'step_coverup'],
+        taskIds: ['step_housekeeper'],
         effects: [
           flag('story.met_housekeeper'),
           flag('story.housekeeper_warm'),
@@ -31,7 +39,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         id: 'cold',
         text: '我自己来。',
         next: 'npc_housekeeper_cold',
-        taskIds: ['step_housekeeper', 'step_coverup'],
+        taskIds: ['step_housekeeper'],
         effects: [
           flag('story.met_housekeeper'),
           flag('story.housekeeper_cold'),
@@ -41,43 +49,8 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         id: 'ask_evelyn',
         text: '伊芙琳……她以前住在哪间房？',
         next: 'npc_housekeeper_evelyn_01',
-        taskIds: ['step_housekeeper', 'step_coverup', 'step_confront'],
+        taskIds: ['step_housekeeper'],
         effects: [flag('story.met_housekeeper')],
-      },
-      {
-        id: 'show_letter',
-        text: '这封信，是你寄的？',
-        next: 'npc_housekeeper_letter_01',
-        conditions: [{ flag: 'story.has_letter' }],
-        taskIds: ['step_coverup', 'step_confront'],
-        effects: [flag('story.met_housekeeper')],
-      },
-      {
-        id: 'ask_burned_pages',
-        text: '书房壁炉里的纸，是你烧的吗？',
-        next: 'npc_housekeeper_study_01',
-        conditions: [{ flag: 'clue.burned_pages' }],
-        taskIds: ['step_coverup', 'step_confront'],
-        effects: [flag('story.met_housekeeper')],
-      },
-      {
-        id: 'ask_study_cleanup',
-        text: '书房里有人清理过，对吗？',
-        next: 'npc_housekeeper_study_01',
-        conditions: [{ flag: 'clue.shipping_ledger' }],
-        taskIds: ['step_coverup', 'step_confront'],
-        effects: [flag('story.met_housekeeper')],
-      },
-      {
-        id: 'confront',
-        text: '关于那晚，我要一个答案。',
-        next: 'npc_housekeeper_confront_01',
-        conditions: [{ flag: 'story.knows_coverup' }],
-        taskIds: ['step_confront'],
-        effects: [
-          flag('story.met_housekeeper'),
-          flag('story.housekeeper_confided'),
-        ],
       },
       {
         id: 'leave',
@@ -88,9 +61,167 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     ],
   },
   {
+    id: 'npc_housekeeper_warm',
+    npcId: 'npc_housekeeper',
+    taskIds: ['step_housekeeper'],
+    lines: [
+      { speaker: 'npc', text: '……不用谢，{honorific}。' },
+      { speaker: 'npc', text: '安静，是因为人都走了。' },
+      { speaker: 'npc', text: '……您和小姐说话的口气有点像。' },
+    ],
+    choices: [
+      {
+        id: 'ask_evelyn',
+        text: '她是个什么样的人？',
+        next: 'npc_housekeeper_evelyn_01',
+        taskIds: ['step_housekeeper'],
+      },
+      {
+        id: 'leave',
+        text: '我去看看别处。',
+        next: null,
+      },
+    ],
+  },
+  {
+    id: 'npc_housekeeper_cold',
+    npcId: 'npc_housekeeper',
+    taskIds: ['step_housekeeper'],
+    lines: [{ speaker: 'npc', text: '随您。晚餐在餐厅。' }],
+    choices: [
+      {
+        id: 'warm_up',
+        text: '抱歉，我路上有些累。',
+        next: 'npc_housekeeper_intro',
+        taskIds: ['step_housekeeper'],
+        effects: [flag('story.housekeeper_warm')],
+      },
+      {
+        id: 'leave',
+        text: '我去餐厅。',
+        next: null,
+      },
+    ],
+  },
+  {
+    id: 'npc_housekeeper_evelyn_01',
+    npcId: 'npc_housekeeper',
+    taskIds: ['step_housekeeper'],
+    lines: [{ speaker: 'npc', text: '小姐待下人很好。她教我认字。' }],
+    choices: [
+      {
+        id: 'back',
+        text: '我明白了。',
+        next: 'npc_housekeeper_intro',
+      },
+    ],
+  },
+
+  // ── B2 初见亚瑟期间：她仍守在门厅 ──
+  {
+    id: 'npc_housekeeper_wait_01',
+    npcId: 'npc_housekeeper',
+    conditions: [{ flag: 'story.met_housekeeper' }],
+    taskIds: ['step_arthur'],
+    lines: [
+      { speaker: 'npc', text: '少爷在客厅壁炉边等您。需要什么就叫我。' },
+    ],
+    choices: [
+      {
+        id: 'leave',
+        text: '好。',
+        next: null,
+      },
+    ],
+  },
+
+  // ── B3 晚宴 ──
+  {
+    id: 'npc_housekeeper_dinner_01',
+    npcId: 'npc_housekeeper',
+    conditions: [{ flag: 'story.met_housekeeper' }],
+    taskIds: ['step_doctor'],
+    lines: [
+      { speaker: 'npc', text: '晚餐已经备好了。少爷在长桌尽头。' },
+    ],
+    choices: [
+      {
+        id: 'leave',
+        text: '我去餐厅。',
+        next: null,
+      },
+    ],
+  },
+
+  // ── B5 自由调查 ──
+  {
+    id: 'npc_housekeeper_b5_01',
+    npcId: 'npc_housekeeper',
+    conditions: [{ flag: 'story.met_housekeeper' }],
+    taskIds: ['step_coverup', 'step_evidence'],
+    lines: [{ speaker: 'npc', text: '您还有什么要问的吗？' }],
+    reenterLines: [{ speaker: 'npc', text: '您还有什么要问的吗？' }],
+    choices: [
+      {
+        id: 'ask_evelyn',
+        text: '伊芙琳……她以前住在哪间房？',
+        next: 'npc_housekeeper_evelyn_b5',
+      },
+      {
+        id: 'show_letter',
+        text: '这封信，是你寄的？',
+        next: 'npc_housekeeper_letter_01',
+        conditions: [{ flag: 'story.has_letter' }],
+      },
+      {
+        id: 'ask_burned_pages',
+        text: '书房壁炉里的纸，是你烧的吗？',
+        next: 'npc_housekeeper_study_01',
+        conditions: [{ flag: 'clue.burned_pages' }],
+      },
+      {
+        id: 'ask_study_cleanup',
+        text: '书房里有人清理过，对吗？',
+        next: 'npc_housekeeper_study_01',
+        conditions: [{ flag: 'clue.shipping_ledger' }],
+      },
+      {
+        id: 'leave',
+        text: '我先去别处看看。',
+        next: null,
+      },
+    ],
+  },
+  {
+    id: 'npc_housekeeper_evelyn_b5',
+    npcId: 'npc_housekeeper',
+    taskIds: ['step_coverup', 'step_evidence'],
+    lines: [{ speaker: 'npc', text: '小姐待下人很好。她教我认字。' }],
+    choices: [
+      {
+        id: 'ask_night',
+        text: '那晚，你看见什么了吗？',
+        next: 'npc_housekeeper_night_01',
+        conditions: [{ flag: 'story.housekeeper_warm' }],
+      },
+      {
+        id: 'ask_room',
+        text: '她的房间还留着吗？',
+        next: 'npc_housekeeper_room_01',
+        conditions: [{ flag: 'story.housekeeper_warm' }],
+      },
+      {
+        id: 'back',
+        text: '我明白了。',
+        next: 'npc_housekeeper_b5_01',
+      },
+    ],
+  },
+  {
     id: 'npc_housekeeper_letter_01',
     npcId: 'npc_housekeeper',
     conditions: [{ flag: 'story.has_letter' }],
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [
       {
         speaker: 'narration',
@@ -134,6 +265,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_housekeeper_letter_02',
     npcId: 'npc_housekeeper',
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [
       {
         speaker: 'npc',
@@ -145,7 +277,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
       {
         id: 'back',
         text: '你没有做错。',
-        next: 'npc_housekeeper_intro',
+        next: 'npc_housekeeper_b5_01',
         effects: [flag('story.housekeeper_guilt')],
       },
       {
@@ -157,72 +289,10 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     ],
   },
   {
-    id: 'npc_housekeeper_warm',
-    npcId: 'npc_housekeeper',
-    lines: [
-      { speaker: 'npc', text: '……不用谢，{honorific}。' },
-      { speaker: 'npc', text: '安静，是因为人都走了。' },
-      { speaker: 'npc', text: '……您和小姐说话的口气有点像。' },
-    ],
-    choices: [
-      {
-        id: 'ask_evelyn',
-        text: '她是个什么样的人？',
-        next: 'npc_housekeeper_evelyn_01',
-      },
-      {
-        id: 'leave',
-        text: '我去看看别处。',
-        next: null,
-      },
-    ],
-  },
-  {
-    id: 'npc_housekeeper_cold',
-    npcId: 'npc_housekeeper',
-    lines: [{ speaker: 'npc', text: '随您。晚餐在餐厅。' }],
-    choices: [
-      {
-        id: 'warm_up',
-        text: '抱歉，我路上有些累。',
-        next: 'npc_housekeeper_intro',
-        effects: [flag('story.housekeeper_warm')],
-      },
-      {
-        id: 'leave',
-        text: '我去餐厅。',
-        next: null,
-      },
-    ],
-  },
-  {
-    id: 'npc_housekeeper_evelyn_01',
-    npcId: 'npc_housekeeper',
-    lines: [{ speaker: 'npc', text: '小姐待下人很好。她教我认字。' }],
-    choices: [
-      {
-        id: 'ask_night',
-        text: '那晚，你看见什么了吗？',
-        next: 'npc_housekeeper_night_01',
-        conditions: [{ flag: 'story.housekeeper_warm' }],
-      },
-      {
-        id: 'ask_room',
-        text: '她的房间还留着吗？',
-        next: 'npc_housekeeper_room_01',
-        conditions: [{ flag: 'story.housekeeper_warm' }],
-      },
-      {
-        id: 'back',
-        text: '我明白了。',
-        next: 'npc_housekeeper_intro',
-      },
-    ],
-  },
-  {
     id: 'npc_housekeeper_night_01',
     npcId: 'npc_housekeeper',
     conditions: [{ flag: 'story.housekeeper_warm' }],
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [
       { speaker: 'npc', text: '我在。我在楼下等门。' },
       {
@@ -248,6 +318,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_housekeeper_night_02',
     npcId: 'npc_housekeeper',
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [
       { speaker: 'npc', text: '我站在楼梯口。灯是亮的。' },
       {
@@ -279,6 +350,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_housekeeper_night_03',
     npcId: 'npc_housekeeper',
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [
       {
         speaker: 'npc',
@@ -307,6 +379,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_housekeeper_night_04',
     npcId: 'npc_housekeeper',
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [
       {
         speaker: 'npc',
@@ -339,6 +412,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     id: 'npc_housekeeper_room_01',
     npcId: 'npc_housekeeper',
     conditions: [{ flag: 'story.housekeeper_warm' }],
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [
       {
         speaker: 'npc',
@@ -358,7 +432,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
       {
         id: 'back',
         text: '我不会说。',
-        next: 'npc_housekeeper_intro',
+        next: 'npc_housekeeper_evelyn_b5',
         effects: [
           flag('story.evelyn_room_open'),
           flag('story.housekeeper_key'),
@@ -369,6 +443,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_housekeeper_study_01',
     npcId: 'npc_housekeeper',
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [
       {
         speaker: 'npc',
@@ -385,13 +460,14 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
       {
         id: 'back',
         text: '我先不问了。',
-        next: 'npc_housekeeper_intro',
+        next: 'npc_housekeeper_b5_01',
       },
     ],
   },
   {
     id: 'npc_housekeeper_study_02',
     npcId: 'npc_housekeeper',
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [
       {
         speaker: 'npc',
@@ -407,10 +483,29 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
       },
     ],
   },
+
+  // ── B9 对质 ──
+  {
+    id: 'npc_housekeeper_b9_wait_01',
+    npcId: 'npc_housekeeper',
+    conditions: [{ flag: 'story.met_housekeeper' }],
+    taskIds: ['step_confront'],
+    lines: [
+      { speaker: 'npc', text: '我什么都不知道。少爷在书房。' },
+    ],
+    choices: [
+      {
+        id: 'leave',
+        text: '我去找他。',
+        next: null,
+      },
+    ],
+  },
   {
     id: 'npc_housekeeper_confront_01',
     npcId: 'npc_housekeeper',
     conditions: [{ flag: 'story.knows_coverup' }],
+    taskIds: ['step_confront'],
     lines: [{ speaker: 'npc', text: '您要我在午夜说出来吗？' }],
     choices: [
       {
@@ -418,13 +513,11 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         text: '我需要有人证明那晚发生了什么。',
         next: 'npc_housekeeper_will_testify',
         conditions: [{ flag: 'story.housekeeper_warm' }],
-        taskIds: ['step_confront'],
       },
       {
         id: 'warn_cost',
         text: '说出来，你可能就留不下了。',
         next: 'npc_housekeeper_hesitate',
-        taskIds: ['step_confront'],
       },
       {
         id: 'no_need',
@@ -436,6 +529,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_housekeeper_will_testify',
     npcId: 'npc_housekeeper',
+    taskIds: ['step_confront'],
     lines: [{ speaker: 'npc', text: '……好。我欠小姐一句话。' }],
     choices: [
       {
@@ -452,6 +546,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_housekeeper_hesitate',
     npcId: 'npc_housekeeper',
+    taskIds: ['step_confront'],
     lines: [
       {
         speaker: 'npc',
@@ -468,6 +563,24 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
       {
         id: 'no_pressure',
         text: '我明白。不用勉强。',
+        next: null,
+      },
+    ],
+  },
+
+  // ── B10 午夜 ──
+  {
+    id: 'npc_housekeeper_midnight_01',
+    npcId: 'npc_housekeeper',
+    taskIds: ['step_midnight'],
+    lines: [
+      { speaker: 'npc', text: '午夜了，{honorific}。' },
+      { speaker: 'npc', text: '我就在门边。需要的时候，我在。' },
+    ],
+    choices: [
+      {
+        id: 'leave',
+        text: '谢谢你，霍尔太太。',
         next: null,
       },
     ],

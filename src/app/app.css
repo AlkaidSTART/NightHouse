@@ -757,6 +757,15 @@ button {
   letter-spacing: 0.03em;
 }
 
+.hud-objective-archive {
+  margin-top: 9px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(220, 210, 190, 0.14);
+  color: #8fa39b;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
 @keyframes objective-task-in {
   from {
     opacity: 0;
@@ -975,20 +984,33 @@ button {
   margin-bottom: 10px;
 }
 
+.dialogue-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+}
+
 .dialogue-speaker {
   font-size: 12px;
   letter-spacing: 0.3em;
   color: #c8a878;
 }
 
+.dialogue-beat {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: #6f695c;
+  white-space: nowrap;
+}
+
 .dialogue-close {
-  width: 28px;
-  height: 28px;
+  padding: 2px 0 2px 12px;
   border: 1px solid transparent;
   background: transparent;
   color: #7f796b;
-  font-size: 20px;
-  line-height: 1;
+  font-size: 10px;
+  letter-spacing: 0.2em;
   cursor: pointer;
   transition:
     border-color 140ms ease,

@@ -157,3 +157,12 @@ test('检视系统：修好落地钟后暗格内容与两条线索一起出现',
   assert.equal(fake.state.flags['story.knows_shipwreck'], true);
   assert.equal(fake.state.flags['story.knows_crew_names'], true);
 });
+
+test('检视系统：普通陈设也能补全世界档案', () => {
+  const fake = createHost();
+  const system = new InspectionSystem({ inspectables, host: fake.host });
+
+  system.open('INT_prop_telephone');
+  assert.deepEqual(fake.state.view?.newClueTitles, ['1897 年的宅内技术']);
+  assert.ok(fake.state.discovered.has('clue_1897_technology'));
+});

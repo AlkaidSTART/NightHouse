@@ -16,6 +16,8 @@ export interface DialogueView {
   npcId: string;
   npcName: string;
   nodeId: string;
+  /** 当前对话所属的情节节拍，例如「第二幕 · 调查」；无节拍时为 null。 */
+  beatLabel: string | null;
   /** 当前显示的台词；选项阶段停留在本节点最后一句。 */
   line: DialogueLineView | null;
   choices: readonly DialogueChoiceView[];

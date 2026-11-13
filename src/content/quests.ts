@@ -54,8 +54,8 @@ export const quests: readonly QuestDefinition[] = [
       },
       {
         id: 'step_evidence',
-        objective: '在宅子里搜集能推翻「意外」的证据',
-        hint: '书房抽屉、浴室药柜和书房保险箱都会留下痕迹。至少带回一条。',
+        objective: '自由搜索别墅，搜集证据与背景档案',
+        hint: '书房、浴室、储物间、卧室、客厅和崖边都有可翻阅的物件。至少带回一条核心证据，再去书房对质。',
         locationId: 'villa_study',
         doneWhen: [
           [{ flag: 'clue.medical_record' }],

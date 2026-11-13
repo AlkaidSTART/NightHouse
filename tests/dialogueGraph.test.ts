@@ -4,6 +4,10 @@ import { CLUE_FLAGS, CLUE_IDS } from '../src/content/clues.ts';
 import { content } from '../src/content/index.ts';
 import { quests } from '../src/content/quests.ts';
 import { KNOWN_STORY_FLAGS } from '../src/content/storyFlags.ts';
+import {
+  beatForQuestStep,
+  beatsForTaskIds,
+} from '../src/game/story/dialogueBeat.ts';
 import type { DialogueNode, StoryCondition } from '../src/shared/types/content.ts';
 
 const nodeById = new Map<string, DialogueNode>();
@@ -72,6 +76,59 @@ test('对话节点 ID 唯一，且归属已登记的 NPC', () => {
   }
 });
 
+test('每个任务步骤都映射到唯一的对话节拍', () => {
+  for (const quest of quests) {
+    for (const step of quest.steps) {
+      assert.ok(
+        beatForQuestStep(step.id) !== null,
+        `${step.id} 没有映射到对话节拍`,
+      );
+    }
+  }
+});
+
+test('对话节点与话题选项不跨情节节拍', () => {
+  for (const node of content.dialogues) {
+    assert.ok(
+      node.taskIds && node.taskIds.length > 0,
+      `${node.id} 未声明所属情节节拍`,
+    );
+    const nodeBeats = beatsForTaskIds(node.taskIds);
+    assert.equal(
+      nodeBeats.size,
+      1,
+      `${node.id} 同时属于多个节拍：${[...nodeBeats].join(', ')}`,
+    );
+    const [nodeBeat] = nodeBeats;
+    assert.ok(nodeBeat);
+
+    for (const choice of node.choices) {
+      if (choice.taskIds && choice.taskIds.length > 0) {
+        const choiceBeats = beatsForTaskIds(choice.taskIds);
+        assert.equal(
+          choiceBeats.size,
+          1,
+          `${node.id}.${choice.id} 同时属于多个节拍`,
+        );
+        assert.ok(
+          choiceBeats.has(nodeBeat),
+          `${node.id}.${choice.id} 的节拍与所在节点不一致`,
+        );
+      }
+      if (choice.next === null) {
+        continue;
+      }
+      const next = nodeById.get(choice.next);
+      assert.ok(next, `${node.id}.${choice.id} 跳转目标不存在`);
+      const nextBeats = beatsForTaskIds(next.taskIds);
+      assert.ok(
+        nextBeats.has(nodeBeat),
+        `${node.id}.${choice.id} 跳到了另一节拍：${choice.next}`,
+      );
+    }
+  }
+});
+
 test('所有选项跳转目标存在，NPC 入口存在', () => {
   for (const node of content.dialogues) {
     for (const choice of node.choices) {
@@ -96,10 +153,24 @@ test('每个 NPC 的节点都能从入口到达，且存在结束路径', () => 
   const extraEntries: Readonly<Record<string, readonly string[]>> = {
     npc_arthur: [
       'npc_arthur_dinner_01',
+      'npc_arthur_b5_dining_01',
+      'npc_arthur_b5_study_01',
       'npc_arthur_confront_01',
       'npc_arthur_midnight_01',
     ],
-    npc_doctor: ['npc_doctor_midnight_01'],
+    npc_housekeeper: [
+      'npc_housekeeper_wait_01',
+      'npc_housekeeper_dinner_01',
+      'npc_housekeeper_b5_01',
+      'npc_housekeeper_b9_wait_01',
+      'npc_housekeeper_confront_01',
+      'npc_housekeeper_midnight_01',
+    ],
+    npc_doctor: [
+      'npc_doctor_b5_01',
+      'npc_doctor_confront_wait_01',
+      'npc_doctor_midnight_01',
+    ],
   };
 
   for (const npc of content.npcs) {

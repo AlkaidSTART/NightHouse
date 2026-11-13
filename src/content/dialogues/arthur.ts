@@ -10,7 +10,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
     id: 'npc_arthur_intro',
     npcId: 'npc_arthur',
     conditions: [{ flag: 'story.arrived' }],
-    taskIds: ['step_arthur', 'step_coverup'],
+    taskIds: ['step_arthur'],
     lines: [
       { speaker: 'npc', text: '你来了。路上不好走吧——桥断了。' },
       {
@@ -18,34 +18,24 @@ export const arthurDialogues: readonly DialogueNode[] = [
         text: '坐吧。父亲的事，我很抱歉。但总得有人把这件事做完。',
       },
     ],
+    reenterLines: [{ speaker: 'npc', text: '还有什么事？' }],
     choices: [
       {
         id: 'ask_evelyn',
         text: '伊芙琳的事，我想听你说。',
         next: 'npc_arthur_evelyn_01',
-        taskIds: ['step_arthur'],
         effects: [flag('story.met_arthur')],
       },
       {
         id: 'ask_will',
         text: '午夜签的，到底是什么文件？',
         next: 'npc_arthur_will_01',
-        taskIds: ['step_arthur'],
         effects: [flag('story.met_arthur')],
       },
       {
         id: 'ask_house',
         text: '这栋房子……一直是这样吗？',
         next: 'npc_arthur_house_01',
-        taskIds: ['step_arthur'],
-        effects: [flag('story.met_arthur')],
-      },
-      {
-        id: 'ask_ledger',
-        text: '书房里的账本，我看了。',
-        next: 'npc_arthur_business_01',
-        conditions: [{ flag: 'clue.shipping_ledger' }],
-        taskIds: ['step_coverup'],
         effects: [flag('story.met_arthur')],
       },
       {
@@ -59,6 +49,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_evelyn_01',
     npcId: 'npc_arthur',
+    taskIds: ['step_arthur'],
     lines: [
       { speaker: 'npc', text: '她一直睡不好。医生说是神经衰弱。' },
       { speaker: 'npc', text: '那天晚上她喝了酒，一个人去了崖边。' },
@@ -86,6 +77,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_evelyn_02',
     npcId: 'npc_arthur',
+    taskIds: ['step_arthur'],
     lines: [
       { speaker: 'npc', text: '我不知道。也许她只是想一个人待着。' },
       {
@@ -110,6 +102,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_evelyn_03',
     npcId: 'npc_arthur',
+    taskIds: ['step_arthur'],
     lines: [
       {
         speaker: 'npc',
@@ -135,6 +128,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
     id: 'npc_arthur_photo_01',
     npcId: 'npc_arthur',
     conditions: [{ flag: 'clue.family_photo' }],
+    taskIds: ['step_arthur'],
     lines: [{ speaker: 'npc', text: '是母亲剪的。她说看着难受。' }],
     choices: [
       {
@@ -152,6 +146,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_photo_02',
     npcId: 'npc_arthur',
+    taskIds: ['step_arthur'],
     lines: [{ speaker: 'npc', text: '你说话很像她。' }],
     choices: [
       {
@@ -171,6 +166,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_will_01',
     npcId: 'npc_arthur',
+    taskIds: ['step_arthur'],
     lines: [
       {
         speaker: 'npc',
@@ -202,6 +198,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_will_02',
     npcId: 'npc_arthur',
+    taskIds: ['step_arthur'],
     lines: [
       {
         speaker: 'npc',
@@ -224,6 +221,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_will_03',
     npcId: 'npc_arthur',
+    taskIds: ['step_arthur'],
     lines: [
       {
         speaker: 'npc',
@@ -246,6 +244,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_house_01',
     npcId: 'npc_arthur',
+    taskIds: ['step_arthur'],
     lines: [
       { speaker: 'npc', text: '这房子比我年纪还大。它有自己的脾气。' },
       {
@@ -271,6 +270,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
     id: 'npc_arthur_business_01',
     npcId: 'npc_arthur',
     conditions: [{ flag: 'clue.shipping_ledger' }],
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [
       { speaker: 'npc', text: '账本？你翻了我的书房。' },
       {
@@ -287,19 +287,20 @@ export const arthurDialogues: readonly DialogueNode[] = [
       {
         id: 'back',
         text: '门没锁。',
-        next: 'npc_arthur_intro',
+        next: 'npc_arthur_b5_dining_01',
       },
     ],
   },
   {
     id: 'npc_arthur_business_02',
     npcId: 'npc_arthur',
+    taskIds: ['step_coverup', 'step_evidence'],
     lines: [{ speaker: 'npc', text: '……那是风暴。报纸上写着。' }],
     choices: [
       {
         id: 'back',
         text: '报纸也会写错。',
-        next: 'npc_arthur_intro',
+        next: 'npc_arthur_b5_dining_01',
         effects: [flag('story.arthur_deflects_shipwreck')],
       },
       {
@@ -311,12 +312,65 @@ export const arthurDialogues: readonly DialogueNode[] = [
     ],
   },
 
+  // ── B5 自由调查（餐桌 / 书房过渡） ──
+  {
+    id: 'npc_arthur_b5_dining_01',
+    npcId: 'npc_arthur',
+    conditions: [{ flag: 'story.met_arthur' }],
+    taskIds: ['step_coverup', 'step_evidence'],
+    lines: [
+      { speaker: 'npc', text: '汤早撤了。你还有事？' },
+      {
+        speaker: 'npc',
+        text: '律师明早来。我现在没心情谈那晚。',
+      },
+    ],
+    reenterLines: [{ speaker: 'npc', text: '你还有事？' }],
+    choices: [
+      {
+        id: 'ask_ledger',
+        text: '书房里的账本，我看了。',
+        next: 'npc_arthur_business_01',
+        conditions: [{ flag: 'clue.shipping_ledger' }],
+      },
+      {
+        id: 'leave',
+        text: '我先去别处。',
+        next: null,
+      },
+    ],
+  },
+  {
+    id: 'npc_arthur_b5_study_01',
+    npcId: 'npc_arthur',
+    conditions: [{ flag: 'story.met_arthur' }],
+    taskIds: ['step_coverup', 'step_evidence'],
+    lines: [
+      { speaker: 'npc', text: '……现在别谈那晚。' },
+      { speaker: 'npc', text: '如果你有东西要给我看，等你想清楚了再来。' },
+    ],
+    reenterLines: [{ speaker: 'npc', text: '……现在别谈那晚。' }],
+    choices: [
+      {
+        id: 'ask_ledger',
+        text: '书房里的账本，我看了。',
+        next: 'npc_arthur_business_01',
+        conditions: [{ flag: 'clue.shipping_ledger' }],
+      },
+      {
+        id: 'leave',
+        text: '我会再来。',
+        next: null,
+      },
+    ],
+  },
+
   // ── B3 晚宴残席（三人同场） ──
   {
     id: 'npc_arthur_dinner_01',
     npcId: 'npc_arthur',
     conditions: [{ flag: 'story.met_arthur' }],
-    taskIds: ['step_doctor', 'step_coverup'],
+    taskIds: ['step_doctor'],
     lines: [
       {
         speaker: 'npc',
@@ -332,25 +386,25 @@ export const arthurDialogues: readonly DialogueNode[] = [
         id: 'ask_seat',
         text: '为什么多摆了一副餐具？',
         next: 'npc_arthur_dinner_seat',
-        taskIds: ['step_doctor', 'step_coverup'],
+        taskIds: ['step_doctor'],
       },
       {
         id: 'ask_evelyn',
         text: '伊芙琳那晚是什么状态？',
         next: 'npc_arthur_dinner_evelyn',
-        taskIds: ['step_doctor', 'step_coverup'],
+        taskIds: ['step_doctor'],
       },
       {
         id: 'look_will',
         text: '桌上这份遗嘱，我能看吗？',
         next: 'npc_arthur_dinner_will',
-        taskIds: ['step_doctor', 'step_coverup'],
+        taskIds: ['step_doctor'],
       },
       {
         id: 'watch',
         text: '先不说话，看看他们。',
         next: 'npc_arthur_dinner_watch',
-        taskIds: ['step_doctor', 'step_coverup'],
+        taskIds: ['step_doctor'],
       },
       {
         id: 'leave',
@@ -362,6 +416,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_dinner_seat',
     npcId: 'npc_arthur',
+    taskIds: ['step_doctor'],
     lines: [
       {
         speaker: 'npc',
@@ -388,6 +443,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_dinner_evelyn',
     npcId: 'npc_arthur',
+    taskIds: ['step_doctor'],
     lines: [
       {
         speaker: 'npc',
@@ -410,6 +466,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_dinner_will',
     npcId: 'npc_arthur',
+    taskIds: ['step_doctor'],
     lines: [
       {
         speaker: 'npc',
@@ -433,6 +490,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_dinner_watch',
     npcId: 'npc_arthur',
+    taskIds: ['step_doctor'],
     lines: [
       {
         speaker: 'narration',
@@ -510,6 +568,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_confront_log',
     npcId: 'npc_arthur',
+    taskIds: ['step_confront'],
     lines: [
       { speaker: 'npc', text: '……你从钟里拿到的。' },
       { speaker: 'npc', text: '她真的把什么都留下了。' },
@@ -532,6 +591,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_confront_policy',
     npcId: 'npc_arthur',
+    taskIds: ['step_confront'],
     lines: [
       { speaker: 'npc', text: '父亲签的字。不是我。' },
       { speaker: 'npc', text: '但钱是我花的。' },
@@ -552,6 +612,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_confront_recording',
     npcId: 'npc_arthur',
+    taskIds: ['step_confront'],
     lines: [
       {
         speaker: 'narration',
@@ -578,6 +639,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_confront_accuse',
     npcId: 'npc_arthur',
+    taskIds: ['step_confront'],
     lines: [
       { speaker: 'npc', text: '我没有杀她。' },
       { speaker: 'npc', text: '……我只是没有救她。' },
@@ -600,6 +662,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_confront_father_01',
     npcId: 'npc_arthur',
+    taskIds: ['step_confront'],
     lines: [
       { speaker: 'npc', text: '你以为是他下的令？' },
       { speaker: 'npc', text: '他猜到了。他没有下令。他只是不再问。' },
@@ -622,6 +685,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_confront_mercy',
     npcId: 'npc_arthur',
+    taskIds: ['step_confront'],
     lines: [
       {
         speaker: 'npc',
@@ -655,6 +719,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_confront_break',
     npcId: 'npc_arthur',
+    taskIds: ['step_confront'],
     lines: [
       {
         speaker: 'npc',
@@ -718,6 +783,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_midnight_02',
     npcId: 'npc_arthur',
+    taskIds: ['step_midnight'],
     lines: [
       {
         speaker: 'npc',
@@ -735,6 +801,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_refuse_01',
     npcId: 'npc_arthur',
+    taskIds: ['step_midnight'],
     lines: [
       {
         speaker: 'narration',
@@ -761,6 +828,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_refuse_strong',
     npcId: 'npc_arthur',
+    taskIds: ['step_midnight'],
     lines: [
       { speaker: 'npc', text: '你证明不了任何事。这里只有我们四个人。' },
       { speaker: 'npc', text: '……但律师明早会看到这些。' },
@@ -776,6 +844,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
   {
     id: 'npc_arthur_refuse_weak',
     npcId: 'npc_arthur',
+    taskIds: ['step_midnight'],
     lines: [
       { speaker: 'npc', text: '可以。遗嘱会按父亲的意愿处理。' },
       { speaker: 'npc', text: '您明早搭第一班马车走。' },

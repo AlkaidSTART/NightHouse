@@ -72,3 +72,14 @@ test('线索面板：没有发现线索时返回空列表', () => {
   assert.equal(view.supportingCount, 0);
   assert.equal(view.ambientCount, 0);
 });
+
+test('线索面板：自由搜索到的世界档案单独统计', () => {
+  const view = build(['clue_greyharbour', 'clue_family_motto']);
+
+  assert.equal(view.total, 2);
+  assert.equal(view.ambientCount, 2);
+  assert.deepEqual(
+    view.entries.map((entry) => entry.priority),
+    ['ambient', 'ambient'],
+  );
+});
