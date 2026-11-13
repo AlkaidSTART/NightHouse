@@ -8,13 +8,26 @@ import type { EndingView } from '../shared/types/ending';
  * 结局判定与演出文本。
  *
  * 判定路由依据 docs/午夜别墅_故事线文档_v0.7.md §7；
- * 演出文本逐字来自 docs/午夜别墅_结局_继承体面_v0.1.md 与
- * docs/午夜别墅_结局_拒绝签字_v0.1.md。`ending_echo` 是扩展结局，
- * MVP 不交付，因此这里只登记两个主结局。
+ * 演出文本逐字来自 docs/午夜别墅_结局_继承体面_v0.1.md、
+ * docs/午夜别墅_结局_拒绝签字_v0.1.md 与
+ * docs/午夜别墅_结局_让她说话_v0.1.md。
  *
  * `EndingDefinition.conditions` 语义是「全部满足」；数组顺序即优先级。
  */
 export const endings: readonly EndingDefinition[] = [
+  {
+    id: 'ending_echo',
+    title: '让她说话',
+    conditions: [
+      { flag: 'choice.midnight', equals: 'refuse' },
+      { flag: 'clue.captains_log' },
+      { flag: 'clue.crew_names' },
+      { flag: 'clue.insurance_policy' },
+      { flag: 'story.heard_recording' },
+      { flag: 'story.housekeeper_testimony' },
+      { flag: 'story.arthur_confessed' },
+    ],
+  },
   {
     id: 'ending_refused',
     title: '拒绝签字',
@@ -26,6 +39,26 @@ export const endings: readonly EndingDefinition[] = [
     conditions: [{ flag: 'choice.midnight', equals: 'sign' }],
   },
 ];
+
+const ECHO_SCRIPT: EndingView = {
+  id: 'ending_echo',
+  title: '让她说话',
+  subtitle: '你让她说完了。',
+  paragraphs: [
+    '23 点 55 分，门厅。',
+    '走廊尽头的书房门没有关严。刚才在书房播放过的留声机还没有停，铜喇叭里传来蜡筒空转的沙沙声。',
+    '门厅长桌上摊着遗嘱。你把签好一半的名字划掉，把遗嘱推到桌子中间，然后将船长马丁·肖的日志、保险赔付单，以及钟座暗格里那张折皱的纸一并摊在桌面上。',
+    '赶在落地钟敲响之前，你拿起那张纸，对着门厅里的三个人，替伊芙琳把上面的名字一个一个念了出来：',
+    '「托马斯·布伦南，大副。休·麦凯，轮机长。乔纳森·里德，二等水手。塞缪尔·克罗斯，舱面学徒，十六岁。」',
+    '亚瑟站在桌边，没有动，也没有阻止。',
+    '「……她说得对。」他低声说，「那天晚上在书房，她也是这么念给我听的。」',
+    '霍尔太太在门口哭。格雷医生摘下眼镜，说他明天会重写死亡证明。',
+    '门厅的落地钟在这时敲响。一下，两下……一直到第十三下。没有人惊讶。',
+    '天亮时，你把材料交给灰港海事孤儿院的代表。那是个瘦高的女人，她看着名单上最后一个名字——塞缪尔·克罗斯，轻声说她还记得那个孩子。她读完最后一页，问你想要什么。',
+    '你说：「把他们的名字刻上去。」',
+    '第二块纪念石立在寡妇崖上的时候，伊芙琳的名字旁边多了四个名字：珀耳塞福涅号的船员，1896 年 3 月 14 日。',
+  ],
+};
 
 const SIGNED_SCRIPT: EndingView = {
   id: 'ending_signed',
@@ -120,6 +153,9 @@ export function presentEnding(
   endingId: string,
   flags: Readonly<Record<string, StoryFlagValue>>,
 ): EndingView | null {
+  if (endingId === 'ending_echo') {
+    return ECHO_SCRIPT;
+  }
   if (endingId === 'ending_signed') {
     return hasAnyEvidence(flags)
       ? {

@@ -56,10 +56,9 @@ export function resolveDialogueEntry({
 
   return {
     nodeId: route.nodeId,
-    skipOpeningLines: areConditionsMet(
-      flags,
-      route.skipOpeningWhen ?? [],
-    ),
+    skipOpeningLines:
+      route.skipOpeningWhen !== undefined &&
+      areConditionsMet(flags, route.skipOpeningWhen),
     allowedChoiceIds: route.allowedChoiceIds ?? null,
     contextLabel: DIALOGUE_PLOT_LABEL[activeTaskId] ?? null,
   };

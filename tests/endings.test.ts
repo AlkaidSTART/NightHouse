@@ -18,11 +18,37 @@ test('结局路由：签字进入继承体面，拒签进入拒绝签字', () =>
 });
 
 test('结局已接入内容注册表', () => {
-  assert.equal(content.endings.length, 2);
+  assert.equal(content.endings.length, 3);
   assert.deepEqual(
     content.endings.map((ending) => ending.id),
-    ['ending_refused', 'ending_signed'],
+    ['ending_echo', 'ending_refused', 'ending_signed'],
   );
+});
+
+test('完整证据链的拒签优先进入隐藏结局', () => {
+  assert.equal(
+    resolveEnding(
+      {
+        'choice.midnight': 'refuse',
+        'clue.captains_log': true,
+        'clue.crew_names': true,
+        'clue.insurance_policy': true,
+        'story.heard_recording': true,
+        'story.housekeeper_testimony': true,
+        'story.arthur_confessed': true,
+      },
+      endings,
+    )?.id,
+    'ending_echo',
+  );
+});
+
+test('隐藏结局返回独立演出视图', () => {
+  const view = presentEnding('ending_echo', {});
+  assert.ok(view);
+  assert.equal(view.title, '让她说话');
+  assert.equal(view.subtitle, '你让她说完了。');
+  assert.ok(view.paragraphs.some((line) => line.includes('托马斯·布伦南')));
 });
 
 test('拒签结局按账本、赔付单与实际出示区分强/弱变体', () => {
@@ -70,5 +96,5 @@ test('签字结局在持有证据时追加旁白', () => {
 });
 
 test('未知结局 ID 不返回演出视图', () => {
-  assert.equal(presentEnding('ending_echo', {}), null);
+  assert.equal(presentEnding('ending_unknown', {}), null);
 });
