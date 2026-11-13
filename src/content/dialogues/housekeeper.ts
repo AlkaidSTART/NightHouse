@@ -220,6 +220,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         id: 'ask_evelyn',
         text: '伊芙琳的事，你还记得什么？',
         next: 'npc_housekeeper_evelyn_b5',
+        effects: [flag('story.housekeeper_warm')],
       },
       {
         id: 'show_letter',

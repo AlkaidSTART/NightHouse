@@ -48,7 +48,7 @@ export function GameView({
   const [puzzle, setPuzzle] = useState<PuzzleView | null>(null);
   const [ending, setEnding] = useState<EndingView | null>(null);
   const [error, setError] = useState<string | null>(null);
-  // 新游戏先读序章；继续游戏时玩家已经知道来龙去脉，直接进入称谓选择。
+  // 新游戏先读序章；继续游戏时玩家已经知道来龙去脉，直接进入操作提示。
   const [prologueDone, setPrologueDone] = useState(resume);
 
   useEffect(() => {

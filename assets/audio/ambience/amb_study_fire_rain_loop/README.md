@@ -34,14 +34,14 @@ music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible
 | 项目 | 要求 |
 |---|---|
 | 时长 | 60–90 秒无缝循环 |
-| 格式 | 立体声 / 48 kHz / 24-bit |
+| 格式 | 源文件 WAV：立体声 / 48 kHz / 24-bit；运行文件 OGG Vorbis：立体声 / 48 kHz |
 | 响度 | 约 -20 LUFS，峰值低于 -3 dBFS |
 | 循环 | 无缝循环 |
 | 运行路径 | public/assets/audio/ambience/AMB_StudyFireRain_Loop.ogg |
 
 ## 4. 生成后检查
 
-- [ ] 时长、格式和响度符合规格
+- [ ] 时长、源文件格式、运行格式和响度符合规格
 - [ ] 无削波、爆音和明显底噪
 - [ ] 循环接缝无缝（如要求）
 - [ ] 没有意外的音乐、人声或可识别版权内容

@@ -279,9 +279,12 @@
 
 - 本目录的 README、提示词和验收记录建议纳入 Git。
 - 原始 `.blend`、`.fbx`、大贴图和音频源文件建议使用 Git LFS 或外部归档，避免仓库膨胀。
-- 只把清理后的 GLB 和压缩贴图放进 `public/assets/`，不要把生成工具的临时文件和缓存提交到仓库。
+- 只把清理后的 GLB、压缩贴图和转码后的音频运行文件放进 `public/assets/`，不要把生成工具的临时文件和缓存提交到仓库。
 - 每个外部资源都必须在对应 README 的「授权与来源记录」中填写来源和许可证。
 
 ## 新资产模板
 
-新增资产时复制 [_templates/ASSET_README_TEMPLATE.md](./_templates/ASSET_README_TEMPLATE.md)，并放到对应分类目录下。新建目录前先确认该资产已在 V1.1 清单中登记。
+- 3D、贴图和动画资产：复制 [_templates/ASSET_README_TEMPLATE.md](./_templates/ASSET_README_TEMPLATE.md)。
+- 音频资产：复制 [_templates/AUDIO_ASSET_README_TEMPLATE.md](./_templates/AUDIO_ASSET_README_TEMPLATE.md)，并遵循 [audio/README.md](./audio/README.md) 的目录与授权规范。
+
+新建目录前先确认该资产已有明确用途，并完成对应分类索引登记。

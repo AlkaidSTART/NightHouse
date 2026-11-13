@@ -81,7 +81,7 @@ interface OpenDialogueOptions {
   contextLabel?: string | null;
 }
 
-/** 把台词里的 {honorific} 替换成开场选择的称谓。 */
+/** 把台词里的 {honorific} 替换成已保存的称谓；新游戏未设置时沿用默认称呼。 */
 export function resolveDialogueText(text: string, flags: StoryFlags): string {
   const honorific = flags['player.honorific'] === 'miss' ? '小姐' : '先生';
   return text.replaceAll('{honorific}', honorific);

@@ -1,6 +1,6 @@
 # SFX_PickupKey · 拾取钥匙
 
-> 资产类型：音频 ｜ 优先级：P1 ｜ 状态：待生成
+> 资产类型：音效 ｜ 优先级：P1 ｜ 状态：待生成
 
 | 项目 | 内容 |
 |---|---|
@@ -34,14 +34,14 @@ music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible
 | 项目 | 要求 |
 |---|---|
 | 时长 | 0.3–0.8 秒 |
-| 格式 | 单声道 / 48 kHz / 24-bit |
+| 格式 | 源文件 WAV：单声道 / 48 kHz / 24-bit；运行文件 OGG Vorbis：单声道 / 48 kHz |
 | 响度 | 峰值低于 -8 dBFS |
 | 循环 | 不循环 |
 | 运行路径 | public/assets/audio/sfx/SFX_PickupKey.ogg |
 
 ## 4. 生成后检查
 
-- [ ] 时长、格式和响度符合规格
+- [ ] 时长、源文件格式、运行格式和响度符合规格
 - [ ] 无削波、爆音和明显底噪
 - [ ] 循环接缝无缝（如要求）
 - [ ] 没有意外的音乐、人声或可识别版权内容

@@ -219,13 +219,20 @@ test('入口条件不满足时无法开启对话', () => {
   assert.equal(system.active, false);
 });
 
-test('称谓占位符按开场选择替换', () => {
+test('称谓占位符按已保存称呼替换', () => {
   assert.equal(
     resolveDialogueText('晚上好，{honorific}。', { 'player.honorific': 'miss' }),
     '晚上好，小姐。',
   );
   assert.equal(
     resolveDialogueText('晚上好，{honorific}。', { 'player.honorific': 'sir' }),
+    '晚上好，先生。',
+  );
+});
+
+test('未保存称谓时使用默认称呼，不阻塞开场后的对话', () => {
+  assert.equal(
+    resolveDialogueText('晚上好，{honorific}。', {}),
     '晚上好，先生。',
   );
 });
@@ -645,6 +652,57 @@ test('B5 霍尔太太先谈人，房间与钥匙作为后续追问', () => {
   assert.ok(back);
   system.choose(back.id);
   assert.equal(flags['story.housekeeper_key'], true);
+});
+
+test('B5 未建立信任时，询问伊芙琳仍可恢复钥匙与证词主线', () => {
+  const { system, flags } = createFixture(
+    {
+      'story.arrived': true,
+      'story.met_housekeeper': true,
+      'story.housekeeper_cold': true,
+      'player.honorific': 'sir',
+    },
+    'step_coverup',
+  );
+  assert.equal(
+    system.openForNpc('npc_housekeeper', 'NPC_housekeeper_dining_door'),
+    true,
+  );
+
+  let view = showChoices(system);
+  const askEvelyn = view.choices.find((choice) => choice.id === 'ask_evelyn');
+  assert.ok(askEvelyn);
+  system.choose(askEvelyn.id);
+  assert.equal(flags['story.housekeeper_warm'], true);
+
+  view = showChoices(system);
+  const askRoom = view.choices.find((choice) => choice.id === 'ask_room');
+  assert.ok(askRoom);
+  system.choose(askRoom.id);
+
+  view = showChoices(system);
+  const back = view.choices.find((choice) => choice.id === 'back');
+  assert.ok(back);
+  system.choose(back.id);
+  assert.equal(flags['story.housekeeper_key'], true);
+
+  view = showChoices(system);
+  const askNight = view.choices.find((choice) => choice.id === 'ask_night');
+  assert.ok(askNight);
+  system.choose(askNight.id);
+
+  view = showChoices(system);
+  const press = view.choices.find((choice) => choice.id === 'press');
+  assert.ok(press);
+  system.choose(press.id);
+
+  view = showChoices(system);
+  const askWhySilent = view.choices.find(
+    (choice) => choice.id === 'ask_why_silent',
+  );
+  assert.ok(askWhySilent);
+  system.choose(askWhySilent.id);
+  assert.equal(flags['story.knows_coverup'], true);
 });
 
 test('B10 医生的威胁选项需要先拿到诊疗记录', () => {
