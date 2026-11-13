@@ -13,6 +13,7 @@ import {
 } from '../src/game/story/conditions.ts';
 import type { StoryFlagValue } from '../src/shared/types/content';
 import type { Vec3Tuple } from '../src/shared/types/save';
+import type { SceneDoor } from '../src/shared/types/scene';
 
 function setup(flags: Record<string, StoryFlagValue>, unlockAll = false) {
   const collision = createCollisionWorld(villaGreybox);
@@ -44,6 +45,30 @@ test('上锁的门打不开，并返回反馈而不是静默失败', () => {
   assert.equal(doors.isOpen('DOOR_study'), false);
   assert.equal(changes.length, 0);
   assert.equal(doors.getPrompt('DOOR_study'), '书房门（锁着）');
+});
+
+test('门默认可交互，只有显式关闭后才从交互目标中排除', () => {
+  const frontDoor = villaGreybox.doors.find((door) => door.id === 'DOOR_front');
+  assert.ok(frontDoor);
+  assert.equal(setup({}).doors.isInteractive(frontDoor.id), true);
+
+  const backgroundDoor: SceneDoor = {
+    ...frontDoor,
+    id: 'DOOR_background',
+    interactive: false,
+  };
+  const collision = createCollisionWorld({ ...villaGreybox, doors: [backgroundDoor] });
+  const doors = new DoorSystem({
+    doors: [backgroundDoor],
+    collision,
+    getFlags: () => ({}),
+    unlockAll: false,
+    onChange: () => undefined,
+  });
+
+  assert.equal(doors.isInteractive('DOOR_background'), false);
+  assert.equal(doors.isLocked('DOOR_background'), false);
+  assert.equal(doors.getPrompt('DOOR_background'), '打开正门');
 });
 
 test('剧情标记满足后门可以打开，并真的放行', () => {

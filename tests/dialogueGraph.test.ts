@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { CLUE_FLAGS, CLUE_IDS } from '../src/content/clues.ts';
+import {
+  DIALOGUE_PLOT_LABEL,
+  PLOT_DIALOGUE_ROUTES,
+} from '../src/content/dialogues/plotRoutes.ts';
 import { content } from '../src/content/index.ts';
 import { quests } from '../src/content/quests.ts';
 import { KNOWN_STORY_FLAGS } from '../src/content/storyFlags.ts';
@@ -83,7 +87,60 @@ test('每个任务步骤都映射到唯一的对话节拍', () => {
         beatForQuestStep(step.id) !== null,
         `${step.id} 没有映射到对话节拍`,
       );
+      assert.ok(
+        DIALOGUE_PLOT_LABEL[step.id],
+        `${step.id} 没有对话剧情提示`,
+      );
     }
+  }
+});
+
+test('剧情对话路由只引用已登记的任务、NPC、节点与话题', () => {
+  const choiceIdsByNpc = new Map<string, Set<string>>();
+  for (const node of content.dialogues) {
+    const ids = choiceIdsByNpc.get(node.npcId) ?? new Set<string>();
+    for (const choice of node.choices) {
+      ids.add(choice.id);
+    }
+    choiceIdsByNpc.set(node.npcId, ids);
+  }
+
+  const routeKeys = new Set<string>();
+  for (const route of PLOT_DIALOGUE_ROUTES) {
+    assert.ok(
+      route.taskIds.length > 0,
+      `${route.npcId}/${route.nodeId} 没有绑定任务步骤`,
+    );
+    for (const taskId of route.taskIds) {
+      assert.ok(questStepIds.has(taskId), `${route.nodeId} 引用了未知任务：${taskId}`);
+    }
+    assert.ok(npcIds.has(route.npcId), `${route.nodeId} 引用了未知 NPC`);
+
+    const node = nodeById.get(route.nodeId);
+    assert.ok(node, `${route.nodeId} 的对话节点不存在`);
+    assert.equal(node.npcId, route.npcId, `${route.nodeId} 的 NPC 归属不一致`);
+
+    assertKnownConditions(`${route.nodeId} 路由条件`, route.when);
+    assertKnownConditions(`${route.nodeId} 重入条件`, route.skipOpeningWhen);
+
+    const knownChoiceIds = choiceIdsByNpc.get(route.npcId) ?? new Set<string>();
+    for (const choiceId of route.allowedChoiceIds ?? []) {
+      assert.ok(
+        knownChoiceIds.has(choiceId),
+        `${route.nodeId} 的话题白名单引用了未知选项：${choiceId}`,
+      );
+    }
+
+    const routeKey = [
+      route.taskIds.join('|'),
+      route.npcId,
+      route.spotIds?.join('|') ?? '*',
+      (route.when ?? [])
+        .map((condition) => `${condition.flag}=${condition.equals ?? true}`)
+        .join('&') || '*',
+    ].join('/');
+    assert.equal(routeKeys.has(routeKey), false, `剧情路由重复：${routeKey}`);
+    routeKeys.add(routeKey);
   }
 });
 

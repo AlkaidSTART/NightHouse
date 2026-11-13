@@ -31,6 +31,9 @@ export function DialoguePanel({
             {view.beatLabel && (
               <span className="dialogue-beat">{view.beatLabel}</span>
             )}
+            {view.contextLabel && (
+              <span className="dialogue-context">{view.contextLabel}</span>
+            )}
           </div>
           <button
             type="button"

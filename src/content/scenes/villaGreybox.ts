@@ -406,7 +406,9 @@ function door(
   axis: 'x' | 'z',
   width: number,
   height: number,
-  extra: Partial<Pick<SceneDoor, 'unlockWhen' | 'sealed' | 'startsOpen' | 'swing'>> = {},
+  extra: Partial<
+    Pick<SceneDoor, 'unlockWhen' | 'sealed' | 'startsOpen' | 'swing' | 'interactive'>
+  > = {},
 ): SceneDoor {
   return {
     id,
@@ -417,6 +419,7 @@ function door(
     height,
     swing: extra.swing ?? 1,
     startsOpen: extra.startsOpen ?? false,
+    interactive: extra.interactive ?? true,
     sealed: extra.sealed ?? false,
     unlockWhen: extra.unlockWhen,
     lockedMessage: LOCKED_MESSAGE,

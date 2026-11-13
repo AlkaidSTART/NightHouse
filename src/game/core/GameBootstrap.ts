@@ -305,7 +305,7 @@ export class GameBootstrap {
         radius: Math.max(DOOR_INTERACTION_MIN_RADIUS, handle.door.width * 0.5),
         occlusionSlack: DOOR_THICKNESS / 2 + 0.02,
         getPrompt: () => this.doors.getPrompt(doorId),
-        canInteract: () => true,
+        canInteract: () => this.doors.isInteractive(doorId),
         interact: (context) => {
           const result = this.doors.use(
             doorId,

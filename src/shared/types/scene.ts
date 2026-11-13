@@ -72,6 +72,11 @@ export interface SceneDoor {
   /** 开门时绕合页旋转的方向。 */
   swing: 1 | -1;
   startsOpen: boolean;
+  /**
+   * 是否作为玩家可瞄准的交互目标。默认 true。
+   * 上锁或永久锁闭不代表不可交互；只有纯背景门才应显式设为 false。
+   */
+  interactive?: boolean;
   /** 永久锁闭的装饰门（不可进入的房间）。 */
   sealed: boolean;
   /** 解锁条件：外层为「或」，内层为「且」。缺省表示不上锁。 */

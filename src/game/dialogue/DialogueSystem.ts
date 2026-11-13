@@ -57,6 +57,10 @@ interface Session {
    * 但本段对话的话题集合保持不变，下一次交谈才切换到新节拍。
    */
   beat: DialogueBeatId | null;
+  /** 当前剧情步骤的话题白名单；null 表示不限制。 */
+  allowedChoiceIds: ReadonlySet<string> | null;
+  /** 当前剧情步骤的目标提示。 */
+  contextLabel: string | null;
   /** 本次会话当前节点要播放的台词（可能是重入短句）。 */
   lines: DialogueLine[];
   /** 下一条要显示的台词；等于 lines.length 时表示进入选项阶段。 */
@@ -70,6 +74,12 @@ interface Session {
 }
 
 const SPEAKER_PREFIX = /^【([^】]+)】\s*(.*)$/;
+
+interface OpenDialogueOptions {
+  skipOpeningLines?: boolean;
+  allowedChoiceIds?: readonly string[] | null;
+  contextLabel?: string | null;
+}
 
 /** 把台词里的 {honorific} 替换成开场选择的称谓。 */
 export function resolveDialogueText(text: string, flags: StoryFlags): string {
@@ -106,22 +116,25 @@ export class DialogueSystem {
   }
 
   openForNpc(npcId: string, spotId: string): boolean {
-    const beat = resolveActiveDialogueBeat(this.getActiveTaskId());
-    const entry = resolveDialogueEntry(
+    const entry = resolveDialogueEntry({
       npcId,
       spotId,
-      this.host.getFlags(),
-      beat,
-    );
+      flags: this.host.getFlags(),
+      activeTaskId: this.getActiveTaskId(),
+    });
     return (
       entry !== null &&
-      this.open(entry.nodeId, { skipOpeningLines: entry.skipOpeningLines })
+      this.open(entry.nodeId, {
+        skipOpeningLines: entry.skipOpeningLines,
+        allowedChoiceIds: entry.allowedChoiceIds,
+        contextLabel: entry.contextLabel,
+      })
     );
   }
 
   open(
     entryId: string,
-    options: { skipOpeningLines?: boolean } = {},
+    options: OpenDialogueOptions = {},
   ): boolean {
     const node = this.nodes.get(entryId);
     if (!node) {
@@ -134,7 +147,12 @@ export class DialogueSystem {
     if (!areConditionsMet(this.host.getFlags(), node.conditions ?? [])) {
       return false;
     }
-    const choices = this.availableChoices(node, beat);
+    const allowedChoiceIds =
+      options.allowedChoiceIds === undefined ||
+      options.allowedChoiceIds === null
+        ? null
+        : new Set(options.allowedChoiceIds);
+    const choices = this.availableChoices(node, beat, allowedChoiceIds);
     if (node.lines.length === 0 && choices.length === 0) {
       return false;
     }
@@ -156,6 +174,8 @@ export class DialogueSystem {
       entryNodeId: node.id,
       npcId: node.npcId,
       beat,
+      allowedChoiceIds,
+      contextLabel: options.contextLabel ?? null,
       lines: reenterLines.length > 0 ? reenterLines : node.lines,
       lineIndex: reenterLines.length > 0 ? 0 : hideLine ? node.lines.length : 0,
       visited: new Set([node.id]),
@@ -185,7 +205,11 @@ export class DialogueSystem {
     session.engaged = true;
     if (
       session.lineIndex >= session.lines.length &&
-      this.availableChoices(node, session.beat).length === 0
+      this.availableChoices(
+        node,
+        session.beat,
+        session.allowedChoiceIds,
+      ).length === 0
     ) {
       this.close();
       return;
@@ -203,9 +227,11 @@ export class DialogueSystem {
       return false;
     }
 
-    const choice = this.availableChoices(node, session.beat).find(
-      (candidate) => candidate.id === choiceId,
-    );
+    const choice = this.availableChoices(
+      node,
+      session.beat,
+      session.allowedChoiceIds,
+    ).find((candidate) => candidate.id === choiceId);
     if (!choice) {
       return false;
     }
@@ -244,7 +270,11 @@ export class DialogueSystem {
     session.visited.add(next.id);
     if (
       session.lineIndex >= next.lines.length &&
-      this.availableChoices(next, session.beat).length === 0
+      this.availableChoices(
+        next,
+        session.beat,
+        session.allowedChoiceIds,
+      ).length === 0
     ) {
       this.close();
       return true;
@@ -286,7 +316,11 @@ export class DialogueSystem {
     const canContinue = session.lineIndex < session.lines.length;
     const choices: DialogueChoiceView[] = canContinue
       ? []
-      : this.availableChoices(node, session.beat).map((choice) => ({
+      : this.availableChoices(
+          node,
+          session.beat,
+          session.allowedChoiceIds,
+        ).map((choice) => ({
           id: choice.id,
           text: choice.text,
         }));
@@ -296,6 +330,7 @@ export class DialogueSystem {
       npcName,
       nodeId: node.id,
       beatLabel: session.beat ? DIALOGUE_BEAT_LABEL[session.beat] : null,
+      contextLabel: session.contextLabel,
       line,
       choices,
       canContinue,
@@ -309,12 +344,30 @@ export class DialogueSystem {
   private availableChoices(
     node: DialogueNode,
     beat: DialogueBeatId | null,
+    allowedChoiceIds: ReadonlySet<string> | null,
   ): DialogueChoice[] {
     const flags = this.host.getFlags();
     return node.choices.filter(
       (choice) =>
         areConditionsMet(flags, choice.conditions ?? []) &&
-        isInDialogueBeat(choice.taskIds, beat),
+        isInDialogueBeat(choice.taskIds, beat) &&
+        this.isChoiceAllowed(choice, allowedChoiceIds),
+    );
+  }
+
+  /**
+   * 剧情白名单只收窄可追问的话题；返回、离开和结束等导航选项始终保留，
+   * 避免玩家因为剧情过滤而卡在对话里。
+   */
+  private isChoiceAllowed(
+    choice: DialogueChoice,
+    allowedChoiceIds: ReadonlySet<string> | null,
+  ): boolean {
+    return (
+      allowedChoiceIds === null ||
+      allowedChoiceIds.has(choice.id) ||
+      choice.next === null ||
+      choice.id === 'back'
     );
   }
 

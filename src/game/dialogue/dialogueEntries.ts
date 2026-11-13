@@ -1,6 +1,9 @@
+import {
+  DIALOGUE_PLOT_LABEL,
+  PLOT_DIALOGUE_ROUTES,
+} from '../../content/dialogues/plotRoutes.ts';
 import type { StoryFlags } from '../story/conditions.ts';
-import { isConditionMet } from '../story/conditions.ts';
-import type { DialogueBeatId } from '../story/dialogueBeat.ts';
+import { areConditionsMet } from '../story/conditions.ts';
 
 export interface DialogueEntry {
   nodeId: string;
@@ -9,111 +12,55 @@ export interface DialogueEntry {
    * 用一句当前情节的招呼替代，否则直接进入话题选项。
    */
   skipOpeningLines: boolean;
+  /**
+   * 当前剧情步骤允许展开的话题；null 表示不限制。导航选项不受此列表影响。
+   */
+  allowedChoiceIds: readonly string[] | null;
+  /** 当前剧情步骤对应的目标提示。 */
+  contextLabel: string | null;
 }
 
-function entry(nodeId: string, skipOpeningLines = false): DialogueEntry {
-  return { nodeId, skipOpeningLines };
+export interface DialogueEntryContext {
+  npcId: string;
+  spotId: string;
+  flags: StoryFlags;
+  activeTaskId: string | null;
 }
 
 /**
- * 场景站位到对话入口的映射。
+ * 按当前任务步骤解析 NPC 的对话入口。
  *
- * 对话按情节节拍隔离：每个节拍只暴露该节拍的入口枢纽，话题节点也只能
- * 在同一节拍内跳转。站位只用来区分同一节拍内的场景（例如 B5 的餐桌与
- * 书房），不再负责跨越情节挑选内容。
+ * 具体路由集中在 `content/dialogues/plotRoutes.ts`。同一 NPC 有多条候选
+ * 路由时按数据顺序匹配，先满足站位与剧情条件者生效。
  */
-export function resolveDialogueEntry(
-  npcId: string,
-  spotId: string,
-  flags: StoryFlags,
-  beat: DialogueBeatId | null,
-): DialogueEntry | null {
-  switch (npcId) {
-    case 'npc_arthur': {
-      if (beat === 'b10_midnight') {
-        return entry('npc_arthur_midnight_01');
-      }
-      if (beat === 'b9_confrontation') {
-        return entry('npc_arthur_confront_01');
-      }
-      if (beat === 'b5_investigation') {
-        if (spotId === 'NPC_arthur_dining_head') {
-          return entry('npc_arthur_b5_dining_01');
-        }
-        if (spotId === 'NPC_arthur_gallery_rail') {
-          return entry('npc_arthur_b5_gallery_01');
-        }
-        return entry('npc_arthur_b5_study_01');
-      }
-      if (beat === 'b3_dinner') {
-        return entry('npc_arthur_dinner_01');
-      }
-      if (beat === 'b2_arthur') {
-        return entry(
-          'npc_arthur_intro',
-          isConditionMet(flags, { flag: 'story.met_arthur' }),
-        );
-      }
-      return null;
-    }
-
-    case 'npc_housekeeper': {
-      if (beat === 'b10_midnight') {
-        return isConditionMet(flags, { flag: 'story.housekeeper_testimony' })
-          ? entry('npc_housekeeper_midnight_testified')
-          : entry('npc_housekeeper_midnight_01');
-      }
-      if (beat === 'b9_confrontation') {
-        return isConditionMet(flags, { flag: 'story.knows_coverup' })
-          ? entry('npc_housekeeper_confront_01')
-          : entry('npc_housekeeper_b9_wait_01');
-      }
-      if (beat === 'b5_investigation') {
-        return entry(
-          'npc_housekeeper_b5_01',
-          isConditionMet(flags, { flag: 'story.met_housekeeper' }),
-        );
-      }
-      if (beat === 'b3_dinner') {
-        return entry('npc_housekeeper_dinner_01');
-      }
-      if (beat === 'b2_arthur') {
-        return entry('npc_housekeeper_wait_01');
-      }
-      if (beat === 'b1_arrival') {
-        return entry(
-          'npc_housekeeper_intro',
-          isConditionMet(flags, { flag: 'story.met_housekeeper' }),
-        );
-      }
-      return null;
-    }
-
-    case 'npc_doctor': {
-      if (beat === 'b10_midnight') {
-        return isConditionMet(flags, { flag: 'story.doctor_testimony' })
-          ? entry('npc_doctor_midnight_testified')
-          : entry('npc_doctor_midnight_01');
-      }
-      if (beat === 'b9_confrontation') {
-        return entry('npc_doctor_confront_wait_01');
-      }
-      if (beat === 'b5_investigation') {
-        return entry(
-          'npc_doctor_b5_01',
-          isConditionMet(flags, { flag: 'story.doctor_talked' }),
-        );
-      }
-      if (beat === 'b3_dinner') {
-        return entry(
-          'npc_doctor_intro',
-          isConditionMet(flags, { flag: 'story.doctor_talked' }),
-        );
-      }
-      return null;
-    }
-
-    default:
-      return null;
+export function resolveDialogueEntry({
+  npcId,
+  spotId,
+  flags,
+  activeTaskId,
+}: DialogueEntryContext): DialogueEntry | null {
+  if (activeTaskId === null) {
+    return null;
   }
+
+  const route = PLOT_DIALOGUE_ROUTES.find(
+    (candidate) =>
+      candidate.taskIds.includes(activeTaskId) &&
+      candidate.npcId === npcId &&
+      (candidate.spotIds === undefined || candidate.spotIds.includes(spotId)) &&
+      areConditionsMet(flags, candidate.when ?? []),
+  );
+  if (!route) {
+    return null;
+  }
+
+  return {
+    nodeId: route.nodeId,
+    skipOpeningLines: areConditionsMet(
+      flags,
+      route.skipOpeningWhen ?? [],
+    ),
+    allowedChoiceIds: route.allowedChoiceIds ?? null,
+    contextLabel: DIALOGUE_PLOT_LABEL[activeTaskId] ?? null,
+  };
 }

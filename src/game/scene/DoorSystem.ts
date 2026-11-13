@@ -66,6 +66,11 @@ export class DoorSystem {
     return !isAnyConditionGroupMet(this.getFlags(), door.unlockWhen);
   }
 
+  /** 是否允许玩家瞄准并操作这扇门；锁闭状态不影响该判断。 */
+  isInteractive(doorId: string): boolean {
+    return this.requireDoor(doorId).interactive !== false;
+  }
+
   getPrompt(doorId: string): string {
     const door = this.requireDoor(doorId);
     if (this.isOpen(doorId)) {
