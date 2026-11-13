@@ -40,8 +40,8 @@ const SAFE_INTERACTABLE_ID = 'INT_prop_safe';
 const POSE_EMIT_INTERVAL = 0.05;
 
 /**
- * 灰盒走查用：开发构建下以 `?unlock=all` 打开页面时忽略门的剧情解锁条件。
- * 线索与谜题系统尚未实现，没有它就无法走进上锁的区域。生产构建中不生效。
+ * 灰盒走查用：开发构建下以 `?unlock=all` 打开页面时忽略门的剧情解锁条件，
+ * 便于直接检查尚未走到解锁条件后的房间与站位。生产构建中不生效。
  */
 function isUnlockAllRequested(): boolean {
   return (
@@ -601,11 +601,19 @@ export class GameBootstrap {
     if (!event.completed) {
       return;
     }
-    // 午夜抉择写在选项上；等对话真正结束再结算结局，避免在拒签分支里当场弹出。
-    this.pendingEnding = true;
     const store = useStoryStore.getState();
+    // 午夜抉择只在最终选项上写入。只有写入后才结算结局，避免玩家在
+    // 拒签分支中途关闭对话时被直接推进结局。
+    const midnightChoice = store.storyFlags['choice.midnight'];
+    if (midnightChoice === 'sign' || midnightChoice === 'refuse') {
+      this.pendingEnding = true;
+    }
 
     if (event.npcId === 'npc_housekeeper') {
+      // 只听完台词但没做选择，不算完成见面，避免亚瑟提前出场。
+      if (store.storyFlags['story.met_housekeeper'] !== true) {
+        return;
+      }
       if (store.storyFlags['story.arthur_called'] !== true) {
         store.setStoryFlag('story.arthur_called', true);
         this.events.emit('interaction.activated', {
@@ -617,6 +625,10 @@ export class GameBootstrap {
     }
 
     if (event.npcId === 'npc_arthur') {
+      // 只听完开场白不算谈过，否则 B2 会被跳过且亚瑟在后续章节无法对话。
+      if (store.storyFlags['story.met_arthur'] !== true) {
+        return;
+      }
       store.setStoryFlag('story.arthur_talked', true);
       if (store.storyFlags['story.met_doctor'] !== true) {
         store.setStoryFlag('story.met_doctor', true);
@@ -770,8 +782,13 @@ export class GameBootstrap {
       });
     }
 
-    // 防卡关兜底：玩家跳过霍尔太太直接走进客厅时，亚瑟照常出场。
-    if (regionId === 'villa_parlor' && flags['story.arthur_called'] !== true) {
+    // 防卡关兜底：玩家已见过霍尔太太、却没走完她的对话时，进客厅照样能见到亚瑟。
+    // 还没见过她时不放出亚瑟——B1 没有他的对话入口，只会生成一个无法交谈的 NPC。
+    if (
+      regionId === 'villa_parlor' &&
+      flags['story.met_housekeeper'] === true &&
+      flags['story.arthur_called'] !== true
+    ) {
       store.setStoryFlag('story.arthur_called', true);
     }
   }

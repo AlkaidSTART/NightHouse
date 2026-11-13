@@ -28,6 +28,23 @@ export interface RouteInfo {
   direction: string | null;
   /** 目标与玩家不在同一层/同一室内外范围时的提示，例如「需上楼」。 */
   levelHint: string | null;
+  /** 跨层时路过的出入口，例如「正门」「主楼梯」。 */
+  via: string | null;
+}
+
+/**
+ * 跨层时先指向出入口而不是房间中心。院墙、护墙和楼板都不在直线路径上，
+ * 直接指向房间中心会把玩家带进花坛或楼梯下方。
+ */
+const FRONT_STEPS_AIM: Vec3Tuple = [0, 0, 10.1];
+const FRONT_DOOR_AIM: Vec3Tuple = [-0.8, 0, 7.4];
+const STAIR_FOOT_AIM: Vec3Tuple = [3.3, 0, 2.6];
+const STAIR_LANDING_AIM: Vec3Tuple = [3.3, 0, -1.3];
+const STAIR_TOP_AIM: Vec3Tuple = [0.4, 0, -1.3];
+
+interface RouteAim {
+  point: Vec3Tuple;
+  via: string;
 }
 
 export function findRegion(regionId: string): SceneRegion | null {
@@ -87,12 +104,59 @@ function levelHintFor(
     return null;
   }
   if (targetLevel === 'floor2') {
-    return '需上楼';
+    return playerLevel === 'outdoor' ? '进入宅内上楼' : '需上楼';
   }
   if (targetLevel === 'floor1') {
     return playerLevel === 'outdoor' ? '进入宅内' : '需下楼';
   }
   return playerLevel === 'outdoor' ? null : '走到室外';
+}
+
+function routeAimPoint(
+  targetLevel: MinimapLevelId,
+  playerLevel: MinimapLevelId,
+  playerPosition: Vec3Tuple,
+): RouteAim | null {
+  if (playerLevel === targetLevel) {
+    return null;
+  }
+
+  if (playerLevel === 'floor2') {
+    // 下楼先走到楼梯平台，再沿第一段梯面向南；到一层后下一帧改指正门。
+    return playerPosition[0] > 2.4
+      ? { point: STAIR_FOOT_AIM, via: '主楼梯' }
+      : { point: STAIR_LANDING_AIM, via: '主楼梯' };
+  }
+
+  if (playerLevel === 'outdoor') {
+    const [x, , z] = playerPosition;
+    // 喷泉正好压在车道中线。八方向提示只会取整到一格，绕行点必须明显偏到
+    // 侧面，否则仍会显示「北」并把玩家顶在喷泉南沿。
+    const side = x < -0.2 ? -3.5 : 3.5;
+    if (z > 24) {
+      return { point: [side, 0, 21.5], via: '正门' };
+    }
+    if (z > 18.5) {
+      return { point: [side, 0, 18], via: '正门' };
+    }
+    // 走上台阶后再对准门；斜穿院子会被护墙挡住。
+    return z > 11
+      ? { point: FRONT_STEPS_AIM, via: '正门' }
+      : { point: FRONT_DOOR_AIM, via: '正门' };
+  }
+
+  if (targetLevel === 'floor2') {
+    const [x, y, z] = playerPosition;
+    if (y >= 1.2 && x > 2.4) {
+      return {
+        point: z < -0.4 ? STAIR_TOP_AIM : STAIR_LANDING_AIM,
+        via: '主楼梯',
+      };
+    }
+    return { point: STAIR_FOOT_AIM, via: '主楼梯' };
+  }
+
+  return { point: FRONT_STEPS_AIM, via: '正门' };
 }
 
 /**
@@ -116,14 +180,19 @@ export function describeRoute(
   let distance: number | null = null;
   let direction: string | null = null;
   let levelHint: string | null = null;
+  let via: string | null = null;
 
   if (playerPosition) {
-    const dx = center[0] - playerPosition[0];
-    const dz = center[2] - playerPosition[2];
-    distance = Math.hypot(dx, dz);
-    direction = bearingLabel(dx, dz);
     const playerLevel = regionLevel(playerRegionId ?? '', playerPosition[1]);
     levelHint = levelHintFor(playerLevel, targetLevel);
+    const aim = routeAimPoint(targetLevel, playerLevel, playerPosition);
+    // 跨层时距离与方向指向出入口，而不是藏在墙后的房间中心。
+    const point = arrived ? center : aim?.point ?? center;
+    via = arrived ? null : aim?.via ?? null;
+    const dx = point[0] - playerPosition[0];
+    const dz = point[2] - playerPosition[2];
+    distance = Math.hypot(dx, dz);
+    direction = bearingLabel(dx, dz);
   }
 
   return {
@@ -133,5 +202,6 @@ export function describeRoute(
     distance,
     direction,
     levelHint,
+    via,
   };
 }

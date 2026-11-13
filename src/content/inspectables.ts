@@ -110,11 +110,25 @@ export const inspectables: readonly InspectableDefinition[] = [
     category: '衣物',
     variants: [
       {
+        when: [{ flag: 'story.arthur_cloak_admitted' }],
+        sections: [
+          body(
+            '斗篷的领口还留着 E.A. 的褪色绣字。亚瑟承认忌日前一晚披着它去过崖边。',
+            '下摆的潮气已经快干了，只剩苦艾草和冷雨混在一起的味道。',
+          ),
+          note('它不是被遗落在这里的。它是被放回来的。'),
+        ],
+      },
+      {
         sections: [
           body(
             '衣帽架最里侧挂着一件深色羊毛斗篷，领口内侧绣着褪色的字母 E.A.。',
             '下摆是潮的，指腹一捻，能闻到海崖边苦艾草的涩味。旁边几件外套都是干的。',
           ),
+        ],
+        effects: [
+          clue('clue_arthur_cloak'),
+          setFlag('story.knows_wet_cloak'),
         ],
       },
     ],
@@ -271,6 +285,16 @@ export const inspectables: readonly InspectableDefinition[] = [
     category: '陈设',
     variants: [
       {
+        when: [{ flag: 'story.read_old_letters' }],
+        sections: [
+          body(
+            '你想起来，1888 年那封信里，伊芙琳写道：航运不好以后，家里连钢琴也不让她弹了。',
+            '琴盖上这层灰，已经比她离开的时间还厚。',
+          ),
+          note('中央 C 的键面上仍有一个被擦掉的指印。'),
+        ],
+      },
+      {
         sections: [
           body(
             '琴盖合着，键盖上落了一层薄灰。',
@@ -330,6 +354,36 @@ export const inspectables: readonly InspectableDefinition[] = [
     title: '书桌抽屉',
     category: '文件',
     variants: [
+      {
+        when: [
+          { flag: 'story.doctor_confessed' },
+          { flag: 'story.heard_recording' },
+          { flag: 'story.safe_opened' },
+        ],
+        sections: [
+          body(
+            '你把诊疗记录、账本、赔付单和蜡筒并排放在书桌上。伊芙琳的录音是她的声音，账目是父亲的字，死亡时间则是格雷写的。',
+            '三样东西指向同一件事：她死在宅子里，而屋里所有人都在替那晚找一个更体面的说法。',
+          ),
+          note('证据已经足够逼亚瑟把话说完。去书房中间的书桌旁等他。'),
+        ],
+        effects: [setFlag('story.case_ready')],
+      },
+      {
+        when: [
+          { flag: 'story.doctor_confessed' },
+          { flag: 'story.heard_recording' },
+          { flag: 'story.clock_repaired' },
+        ],
+        sections: [
+          body(
+            '你把诊疗记录和蜡筒放在书桌上。钟座里的船长日志翻到最后一页，四名船员的名字压在伊芙琳的字迹下面。',
+            '第十三下不是幻觉。它和骗保、移尸、沉默一起，被这栋房子留了下来。',
+          ),
+          note('证据已经足够逼亚瑟把话说完。去书房中间的书桌旁等他。'),
+        ],
+        effects: [setFlag('story.case_ready')],
+      },
       {
         sections: [
           body(
@@ -447,6 +501,16 @@ export const inspectables: readonly InspectableDefinition[] = [
     title: '留声机',
     category: '陈设',
     variants: [
+      {
+        when: [{ flag: 'story.heard_recording' }],
+        sections: [
+          body(
+            '唱针停在蜡筒末尾的空白处，铜喇叭里只剩下雨声。',
+            '你记得她最后叫了你的名字。不是责备，更像确认你真的回来了。',
+          ),
+          note('蜡筒还留在转轴上。你没有再放一遍。'),
+        ],
+      },
       {
         when: [{ flag: 'item.cylinder' }],
         sections: [
@@ -672,6 +736,15 @@ export const inspectables: readonly InspectableDefinition[] = [
     category: '照片',
     variants: [
       {
+        when: [{ flag: 'story.heard_recording' }],
+        sections: [
+          body(
+            '照片里伊芙琳站在最边上，玻璃的裂纹横过她的脸。',
+            '刚听完她的声音，这排沉默的银框显得更像另一份死亡证明：每个活着的人都被摆得端正，只有她被人从画面里划掉。',
+          ),
+        ],
+      },
+      {
         sections: [
           body(
             '墙上一排银框照片，从曾祖父到亚瑟，每个人都站在同一段楼梯前。',
@@ -858,6 +931,16 @@ export const inspectables: readonly InspectableDefinition[] = [
     title: '纪念石',
     category: '室外',
     variants: [
+      {
+        when: [{ flag: 'story.clock_repaired' }],
+        sections: [
+          body(
+            '纪念石上刻着托马斯·布伦南、休·麦凯、乔纳森·里德、塞缪尔·克罗斯。',
+            '船长日志里的名字终于和石头上的刻痕对上了。伊芙琳把第十三下留给这四个人，也把自己留在了他们旁边。',
+          ),
+          note('石面被雨水洗得发亮。远处门厅的钟声已经停了。'),
+        ],
+      },
       {
         sections: [
           body(

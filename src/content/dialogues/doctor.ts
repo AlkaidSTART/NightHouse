@@ -212,9 +212,42 @@ export const doctorDialogues: readonly DialogueNode[] = [
         next: 'npc_doctor_evelyn_b5',
       },
       {
+        id: 'ask_motive',
+        text: '你为什么要替亚瑟瞒这么久？',
+        next: 'npc_doctor_motive_01',
+        conditions: [{ flag: 'story.doctor_confessed' }],
+      },
+      {
         id: 'leave',
         text: '暂时没有。',
         next: null,
+      },
+    ],
+  },
+  {
+    id: 'npc_doctor_motive_01',
+    npcId: 'npc_doctor',
+    taskIds: ['step_coverup', 'step_medical_truth', 'step_recording', 'step_corroborate', 'step_evidence'],
+    lines: [
+      { speaker: 'npc', text: '我不是替他瞒。我是替她瞒。' },
+      {
+        speaker: 'npc',
+        text: '一个未婚女子半夜死在男人书房里，报纸会怎么写她？我想让她至少被写成一个意外。',
+      },
+      { speaker: 'npc', text: '我签了字。从那一刻起，我也成了他们的一部分。' },
+    ],
+    choices: [
+      {
+        id: 'back',
+        text: '你保住的是姓氏，不是她。',
+        next: 'npc_doctor_b5_01',
+        effects: [flag('story.doctor_motive_known')],
+      },
+      {
+        id: 'leave',
+        text: '我会记住你说的。',
+        next: null,
+        effects: [flag('story.doctor_motive_known')],
       },
     ],
   },
@@ -379,6 +412,23 @@ export const doctorDialogues: readonly DialogueNode[] = [
         text: '那我就把诊疗记录交给律师。',
         next: 'npc_doctor_press',
         conditions: [{ flag: 'clue.medical_record' }],
+      },
+    ],
+  },
+  {
+    id: 'npc_doctor_midnight_testified',
+    npcId: 'npc_doctor',
+    conditions: [{ flag: 'story.doctor_testimony' }],
+    taskIds: ['step_midnight'],
+    lines: [
+      { speaker: 'npc', text: '新的死亡证明我放在门厅桌上了。' },
+      { speaker: 'npc', text: '剩下的，是你们家的事。' },
+    ],
+    choices: [
+      {
+        id: 'leave',
+        text: '我明白。',
+        next: null,
       },
     ],
   },

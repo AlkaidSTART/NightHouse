@@ -470,7 +470,8 @@ test('情节分段：同一 NPC 只显示当前阶段的话题', () => {
   const meetingIds = showChoices(meeting.system).choices.map((c) => c.id);
   assert.ok(meetingIds.includes('warm'));
   assert.ok(meetingIds.includes('ask_evelyn'));
-  assert.equal(meetingIds.includes('show_letter'), false);
+  // 抵达阶段允许出示信，但只进入抵达期信件分支，不开放夜间证词。
+  assert.ok(meetingIds.includes('show_letter'));
   assert.equal(meetingIds.includes('ask_night'), false);
 
   const coverup = createFixture(
@@ -503,7 +504,11 @@ test('任务全部完成（无当前任务）时不过滤话题选项', () => {
 
 test('B1 霍尔太太不会提前说出夜间证词或交出房间钥匙', () => {
   const { system } = createFixture(
-    { 'story.arrived': true, 'player.honorific': 'sir' },
+    {
+      'story.arrived': true,
+      'story.has_letter': true,
+      'player.honorific': 'sir',
+    },
     'step_housekeeper',
   );
   assert.equal(
@@ -514,9 +519,10 @@ test('B1 霍尔太太不会提前说出夜间证词或交出房间钥匙', () =>
   const ids = view.choices.map((choice) => choice.id);
   assert.ok(ids.includes('warm'));
   assert.ok(ids.includes('ask_evelyn'));
+  // 抵达时可以出示信，但信件分支不能变成夜间证词或房间钥匙的捷径。
+  assert.ok(ids.includes('show_letter'));
   assert.equal(ids.includes('ask_night'), false);
   assert.equal(ids.includes('ask_room'), false);
-  assert.equal(ids.includes('show_letter'), false);
   assert.equal(ids.includes('confront'), false);
 
   const warm = view.choices.find((choice) => choice.id === 'warm');
@@ -537,6 +543,50 @@ test('B1 霍尔太太不会提前说出夜间证词或交出房间钥匙', () =>
     'step_housekeeper',
   );
   assert.equal(blocked.system.open('npc_housekeeper_night_01'), false);
+});
+
+test('B1 霍尔太太交代午夜前不许上楼的规则', () => {
+  const { system } = createFixture(
+    { 'story.arrived': true, 'player.honorific': 'sir' },
+    'step_housekeeper',
+  );
+  assert.equal(
+    system.openForNpc('npc_housekeeper', 'NPC_housekeeper_front_door'),
+    true,
+  );
+  const texts: string[] = [];
+  let view = currentView(system);
+  while (view.canContinue) {
+    if (view.line) {
+      texts.push(view.line.text);
+    }
+    system.advance();
+    view = currentView(system);
+  }
+  assert.ok(texts.some((text) => text.includes('午夜之前，请别上楼')));
+});
+
+test('B1 冷淡后的改口进入温和分支，不重播开场台词', () => {
+  const { system, flags } = createFixture(
+    { 'story.arrived': true, 'player.honorific': 'sir' },
+    'step_housekeeper',
+  );
+  assert.equal(
+    system.openForNpc('npc_housekeeper', 'NPC_housekeeper_front_door'),
+    true,
+  );
+  let view = showChoices(system);
+  const cold = view.choices.find((choice) => choice.id === 'cold');
+  assert.ok(cold);
+  system.choose(cold.id);
+  assert.equal(flags['story.housekeeper_cold'], true);
+
+  view = showChoices(system);
+  const warmUp = view.choices.find((choice) => choice.id === 'warm_up');
+  assert.ok(warmUp);
+  system.choose(warmUp.id);
+  assert.equal(currentView(system).nodeId, 'npc_housekeeper_warm');
+  assert.equal(flags['story.housekeeper_warm'], true);
 });
 
 test('B1 霍尔太太只谈人，不提前把话题引向房间与钥匙', () => {
@@ -678,6 +728,31 @@ test('B9 对质与 B10 午夜各有独立入口', () => {
   assert.ok(midnightView.choices.some((choice) => choice.id === 'leave'));
 });
 
+test('B5 亚瑟的账本追问结束后不会跳回餐桌台词', () => {
+  const { system } = createFixture(
+    {
+      'story.met_arthur': true,
+      'clue.shipping_ledger': true,
+      'player.honorific': 'sir',
+    },
+    'step_evidence',
+  );
+  assert.equal(
+    system.openForNpc('npc_arthur', 'NPC_arthur_study_desk'),
+    true,
+  );
+  let view = showChoices(system);
+  const ask = view.choices.find((choice) => choice.id === 'ask_ledger');
+  assert.ok(ask);
+  system.choose(ask.id);
+
+  view = showChoices(system);
+  const back = view.choices.find((choice) => choice.id === 'back');
+  assert.ok(back);
+  assert.equal(system.choose(back.id), true);
+  assert.equal(system.active, false);
+});
+
 test('B5 的亚瑟只给过渡对白，B9 才进入正式对质', () => {
   const waiting = createFixture(
     { 'story.met_arthur': true, 'player.honorific': 'sir' },
@@ -755,4 +830,206 @@ test('对话打开后锁定节拍，任务推进不会把下一幕话题混进�
     true,
   );
   assert.equal(currentView(fixture.system).nodeId, 'npc_housekeeper_wait_01');
+});
+
+test('B1 出示信进入抵达期信件分支，只谈过去不谈夜间证词', () => {
+  const { system, flags } = createFixture(
+    {
+      'story.arrived': true,
+      'story.has_letter': true,
+      'player.honorific': 'sir',
+    },
+    'step_housekeeper',
+  );
+  assert.equal(
+    system.openForNpc('npc_housekeeper', 'NPC_housekeeper_front_door'),
+    true,
+  );
+  let view = showChoices(system);
+  const showLetter = view.choices.find((choice) => choice.id === 'show_letter');
+  assert.ok(showLetter);
+  system.choose(showLetter.id);
+
+  view = showChoices(system);
+  assert.equal(view.nodeId, 'npc_housekeeper_letter_b1');
+  assert.deepEqual(
+    view.choices.map((choice) => choice.id),
+    ['ask_evelyn', 'leave'],
+  );
+  assert.equal(flags['story.met_housekeeper'], true);
+
+  const ask = view.choices.find((choice) => choice.id === 'ask_evelyn');
+  assert.ok(ask);
+  system.choose(ask.id);
+  assert.equal(flags['story.housekeeper_warm'], true);
+  assert.equal(flags['story.letter_shown'], true);
+  assert.equal(currentView(system).nodeId, 'npc_housekeeper_evelyn_01');
+
+  // 没带信时不会出现这个选项。
+  const noLetter = createFixture(
+    { 'story.arrived': true, 'player.honorific': 'sir' },
+    'step_housekeeper',
+  );
+  noLetter.system.openForNpc('npc_housekeeper', 'NPC_housekeeper_front_door');
+  assert.equal(
+    showChoices(noLetter.system).choices.some(
+      (choice) => choice.id === 'show_letter',
+    ),
+    false,
+  );
+});
+
+test('B5 十三下之后亚瑟在二楼栏杆边使用专属入口', () => {
+  const { system } = createFixture(
+    { 'story.met_arthur': true, 'player.honorific': 'sir' },
+    'step_evidence',
+  );
+  assert.equal(
+    system.openForNpc('npc_arthur', 'NPC_arthur_gallery_rail'),
+    true,
+  );
+  const view = showChoices(system);
+  assert.equal(view.nodeId, 'npc_arthur_b5_gallery_01');
+  assert.deepEqual(
+    view.choices.map((choice) => choice.id),
+    ['leave'],
+  );
+
+  // 同一节拍下，书房站位仍然进入书房过渡对白。
+  const study = createFixture(
+    { 'story.met_arthur': true, 'player.honorific': 'sir' },
+    'step_evidence',
+  );
+  study.system.openForNpc('npc_arthur', 'NPC_arthur_study_desk');
+  assert.equal(showChoices(study.system).nodeId, 'npc_arthur_b5_study_01');
+});
+
+test('B10 取得证词后 NPC 使用证词后的午夜入口', () => {
+  assert.equal(
+    resolveDialogueEntry(
+      'npc_housekeeper',
+      'NPC_housekeeper_hall_door_b10',
+      { 'story.housekeeper_testimony': true },
+      'b10_midnight',
+    )?.nodeId,
+    'npc_housekeeper_midnight_testified',
+  );
+  assert.equal(
+    resolveDialogueEntry(
+      'npc_doctor',
+      'NPC_doctor_stair_foot',
+      { 'story.doctor_testimony': true },
+      'b10_midnight',
+    )?.nodeId,
+    'npc_doctor_midnight_testified',
+  );
+  assert.equal(
+    resolveDialogueEntry(
+      'npc_housekeeper',
+      'NPC_housekeeper_hall_door_b10',
+      {},
+      'b10_midnight',
+    )?.nodeId,
+    'npc_housekeeper_midnight_01',
+  );
+  assert.equal(
+    resolveDialogueEntry(
+      'npc_doctor',
+      'NPC_doctor_stair_foot',
+      {},
+      'b10_midnight',
+    )?.nodeId,
+    'npc_doctor_midnight_01',
+  );
+});
+
+test('B2 追问崖边时记录亚瑟左腕的抓痕，并在 B5 可用于追问书房', () => {
+  const fixture = createFixture(
+    { 'story.arrived': true, 'player.honorific': 'sir' },
+    'step_arthur',
+  );
+  assert.equal(
+    fixture.system.openForNpc('npc_arthur', 'NPC_arthur_parlor_fireplace'),
+    true,
+  );
+  let view = showChoices(fixture.system);
+  const askEvelyn = view.choices.find((choice) => choice.id === 'ask_evelyn');
+  assert.ok(askEvelyn);
+  fixture.system.choose(askEvelyn.id);
+
+  view = showChoices(fixture.system);
+  const askWhy = view.choices.find((choice) => choice.id === 'ask_why_cliff');
+  assert.ok(askWhy);
+  fixture.system.choose(askWhy.id);
+
+  view = showChoices(fixture.system);
+  const askStudy = view.choices.find((choice) => choice.id === 'ask_study');
+  assert.ok(askStudy);
+  fixture.system.choose(askStudy.id);
+  assert.ok(fixture.discoveries.includes('clue_arthur_scratch'));
+  assert.equal(fixture.flags['story.saw_arthur_scratch'], true);
+
+  const b5 = createFixture(
+    {
+      'story.met_arthur': true,
+      'clue.arthur_scratch': true,
+      'player.honorific': 'sir',
+    },
+    'step_evidence',
+  );
+  b5.system.openForNpc('npc_arthur', 'NPC_arthur_study_desk');
+  const b5Choices = showChoices(b5.system);
+  assert.ok(b5Choices.choices.some((choice) => choice.id === 'ask_scratch'));
+});
+
+test('B5 亚瑟承认忌日前披着伊芙琳的斗篷去过崖边', () => {
+  const fixture = createFixture(
+    {
+      'story.met_arthur': true,
+      'clue.arthur_cloak': true,
+      'player.honorific': 'sir',
+    },
+    'step_evidence',
+  );
+  assert.equal(
+    fixture.system.openForNpc('npc_arthur', 'NPC_arthur_study_desk'),
+    true,
+  );
+  let view = showChoices(fixture.system);
+  const askCloak = view.choices.find((choice) => choice.id === 'ask_cloak');
+  assert.ok(askCloak);
+  fixture.system.choose(askCloak.id);
+
+  view = showChoices(fixture.system);
+  assert.equal(view.nodeId, 'npc_arthur_b5_cloak_01');
+  const back = view.choices.find((choice) => choice.id === 'back');
+  assert.ok(back);
+  fixture.system.choose(back.id);
+  assert.equal(fixture.flags['story.arthur_cloak_admitted'], true);
+});
+
+test('B5 格雷承认现场后可以追问隐瞒动机', () => {
+  const fixture = createFixture(
+    {
+      'story.met_doctor': true,
+      'story.doctor_confessed': true,
+      'player.honorific': 'sir',
+    },
+    'step_evidence',
+  );
+  assert.equal(
+    fixture.system.openForNpc('npc_doctor', 'NPC_doctor_front_door_b4'),
+    true,
+  );
+  let view = showChoices(fixture.system);
+  const askMotive = view.choices.find((choice) => choice.id === 'ask_motive');
+  assert.ok(askMotive);
+  fixture.system.choose(askMotive.id);
+
+  view = showChoices(fixture.system);
+  assert.equal(view.nodeId, 'npc_doctor_motive_01');
+  const leave = view.choices.find((choice) => choice.id === 'leave');
+  assert.ok(leave);
+  fixture.system.choose(leave.id);
+  assert.equal(fixture.flags['story.doctor_motive_known'], true);
 });

@@ -166,3 +166,46 @@ test('检视系统：普通陈设也能补全世界档案', () => {
   assert.deepEqual(fake.state.view?.newClueTitles, ['1897 年的宅内技术']);
   assert.ok(fake.state.discovered.has('clue_1897_technology'));
 });
+
+test('检视系统：返潮旧斗篷会成为亚瑟行动线的辅助线索', () => {
+  const fake = createHost();
+  const system = new InspectionSystem({ inspectables, host: fake.host });
+
+  system.open('INT_prop_cloak');
+  assert.deepEqual(fake.state.view?.newClueTitles, ['返潮的旧斗篷']);
+  assert.equal(fake.state.flags['story.knows_wet_cloak'], true);
+  assert.ok(fake.state.discovered.has('clue_arthur_cloak'));
+});
+
+test('检视系统：证据齐全后在书桌整理案情并解锁对质', () => {
+  const fake = createHost();
+  const system = new InspectionSystem({ inspectables, host: fake.host });
+  fake.state.flags['story.doctor_confessed'] = true;
+  fake.state.flags['story.heard_recording'] = true;
+  fake.state.flags['story.safe_opened'] = true;
+
+  system.open('INT_prop_study_desk_drawer');
+  assert.equal(fake.state.flags['story.case_ready'], true);
+  assert.equal(fake.state.view?.newClueTitles.length, 0);
+  assert.ok(
+    fake.state.view?.sections.some((section) =>
+      section.paragraphs.some((paragraph) => paragraph.includes('三样东西')),
+    ),
+  );
+});
+
+test('检视系统：修好钟也能用船长日志完成书桌整理', () => {
+  const fake = createHost();
+  const system = new InspectionSystem({ inspectables, host: fake.host });
+  fake.state.flags['story.doctor_confessed'] = true;
+  fake.state.flags['story.heard_recording'] = true;
+  fake.state.flags['story.clock_repaired'] = true;
+
+  system.open('INT_prop_study_desk_drawer');
+  assert.equal(fake.state.flags['story.case_ready'], true);
+  assert.ok(
+    fake.state.view?.sections.some((section) =>
+      section.paragraphs.some((paragraph) => paragraph.includes('第十三下')),
+    ),
+  );
+});

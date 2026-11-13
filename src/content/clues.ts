@@ -189,6 +189,26 @@ export const clues: readonly ClueDefinition[] = [
     storyFlags: ['story.photo_cut'],
   },
   {
+    id: 'clue_arthur_scratch',
+    title: '亚瑟左腕的抓痕',
+    description:
+      '亚瑟抬手看怀表时露出的旧抓痕，从手背内侧滑向掌心。它不像自己挠出来的伤口，更像被谁在后退时抓住过。',
+    locationId: 'villa_parlor',
+    priority: 'supporting',
+    relatedNpcIds: ['npc_arthur'],
+    storyFlags: ['story.saw_arthur_scratch'],
+  },
+  {
+    id: 'clue_arthur_cloak',
+    title: '返潮的旧斗篷',
+    description:
+      '门厅最里侧的深色旧斗篷绣着 E.A.，下摆却是潮的，沾着寡妇崖边的苦艾草。伊芙琳死后，它仍被人穿过。',
+    locationId: 'villa_hall',
+    priority: 'supporting',
+    relatedNpcIds: ['npc_arthur', 'npc_housekeeper'],
+    storyFlags: ['story.knows_wet_cloak'],
+  },
+  {
     id: 'clue_dinner_seating',
     title: '第十三副餐具',
     description:

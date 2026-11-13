@@ -37,9 +37,13 @@ export function resolveDialogueEntry(
         return entry('npc_arthur_confront_01');
       }
       if (beat === 'b5_investigation') {
-        return spotId === 'NPC_arthur_dining_head'
-          ? entry('npc_arthur_b5_dining_01')
-          : entry('npc_arthur_b5_study_01');
+        if (spotId === 'NPC_arthur_dining_head') {
+          return entry('npc_arthur_b5_dining_01');
+        }
+        if (spotId === 'NPC_arthur_gallery_rail') {
+          return entry('npc_arthur_b5_gallery_01');
+        }
+        return entry('npc_arthur_b5_study_01');
       }
       if (beat === 'b3_dinner') {
         return entry('npc_arthur_dinner_01');
@@ -55,7 +59,9 @@ export function resolveDialogueEntry(
 
     case 'npc_housekeeper': {
       if (beat === 'b10_midnight') {
-        return entry('npc_housekeeper_midnight_01');
+        return isConditionMet(flags, { flag: 'story.housekeeper_testimony' })
+          ? entry('npc_housekeeper_midnight_testified')
+          : entry('npc_housekeeper_midnight_01');
       }
       if (beat === 'b9_confrontation') {
         return isConditionMet(flags, { flag: 'story.knows_coverup' })
@@ -85,7 +91,9 @@ export function resolveDialogueEntry(
 
     case 'npc_doctor': {
       if (beat === 'b10_midnight') {
-        return entry('npc_doctor_midnight_01');
+        return isConditionMet(flags, { flag: 'story.doctor_testimony' })
+          ? entry('npc_doctor_midnight_testified')
+          : entry('npc_doctor_midnight_01');
       }
       if (beat === 'b9_confrontation') {
         return entry('npc_doctor_confront_wait_01');

@@ -129,6 +129,24 @@ test('对话节点与话题选项不跨情节节拍', () => {
   }
 });
 
+test('午夜抉择标记只在最终选项上写入', () => {
+  for (const node of content.dialogues) {
+    for (const choice of node.choices) {
+      const setsMidnight = (choice.effects ?? []).some(
+        (effect) =>
+          effect.type === 'set-flag' && effect.key === 'choice.midnight',
+      );
+      if (setsMidnight) {
+        assert.equal(
+          choice.next,
+          null,
+          `${node.id}.${choice.id} 在非最终选项写入 choice.midnight`,
+        );
+      }
+    }
+  }
+});
+
 test('所有选项跳转目标存在，NPC 入口存在', () => {
   for (const node of content.dialogues) {
     for (const choice of node.choices) {
@@ -155,6 +173,7 @@ test('每个 NPC 的节点都能从入口到达，且存在结束路径', () => 
       'npc_arthur_dinner_01',
       'npc_arthur_b5_dining_01',
       'npc_arthur_b5_study_01',
+      'npc_arthur_b5_gallery_01',
       'npc_arthur_confront_01',
       'npc_arthur_midnight_01',
     ],
@@ -165,11 +184,13 @@ test('每个 NPC 的节点都能从入口到达，且存在结束路径', () => 
       'npc_housekeeper_b9_wait_01',
       'npc_housekeeper_confront_01',
       'npc_housekeeper_midnight_01',
+      'npc_housekeeper_midnight_testified',
     ],
     npc_doctor: [
       'npc_doctor_b5_01',
       'npc_doctor_confront_wait_01',
       'npc_doctor_midnight_01',
+      'npc_doctor_midnight_testified',
     ],
   };
 

@@ -32,9 +32,11 @@ export const STORY_FLAGS = [
   'story.doctor_time_conflict',
   'story.doctor_admits_exam',
   'story.doctor_confessed',
+  'story.doctor_motive_known',
   'story.doctor_hostile',
   'story.doctor_testimony',
   'story.arthur_admits_study',
+  'story.arthur_cloak_admitted',
   'story.arthur_notices_resemblance',
   'story.arthur_deflects_shipwreck',
 
@@ -48,6 +50,8 @@ export const STORY_FLAGS = [
   'story.knows_time_conflict',
   'story.knows_injury_at_home',
   'story.knows_cleanup',
+  'story.knows_wet_cloak',
+  'story.saw_arthur_scratch',
   'story.knows_evelyn_investigating',
   'story.evelyn_not_leaving',
   'story.photo_cut',
@@ -59,6 +63,7 @@ export const STORY_FLAGS = [
   'story.knows_crew_names',
   'story.knows_coverup',
   'story.knows_full_truth',
+  'story.case_ready',
 
   // 物品 / 谜题
   'item.clock_key',
@@ -77,6 +82,8 @@ export const STORY_FLAGS = [
   'story.housekeeper_testimony',
   'story.doctor_confronted',
   'story.midnight',
+  /** 玩家在午夜拒签时把账本与赔付单摆上桌，而不是安静拒绝。 */
+  'story.evidence_presented',
   'choice.midnight',
 ] as const;
 

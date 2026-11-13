@@ -47,23 +47,46 @@ export const quests: readonly QuestDefinition[] = [
       },
       {
         id: 'step_coverup',
-        objective: '找霍尔太太问出那晚的真相',
-        hint: '她会在餐厅门边。先让她信任你，再问那晚的事。',
+        objective: '取得二楼钥匙，并问出霍尔太太看见的搬运经过',
+        hint: '她会在餐厅门边。先让她信任你，再问那晚的事，并请她打开伊芙琳的房间。',
         locationId: 'villa_dining',
-        doneWhen: [[{ flag: 'story.knows_coverup' }]],
+        doneWhen: [
+          [
+            { flag: 'story.knows_coverup' },
+            { flag: 'story.housekeeper_key' },
+          ],
+        ],
+      },
+      {
+        id: 'step_medical_truth',
+        objective: '把诊疗记录和浴室痕迹拿给格雷医生看',
+        hint: '书房书桌能证明她死在宅内；二楼浴室的药柜、毛巾和地砖还有第二处伤情。两样都拿到后回门厅或餐厅门口找格雷。',
+        locationId: 'villa_hall',
+        doneWhen: [[{ flag: 'story.doctor_confessed' }]],
+      },
+      {
+        id: 'step_recording',
+        objective: '找到伊芙琳的蜡筒，在书房听完她留下的话',
+        hint: '她的卧室在二楼最里面。检查梳妆台抽屉，再把蜡筒带回书房留声机播放。',
+        locationId: 'villa_evelyn_room',
+        doneWhen: [[{ flag: 'story.heard_recording' }]],
+      },
+      {
+        id: 'step_corroborate',
+        objective: '再取得一份书证，或修好敲出第十三下的落地钟',
+        hint: '保险箱需要油画日期和旧报纸，落地钟需要潮汐表、上弦钥匙与摆锤。任选一条完整证据链。',
+        locationId: 'villa_study',
+        doneWhen: [
+          [{ flag: 'story.safe_opened' }],
+          [{ flag: 'story.clock_repaired' }],
+        ],
       },
       {
         id: 'step_evidence',
-        objective: '自由搜索别墅，搜集证据与背景档案',
-        hint: '书房、浴室、储物间、卧室、客厅和崖边都有可翻阅的物件。至少带回一条核心证据，再去书房对质。',
+        objective: '回书房，把已经拿到的证据摊在书桌上',
+        hint: '确认诊疗记录、伊芙琳的录音，以及至少一份账目或十三下钟声证据。整理完再去对质亚瑟。',
         locationId: 'villa_study',
-        doneWhen: [
-          [{ flag: 'clue.medical_record' }],
-          [{ flag: 'clue.bathroom_trace' }],
-          [{ flag: 'clue.shipping_ledger' }],
-          [{ flag: 'clue.insurance_policy' }],
-          [{ flag: 'story.heard_recording' }],
-        ],
+        doneWhen: [[{ flag: 'story.case_ready' }]],
       },
       {
         id: 'step_confront',

@@ -1,5 +1,7 @@
 import { content } from '../../content';
+import { investigationThreads } from '../../content/investigationThreads';
 import { resolveActiveObjective } from '../../game/story/questProgress';
+import { resolveInvestigationThreads } from '../../game/story/investigationProgress';
 import { useGameStore } from '../../stores/gameStore';
 import { useStoryStore } from '../../stores/storyStore';
 import { Minimap, type MinimapPlayerPose } from './Minimap';
@@ -28,6 +30,10 @@ export function GameHud(props: GameHudProps = {}) {
   const storyFlags = useStoryStore((s) => s.storyFlags);
   const discoveredClueIds = useStoryStore((s) => s.discoveredClueIds);
   const activeObjective = resolveActiveObjective(storyFlags, content.quests);
+  const investigation = resolveInvestigationThreads(
+    storyFlags,
+    investigationThreads,
+  );
   const archiveTotal = content.clues.filter(
     (clue) => clue.priority === 'ambient',
   ).length;
@@ -51,6 +57,7 @@ export function GameHud(props: GameHudProps = {}) {
         regionId={regionId}
         player={player}
         archive={{ found: archiveFound, total: archiveTotal }}
+        investigation={investigation}
       />
       {props.region && <div className="hud-region">{props.region}</div>}
       {props.showJournalHint && (

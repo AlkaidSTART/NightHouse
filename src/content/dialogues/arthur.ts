@@ -91,11 +91,19 @@ export const arthurDialogues: readonly DialogueNode[] = [
         id: 'ask_study',
         text: '那晚你在这儿？',
         next: 'npc_arthur_evelyn_03',
+        effects: [
+          clue('clue_arthur_scratch'),
+          flag('story.saw_arthur_scratch'),
+        ],
       },
       {
         id: 'back',
         text: '算了。',
         next: 'npc_arthur_evelyn_01',
+        effects: [
+          clue('clue_arthur_scratch'),
+          flag('story.saw_arthur_scratch'),
+        ],
       },
     ],
   },
@@ -287,7 +295,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
       {
         id: 'back',
         text: '门没锁。',
-        next: 'npc_arthur_b5_dining_01',
+        next: null,
       },
     ],
   },
@@ -300,7 +308,7 @@ export const arthurDialogues: readonly DialogueNode[] = [
       {
         id: 'back',
         text: '报纸也会写错。',
-        next: 'npc_arthur_b5_dining_01',
+        next: null,
         effects: [flag('story.arthur_deflects_shipwreck')],
       },
       {
@@ -328,6 +336,24 @@ export const arthurDialogues: readonly DialogueNode[] = [
     reenterLines: [{ speaker: 'npc', text: '你还有事？' }],
     choices: [
       {
+        id: 'ask_scratch',
+        text: '你左腕上的抓痕，不是自己弄的。',
+        next: 'npc_arthur_b5_study_admission_01',
+        conditions: [{ flag: 'clue.arthur_scratch' }],
+      },
+      {
+        id: 'ask_cloak',
+        text: '衣帽架上的斗篷，忌日前一晚是你穿着它出去的。',
+        next: 'npc_arthur_b5_cloak_01',
+        conditions: [{ flag: 'clue.arthur_cloak' }],
+      },
+      {
+        id: 'ask_recording',
+        text: '她留了一段话。你听过吗？',
+        next: 'npc_arthur_b5_recording_01',
+        conditions: [{ flag: 'story.heard_recording' }],
+      },
+      {
         id: 'ask_ledger',
         text: '书房里的账本，我看了。',
         next: 'npc_arthur_business_01',
@@ -352,6 +378,24 @@ export const arthurDialogues: readonly DialogueNode[] = [
     reenterLines: [{ speaker: 'npc', text: '……现在别谈那晚。' }],
     choices: [
       {
+        id: 'ask_scratch',
+        text: '你左腕上的抓痕，不是自己弄的。',
+        next: 'npc_arthur_b5_study_admission_01',
+        conditions: [{ flag: 'clue.arthur_scratch' }],
+      },
+      {
+        id: 'ask_cloak',
+        text: '衣帽架上的斗篷，忌日前一晚是你穿着它出去的。',
+        next: 'npc_arthur_b5_cloak_01',
+        conditions: [{ flag: 'clue.arthur_cloak' }],
+      },
+      {
+        id: 'ask_recording',
+        text: '她留了一段话。你听过吗？',
+        next: 'npc_arthur_b5_recording_01',
+        conditions: [{ flag: 'story.heard_recording' }],
+      },
+      {
         id: 'ask_ledger',
         text: '书房里的账本，我看了。',
         next: 'npc_arthur_business_01',
@@ -360,6 +404,115 @@ export const arthurDialogues: readonly DialogueNode[] = [
       {
         id: 'leave',
         text: '我会再来。',
+        next: null,
+      },
+    ],
+  },
+  {
+    // 校时敲出第十三下后，亚瑟会被钟声引到二楼栏杆边。此时任务仍可能
+    // 停在 B5，不能把他当成书房里的对质对象。
+    id: 'npc_arthur_b5_gallery_01',
+    npcId: 'npc_arthur',
+    conditions: [{ flag: 'story.met_arthur' }],
+    taskIds: ['step_coverup', 'step_evidence'],
+    lines: [
+      { speaker: 'npc', text: '你听见了。第十三下。' },
+      { speaker: 'npc', text: '她走之前把这钟弄停了。我一直没让人碰它。' },
+      { speaker: 'npc', text: '现在整栋房子都听见了。该问的，去书房问。' },
+    ],
+    reenterLines: [{ speaker: 'npc', text: '你还站在楼下看我。' }],
+    choices: [
+      {
+        id: 'ask_cloak',
+        text: '你也去过崖边。那件斗篷还没干。',
+        next: 'npc_arthur_b5_cloak_01',
+        conditions: [{ flag: 'clue.arthur_cloak' }],
+      },
+      {
+        id: 'ask_ledger',
+        text: '书房里的账本，我看了。',
+        next: 'npc_arthur_business_01',
+        conditions: [{ flag: 'clue.shipping_ledger' }],
+      },
+      {
+        id: 'leave',
+        text: '我会去书房。',
+        next: null,
+      },
+    ],
+  },
+  {
+    id: 'npc_arthur_b5_study_admission_01',
+    npcId: 'npc_arthur',
+    taskIds: ['step_coverup', 'step_medical_truth', 'step_recording', 'step_corroborate', 'step_evidence'],
+    lines: [
+      { speaker: 'npc', text: '……她走后，我一直在书房。' },
+      { speaker: 'npc', text: '我没有杀她。但我也不是立刻叫人来。' },
+      {
+        speaker: 'npc',
+        text: '我以为只要把门关上，天亮以后还能把这件事说成一次意外。',
+      },
+    ],
+    choices: [
+      {
+        id: 'back',
+        text: '你把门关上了。',
+        next: 'npc_arthur_b5_study_01',
+        effects: [flag('story.arthur_admits_study')],
+      },
+      {
+        id: 'leave',
+        text: '我会记住这句话。',
+        next: null,
+        effects: [flag('story.arthur_admits_study')],
+      },
+    ],
+  },
+  {
+    id: 'npc_arthur_b5_cloak_01',
+    npcId: 'npc_arthur',
+    taskIds: ['step_coverup', 'step_medical_truth', 'step_recording', 'step_corroborate', 'step_evidence'],
+    lines: [
+      { speaker: 'npc', text: '那件斗篷是她的。' },
+      {
+        speaker: 'npc',
+        text: '前一晚我去过纪念石。我只是不想让她一个人待在那儿。',
+      },
+      { speaker: 'npc', text: '……别把这件事告诉别人。' },
+    ],
+    choices: [
+      {
+        id: 'back',
+        text: '你怕的不是她一个人。',
+        next: 'npc_arthur_b5_study_01',
+        effects: [flag('story.arthur_cloak_admitted')],
+      },
+      {
+        id: 'leave',
+        text: '我会自己判断。',
+        next: null,
+        effects: [flag('story.arthur_cloak_admitted')],
+      },
+    ],
+  },
+  {
+    id: 'npc_arthur_b5_recording_01',
+    npcId: 'npc_arthur',
+    taskIds: ['step_coverup', 'step_medical_truth', 'step_recording', 'step_corroborate', 'step_evidence'],
+    lines: [
+      { speaker: 'npc', text: '你听见她的声音了。' },
+      { speaker: 'npc', text: '关掉它。' },
+      { speaker: 'npc', text: '……她最后提到我了吗？' },
+    ],
+    choices: [
+      {
+        id: 'back',
+        text: '她提到了。还有那四个人。',
+        next: 'npc_arthur_b5_study_01',
+      },
+      {
+        id: 'leave',
+        text: '等你自己愿意听完，再来问我。',
         next: null,
       },
     ],
@@ -541,6 +694,13 @@ export const arthurDialogues: readonly DialogueNode[] = [
         taskIds: ['step_confront'],
       },
       {
+        id: 'show_testimony',
+        text: '霍尔太太看见你和格雷把她抬下楼。',
+        next: 'npc_arthur_confront_testimony',
+        conditions: [{ flag: 'clue.hall_testimony' }],
+        taskIds: ['step_confront'],
+      },
+      {
         id: 'accuse',
         text: '是你杀了她。',
         next: 'npc_arthur_confront_accuse',
@@ -633,6 +793,33 @@ export const arthurDialogues: readonly DialogueNode[] = [
         text: '你还有什么要说？',
         next: 'npc_arthur_confront_01',
         effects: [flag('story.arthur_broken')],
+      },
+    ],
+  },
+  {
+    id: 'npc_arthur_confront_testimony',
+    npcId: 'npc_arthur',
+    taskIds: ['step_confront'],
+    lines: [
+      { speaker: 'npc', text: '她拿了钱。她答应过不说。' },
+      { speaker: 'npc', text: '……可她还是记得她的手是暖的。' },
+      {
+        speaker: 'narration',
+        text: '亚瑟第一次没有立刻反驳。他低头看着自己的手。',
+      },
+    ],
+    choices: [
+      {
+        id: 'press',
+        text: '你现在还要说那是意外吗？',
+        next: 'npc_arthur_confront_break',
+        effects: [flag('story.arthur_cornered')],
+      },
+      {
+        id: 'back',
+        text: '你还有什么要说？',
+        next: 'npc_arthur_confront_01',
+        effects: [flag('story.arthur_cornered')],
       },
     ],
   },
@@ -770,7 +957,6 @@ export const arthurDialogues: readonly DialogueNode[] = [
         text: '我不签。',
         next: 'npc_arthur_refuse_01',
         taskIds: ['step_midnight'],
-        effects: [flag('choice.midnight', 'refuse')],
       },
       {
         id: 'ask_evelyn',
@@ -838,6 +1024,10 @@ export const arthurDialogues: readonly DialogueNode[] = [
         id: 'end',
         text: '那就让律师看。',
         next: null,
+        effects: [
+          flag('story.evidence_presented'),
+          flag('choice.midnight', 'refuse'),
+        ],
       },
     ],
   },
@@ -847,13 +1037,13 @@ export const arthurDialogues: readonly DialogueNode[] = [
     taskIds: ['step_midnight'],
     lines: [
       { speaker: 'npc', text: '可以。遗嘱会按父亲的意愿处理。' },
-      { speaker: 'npc', text: '您明早搭第一班马车走。' },
     ],
     choices: [
       {
         id: 'end',
         text: '我会走。',
         next: null,
+        effects: [flag('choice.midnight', 'refuse')],
       },
     ],
   },

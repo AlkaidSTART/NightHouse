@@ -20,6 +20,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     lines: [
       { speaker: 'npc', text: '您到了。外套给我吧，{honorific}。' },
       { speaker: 'npc', text: '房间已经收拾好了。晚餐在餐厅。' },
+      { speaker: 'npc', text: '午夜之前，请别上楼。' },
     ],
     reenterLines: [
       { speaker: 'npc', text: '……还有什么需要我做的吗，{honorific}？' },
@@ -49,6 +50,14 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         id: 'ask_evelyn',
         text: '伊芙琳……她是个什么样的人？',
         next: 'npc_housekeeper_evelyn_01',
+        taskIds: ['step_housekeeper'],
+        effects: [flag('story.met_housekeeper')],
+      },
+      {
+        id: 'show_letter',
+        text: '这封信，是您寄的？',
+        next: 'npc_housekeeper_letter_b1',
+        conditions: [{ flag: 'story.has_letter' }],
         taskIds: ['step_housekeeper'],
         effects: [flag('story.met_housekeeper')],
       },
@@ -92,13 +101,13 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
       {
         id: 'warm_up',
         text: '抱歉，我路上有些累。',
-        next: 'npc_housekeeper_intro',
+        next: 'npc_housekeeper_warm',
         taskIds: ['step_housekeeper'],
         effects: [flag('story.housekeeper_warm')],
       },
       {
         id: 'leave',
-        text: '我去餐厅。',
+        text: '我先去客厅。',
         next: null,
       },
     ],
@@ -113,6 +122,51 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         id: 'back',
         text: '我明白了。',
         next: 'npc_housekeeper_intro',
+      },
+    ],
+  },
+  {
+    id: 'npc_housekeeper_letter_b1',
+    npcId: 'npc_housekeeper',
+    conditions: [{ flag: 'story.has_letter' }],
+    taskIds: ['step_housekeeper'],
+    lines: [
+      {
+        speaker: 'narration',
+        text: '你把那封盖着「无法投递」印戳的信递给她。',
+      },
+      {
+        speaker: 'npc',
+        text: '……是我寄的。信退回宅子，压在老爷的文书里，我整理东西时翻出来的。',
+      },
+      {
+        speaker: 'npc',
+        text: '信封里那张『请务必来』的便条，也是我放的。我不知道还能找谁。',
+      },
+      { speaker: 'npc', text: '小姐写这封信的时候，一直在等您的回信。' },
+      {
+        speaker: 'npc',
+        text: '您先见过少爷吧。有些话，得等他不在场我才能说。',
+      },
+    ],
+    choices: [
+      {
+        id: 'ask_evelyn',
+        text: '她写这封信时，是什么样子？',
+        next: 'npc_housekeeper_evelyn_01',
+        effects: [
+          flag('story.housekeeper_warm'),
+          flag('story.letter_shown'),
+        ],
+      },
+      {
+        id: 'leave',
+        text: '我会去见亚瑟。',
+        next: null,
+        effects: [
+          flag('story.housekeeper_warm'),
+          flag('story.letter_shown'),
+        ],
       },
     ],
   },
@@ -142,7 +196,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     conditions: [{ flag: 'story.met_housekeeper' }],
     taskIds: ['step_doctor'],
     lines: [
-      { speaker: 'npc', text: '晚餐已经备好了。少爷在长桌尽头。' },
+      { speaker: 'npc', text: '少爷在长桌尽头等您。汤快凉了。' },
     ],
     choices: [
       {
@@ -186,6 +240,24 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         conditions: [{ flag: 'clue.shipping_ledger' }],
       },
       {
+        id: 'ask_cloak',
+        text: '衣帽架最里侧那件斗篷，为什么是湿的？',
+        next: 'npc_housekeeper_cloak_01',
+        conditions: [{ flag: 'clue.arthur_cloak' }],
+      },
+      {
+        id: 'ask_thirteenth',
+        text: '为什么现在还摆着第十三副餐具？',
+        next: 'npc_housekeeper_dinner_seat_01',
+        conditions: [{ flag: 'clue.dinner_seating' }],
+      },
+      {
+        id: 'ask_letters',
+        text: '抽屉里那些信，她都让你收着？',
+        next: 'npc_housekeeper_letters_01',
+        conditions: [{ flag: 'clue.evelyn_old_letters' }],
+      },
+      {
         id: 'leave',
         text: '我先去别处看看。',
         next: null,
@@ -214,6 +286,94 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         id: 'back',
         text: '我明白了。',
         next: 'npc_housekeeper_b5_01',
+      },
+    ],
+  },
+  {
+    id: 'npc_housekeeper_cloak_01',
+    npcId: 'npc_housekeeper',
+    taskIds: ['step_coverup', 'step_medical_truth', 'step_recording', 'step_corroborate', 'step_evidence'],
+    lines: [
+      {
+        speaker: 'npc',
+        text: '忌日前一晚，少爷披着它出去过。回来时，袖口上都是崖边的草籽。',
+      },
+      {
+        speaker: 'npc',
+        text: '他没说去了哪儿。我也没问。那件斗篷我本来想收起来，可他没让。',
+      },
+      { speaker: 'npc', text: '您别在他面前提。他这一晚已经很难熬了。' },
+    ],
+    choices: [
+      {
+        id: 'back',
+        text: '我不是想让他难熬。',
+        next: 'npc_housekeeper_b5_01',
+      },
+      {
+        id: 'leave',
+        text: '我知道了。',
+        next: null,
+      },
+    ],
+  },
+  {
+    id: 'npc_housekeeper_dinner_seat_01',
+    npcId: 'npc_housekeeper',
+    taskIds: ['step_coverup', 'step_medical_truth', 'step_recording', 'step_corroborate', 'step_evidence'],
+    lines: [
+      {
+        speaker: 'npc',
+        text: '少爷让留的。她说小姐没见到人，位置就不能撤。',
+      },
+      {
+        speaker: 'npc',
+        text: '披肩是她自己缝的边。我每天摆餐具时都要摸一下，确认还在。',
+      },
+      { speaker: 'npc', text: '这屋子里总得有人记得她坐哪儿。' },
+    ],
+    choices: [
+      {
+        id: 'back',
+        text: '谢谢你一直记得。',
+        next: 'npc_housekeeper_b5_01',
+        effects: [flag('story.housekeeper_confided')],
+      },
+      {
+        id: 'leave',
+        text: '我会把这件事记住。',
+        next: null,
+        effects: [flag('story.housekeeper_confided')],
+      },
+    ],
+  },
+  {
+    id: 'npc_housekeeper_letters_01',
+    npcId: 'npc_housekeeper',
+    taskIds: ['step_coverup', 'step_medical_truth', 'step_recording', 'step_corroborate', 'step_evidence'],
+    lines: [
+      {
+        speaker: 'npc',
+        text: '小姐每次写完信，都会问我：邮差今天会不会来。',
+      },
+      {
+        speaker: 'npc',
+        text: '后来她就不问了。信写好，放在抽屉里，过几天自己再看一遍。',
+      },
+      { speaker: 'npc', text: '最后那封没写完。她写到一半，把笔放下了。' },
+    ],
+    choices: [
+      {
+        id: 'back',
+        text: '她一直在等回信。',
+        next: 'npc_housekeeper_b5_01',
+        effects: [flag('story.housekeeper_guilt')],
+      },
+      {
+        id: 'leave',
+        text: '我欠她一封回信。',
+        next: null,
+        effects: [flag('story.housekeeper_guilt')],
       },
     ],
   },
@@ -323,7 +483,7 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
       { speaker: 'npc', text: '我站在楼梯口。灯是亮的。' },
       {
         speaker: 'npc',
-        text: '后来……先生和医生抬着什么东西下来。用床单裹着。',
+        text: '后来……少爷和医生抬着什么东西下来。用床单裹着。',
       },
     ],
     choices: [
@@ -354,11 +514,11 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     lines: [
       {
         speaker: 'npc',
-        text: '他们给了我一份工钱，和一句话：『太太身体不好，别让她知道。』',
+        text: '他们给了我一份工钱，和一句话：『老爷身体不好，别让他知道。』',
       },
       {
         speaker: 'npc',
-        text: '我拿了钱。这三十年，我每天都在想这件事。',
+        text: '我拿了钱。这一年，我每天都在想这件事。',
       },
     ],
     choices: [
@@ -576,6 +736,23 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     lines: [
       { speaker: 'npc', text: '午夜了，{honorific}。' },
       { speaker: 'npc', text: '我就在门边。需要的时候，我在。' },
+    ],
+    choices: [
+      {
+        id: 'leave',
+        text: '谢谢你，霍尔太太。',
+        next: null,
+      },
+    ],
+  },
+  {
+    id: 'npc_housekeeper_midnight_testified',
+    npcId: 'npc_housekeeper',
+    conditions: [{ flag: 'story.housekeeper_testimony' }],
+    taskIds: ['step_midnight'],
+    lines: [
+      { speaker: 'npc', text: '我答应过小姐。天一亮，我就去说。' },
+      { speaker: 'npc', text: '您做您的决定。我不催您。' },
     ],
     choices: [
       {

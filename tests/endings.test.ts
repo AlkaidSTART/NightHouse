@@ -25,9 +25,10 @@ test('结局已接入内容注册表', () => {
   );
 });
 
-test('拒签结局按账本与赔付单区分强/弱变体', () => {
+test('拒签结局按账本、赔付单与实际出示区分强/弱变体', () => {
   const strong = presentEnding('ending_refused', {
     'choice.midnight': 'refuse',
+    'story.evidence_presented': true,
     'clue.shipping_ledger': true,
     'clue.insurance_policy': true,
   });
@@ -38,6 +39,14 @@ test('拒签结局按账本与赔付单区分强/弱变体', () => {
     'clue.shipping_ledger': true,
   });
   assert.equal(weak?.subtitle, '你拒绝了，但没有人听见。');
+
+  // 手上齐全但选择安静拒签时，不能凭空播放当众摊牌的强变体。
+  const quiet = presentEnding('ending_refused', {
+    'choice.midnight': 'refuse',
+    'clue.shipping_ledger': true,
+    'clue.insurance_policy': true,
+  });
+  assert.equal(quiet?.subtitle, '你拒绝了，但没有人听见。');
 });
 
 test('签字结局在持有证据时追加旁白', () => {

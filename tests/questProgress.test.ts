@@ -73,7 +73,7 @@ test('任务目标：医生必须追问到场时间或伤势才能完成该步',
   }
 });
 
-test('任务目标：对质前必须先取得一条核心证据', () => {
+test('任务目标：必须取得钥匙与霍尔太太的目击证词后才能进入死因调查', () => {
   const base: StoryFlags = {
     'story.arrived': true,
     'story.met_housekeeper': true,
@@ -82,21 +82,62 @@ test('任务目标：对质前必须先取得一条核心证据', () => {
     'story.doctor_time_conflict': true,
     'story.knows_coverup': true,
   };
-  assert.equal(activeId(base), 'step_evidence');
+  assert.equal(activeId(base), 'step_coverup');
+  assert.equal(
+    activeId({ ...base, 'story.housekeeper_key': true }),
+    'step_medical_truth',
+  );
+});
 
-  for (const flag of [
-    'clue.medical_record',
-    'clue.bathroom_trace',
-    'clue.shipping_ledger',
-    'clue.insurance_policy',
-    'story.heard_recording',
-  ]) {
-    assert.equal(
-      activeId({ ...base, [flag]: true }),
-      'step_confront',
-      `${flag} 未推进到对质`,
-    );
-  }
+test('任务目标：医疗真相、录音、补充证据与书桌整理依次推进', () => {
+  const base: StoryFlags = {
+    'story.arrived': true,
+    'story.met_housekeeper': true,
+    'story.met_arthur': true,
+    'story.arthur_talked': true,
+    'story.doctor_time_conflict': true,
+    'story.knows_coverup': true,
+    'story.housekeeper_key': true,
+  };
+
+  assert.equal(activeId(base), 'step_medical_truth');
+  assert.equal(
+    activeId({ ...base, 'clue.medical_record': true }),
+    'step_medical_truth',
+    '只有诊疗记录，没有让格雷承认现场时不应跳步',
+  );
+  assert.equal(
+    activeId({ ...base, 'story.doctor_confessed': true }),
+    'step_recording',
+  );
+  assert.equal(
+    activeId({
+      ...base,
+      'story.doctor_confessed': true,
+      'story.heard_recording': true,
+    }),
+    'step_corroborate',
+  );
+
+  const corroborated: StoryFlags = {
+    ...base,
+    'story.doctor_confessed': true,
+    'story.heard_recording': true,
+    'story.safe_opened': true,
+  };
+  assert.equal(activeId(corroborated), 'step_evidence');
+  assert.equal(
+    activeId({ ...corroborated, 'story.case_ready': true }),
+    'step_confront',
+  );
+  assert.equal(
+    activeId({
+      ...corroborated,
+      'story.case_ready': true,
+      'story.midnight': true,
+    }),
+    'step_midnight',
+  );
 });
 
 test('任务目标：主线走完后不再显示目标', () => {
@@ -107,7 +148,11 @@ test('任务目标：主线走完后不再显示目标', () => {
     'story.arthur_talked': true,
     'story.doctor_time_conflict': true,
     'story.knows_coverup': true,
-    'clue.medical_record': true,
+    'story.housekeeper_key': true,
+    'story.doctor_confessed': true,
+    'story.heard_recording': true,
+    'story.safe_opened': true,
+    'story.case_ready': true,
     'story.midnight': true,
     'choice.midnight': 'sign',
   };
@@ -131,7 +176,11 @@ test('全局进度：当前任务步骤 ID 随剧情标记推导', () => {
     'story.arthur_talked': true,
     'story.doctor_time_conflict': true,
     'story.knows_coverup': true,
-    'clue.medical_record': true,
+    'story.housekeeper_key': true,
+    'story.doctor_confessed': true,
+    'story.heard_recording': true,
+    'story.clock_repaired': true,
+    'story.case_ready': true,
     'story.midnight': true,
     'choice.midnight': 'sign',
   };

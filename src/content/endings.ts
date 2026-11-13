@@ -91,11 +91,16 @@ function isTrue(flags: Readonly<Record<string, StoryFlagValue>>, key: string): b
   return flags[key] === true;
 }
 
-/** 拒签结局按手头书证分强/弱两个演出变体，但仍算同一个结局 ID。 */
+/**
+ * 拒签结局按手头书证分强/弱两个演出变体，但仍算同一个结局 ID。
+ * 只有玩家在午夜真的把证据摆上桌，才播放「有人听见」的强变体；
+ * 否则安静拒签不应自动获得当众摊牌的旁白。
+ */
 export function isStrongRefusal(
   flags: Readonly<Record<string, StoryFlagValue>>,
 ): boolean {
   return (
+    isTrue(flags, 'story.evidence_presented') &&
     isTrue(flags, 'clue.shipping_ledger') &&
     isTrue(flags, 'clue.insurance_policy')
   );

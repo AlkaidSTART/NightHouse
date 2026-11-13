@@ -766,6 +766,61 @@ button {
   letter-spacing: 0.12em;
 }
 
+.hud-objective-leads {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(220, 210, 190, 0.14);
+}
+
+.hud-objective-leads-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  color: #c9a273;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+
+.hud-objective-lead {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) auto;
+  gap: 5px;
+  align-items: baseline;
+  padding: 2px 0;
+  color: #aaa28f;
+  font-size: 10px;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+}
+
+.hud-objective-lead.is-complete {
+  color: #9fb4a8;
+}
+
+.hud-objective-lead-mark {
+  color: #7f7868;
+  font-size: 9px;
+}
+
+.hud-objective-lead.is-complete .hud-objective-lead-mark {
+  color: #8fbd9f;
+}
+
+.hud-objective-lead-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hud-objective-lead-count {
+  color: #7d7769;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-objective-lead.is-complete .hud-objective-lead-count {
+  color: #829c8c;
+}
+
 @keyframes objective-task-in {
   from {
     opacity: 0;

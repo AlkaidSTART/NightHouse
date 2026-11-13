@@ -20,6 +20,10 @@ import {
   type NpcGestureProfile,
 } from './NpcGesture.ts';
 import { selectNpcStations } from './npcStations.ts';
+import {
+  NPC_ANCHOR_HEIGHT,
+  NPC_INTERACTION_RADIUS,
+} from '../interaction/npcAim.ts';
 import type { StoryFlags } from '../story/conditions.ts';
 import {
   advanceDoorSwing,
@@ -631,9 +635,9 @@ export class SceneManager {
     placeholder.setLocalPosition(0, NPC_PLACEHOLDER_HEIGHT / 2, 0);
     root.addChild(placeholder);
 
-    // 交互对准锚点位于胸口高度（y + NPC_PLACEHOLDER_HEIGHT / 2），保持与灰盒射线对准判定一致
+    // 交互对准锚点位于胸口高度，平视即可选中；下限仍高于腰部，避免误触地面。
     const anchor = this.track(new pc.Entity(`${spot.id}_anchor`));
-    anchor.setLocalPosition(0, NPC_PLACEHOLDER_HEIGHT / 2, 0);
+    anchor.setLocalPosition(0, NPC_ANCHOR_HEIGHT, 0);
     root.addChild(anchor);
 
     this.npcSpotHandles.set(spot.id, {
@@ -646,7 +650,7 @@ export class SceneManager {
     return {
       id: spot.id,
       entity: anchor,
-      radius: 0.5,
+      radius: NPC_INTERACTION_RADIUS,
       prompt: `交谈：${name}`,
       message: spot.pending
         ? `占位：${name}的站位。${spot.pending}。`
