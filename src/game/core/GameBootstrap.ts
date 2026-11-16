@@ -715,7 +715,6 @@ export class GameBootstrap {
     }
 
     this.player.update(dt);
-    this.nightSky.update();
     this.hands.update(dt);
     this.sceneManager.update(dt);
     // 门在 UI 打开时也继续合上，但不能把站在门边的玩家夹住。
