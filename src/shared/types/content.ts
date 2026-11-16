@@ -56,6 +56,26 @@ export interface DialogueNode {
   choices: DialogueChoice[];
 }
 
+/** 对话中可供玩家按顺序参考的提问步骤。 */
+export interface DialogueChoiceGuideStep {
+  /** 必须对应当前节点的真实选项 ID。 */
+  choiceId: string;
+  /** 简短的话题说明，用于对话面板中的顺序提示。 */
+  label: string;
+}
+
+/**
+ * 单个对话节点的提问引导。
+ *
+ * 引导只描述叙事上更顺畅的询问顺序，不限制玩家选择；条件不满足或当前
+ * 剧情白名单未开放的话题会被 DialogueSystem 自动过滤。
+ */
+export interface DialogueChoiceGuide {
+  /** 当前节点的提问策略提示。 */
+  hint?: string;
+  sequence: readonly DialogueChoiceGuideStep[];
+}
+
 export interface NpcDefinition {
   id: string;
   name: string;

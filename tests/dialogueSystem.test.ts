@@ -51,6 +51,7 @@ function createFixture(
   };
   const system = new DialogueSystem({
     dialogues: content.dialogues,
+    choiceGuides: content.dialogueChoiceGuides,
     npcNames: new Map(content.npcs.map((npc) => [npc.id, npc.name])),
     host,
   });
@@ -518,6 +519,58 @@ test('任务全部完成（无当前任务）时不过滤话题选项', () => {
   assert.ok(ids.includes('ask_house'));
 });
 
+test('提问参考给出下一步，并在返回后标记已问话题', () => {
+  const { system } = createFixture(
+    {
+      'story.arrived': true,
+      'player.honorific': 'sir',
+    },
+    'step_arthur',
+  );
+  assert.equal(
+    system.openForNpc('npc_arthur', 'NPC_arthur_parlor_fireplace'),
+    true,
+  );
+
+  let view = showChoices(system);
+  assert.ok(view.guide);
+  assert.deepEqual(
+    view.guide.steps.map((step) => [step.choiceId, step.status]),
+    [
+      ['ask_evelyn', 'next'],
+      ['ask_will', 'later'],
+      ['ask_house', 'later'],
+    ],
+  );
+  assert.equal(
+    view.choices.find((choice) => choice.id === 'ask_evelyn')?.guideStatus,
+    'next',
+  );
+
+  const askWill = view.choices.find((choice) => choice.id === 'ask_will');
+  assert.ok(askWill);
+  system.choose(askWill.id);
+  view = showChoices(system);
+  const back = view.choices.find((choice) => choice.id === 'back');
+  assert.ok(back);
+  system.choose(back.id);
+
+  view = showChoices(system);
+  assert.equal(view.nodeId, 'npc_arthur_intro');
+  assert.deepEqual(
+    view.guide?.steps.map((step) => [step.choiceId, step.status]),
+    [
+      ['ask_evelyn', 'next'],
+      ['ask_will', 'asked'],
+      ['ask_house', 'later'],
+    ],
+  );
+  assert.equal(
+    view.choices.find((choice) => choice.id === 'ask_will')?.guideStatus,
+    'asked',
+  );
+});
+
 test('B1 霍尔太太不会提前说出夜间证词或交出房间钥匙', () => {
   const { system } = createFixture(
     {
@@ -912,7 +965,10 @@ test('B5 关键步骤只渲染当前剧情话题，并显示当前目标提示',
     true,
   );
   const coverupView = showChoices(coverup.system);
-  assert.equal(coverupView.contextLabel, '问出那晚的搬运经过');
+  assert.equal(
+    coverupView.contextLabel,
+    '与一楼的霍尔太太对话取得钥匙，并前往二楼',
+  );
   assert.deepEqual(
     coverupView.choices.map((choice) => choice.id),
     ['ask_evelyn', 'leave'],

@@ -47,8 +47,8 @@ export const quests: readonly QuestDefinition[] = [
       },
       {
         id: 'step_coverup',
-        objective: '取得二楼钥匙，并问出霍尔太太看见的搬运经过',
-        hint: '她会在餐厅门边。先让她信任你，再问那晚的事，并请她打开伊芙琳的房间。',
+        objective: '与一楼的霍尔太太对话取得钥匙，并前往二楼',
+        hint: '她在一楼餐厅门边。先让她信任你，问出那晚的搬运经过，并请她打开伊芙琳的房间。拿到钥匙后沿主楼梯上二楼。',
         locationId: 'villa_dining',
         doneWhen: [
           [

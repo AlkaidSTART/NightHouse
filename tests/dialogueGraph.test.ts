@@ -223,6 +223,32 @@ test('所有选项跳转目标存在，NPC 入口存在', () => {
   }
 });
 
+test('提问参考只引用存在且非导航的选项', () => {
+  for (const [nodeId, guide] of Object.entries(content.dialogueChoiceGuides)) {
+    const node = nodeById.get(nodeId);
+    assert.ok(node, `提问参考引用了不存在的节点：${nodeId}`);
+    const choiceById = new Map(node.choices.map((choice) => [choice.id, choice]));
+    const referenced = new Set<string>();
+
+    for (const step of guide.sequence) {
+      assert.equal(
+        referenced.has(step.choiceId),
+        false,
+        `${nodeId} 的提问参考重复引用：${step.choiceId}`,
+      );
+      referenced.add(step.choiceId);
+      const choice = choiceById.get(step.choiceId);
+      assert.ok(choice, `${nodeId} 的提问参考引用了未知选项：${step.choiceId}`);
+      assert.notEqual(
+        choice.next,
+        null,
+        `${nodeId}.${step.choiceId} 是离开选项，不应进入提问参考`,
+      );
+      assert.ok(step.label.trim().length > 0, `${nodeId}.${step.choiceId} 缺少提示文案`);
+    }
+  }
+});
+
 test('每个 NPC 的节点都能从入口到达，且存在结束路径', () => {
   // 场景站位会按剧情进度选择不同入口，这些入口不在 NPC 的默认入口之下。
   const extraEntries: Readonly<Record<string, readonly string[]>> = {

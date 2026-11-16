@@ -1,5 +1,6 @@
 import type {
   DialogueChoice,
+  DialogueChoiceGuide,
   DialogueLine,
   DialogueNode,
   StoryEffect,
@@ -7,6 +8,8 @@ import type {
 } from '../../shared/types/content';
 import type {
   DialogueChoiceView,
+  DialogueGuideStatus,
+  DialogueGuideView,
   DialogueLineView,
   DialogueView,
 } from '../../shared/types/dialogue';
@@ -44,6 +47,7 @@ export interface DialogueHost {
 
 export interface DialogueSystemOptions {
   dialogues: readonly DialogueNode[];
+  choiceGuides?: Readonly<Record<string, DialogueChoiceGuide>>;
   npcNames: ReadonlyMap<string, string>;
   host: DialogueHost;
 }
@@ -89,12 +93,19 @@ export function resolveDialogueText(text: string, flags: StoryFlags): string {
 
 export class DialogueSystem {
   private readonly nodes = new Map<string, DialogueNode>();
+  private readonly choiceGuides: Readonly<Record<string, DialogueChoiceGuide>>;
   private readonly npcNames: ReadonlyMap<string, string>;
   private readonly host: DialogueHost;
+  /**
+   * 本次游戏运行中已经问过的话题。保持到关闭对话之后，玩家重新找 NPC
+   * 追问时仍能看到进度；刷新页面后由存档中的剧情标志决定当前内容。
+   */
+  private readonly askedChoiceKeys = new Set<string>();
   private session: Session | null = null;
 
   constructor(options: DialogueSystemOptions) {
     this.npcNames = options.npcNames;
+    this.choiceGuides = options.choiceGuides ?? {};
     this.host = options.host;
     for (const node of options.dialogues) {
       if (this.nodes.has(node.id)) {
@@ -241,6 +252,7 @@ export class DialogueSystem {
       this.applyEffect(effect);
     }
     this.host.recordChoice(node.id, choice.id);
+    this.askedChoiceKeys.add(this.choiceKey(node.id, choice.id));
 
     if (choice.next === null) {
       this.close();
@@ -314,16 +326,31 @@ export class DialogueSystem {
     const line =
       session.hideLine || lines.length === 0 ? null : lines[lineIndex] ?? null;
     const canContinue = session.lineIndex < session.lines.length;
-    const choices: DialogueChoiceView[] = canContinue
+    const availableChoices = canContinue
       ? []
       : this.availableChoices(
           node,
           session.beat,
           session.allowedChoiceIds,
-        ).map((choice) => ({
-          id: choice.id,
-          text: choice.text,
-        }));
+        );
+    const guide = canContinue
+      ? null
+      : this.buildChoiceGuide(node.id, availableChoices);
+    const guideMeta = new Map(
+      guide?.steps.map((step, index) => [
+        step.choiceId,
+        { order: index + 1, status: step.status },
+      ]) ?? [],
+    );
+    const choices: DialogueChoiceView[] = availableChoices.map((choice) => {
+      const meta = guideMeta.get(choice.id);
+      return {
+        id: choice.id,
+        text: choice.text,
+        guideOrder: meta?.order ?? null,
+        guideStatus: meta?.status ?? null,
+      };
+    });
 
     return {
       npcId: node.npcId,
@@ -333,6 +360,7 @@ export class DialogueSystem {
       contextLabel: session.contextLabel,
       line,
       choices,
+      guide,
       canContinue,
     };
   }
@@ -353,6 +381,55 @@ export class DialogueSystem {
         isInDialogueBeat(choice.taskIds, beat) &&
         this.isChoiceAllowed(choice, allowedChoiceIds),
     );
+  }
+
+  private buildChoiceGuide(
+    nodeId: string,
+    choices: readonly DialogueChoice[],
+  ): DialogueGuideView | null {
+    const config = this.choiceGuides[nodeId];
+    if (!config) {
+      return null;
+    }
+
+    const availableChoiceIds = new Set(choices.map((choice) => choice.id));
+    const steps = config.sequence.filter((step) =>
+      availableChoiceIds.has(step.choiceId),
+    );
+    if (steps.length === 0) {
+      return null;
+    }
+
+    const nextIndex = steps.findIndex(
+      (step) => !this.askedChoiceKeys.has(this.choiceKey(nodeId, step.choiceId)),
+    );
+    return {
+      hint: config.hint ?? null,
+      steps: steps.map((step, index) => ({
+        choiceId: step.choiceId,
+        label: step.label,
+        status: this.resolveGuideStatus(
+          this.askedChoiceKeys.has(this.choiceKey(nodeId, step.choiceId)),
+          index,
+          nextIndex,
+        ),
+      })),
+    };
+  }
+
+  private resolveGuideStatus(
+    asked: boolean,
+    index: number,
+    nextIndex: number,
+  ): DialogueGuideStatus {
+    if (asked) {
+      return 'asked';
+    }
+    return index === nextIndex ? 'next' : 'later';
+  }
+
+  private choiceKey(nodeId: string, choiceId: string): string {
+    return `${nodeId}\u0000${choiceId}`;
   }
 
   /**

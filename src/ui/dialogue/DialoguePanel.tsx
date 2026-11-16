@@ -60,19 +60,62 @@ export function DialoguePanel({
         )}
 
         {!view.canContinue && choices.length > 0 && (
-          <div className="dialogue-choices">
-            {choices.map((choice, index) => (
-              <button
-                key={choice.id}
-                type="button"
-                className="dialogue-choice"
-                onClick={() => onChoose(choice.id)}
-              >
-                <span className="dialogue-choice-index">{index + 1}</span>
-                <span>{choice.text}</span>
-              </button>
-            ))}
-          </div>
+          <>
+            {view.guide && (
+              <aside className="dialogue-guide" aria-label="建议提问顺序">
+                <div className="dialogue-guide-heading">
+                  <span className="dialogue-guide-title">提问参考</span>
+                  <span className="dialogue-guide-note">
+                    顺序不强制，已问过的话题会标记出来
+                  </span>
+                </div>
+                {view.guide.hint && (
+                  <p className="dialogue-guide-hint">{view.guide.hint}</p>
+                )}
+                <ol className="dialogue-guide-steps">
+                  {view.guide.steps.map((step, index) => (
+                    <li
+                      key={step.choiceId}
+                      className={`dialogue-guide-step is-${step.status}`}
+                    >
+                      <span className="dialogue-guide-order" aria-hidden="true">
+                        {step.status === 'asked' ? '✓' : index + 1}
+                      </span>
+                      <span>{step.label}</span>
+                      <span className="sr-only">
+                        {step.status === 'asked'
+                          ? '，已问'
+                          : step.status === 'next'
+                            ? '，建议下一步问'
+                            : '，后续问题'}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </aside>
+            )}
+            <div className="dialogue-choices">
+              {choices.map((choice, index) => (
+                <button
+                  key={choice.id}
+                  type="button"
+                  className="dialogue-choice"
+                  onClick={() => onChoose(choice.id)}
+                >
+                  <span className="dialogue-choice-index">{index + 1}</span>
+                  <span className="dialogue-choice-copy">{choice.text}</span>
+                  {(choice.guideStatus === 'next' ||
+                    choice.guideStatus === 'asked') && (
+                    <span
+                      className={`dialogue-choice-tag is-${choice.guideStatus}`}
+                    >
+                      {choice.guideStatus === 'next' ? '建议先问' : '已问'}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </>
         )}
       </section>
     </div>

@@ -159,6 +159,7 @@ export class GameBootstrap {
 
     this.dialogue = new DialogueSystem({
       dialogues: content.dialogues,
+      choiceGuides: content.dialogueChoiceGuides,
       npcNames: this.npcNames,
       host: {
         getFlags: () => useStoryStore.getState().storyFlags,

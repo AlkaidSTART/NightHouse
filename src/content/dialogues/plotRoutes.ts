@@ -30,7 +30,7 @@ export const DIALOGUE_PLOT_LABEL: Readonly<Record<string, string>> = {
   step_housekeeper: '与霍尔太太交谈，安顿下来',
   step_arthur: '听亚瑟解释伊芙琳的事',
   step_doctor: '向格雷医生追问伊芙琳的死因',
-  step_coverup: '问出那晚的搬运经过',
+  step_coverup: '与一楼的霍尔太太对话取得钥匙，并前往二楼',
   step_medical_truth: '把两份伤情证据交给格雷医生',
   step_recording: '寻找并播放伊芙琳留下的蜡筒',
   step_corroborate: '再取得一份书证，或修好落地钟',
@@ -126,7 +126,7 @@ export const PLOT_DIALOGUE_ROUTES: readonly PlotDialogueRoute[] = [
     skipOpeningWhen: [{ flag: 'story.doctor_talked' }],
   },
 
-  // 第二幕 · 取得钥匙与搬运证词：只展开霍尔太太的主线追问。
+  // 第二幕 · 在一楼取得钥匙与搬运证词：只展开霍尔太太的主线追问。
   {
     taskIds: ['step_coverup'],
     npcId: 'npc_housekeeper',
