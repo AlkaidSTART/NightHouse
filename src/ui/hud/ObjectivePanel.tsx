@@ -13,7 +13,21 @@ export interface ObjectivePanelProps {
   investigation?: readonly InvestigationThreadView[] | null;
 }
 
-/** 右上角任务目标面板。目标由剧情标记推导，对话改变标记后立即刷新。 */
+/**
+ * 筛选按顺序逐条显现的调查线：
+ * 显示所有已开启或已完成的调查线，以及下一条待推进的调查线（不提前铺满未轮到的条目）。
+ */
+function pickVisibleThreads(
+  threads: readonly InvestigationThreadView[],
+): readonly InvestigationThreadView[] {
+  const firstIncompleteIndex = threads.findIndex((thread) => !thread.complete);
+  return threads.filter(
+    (thread, index) =>
+      thread.complete || thread.found > 0 || index === firstIncompleteIndex,
+  );
+}
+
+/** 右上角任务目标。主线与调查线均按进度逐条推进、逐条显现。 */
 export function ObjectivePanel({
   active,
   regionId,
@@ -54,55 +68,71 @@ export function ObjectivePanel({
     }
   }
 
+  const visibleThreads = investigation ? pickVisibleThreads(investigation) : [];
+
   return (
     <div className="hud-objective" aria-live="polite">
       <div className="hud-objective-header">
-        <span className="hud-objective-kicker">任务目标</span>
-        <span className="hud-objective-progress">
-          {active.index + 1} / {active.total}
-        </span>
+        <span className="hud-objective-kicker">当前线索</span>
       </div>
-      <div className="hud-objective-quest">{active.quest.title}</div>
       <div
-        className="hud-objective-task"
         key={`${active.step.id}:${stage?.id ?? 'final'}`}
+        className="hud-objective-step"
       >
-        <span className="hud-objective-dot" aria-hidden="true">
-          ◆
-        </span>
-        <span>{objective}</span>
+        <div className="hud-objective-quest hud-objective-reveal-1">
+          {active.quest.title}
+        </div>
+        <div className="hud-objective-task hud-objective-reveal-2">
+          <span>{objective}</span>
+        </div>
+        {metaParts.length > 0 && (
+          <div className="hud-objective-meta hud-objective-reveal-3">
+            {metaParts.join(' · ')}
+          </div>
+        )}
+        <div className="hud-objective-hint hud-objective-reveal-4">
+          {hint}
+        </div>
       </div>
-      {metaParts.length > 0 && (
-        <div className="hud-objective-meta">{metaParts.join(' · ')}</div>
-      )}
-      <div className="hud-objective-hint">{hint}</div>
-      {investigation && investigation.length > 0 && (
+
+      {visibleThreads.length > 0 && (
         <div className="hud-objective-leads">
           <div className="hud-objective-leads-header">
-            <span>调查线</span>
-            <span>
-              {investigation.filter((thread) => thread.complete).length} /{' '}
-              {investigation.length}
-            </span>
+            <span>调查线索</span>
           </div>
-          {investigation.map((thread) => (
-            <div
-              key={thread.id}
-              className={`hud-objective-lead${thread.complete ? ' is-complete' : ''}`}
-              title={thread.hint}
-            >
-              <span className="hud-objective-lead-mark" aria-hidden="true">
-                {thread.complete ? '✓' : '○'}
-              </span>
-              <span className="hud-objective-lead-title">{thread.title}</span>
-              <span className="hud-objective-lead-count">
-                {thread.found}/{thread.total}
-              </span>
-            </div>
-          ))}
+          {visibleThreads.map((thread) => {
+            const nextStep = !thread.complete
+              ? thread.steps.find((step) => !step.found)
+              : undefined;
+            return (
+              <div
+                key={thread.id}
+                className={`hud-objective-lead${thread.complete ? ' is-complete' : ''}`}
+                title={thread.hint}
+              >
+                <div className="hud-objective-lead-body">
+                  <span className="hud-objective-lead-title">
+                    {thread.title}
+                  </span>
+                  {nextStep && (
+                    <span
+                      key={nextStep.flag}
+                      className="hud-objective-lead-next"
+                    >
+                      {nextStep.label}
+                    </span>
+                  )}
+                </div>
+                {thread.complete && (
+                  <span className="hud-objective-lead-count">已查明</span>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
-      {archive && archive.total > 0 && (
+
+      {archive && archive.total > 0 && archive.found > 0 && (
         <div className="hud-objective-archive">
           世界档案 {archive.found} / {archive.total}
         </div>

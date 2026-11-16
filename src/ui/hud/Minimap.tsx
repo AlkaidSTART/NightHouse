@@ -57,7 +57,7 @@ export function Minimap({
       <div className="hud-minimap-header">
         <span className="hud-minimap-level">{model.label}</span>
         <span className="hud-minimap-north" aria-label="北">
-          N
+          北
         </span>
       </div>
       <svg
@@ -66,11 +66,6 @@ export function Minimap({
         role="img"
         aria-label={`小地图（${model.label}）`}
       >
-        <rect
-          className="minimap-backdrop"
-          width={model.size}
-          height={model.size}
-        />
         {model.rooms.map((room, index) => {
           const current = !room.muted && room.id === regionId;
           const showLabel =

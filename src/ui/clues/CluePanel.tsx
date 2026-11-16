@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { CluePriority } from '../../shared/types/content';
 import type { ClueJournalView } from '../../shared/types/clueJournal';
+import { useDraggablePanel } from '../shared/useDraggablePanel';
 
 const PRIORITY_LABEL: Record<CluePriority, string> = {
   main: '主线',
@@ -17,6 +18,8 @@ export function CluePanel({ view, onClose }: CluePanelProps) {
   const [selectedId, setSelectedId] = useState<string | null>(
     view.entries[0]?.id ?? null,
   );
+  const { panelRef, isDragging, panelStyle, handleProps } =
+    useDraggablePanel<HTMLElement>();
   const selected =
     view.entries.find((entry) => entry.id === selectedId) ??
     view.entries[0] ??
@@ -25,12 +28,14 @@ export function CluePanel({ view, onClose }: CluePanelProps) {
   return (
     <div className="clue-layer">
       <section
-        className="clue-panel"
+        ref={panelRef}
+        className={`clue-panel${isDragging ? ' is-dragging' : ''}`}
+        style={panelStyle}
         role="dialog"
         aria-modal="true"
         aria-label="线索"
       >
-        <header className="clue-header">
+        <header className="clue-header panel-drag-handle" {...handleProps}>
           <div>
             <p className="clue-kicker">调查记录</p>
             <h2 className="clue-title">线索</h2>
@@ -47,7 +52,7 @@ export function CluePanel({ view, onClose }: CluePanelProps) {
             onClick={onClose}
             aria-label="收起线索"
           >
-            ×
+            收起
           </button>
         </header>
 
