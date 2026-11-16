@@ -135,6 +135,20 @@ export const PLOT_DIALOGUE_ROUTES: readonly PlotDialogueRoute[] = [
     allowedChoiceIds: B5_HOUSEKEEPER_MAIN_CHOICES,
   },
 
+  // 玩家若在取得钥匙前已找齐伤情证据，允许直接向格雷出示，避免已有的
+  // 线索被当前任务阶段锁住；医生崩溃后，后续步骤会自然跳过已完成的调查。
+  {
+    taskIds: ['step_coverup'],
+    npcId: 'npc_doctor',
+    nodeId: 'npc_doctor_b5_01',
+    when: [
+      { flag: 'clue.medical_record' },
+      { flag: 'clue.bathroom_trace' },
+    ],
+    skipOpeningWhen: [{ flag: 'story.doctor_talked' }],
+    allowedChoiceIds: B5_DOCTOR_MAIN_CHOICES,
+  },
+
   // 第二幕 · 医疗真相：只展开格雷医生的伤情证据链。
   {
     taskIds: ['step_medical_truth'],

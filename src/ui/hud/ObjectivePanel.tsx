@@ -25,8 +25,12 @@ export function ObjectivePanel({
     return null;
   }
 
+  const stage = active.stage;
+  const objective = stage?.objective ?? active.step.objective;
+  const hint = stage?.hint ?? active.step.hint;
+  const locationId = stage?.locationId ?? active.step.locationId;
   const route = describeRoute(
-    active.step.locationId,
+    locationId,
     regionId,
     player ? player.position : null,
   );
@@ -59,16 +63,19 @@ export function ObjectivePanel({
         </span>
       </div>
       <div className="hud-objective-quest">{active.quest.title}</div>
-      <div className="hud-objective-task" key={active.step.id}>
+      <div
+        className="hud-objective-task"
+        key={`${active.step.id}:${stage?.id ?? 'final'}`}
+      >
         <span className="hud-objective-dot" aria-hidden="true">
           ◆
         </span>
-        <span>{active.step.objective}</span>
+        <span>{objective}</span>
       </div>
       {metaParts.length > 0 && (
         <div className="hud-objective-meta">{metaParts.join(' · ')}</div>
       )}
-      <div className="hud-objective-hint">{active.step.hint}</div>
+      <div className="hud-objective-hint">{hint}</div>
       {investigation && investigation.length > 0 && (
         <div className="hud-objective-leads">
           <div className="hud-objective-leads-header">

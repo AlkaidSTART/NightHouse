@@ -1,9 +1,16 @@
 import { create } from 'zustand';
 import { quests } from '../content/quests';
+import {
+  discoverClueState,
+  reconcileClueState,
+} from '../game/clues/clueState';
 import type { StoryFlagValue } from '../shared/types/content';
 import type { NPCState, SaveData, Vec3Tuple } from '../shared/types/save';
 import { createNewSave, SAVE_SCHEMA_VERSION } from '../game/save/SaveManager';
-import { resolveActiveStepId } from '../game/story/questProgress';
+import {
+  resolveActiveStepId,
+  resolveCompletedQuestIds,
+} from '../game/story/questProgress';
 
 export interface StoryState {
   currentSceneId: string;
@@ -18,7 +25,8 @@ export interface StoryState {
 
   loadFromSave: (save: SaveData) => void;
   setStoryFlag: (flag: string, value: StoryFlagValue) => void;
-  discoverClue: (clueId: string) => void;
+  /** 返回是否为首次发现；重复发现也会修复缺失的派生 flag。 */
+  discoverClue: (clueId: string) => boolean;
   completePuzzle: (puzzleId: string) => void;
   completeQuest: (questId: string) => void;
   recordChoice: (choiceId: string, optionId: string) => void;
@@ -40,14 +48,22 @@ export const useStoryStore = create<StoryState>((set, get) => ({
   choices: initialDefault.choices,
 
   loadFromSave: (save: SaveData) => {
-    const storyFlags = { ...save.storyFlags };
+    const clueState = reconcileClueState(
+      save.storyFlags,
+      save.discoveredClueIds,
+    );
     set({
       currentSceneId: save.currentSceneId,
-      activeTaskId: resolveActiveStepId(storyFlags, quests),
-      storyFlags,
-      discoveredClueIds: [...save.discoveredClueIds],
+      activeTaskId: resolveActiveStepId(clueState.storyFlags, quests),
+      storyFlags: clueState.storyFlags,
+      discoveredClueIds: clueState.discoveredClueIds,
       completedPuzzleIds: [...save.completedPuzzleIds],
-      completedQuestIds: [...save.completedQuestIds],
+      completedQuestIds: [
+        ...new Set([
+          ...save.completedQuestIds,
+          ...resolveCompletedQuestIds(clueState.storyFlags, quests),
+        ]),
+      ],
       npcStates: { ...save.npcStates },
       choices: { ...save.choices },
     });
@@ -62,19 +78,38 @@ export const useStoryStore = create<StoryState>((set, get) => ({
       return {
         storyFlags,
         activeTaskId: resolveActiveStepId(storyFlags, quests),
+        completedQuestIds: [
+          ...new Set([
+            ...state.completedQuestIds,
+            ...resolveCompletedQuestIds(storyFlags, quests),
+          ]),
+        ],
       };
     });
   },
 
   discoverClue: (clueId: string) => {
-    set((state) => {
-      if (state.discoveredClueIds.includes(clueId)) {
-        return state;
-      }
-      return {
-        discoveredClueIds: [...state.discoveredClueIds, clueId],
-      };
+    const state = get();
+    const result = discoverClueState(
+      state.storyFlags,
+      state.discoveredClueIds,
+      clueId,
+    );
+    if (!result) {
+      return false;
+    }
+    set({
+      storyFlags: result.storyFlags,
+      discoveredClueIds: result.discoveredClueIds,
+      activeTaskId: resolveActiveStepId(result.storyFlags, quests),
+      completedQuestIds: [
+        ...new Set([
+          ...state.completedQuestIds,
+          ...resolveCompletedQuestIds(result.storyFlags, quests),
+        ]),
+      ],
     });
+    return result.firstDiscovery;
   },
 
   completePuzzle: (puzzleId: string) => {

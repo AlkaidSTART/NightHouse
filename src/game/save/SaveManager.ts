@@ -1,4 +1,5 @@
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb';
+import { reconcileClueState } from '../clues/clueState.ts';
 import type { StoryFlagValue } from '../../shared/types/content';
 import type {
   NPCState,
@@ -6,9 +7,9 @@ import type {
   SaveData,
   Vec3Tuple,
 } from '../../shared/types/save';
-import { DEFAULT_SETTINGS } from './defaults';
+import { DEFAULT_SETTINGS } from './defaults.ts';
 
-export const SAVE_SCHEMA_VERSION = 1;
+export const SAVE_SCHEMA_VERSION = 2;
 
 const DB_NAME = 'midnight-villa';
 const DB_VERSION = 1;
@@ -25,7 +26,10 @@ interface VillaDB extends DBSchema {
 
 type SaveMigration = (data: Record<string, unknown>) => Record<string, unknown>;
 
-const SAVE_MIGRATIONS: Record<number, SaveMigration> = {};
+const SAVE_MIGRATIONS: Record<number, SaveMigration> = {
+  // v2 没有新增字段；加载时会根据线索数组补写旧存档缺失的派生剧情标记。
+  2: (data) => ({ ...data }),
+};
 
 export function createNewSave(sceneId: string = DEFAULT_SCENE_ID): SaveData {
   return {
@@ -57,7 +61,7 @@ export class SaveManager {
   async loadSave(): Promise<SaveData | null> {
     const db = await this.open();
     const raw: unknown = await db.get('saves', SAVE_KEY);
-    return migrateSave(raw);
+    return migrateSaveData(raw);
   }
 
   async writeSave(save: SaveData): Promise<void> {
@@ -111,7 +115,7 @@ export class SaveManager {
   }
 }
 
-function migrateSave(raw: unknown): SaveData | null {
+export function migrateSaveData(raw: unknown): SaveData | null {
   if (!isRecord(raw)) {
     return null;
   }
@@ -168,6 +172,11 @@ function validateSave(raw: unknown): SaveData | null {
     return null;
   }
 
+  const clueState = reconcileClueState(
+    raw.storyFlags as Record<string, StoryFlagValue>,
+    raw.discoveredClueIds,
+  );
+
   return {
     schemaVersion: SAVE_SCHEMA_VERSION,
     updatedAt: raw.updatedAt,
@@ -176,8 +185,8 @@ function validateSave(raw: unknown): SaveData | null {
       position: player.position,
       rotation: player.rotation,
     },
-    storyFlags: raw.storyFlags as Record<string, StoryFlagValue>,
-    discoveredClueIds: raw.discoveredClueIds,
+    storyFlags: clueState.storyFlags,
+    discoveredClueIds: clueState.discoveredClueIds,
     completedPuzzleIds: raw.completedPuzzleIds,
     completedQuestIds: raw.completedQuestIds,
     npcStates: raw.npcStates as Record<string, NPCState>,

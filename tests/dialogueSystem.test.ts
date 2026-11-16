@@ -871,6 +871,30 @@ test('B5 的格雷医生使用调查入口，不重播到访寒暄', () => {
   assert.equal(ids.includes('polite'), false);
 });
 
+test('B5 提前找齐伤情证据后，格雷证据对话不会被当前任务阶段锁死', () => {
+  const fixture = createFixture(
+    {
+      'story.met_doctor': true,
+      'story.doctor_talked': true,
+      'clue.medical_record': true,
+      'clue.bathroom_trace': true,
+      'player.honorific': 'sir',
+    },
+    'step_coverup',
+  );
+  assert.equal(
+    fixture.system.openForNpc('npc_doctor', 'NPC_doctor_dining_door'),
+    true,
+  );
+  let view = showChoices(fixture.system);
+  assert.ok(view.choices.some((choice) => choice.id === 'ask_evelyn'));
+
+  fixture.system.choose('ask_evelyn');
+  view = showChoices(fixture.system);
+  assert.ok(view.choices.some((choice) => choice.id === 'show_record'));
+  assert.ok(view.choices.some((choice) => choice.id === 'ask_towel'));
+});
+
 test('B5 关键步骤只渲染当前剧情话题，并显示当前目标提示', () => {
   const coverup = createFixture(
     {

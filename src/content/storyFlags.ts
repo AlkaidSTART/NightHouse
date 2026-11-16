@@ -43,6 +43,7 @@ export const STORY_FLAGS = [
   // 调查进度
   'story.will_read',
   'story.knows_high_tide',
+  'story.saw_mantel_clock',
   'story.knows_ship_date_roman',
   'story.knows_official_storm',
   'story.knows_insurance_fraud',
@@ -69,6 +70,11 @@ export const STORY_FLAGS = [
   'item.clock_key',
   'item.pendulum',
   'item.storage_key',
+  'item.cylinder',
+  'story.clock_door_open',
+  'story.clock_pendulum_hung',
+  'story.clock_wound',
+  'puzzle.safe_attempts',
   'puzzle.clock',
   'puzzle.safe',
 

@@ -106,14 +106,32 @@ export interface InspectableDefinition {
   variants: readonly InspectVariant[];
 }
 
+/**
+ * 同一步任务内的阶段性目标。按顺序解析，第一个 `until` 尚未全部满足的阶段
+ * 就是玩家当前该去的地点；所有阶段完成后使用任务步骤自身的最终目标。
+ */
+export interface QuestStage {
+  id: string;
+  /** 当前阶段在目标面板上显示的一句话目标。 */
+  objective: string;
+  /** 当前阶段的路线提示。 */
+  hint: string;
+  /** 当前阶段所在区域 ID，用于小地图标记与方向指引。 */
+  locationId: string;
+  /** 全部满足后进入下一阶段。 */
+  until: StoryCondition[];
+}
+
 export interface QuestStep {
   id: string;
-  /** 目标面板上显示的一句话目标。 */
+  /** 目标面板上显示的一句话目标；有未完成阶段时由阶段目标覆盖。 */
   objective: string;
-  /** 路线提示，说明玩家下一步该往哪走。 */
+  /** 路线提示；有未完成阶段时由阶段提示覆盖。 */
   hint: string;
-  /** 目标所在区域 ID，用于小地图标记与方向指引。 */
+  /** 最终目标所在区域 ID，也是阶段的兜底地点。 */
   locationId: string;
+  /** 复合任务按取证/交付顺序声明阶段地点，避免导航指向最终交付点。 */
+  stages?: readonly QuestStage[];
   /** 满足任一条件组即视为该步完成（外层「或」，内层「且」）。 */
   doneWhen: StoryCondition[][];
 }

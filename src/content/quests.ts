@@ -59,16 +59,41 @@ export const quests: readonly QuestDefinition[] = [
       },
       {
         id: 'step_medical_truth',
-        objective: '把诊疗记录和浴室痕迹拿给格雷医生看',
-        hint: '书房书桌能证明她死在宅内；二楼浴室的药柜、毛巾和地砖还有第二处伤情。两样都拿到后回门厅或餐厅门口找格雷。',
+        objective: '把两份伤情证据拿给格雷医生看',
+        hint: '诊疗记录和浴室痕迹都拿到了。回门厅或餐厅门口找格雷。',
         locationId: 'villa_hall',
+        stages: [
+          {
+            id: 'stage_medical_record',
+            objective: '在书房找到格雷的诊疗记录',
+            hint: '从一层走廊向西进入书房，检查书桌最下层抽屉。',
+            locationId: 'villa_study',
+            until: [{ flag: 'clue.medical_record' }],
+          },
+          {
+            id: 'stage_bathroom_trace',
+            objective: '去二楼浴室找到宅内伤情痕迹',
+            hint: '沿主楼梯上二楼，检查浴室里的药柜、毛巾架和地砖缝。',
+            locationId: 'villa_bathroom',
+            until: [{ flag: 'clue.bathroom_trace' }],
+          },
+        ],
         doneWhen: [[{ flag: 'story.doctor_confessed' }]],
       },
       {
         id: 'step_recording',
-        objective: '找到伊芙琳的蜡筒，在书房听完她留下的话',
-        hint: '她的卧室在二楼最里面。检查梳妆台抽屉，再把蜡筒带回书房留声机播放。',
-        locationId: 'villa_evelyn_room',
+        objective: '把蜡筒带回书房，听完伊芙琳留下的话',
+        hint: '回到一层书房，把蜡筒放上留声机。',
+        locationId: 'villa_study',
+        stages: [
+          {
+            id: 'stage_find_cylinder',
+            objective: '在伊芙琳卧室找到留声机蜡筒',
+            hint: '她的卧室在二楼最里面，检查梳妆台抽屉。',
+            locationId: 'villa_evelyn_room',
+            until: [{ flag: 'item.cylinder' }],
+          },
+        ],
         doneWhen: [[{ flag: 'story.heard_recording' }]],
       },
       {

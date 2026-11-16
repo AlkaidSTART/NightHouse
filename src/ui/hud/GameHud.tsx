@@ -50,7 +50,11 @@ export function GameHud(props: GameHudProps = {}) {
       <Minimap
         regionId={regionId}
         player={player}
-        objectiveRegionId={activeObjective?.step.locationId ?? null}
+        objectiveRegionId={
+          activeObjective?.stage?.locationId ??
+          activeObjective?.step.locationId ??
+          null
+        }
       />
       <ObjectivePanel
         active={activeObjective}

@@ -1,14 +1,17 @@
 import type {
   QuestDefinition,
+  QuestStage,
   QuestStep,
   StoryCondition,
 } from '../../shared/types/content';
 import type { StoryFlags } from './conditions.ts';
-import { isAnyConditionGroupMet } from './conditions.ts';
+import { areConditionsMet, isAnyConditionGroupMet } from './conditions.ts';
 
 export interface ActiveObjective {
   quest: QuestDefinition;
   step: QuestStep;
+  /** 当前步骤内尚未完成的阶段；null 表示应使用步骤的最终目标。 */
+  stage: QuestStage | null;
   /** 从 0 开始的步骤序号，用于面板上的进度显示。 */
   index: number;
   total: number;
@@ -40,7 +43,13 @@ export function resolveActiveObjective(
         continue;
       }
       if (!isStepComplete(flags, step.doneWhen)) {
-        return { quest, step, index, total: quest.steps.length };
+        return {
+          quest,
+          step,
+          stage: resolveActiveStage(flags, step),
+          index,
+          total: quest.steps.length,
+        };
       }
     }
   }
@@ -56,4 +65,31 @@ export function resolveActiveStepId(
   quests: readonly QuestDefinition[],
 ): string | null {
   return resolveActiveObjective(flags, quests)?.step.id ?? null;
+}
+
+/** 返回步骤内第一个尚未完成的阶段；所有阶段完成后返回 null。 */
+export function resolveActiveStage(
+  flags: StoryFlags,
+  step: QuestStep,
+): QuestStage | null {
+  for (const stage of step.stages ?? []) {
+    if (stage.until.length === 0 || !areConditionsMet(flags, stage.until)) {
+      return stage;
+    }
+  }
+  return null;
+}
+
+/** 返回所有步骤均已完成的 quest ID，用于持久化任务完成状态。 */
+export function resolveCompletedQuestIds(
+  flags: StoryFlags,
+  quests: readonly QuestDefinition[],
+): string[] {
+  return quests
+    .filter(
+      (quest) =>
+        quest.steps.length > 0 &&
+        quest.steps.every((step) => isStepComplete(flags, step.doneWhen)),
+    )
+    .map((quest) => quest.id);
 }

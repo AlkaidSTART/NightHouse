@@ -8,6 +8,7 @@ import {
   isStepComplete,
   resolveActiveObjective,
   resolveActiveStepId,
+  resolveCompletedQuestIds,
 } from '../src/game/story/questProgress.ts';
 import type { StoryFlags } from '../src/game/story/conditions.ts';
 import {
@@ -89,6 +90,62 @@ test('任务目标：必须取得钥匙与霍尔太太的目击证词后才能�
   );
 });
 
+test('任务目标：复合步骤按缺口切换房间与楼层，完成后才指向交付地点', () => {
+  const base: StoryFlags = {
+    'story.arrived': true,
+    'story.met_housekeeper': true,
+    'story.met_arthur': true,
+    'story.arthur_talked': true,
+    'story.doctor_time_conflict': true,
+    'story.knows_coverup': true,
+    'story.housekeeper_key': true,
+  };
+
+  const withoutRecord = resolveActiveObjective(base, quests);
+  assert.ok(withoutRecord);
+  assert.equal(withoutRecord.stage?.id, 'stage_medical_record');
+  assert.equal(withoutRecord.stage?.locationId, 'villa_study');
+
+  const withoutBathroom = resolveActiveObjective(
+    { ...base, 'clue.medical_record': true },
+    quests,
+  );
+  assert.ok(withoutBathroom);
+  assert.equal(withoutBathroom.stage?.id, 'stage_bathroom_trace');
+  assert.equal(withoutBathroom.stage?.locationId, 'villa_bathroom');
+
+  const readyForDoctor = resolveActiveObjective(
+    {
+      ...base,
+      'clue.medical_record': true,
+      'clue.bathroom_trace': true,
+    },
+    quests,
+  );
+  assert.ok(readyForDoctor);
+  assert.equal(readyForDoctor.stage, null);
+  assert.equal(readyForDoctor.step.locationId, 'villa_hall');
+
+  const findCylinder = resolveActiveObjective(
+    { ...base, 'story.doctor_confessed': true },
+    quests,
+  );
+  assert.ok(findCylinder);
+  assert.equal(findCylinder.stage?.locationId, 'villa_evelyn_room');
+
+  const playCylinder = resolveActiveObjective(
+    {
+      ...base,
+      'story.doctor_confessed': true,
+      'item.cylinder': true,
+    },
+    quests,
+  );
+  assert.ok(playCylinder);
+  assert.equal(playCylinder.stage, null);
+  assert.equal(playCylinder.step.locationId, 'villa_study');
+});
+
 test('任务目标：医疗真相、录音、补充证据与书桌整理依次推进', () => {
   const base: StoryFlags = {
     'story.arrived': true,
@@ -159,6 +216,32 @@ test('任务目标：主线走完后不再显示目标', () => {
   assert.equal(resolveActiveObjective(flags, quests), null);
 });
 
+test('任务完成：只有全部步骤完成后才进入持久化完成列表', () => {
+  const partial: StoryFlags = {
+    'story.arrived': true,
+  };
+  assert.deepEqual(resolveCompletedQuestIds(partial, quests), []);
+
+  const done: StoryFlags = {
+    'story.arrived': true,
+    'story.met_housekeeper': true,
+    'story.met_arthur': true,
+    'story.arthur_talked': true,
+    'story.doctor_time_conflict': true,
+    'story.knows_coverup': true,
+    'story.housekeeper_key': true,
+    'story.doctor_confessed': true,
+    'story.heard_recording': true,
+    'story.safe_opened': true,
+    'story.case_ready': true,
+    'story.midnight': true,
+    'choice.midnight': 'sign',
+  };
+  assert.deepEqual(resolveCompletedQuestIds(done, quests), [
+    'quest_main_midnight',
+  ]);
+});
+
 test('任务目标：空完成条件不会被误判为已完成', () => {
   assert.equal(isStepComplete({}, []), false);
 });
@@ -195,6 +278,20 @@ test('任务目标：地点 ID 都对应场景区域，完成条件都使用已�
         regionIds.has(step.locationId),
         `${step.id} 的地点 ${step.locationId} 不存在`,
       );
+      for (const stage of step.stages ?? []) {
+        assert.ok(
+          regionIds.has(stage.locationId),
+          `${stage.id} 的地点 ${stage.locationId} 不存在`,
+        );
+        assert.ok(stage.until.length > 0, `${stage.id} 缺少推进条件`);
+        for (const condition of stage.until) {
+          assert.ok(
+            KNOWN_STORY_FLAGS.has(condition.flag) ||
+              CLUE_FLAGS.has(condition.flag),
+            `${stage.id} 使用了未登记的标记 ${condition.flag}`,
+          );
+        }
+      }
       for (const group of step.doneWhen) {
         for (const condition of group) {
           assert.ok(
@@ -230,4 +327,10 @@ test('路线指引：到达目标区域时标记为已到达，跨层时提示�
   assert.equal(upstairs.levelHint, '需上楼');
   assert.ok((upstairs.distance ?? 0) > 0);
   assert.ok(upstairs.direction);
+
+  const bathroom = describeRoute('villa_bathroom', 'villa_hall', [0, 1.7, 0]);
+  assert.ok(bathroom);
+  assert.equal(bathroom.regionName, '浴室');
+  assert.equal(bathroom.floorLabel, '二层');
+  assert.equal(bathroom.levelHint, '需上楼');
 });

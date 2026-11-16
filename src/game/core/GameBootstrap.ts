@@ -1,5 +1,4 @@
 import * as pc from 'playcanvas';
-import { clueFlagForId } from '../../content/clues';
 import { content } from '../../content';
 import { presentEnding } from '../../content/endings';
 import { clockPuzzleContent, safePuzzleContent } from '../../content/puzzles';
@@ -161,9 +160,7 @@ export class GameBootstrap {
         setFlag: (key, value) =>
           useStoryStore.getState().setStoryFlag(key, value),
         discoverClue: (clueId) => {
-          const store = useStoryStore.getState();
-          store.discoverClue(clueId);
-          store.setStoryFlag(clueFlagForId(clueId), true);
+          useStoryStore.getState().discoverClue(clueId);
         },
         recordChoice: (nodeId, choiceId) =>
           useStoryStore.getState().recordChoice(nodeId, choiceId),
@@ -188,15 +185,8 @@ export class GameBootstrap {
         getFlags: () => useStoryStore.getState().storyFlags,
         setFlag: (key, value) =>
           useStoryStore.getState().setStoryFlag(key, value),
-        discoverClue: (clueId) => {
-          const store = useStoryStore.getState();
-          if (store.discoveredClueIds.includes(clueId)) {
-            return false;
-          }
-          store.discoverClue(clueId);
-          store.setStoryFlag(clueFlagForId(clueId), true);
-          return true;
-        },
+        discoverClue: (clueId) =>
+          useStoryStore.getState().discoverClue(clueId),
         getClueTitle: (clueId) => this.clueTitles.get(clueId) ?? null,
         onChange: (view) => {
           this.events.emit('inspection.changed', { view });
@@ -212,13 +202,8 @@ export class GameBootstrap {
       setFlag: (key, value) =>
         useStoryStore.getState().setStoryFlag(key, value),
       discoverClue: (clueId) => {
-        const store = useStoryStore.getState();
-        if (store.discoveredClueIds.includes(clueId)) {
-          return null;
-        }
-        store.discoverClue(clueId);
-        store.setStoryFlag(clueFlagForId(clueId), true);
-        return this.clueTitles.get(clueId) ?? clueId;
+        const firstDiscovery = useStoryStore.getState().discoverClue(clueId);
+        return firstDiscovery ? this.clueTitles.get(clueId) ?? clueId : null;
       },
       completePuzzle: (puzzleId) =>
         useStoryStore.getState().completePuzzle(puzzleId),
@@ -775,7 +760,6 @@ export class GameBootstrap {
       store.setStoryFlag('story.arrived', true);
       store.setStoryFlag('story.has_letter', true);
       store.discoverClue('clue_evelyn_letter');
-      store.setStoryFlag(clueFlagForId('clue_evelyn_letter'), true);
       this.events.emit('interaction.activated', {
         id: 'story.arrived',
         message: '门厅的座钟停在十一点五十五分。你口袋里的那封信忽然有了重量。',
