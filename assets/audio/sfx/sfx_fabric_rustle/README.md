@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 卧室 / 储物间 / 闪回 |
-| 依赖 / 复用 | `fb_fireplace`、`fb_pendulum`、`fb_luggage` |
+| 资产 ID | `SFX_FabricRustle` |
+| 使用位置 | 门厅最里侧湿斗篷 `INT_prop_cloak`、餐厅第 13 席椅背灰羊毛披肩 `INT_prop_shawl`、书房炉前厚地毯 `INT_prop_study_rug`、卧室衣柜旧羊毛外套 `INT_prop_wardrobe`、浴室毛巾架旧毛巾 `INT_prop_towel_rack`；以及闪回 `fb_fireplace`（争执拉扯衣袖）、`fb_pendulum`（用羊毛外套裹住摆锤）、`fb_luggage` |
+| 依赖 / 复用 | 织物类可检视物与闪回演出 |
+| 剧情用途 | 服务于多处核心双读线索：门厅潮湿的 `E.A.` 羊毛斗篷、裹着铜摆锤的厚外套、餐厅第 13 席的羊毛披肩、浴室洗不净暗渍的旧毛巾，以及那晚用床单裹尸抬下楼的织物摩擦感 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Old wool coat and cotton bedsheet rustling, slow movement, 4 variations, close microphone, no music, no voices.
+Four distinct close-mic antique textile foley variations separated by 0.4-second silences: (1) lifting the heavy damp hem of an old Victorian wool cloak; (2) unfolding a thick wool coat wrapped around a heavy object; (3) soft linen bedsheet and wool shawl movement; (4) handling a folded coarse cotton towel. Warm muted natural fibers, strictly no modern synthetic nylon swish, dry close microphone, no music, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+synthetic nylon jacket swish, Gore-Tex rustle, zipper, velcro, tearing cloth, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** wool coat rustle, cotton bedsheet, fabric movement, close mic
+**检索关键词：** heavy wool cloak rustle, antique coat fabric movement, linen bedsheet foley, cotton towel unfold, close mic dry
 
 ## 2. 用途
 

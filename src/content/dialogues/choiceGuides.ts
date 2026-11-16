@@ -152,8 +152,11 @@ export const DIALOGUE_CHOICE_GUIDES: Readonly<
     ],
   },
   npc_arthur_b5_gallery_01: {
+    hint: '按你手里已取得的证据逐项追问，先问最能动摇他的部分。',
     sequence: [
+      { choiceId: 'ask_scratch', label: '追问腕上抓痕' },
       { choiceId: 'ask_cloak', label: '先提湿斗篷' },
+      { choiceId: 'ask_recording', label: '提伊芙琳的录音' },
       { choiceId: 'ask_ledger', label: '再提账本' },
     ],
   },

@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 门厅落地钟 |
-| 依赖 / 复用 | 钟谜题与门厅场景接入 |
+| 资产 ID | `SFX_Clock_Tick_Loop` |
+| 使用位置 | 一层门厅落地钟 `INT_prop_longcase_clock`（主声源）；一层客厅壁炉小座钟 `INT_prop_mantel_clock`（调高 +3 半音、降音量复用） |
+| 依赖 / 复用 | `story.clock_repaired`（修好落地钟后常驻启动）；修钟前检视 `INT_prop_longcase_clock` 时仅截取前 1 秒播放「一声很轻的滴答，然后归于寂静」 |
+| 剧情用途 | 门厅的叙事节拍器，提醒玩家午夜临近；修钟前后的「死寂 → 走动」反差是全宅空间状态被唤醒的标志 |
 
 ## 快速使用
 
@@ -14,20 +16,22 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Seamless mechanical longcase clock ticking, slow one tick per second, dry close recording, subtle wood case resonance, no chime, no music, no voices.
+Seamless mechanical antique Victorian longcase grandfather clock ticking at exactly 60 BPM (one heavy brass escapement tick-tock cycle every two seconds, one beat per second), dry close microphone recording, warm hollow mahogany clock case resonance, strictly no chimes, no music, no voices, no background rain.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+clock chime, bell strike, alarm ring, fast wristwatch ticking, music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** longcase clock tick, mechanical clock loop, dry tick, seamless loop
+**检索关键词：** longcase clock tick 60 bpm, mechanical grandfather clock loop, dry escapement tick tock, seamless loop
 
 ## 2. 用途
 
-门厅的节拍器，提醒玩家午夜临近；修钟后从静默转为走动。
+1. **门厅落地钟修好后（`story.clock_repaired = true`）**：作为 3D 点声源挂在 `hall_longcase_clock`（`[-2.5, 1.4, -1.38]`）上无缝循环，且与 `MUS_Tension_Pulse_Loop`（60 BPM）同速。
+2. **门厅落地钟修好前检视（`INT_prop_longcase_clock` 未修状态）**：文本写明「凑近时，能听见一声很轻的滴答，然后归于寂静」——触发时仅以 -6 dB 播放本音频的第一个单拍（0.0–0.8 秒）随即停止，不循环。
+3. **客厅壁炉小座钟（`INT_prop_mantel_clock`，显示 23:47）**：在 `parlor_mantel_clock`（`[-10.49, 1.38, 3.5]`）上以 `playbackRate = 1.2`（或 +3 半音）、峰值 `-20 dBFS` 极小衰减半径（2.0 m）复用，表现玻璃罩内走得很稳的小座钟。
 
 ## 3. 技术规格
 

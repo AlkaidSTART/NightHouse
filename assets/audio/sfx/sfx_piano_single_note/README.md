@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 客厅钢琴 |
-| 依赖 / 复用 | `echo_piano_note` |
+| 资产 ID | `SFX_PianoSingleNote` |
+| 使用位置 | 一层客厅东南角立式钢琴 `INT_prop_piano`（坐标 `[-6.4, 1, 6.2]`） |
+| 依赖 / 复用 | `echo_piano_note`（首次接近钢琴时触发）及检视 `INT_prop_piano` |
+| 剧情用途 | 严格对应 `inspectables.ts` 正文：「只有**中央 C** 的键面上有一个被擦掉的指印，像是有人按下去，又很快松了手。」表现陈旧立式钢琴中央 C（Middle C / C4，261.6 Hz）单音在客厅里的孤独回响 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-A single slightly detuned upright piano note in an old house, long natural decay, felt-muted, no melody, no music, no voices.
+A single softly struck Middle C note (C4, 261.6 Hz) on an old slightly detuned 1890s Victorian upright piano: soft wooden key press, aged wool felt hammer contact, quick key release with damper felt drop, followed by a natural 3.5-second sympathetic string resonance decay in a quiet parlor, strictly one single note only, no chord, no melody, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+melody, arpeggio, chord, multiple notes, concert grand piano, bright pop piano, vocals, speech, sudden loud slam, clipping, distortion, cartoon sound, low quality
 ```
 
-**检索关键词：** single piano note, detuned upright piano, felt muted, long decay
+**检索关键词：** single upright piano note Middle C C4, slightly detuned felt piano single key strike, sympathetic resonance decay
 
 ## 2. 用途
 

@@ -38,6 +38,8 @@ const INTERACTION_DISTANCE = 3;
 const DOOR_INTERACTION_MIN_RADIUS = 0.6;
 const CLOCK_INTERACTABLE_ID = 'INT_prop_longcase_clock';
 const SAFE_INTERACTABLE_ID = 'INT_prop_safe';
+const PHONOGRAPH_INTERACTABLE_ID = 'INT_prop_phonograph';
+const STUDY_DESK_DRAWER_INTERACTABLE_ID = 'INT_prop_study_desk_drawer';
 /** 小地图位置刷新间隔（秒）。不必每帧都推给 React。 */
 const POSE_EMIT_INTERVAL = 0.08;
 const POSE_POSITION_EPSILON_SQ = 0.02 * 0.02;
@@ -339,7 +341,7 @@ export class GameBootstrap {
         id: descriptor.id,
         entity: descriptor.entity,
         radius: descriptor.radius,
-        getPrompt: () => descriptor.prompt,
+        getPrompt: () => this.getPropPrompt(descriptor.id, descriptor.prompt),
         canInteract: () => true,
         interact: () => {
           if (descriptor.id === CLOCK_INTERACTABLE_ID) {
@@ -495,6 +497,28 @@ export class GameBootstrap {
     this.events.emit('puzzle.changed', {
       view: this.safePuzzle.submit(code),
     });
+  }
+
+  private getPropPrompt(id: string, defaultPrompt: string): string {
+    const flags = useStoryStore.getState().storyFlags;
+    if (id === PHONOGRAPH_INTERACTABLE_ID) {
+      if (flags['item.cylinder'] === true && flags['story.heard_recording'] !== true) {
+        return '放入蜡筒播放留声机';
+      }
+      return defaultPrompt;
+    }
+    if (id === STUDY_DESK_DRAWER_INTERACTABLE_ID) {
+      if (
+        flags['story.case_ready'] !== true &&
+        flags['story.doctor_confessed'] === true &&
+        flags['story.heard_recording'] === true &&
+        (flags['story.safe_opened'] === true || flags['story.clock_repaired'] === true)
+      ) {
+        return '在书桌上整理证据';
+      }
+      return defaultPrompt;
+    }
+    return defaultPrompt;
   }
 
   private beginClockPuzzle(): void {

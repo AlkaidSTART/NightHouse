@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 拾取钥匙或小型金属道具 |
-| 依赖 / 复用 | 剧本 / 场景触发点确认后接入 |
+| 资产 ID | `SFX_PickupKey` |
+| 使用位置 | 门厅钥匙串 `INT_prop_storage_key_ring`、书房抽屉钟钥匙 `item_clock_key`、霍尔太太递交卧室钥匙 `item_housekeeper_key`、卧室衣柜铜摆锤 `item_pendulum`、储物间旧物箱裁纸剪 `INT_prop_old_items_box` / 闪回 `fb_photo`、室外铜牌 `INT_prop_gate_plaque` |
+| 依赖 / 复用 | 背包金属物品获取与金属器物检视反馈 |
+| 剧情用途 | 区分「单把黄铜钥匙」「门厅挂钩上的一串旧钥匙」「沉甸甸的落地钟铜摆锤」以及「剪断全家福的裁纸剪合拢声（`fb_photo`）」，让每件关键金属证物拥有可辨识的重量与材质感 |
 
 ## 快速使用
 
@@ -13,17 +15,38 @@
 
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
+**合集主提示词（单文件 4 段式，每段间隔 0.5 秒静音）：**
+
 ```text
-Small brass key pickup from a wooden surface, light metal jingle, close microphone, no reverb, no music, no voices.
+Four distinct close-mic antique metal object handling sounds separated by half-second silences: (1) picking up a single small antique brass key from a wooden drawer; (2) lifting an iron key ring with three old brass keys off a wall hook with a short restrained clink; (3) lifting a heavy solid brass clock pendulum disc wrapped in wool; (4) a single crisp snip of heavy vintage steel paper-cutting scissors closing on thick photo cardstock. Dry close recording, no music, no voices.
 ```
+
+**分段独立生成提示词（Sub-prompts）：**
+
+- **Sub-1 `single_brass_key`（单把黄铜钥匙：`item_clock_key` 钟钥匙、`item_housekeeper_key` 卧室钥匙，时长 0.6 秒）：**
+  ```text
+  Picking up a single small antique brass skeleton key from a wooden surface, crisp light brass clink and finger handling, close mic, dry, no jingle, no music.
+  ```
+- **Sub-2 `key_ring`（门厅衣帽钩取下储物间钥匙串 `INT_prop_storage_key_ring`：「挂钩上挂着一串旧钥匙，铜环已经磨得发亮」，时长 0.9 秒）：**
+  ```text
+  Lifting a small brass ring holding three old keys off a wooden wall hook, brief restrained metallic chime and heavy brass contact, close mic, dry, no music.
+  ```
+- **Sub-3 `heavy_pendulum`（卧室衣柜取出落地钟铜摆锤 `item_pendulum`：「沉甸甸的黄铜摆锤，原本用旧羊毛外套裹着」，时长 1.0 秒）：**
+  ```text
+  Lifting a heavy solid brass grandfather clock pendulum bob out of thick wool cloth, dull weighty bronze thud and muted metallic resonance, close mic, dry, no music.
+  ```
+- **Sub-4 `scissors_snip`（储物间旧物箱 `INT_prop_old_items_box` 裁纸剪 & 客厅全家福闪回 `fb_photo`：「剪刀合拢，照片上的人被剪掉」，时长 0.7 秒）：**
+  ```text
+  A single deliberate crisp cut of heavy Victorian steel shears slicing through thick vintage photograph cardboard and closing shut, close mic, dry, no music, no voices.
+  ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+jailer huge keychain shaking, coins dropping, sword slash, gun cocking, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** small metal key pickup, brass key on wood
+**检索关键词：** small brass key pickup, antique key ring clink, heavy brass pendulum lift, vintage steel scissors cut cardstock
 
 ## 2. 用途
 

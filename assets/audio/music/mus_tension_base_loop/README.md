@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 全场景（按紧张强度淡入） |
-| 依赖 / 复用 | TensionDirector 实现后接入 |
+| 资产 ID | `MUS_Tension_Base_Loop` |
+| 使用位置 | 全场景（`TensionDirector` 强度 ≥1 淡入） |
+| 依赖 / 复用 | 发现 `story.knows_time_conflict`、`story.knows_insurance_fraud` 或取得 `story.housekeeper_key` 后激活 |
+| 剧情用途 | 在玩家意识到「伊芙琳死在宅内 / 家族骗保」后提供持续、克制的低频心理阴影，不干扰解谜思考 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Seamless low tension drone for a realistic Victorian mystery game: sustained cello and low synth texture, no melody, no percussion, no vocals, restrained, 60 seconds, seamless loop.
+Seamless dark ambient tension drone for a realistic 1897 Victorian mystery game: sustained acoustic cello and contrabass bowing an open fifth on root note D (D1 and A1), subtle dark analog warmth, strictly no melody, no chord progression, no percussion, no vocals, restrained and somber, 60 BPM, exact 60 seconds seamless loop.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+melody, chord changes, drums, percussion, rhythm, vocals, speech, brass, sci-fi synth, sudden loud noises, clipping, distortion, audible loop seam, cartoon sound, low quality
 ```
 
-**检索关键词：** low tension drone, sustained cello texture, dark ambient, seamless loop, no melody
+**检索关键词：** low tension drone root D, sustained cello contrabass drone, dark ambient open fifth, seamless loop 60s, no melody
 
 ## 2. 用途
 

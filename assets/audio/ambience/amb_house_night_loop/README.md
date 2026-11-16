@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 全场景环境层 |
-| 依赖 / 复用 | 剧本 / 场景触发点确认后接入 |
+| 资产 ID | `AMB_HouseNight_Loop` |
+| 使用位置 | 全室内场景基础底噪；无窗储物间 `villa_storage` 与拉上厚窗帘的伊芙琳卧室 `villa_evelyn_room` 主环境层 |
+| 依赖 / 复用 | 进门（B1 `story.arrived`）后常驻底层，与各区域环境音交叉淡化 |
+| 剧情用途 | 提供持续、低干扰的石砌古宅夜间空间底噪，建立「房子很大、走廊很深」的静谧压迫感 |
 
 ## 快速使用
 
@@ -14,20 +16,23 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Seamless nighttime ambience inside an old villa: low wind outside, faint wood creaks, distant clock tick, subtle room tone, no music, no voices, no sudden sounds.
+Seamless nighttime room tone inside an old 1897 stone and dark-wood Victorian manor: very low muffled wind outside thick stone walls, subtle timber settling, quiet antique room air pressure, strictly no clock ticking, no footsteps, no rain splashes, no music, no voices, no sudden sounds.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+clock ticking, clock chime, footsteps, heavy rain, thunder, music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** old house night ambience, low wind, wood creaks, clock tick, seamless loop
+**检索关键词：** old house night room tone, muffled wind, quiet interior ambience, dark manor air tone, seamless loop, no clock
 
 ## 2. 用途
 
 提供持续、低干扰的夜间空间底噪，建立别墅的压迫感。
+- 在无窗的 `villa_storage`（一层储物间）中单独播放并施加 800 Hz 低通滤波，表现密闭樟脑与旧木箱空间。
+- 在 `villa_evelyn_room`（二层唯一不亮灯、窗帘紧闭的卧室）中作为主底噪，使该房间听感比一楼更冷、更静。
+- **严禁包含走钟滴答声**：门厅钟修复前全屋不应有落地钟走时声。
 
 ## 3. 技术规格
 

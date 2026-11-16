@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 走廊 / 二楼走廊 |
-| 依赖 / 复用 | B5 自由调查阶段接入 |
+| 资产 ID | `AMB_CorridorCreak_Loop` |
+| 使用位置 | `villa_corridor`（一层 7m 走廊 `z: -2..0` 与二层回廊及走廊 `y = 3.4`） |
+| 依赖 / 复用 | 进入走廊区域淡入；作为 `echo_mirror_delay`、`echo_door_ajar` 与 `echo_footsteps` 的基础环境层 |
+| 剧情用途 | 强化深色木护墙板与长走廊的幽闭延伸感，为走廊镜（`INT_prop_corridor_mirror`）和二楼家族照片（`INT_prop_family_photos`）营造被注视的寒意 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Seamless ambience of a long Victorian upstairs corridor at night: old wood creaking softly under temperature change, faint distant room sounds, low air movement, no voices, no footsteps, no music.
+Seamless ambience of a long narrow 1897 Victorian wood-paneled corridor at night: old wainscoted timber creaking softly under temperature change, faint draft through closed door frames, subtle gas wall-lamp hiss, long narrow hallway acoustics, no footsteps, no clock ticking, no voices, no music.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+footsteps, clock ticking, door slam, music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** old house corridor night ambience, wood creak, distant room tone, seamless loop
+**检索关键词：** old house corridor night ambience, wood paneling creak, gas lamp hiss, narrow hallway tone, seamless loop
 
 ## 2. 用途
 

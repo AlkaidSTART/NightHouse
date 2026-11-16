@@ -68,20 +68,29 @@ test('NPC 站位：十三下之后三人同时出现在 C5 规定的站位', () 
   });
 });
 
-test('NPC 站位：掌握封口证据后亚瑟回到书房对质', () => {
-  const flags: StoryFlags = {
+test('NPC 站位：B5 调查期间亚瑟不在书房，整理完证据后才回到书房对质', () => {
+  const b5Investigating: StoryFlags = {
     ...ARRIVED,
     'story.arthur_called': true,
     'story.met_arthur': true,
     'story.arthur_talked': true,
     'story.met_doctor': true,
-    'story.clock_repaired': true,
     'story.knows_coverup': true,
+    'clue.shipping_ledger': true,
   };
-  assert.equal(stations(flags).npc_arthur, 'NPC_arthur_study_desk');
+  assert.equal(stations(b5Investigating).npc_arthur, 'NPC_arthur_dining_head');
 
-  const clueOnly: StoryFlags = { ...ARRIVED, 'clue.shipping_ledger': true };
-  assert.equal(stations(clueOnly).npc_arthur, 'NPC_arthur_study_desk');
+  const afterClock: StoryFlags = {
+    ...b5Investigating,
+    'story.clock_repaired': true,
+  };
+  assert.equal(stations(afterClock).npc_arthur, 'NPC_arthur_gallery_rail');
+
+  const readyToConfront: StoryFlags = {
+    ...afterClock,
+    'story.case_ready': true,
+  };
+  assert.equal(stations(readyToConfront).npc_arthur, 'NPC_arthur_study_desk');
 });
 
 test('NPC 站位：书房对质时亚瑟正对门口', () => {

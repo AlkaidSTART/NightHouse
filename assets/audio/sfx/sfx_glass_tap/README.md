@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 客厅全家福 / 走廊镜子 |
-| 依赖 / 复用 | `echo_photo_glare`、`echo_mirror_delay` |
+| 资产 ID | `SFX_GlassTap` |
+| 使用位置 | 客厅全家福 `INT_prop_family_portrait`（`echo_photo_glare`）、客厅小座钟玻璃罩 `INT_prop_mantel_clock`、一层走廊镜 `INT_prop_corridor_mirror`（`echo_mirror_delay`）、二楼走廊裂纹家族照片 `INT_prop_family_photos`、卧室床头柜镇静药瓶与干水杯 `INT_prop_nightstand`、卧室梳妆镜 `INT_prop_vanity_mirror_back`、浴室药柜棕色药瓶 `INT_prop_medicine_cabinet`、储物间玻璃罩船模 `INT_prop_ship_model` |
+| 依赖 / 复用 | `echo_photo_glare`、`echo_mirror_delay`、`echo_cold_spot` 及玻璃/镜框/药瓶类检视交互 |
+| 剧情用途 | 提供旧相框玻璃、走廊古董镜面微振，以及卧室/浴室镇静剂药瓶与干水杯（双读线索「她当晚滴药未沾」）的玻璃质感反馈 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-A single soft tap on old glass or a picture frame, slight resonance, close microphone, no music, no voices.
+Three subtle close-mic antique glass foley variations separated by half-second silences: (1) a fingernail softly tapping an old framed portrait glass pane with slight wooden frame resonance; (2) a faint eerie thermal stress tick on a large antique silvered wall mirror; (3) a small brown apothecary glass medicine bottle lightly touching a dry empty drinking glass on a wooden nightstand. Dry close recording, no shatter, no music, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+glass shattering, window breaking, champagne toast ring, bright UI ding, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** glass tap, picture frame tap, mirror resonance, subtle
+**检索关键词：** picture frame glass tap, antique mirror stress tick, apothecary glass bottle clink dry cup, subtle close mic
 
 ## 2. 用途
 

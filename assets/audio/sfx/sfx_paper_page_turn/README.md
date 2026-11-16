@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 书房 / 卧室 / 线索阅读 |
-| 依赖 / 复用 | 线索阅读 UI |
+| 资产 ID | `SFX_PaperPageTurn` |
+| 使用位置 | 书房书架 `INT_prop_study_bookshelf`、《航海保险条款》 `INT_prop_study_book`、卧室伊芙琳日记 `INT_prop_nightstand`、钟座暗格船长日志 `INT_prop_longcase_clock`、以及线索日志 UI（`CluePanel` / `InspectPanel`）翻页 |
+| 依赖 / 复用 | 线索阅读 UI 与书籍类检视交互 |
+| 剧情用途 | 区分「整叠文件拾取（`SFX_PickupPaper`）」与「单页翻动 / 从书架抽出硬壳年鉴」，还原翻阅 1897 年旧账簿、航海年鉴和日记的手感 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Old paper page turn, single sheet, dry paper fibers, 4 variations, close microphone, no music, no voices.
+Four variations of turning a single dry antique rag-paper page in a leather-bound journal, followed by a fifth sound of sliding a heavy hardcover nautical almanac book slightly out from a wooden bookshelf, separated by half-second silences, close microphone, dry, no music, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+rapid book flipping, tearing paper, modern glossy magazine, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** old paper page turn, single sheet, dry paper, close mic
+**检索关键词：** old paper page turn, antique journal single sheet, hardcover book slide from shelf, dry paper, close mic
 
 ## 2. 用途
 

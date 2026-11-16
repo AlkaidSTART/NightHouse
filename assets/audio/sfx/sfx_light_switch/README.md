@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 墙面开关或灯具交互 |
-| 依赖 / 复用 | 剧本 / 场景触发点确认后接入 |
+| 资产 ID | `SFX_LightSwitch` |
+| 使用位置 | 一层书房绿罩电台灯 `LIGHT_study_desk_lamp`（`echo_study_lamp`）；一层门厅断线壁挂电话 `INT_prop_telephone`（`clue_1897_technology`） |
+| 依赖 / 复用 | `echo_study_lamp`（首次进入书房台灯自行闪烁/开关）、`INT_prop_telephone`（拿起断线听筒听见微弱电流声） |
+| 剧情用途 | 体现世界观 §3.4 的 1897 年早期电气技术边界：「宅内以煤气灯为主，门厅与书房装了早期电灯；听筒拿起来，里面没有拨号音，只有很轻的电流声，像远处的雨」 |
 
 ## 快速使用
 
@@ -13,17 +15,30 @@
 
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
+**合集主提示词（单文件 2 段式，间隔 0.5 秒静音）：**
+
 ```text
-Old wall light switch click, single mechanical action, close microphone, no reverb, no music, no voices.
+Two 1890s early electrical device sounds separated by a half-second silence: (1) an antique brass rotary electric desk lamp switch clicking with a brief carbon-filament bulb electrical buzz; (2) lifting a heavy 1890s wall-mounted wooden telephone earpiece off its brass hook, followed by 2 seconds of faint dead-line electrical static hiss resembling distant rain (strictly no modern dial tone), then hanging the receiver back on the brass cradle. Dry close recording, no music, no voices.
 ```
+
+**分段独立生成提示词（Sub-prompts）：**
+
+- **Sub-1 `rotary_lamp_switch`（书房 `echo_study_lamp` 早期电灯旋钮开关与钨/碳丝微弱电流声，时长 0.8 秒）：**
+  ```text
+  Antique 1890s brass rotary electric lamp switch snap click followed by a tiny 0.3-second carbon filament electrical hum flicker, close microphone, dry, no music, no voices.
+  ```
+- **Sub-2 `dead_telephone_receiver`（门厅壁挂电话 `INT_prop_telephone`：「听筒拿起来，里面没有拨号音，只有很轻的电流声，像远处的雨」，时长 3.0 秒）：**
+  ```text
+  Lifting an antique Victorian ear-trumpet telephone receiver from a brass switch-hook clink, 2 seconds of very soft dead-wire electromagnetic crackle and rain-like line hiss with zero dial tone, then placing receiver back on hook, close mic, dry, no music, no voices.
+  ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+modern phone dial tone, busy signal, DTMF keypad beeps, telephone ring bell, modern plastic rocker switch, neon tube hum, music, melody, vocals, speech, clipping, distortion, cartoon sound, low quality
 ```
 
-**检索关键词：** old light switch click, wall switch
+**检索关键词：** antique brass rotary light switch click, 1890s wall telephone hook lift, dead telephone line static hiss no dial tone
 
 ## 2. 用途
 

@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 餐厅 / 书房 |
-| 依赖 / 复用 | 对质演出 |
+| 资产 ID | `SFX_ChairMove` |
+| 使用位置 | 一层餐厅第 13 席餐椅 `INT_prop_thirteenth_setting`（「椅子被人往外拉开了一点，像刚有人起身」）、一层书房对质书桌椅 `NPC_arthur_study_desk`（B9）、门厅午夜抉择（B10 `ending_refused`「格雷医生站起来，又坐下」） |
+| 依赖 / 复用 | `INT_prop_thirteenth_setting` 检视、B9 书房对质、B10 终局演出 |
+| 剧情用途 | 为餐厅第 13 席空椅以及对质/终局段落中亚瑟或格雷医生起身、坐下提供克制的实木家具空间反馈 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-A wooden dining chair dragged a short distance on an old floor, single move, close microphone, no music, no voices.
+Two close-mic variations of a heavy antique mahogany dining chair moving a short distance on an old wooden floor separated by a half-second silence: (1) wooden chair legs sliding back 15 centimeters with a low muted wood friction rub; (2) wooden chair settling slightly as someone stands up or sits down. Dry close microphone, no loud screech, no music, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+piercing chair screech, plastic chair, office swivel chair wheels, furniture crash, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** wooden chair drag, short move, old floor, close mic
+**检索关键词：** heavy mahogany chair slide short, antique wooden chair creak stand up, old wood floor, close mic dry
 
 ## 2. 用途
 

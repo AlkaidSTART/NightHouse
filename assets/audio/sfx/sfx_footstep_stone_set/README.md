@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 石阶 / 西侧露台 / 崖边 |
-| 依赖 / 复用 | PlayerController 脚步事件 |
+| 资产 ID | `SFX_FootstepStone_Set` |
+| 使用位置 | 室外抵达段车道与门廊台阶（`scene_gate`：`floor_driveway`、`porch_steps`）、西侧露台与寡妇崖石阶（`villa_cliff`：`floor_terrace`、`cliff_steps`、`cliff_platform`）、二楼浴室瓷砖地面（`villa_bathroom`：`floor_bathroom_2f`）；同时用于检视石楣刻字 `INT_prop_motto`、壁炉石沿 `INT_prop_study_hearth`、浴室地砖缝 `INT_prop_tile_stain` 时的轻触声 |
+| 依赖 / 复用 | `PlayerController` 脚步事件（`stone` / `tile` / `yard` 表面） |
+| 剧情用途 | 为开场雨夜走过湿石车道与门廊台阶（B0）、终局前踏上西侧断崖湿石阶，以及二楼冰冷瓷砖浴室提供硬质潮湿地面反馈 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Footsteps on wet stone steps outdoors at night, slow careful walk, slight water film, 5 variations, close microphone, no music, no voices.
+Five distinct single footsteps of leather-soled boots walking carefully on damp flagstone steps and wet stone paving, separated by 0.4-second silences: firm stone contact, subtle grit and thin rainwater film friction (not deep puddle splashing), dry close microphone, no music, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+deep puddle splash, wading in water, loose beach pebbles, wood creak, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** wet stone footsteps, outdoor stone steps, careful walk, variations
+**检索关键词：** damp flagstone single footsteps, wet stone steps walk, leather boot on stone, 5 variations, close mic
 
 ## 2. 用途
 

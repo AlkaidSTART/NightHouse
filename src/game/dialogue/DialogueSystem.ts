@@ -259,7 +259,14 @@ export class DialogueSystem {
       return true;
     }
 
-    const next = this.nodes.get(choice.next);
+    const nextId =
+      choice.id === 'back' &&
+      choice.next === 'npc_arthur_b5_study_01' &&
+      (session.entryNodeId === 'npc_arthur_b5_dining_01' ||
+        session.entryNodeId === 'npc_arthur_b5_gallery_01')
+        ? session.entryNodeId
+        : choice.next;
+    const next = this.nodes.get(nextId);
     if (
       !next ||
       !isInDialogueBeat(next.taskIds, session.beat) ||

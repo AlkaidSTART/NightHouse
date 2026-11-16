@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 客厅 / 伊芙琳卧室 |
-| 依赖 / 复用 | `echo_piano_note` 的备选方案 |
+| 资产 ID | `SFX_MusicBoxNote` |
+| 使用位置 | 二楼伊芙琳卧室梳妆台木盒 `INT_prop_vanity_drawer`（或客厅 `echo_piano_note` 的备选音色） |
+| 依赖 / 复用 | 客厅钢琴已确认采用 `SFX_PianoSingleNote`（中央 C）；本资产保留作为备选，或用于打开伊芙琳梳妆台抽屉木盒时偶发的单齿残响 |
+| 剧情用途 | 表现旧物中残存的少女时代机械金属音齿单音，脆而微哑，不构成旋律 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-A single music box tine note, slightly warped, long decay, old mechanism, no melody, no music, no voices.
+A single plucked steel comb tine note (pitch A4) inside an antique 1890s wooden music box: tiny brass cylinder pin plucking one slightly aged metal tooth, fragile metallic ring with a 2.5-second warm small wooden box decay, strictly one single note only, no melody, no song, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+lullaby melody, multiple notes, arpeggio, winding crank song, vocals, speech, sudden loud noises, clipping, distortion, heavy cathedral reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** single music box note, warped tine, old mechanism, long decay
+**检索关键词：** single music box tine pluck A4, antique wooden box single note decay, no melody
 
 ## 2. 用途
 

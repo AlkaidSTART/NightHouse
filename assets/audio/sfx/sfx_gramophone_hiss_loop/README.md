@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 书房 / 客厅留声机 |
-| 依赖 / 复用 | `clue_gramophone_cylinder` |
+| 资产 ID | `SFX_Gramophone_Hiss_Loop` |
+| 使用位置 | 一层书房留声机 `INT_prop_phonograph`（坐标 `[-6.4, 0.95, -3.14]`）；隐藏结局 `ending_echo` 门厅远景透音（C7：隔着一层走廊听见书房未关严的门内蜡筒空转） |
+| 依赖 / 复用 | `item.cylinder` / `clue_gramophone_cylinder` / `story.heard_recording` / `echo_gramophone` / `ending_echo` |
+| 剧情用途 | 表现 1897 年褐蜡筒留声机播放伊芙琳遗言时的表面沙沙底噪，以及「蜡筒转完最后一圈，唱针在空白处沙沙地空转」直至终局门厅念名时的持续在场感 |
 
 ## 快速使用
 
@@ -14,20 +16,21 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Seamless gramophone surface noise and mechanical motor hum, wax cylinder era, low level crackle, no music, no voices.
+Seamless 1897 Edison-style brown wax cylinder phonograph surface noise and clockwork spring motor hum: steady rhythmic wax groove rotation hiss, warm brass horn acoustic filtering, soft needle friction in a run-out groove, low level crackle, strictly no music, no singing, no speech.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+music, melody, singing, vocals, speech, modern vinyl hip-hop crackle, digital white noise, radio static, sudden loud pops, clipping, distortion, audible loop seam, cartoon sound, low quality
 ```
 
-**检索关键词：** gramophone surface noise, wax cylinder hiss, motor hum, seamless loop
+**检索关键词：** wax cylinder phonograph surface noise, antique gramophone hiss loop, spring motor hum, brass horn needle friction, seamless loop
 
 ## 2. 用途
 
-播放蜡筒前的底噪，建立“机器已经启动”的期待。
+1. **书房近场播放（`INT_prop_phonograph`）**：「铜喇叭里先是一阵沙沙声，然后响起她的声音……蜡筒转完最后一圈，唱针在空白处沙沙地空转。」
+2. **终局门厅远景透音（`ending_echo` 隐藏结局，场景建模方案 C7）**：「23 点 55 分，门厅。走廊尽头的书房门没有关严。刚才在书房播放过的留声机还没有停，铜喇叭里传来蜡筒空转的沙沙声。」此时声源挂在书房门口方向（`[-8.5, 1.0, -2.0]`），施加 1.2 kHz 低通滤波与走廊距离衰减。
 
 ## 3. 技术规格
 

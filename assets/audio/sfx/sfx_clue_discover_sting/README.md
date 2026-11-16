@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 首次发现关键线索 |
-| 依赖 / 复用 | 剧本 / 场景触发点确认后接入 |
+| 资产 ID | `SFX_ClueDiscover_Sting` |
+| 使用位置 | 首次触发 `discover-clue`（全篇 21 条线索首次收入线索日志 `ClueJournal` 时） |
+| 依赖 / 复用 | `ClueSystem` 首次发现线索事件（重复查看同一线索时不触发） |
+| 剧情用途 | 为关键破案节点（如发现诊疗记录 23:40、全家福剪痕、船长日志、留声机蜡筒）提供短促、沉静、与背景紧张层（D 调）同调的悬疑确认感 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-A restrained mystery clue sting: low sustained strings, a soft distant piano note, subtle tension, no melody hook, no percussion, no voices.
+A restrained 2.2-second Victorian mystery clue discovery sting in key of D minor: a single soft felt-muted low piano note (D3) layered with a quiet bowed cello harmonic swell (A3) that gently decays into room air, subtle psychological realization, strictly no melodic jingle, no percussion, no brass, no jump-scare stinger, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+upbeat achievement fanfare, arcade victory jingle, horror shriek stinger, drums, cymbals, brass, vocals, speech, sudden loud noises, clipping, distortion, cartoon sound, low quality
 ```
 
-**检索关键词：** mystery clue sting, low strings, soft piano, restrained
+**检索关键词：** restrained mystery clue sting D minor, felt piano and low cello swell, subtle realization cue, no melody
 
 ## 2. 用途
 

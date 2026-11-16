@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 客厅 / 走廊 / 卧室厚地毯 |
-| 依赖 / 复用 | PlayerController 脚步事件 |
+| 资产 ID | `SFX_FootstepCarpet_Set` |
+| 使用位置 | 一层/二层走廊长地毯（`villa_corridor`）、书房壁炉前新换地毯（`study_hearth_rug`）、客厅沙发区地毯、伊芙琳卧室床边区域 |
+| 依赖 / 复用 | `PlayerController` 脚步事件（按地面区域/材质切换） |
+| 剧情用途 | 表现维多利亚宅邸厚织物地毯吸音后的沉闷步伐，与木地板脚步形成鲜明的材质过渡（特别是踏上书房壁炉前那块「比周围新、压着黑墨水渍」的地毯时） |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Soft footsteps on a thick old carpet indoors, slow walk, muffled heel-to-toe, 5 variations, close microphone, no reverb, no music, no voices.
+Five distinct single footsteps of leather shoes walking slowly on a thick antique wool rug laid over wooden floorboards, separated by 0.4-second silences: muffled soft heel-to-toe thud, subtle wool fabric compression, dry close microphone, no reverb, no music, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+hard wood clack, stone click, gravel crunch, water splash, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** carpet footsteps, muffled indoor walk, soft steps, variations
+**检索关键词：** thick wool carpet single footsteps, muffled indoor rug walk, soft heel to toe, 5 variations, dry close mic
 
 ## 2. 用途
 

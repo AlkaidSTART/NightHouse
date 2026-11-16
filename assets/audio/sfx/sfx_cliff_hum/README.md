@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 西侧露台 / 崖边 |
-| 依赖 / 复用 | `echo_cliff_song` |
+| 资产 ID | `SFX_CliffHum` |
+| 使用位置 | 西侧露台栏杆 `INT_prop_terrace_railing` / 寡妇崖 `villa_cliff` |
+| 依赖 / 复用 | `echo_cliff_song`（首次靠近露台栏杆时触发，与 `AMB_CliffWindSea_Loop` 叠加） |
+| 剧情用途 | 强化伊芙琳在寡妇崖边的残留存在感，同时符合世界观「回响必须可被解释为风穿过礁石缝隙」的写实悬疑规则 |
 
 ## 快速使用
 
@@ -14,16 +16,17 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-A faint wordless female hum carried by sea wind, distant and ambiguous, 4 seconds, no intelligible words, no music, no sudden sounds.
+Eerie coastal wind whistling through hollow sea-cliff rock crevices that subtly resembles a faint, distant, wordless female breathy hum on a single mournful pitch (D4 to A3), ambiguous between natural wind resonance and a human sigh, 4.5 seconds, fading into sea air, no lyrics, no words, no musical accompaniment, no sudden sounds.
 ```
 
 **负向提示词（Negative prompt）**
+> 注意：本条不要在负向提示词中写泛化的 `vocals`，否则 AI 模型会完全过滤掉似人声的哼鸣质感；只排除歌词、说话与合唱。
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+lyrics, intelligible speech, talking, choir, operatic singing, musical instruments, piano, strings, horror scream, ghost wail, sudden loud noises, clipping, distortion, cartoon sound, low quality
 ```
 
-**检索关键词：** distant female hum, sea wind, ambiguous, wordless, subtle
+**检索关键词：** distant female hum in wind, resonant sea cave wind tone, ambiguous wordless breathy hum, subtle eerie wind
 
 ## 2. 用途
 

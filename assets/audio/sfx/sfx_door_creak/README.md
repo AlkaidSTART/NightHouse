@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 二楼走廊 / 伊芙琳卧室 |
-| 依赖 / 复用 | `echo_door_ajar` |
+| 资产 ID | `SFX_DoorCreak` |
+| 使用位置 | 二楼走廊尽头伊芙琳卧室门 `DOOR_evelyn_room`（坐标 `[-10, 3.4, 0]`） |
+| 依赖 / 复用 | `echo_door_ajar`（玩家独自经过二楼走廊且霍尔太太不在附近时触发） |
+| 剧情用途 | 表现二楼走廊穿堂风吹动伊芙琳卧室门自行缓开一条缝的「回响」，把玩家视线引向全宅唯一不亮灯的房间 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-A single slow wooden door creak, hinge friction, very slow opening, close microphone, no latch click, no thud, no music, no voices.
+Three variations of a slow antique wooden bedroom door creaking ajar by a few inches on dry brass hinges, separated by half-second silences: delicate wood fiber groan and slow hinge friction, very quiet and eerie, strictly no handle turn, no latch click, no door slam, close microphone, dry, no music, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+doorknob rattle, metal latch click, door slam, loud thud, monster growl, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** slow door creak, hinge friction, old wooden door, close mic
+**检索关键词：** slow door creak ajar, subtle hinge friction, old wooden door groan, no latch, close mic
 
 ## 2. 用途
 

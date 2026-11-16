@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 玩家移动 |
-| 依赖 / 复用 | 剧本 / 场景触发点确认后接入 |
+| 资产 ID | `SFX_FootstepWood_Set` |
+| 使用位置 | 门厅 `villa_hall`、客厅 `villa_parlor`、餐厅 `villa_dining`、书房 `villa_study`、储物间 `villa_storage`、主楼梯（`stair_a`/`stair_b`）、二层回廊（`gallery`）与伊芙琳卧室木地板；同时用于 `echo_footsteps`（楼上远景脚步）与 `puzzle_safe` 三次失败后书房门外格雷医生的脚步声 |
+| 依赖 / 复用 | `PlayerController` 行走/奔跑事件、`echo_footsteps`、`puzzle_safe` 失败事件 |
+| 剧情用途 | 第一人称探索最核心的移动反馈，同时承载「静止 10 秒听见楼上有人走动（`echo_footsteps`）」与「保险箱三次失败后门外传来脚步声停在书房门口」的空间叙事 |
 
 ## 快速使用
 
@@ -14,20 +16,22 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Old wooden floor footsteps, slow indoor walk, soft heel-to-toe contact, 4 variations, close microphone, no reverb, no music, no voices.
+Five distinct single footsteps of leather-soled 1890s dress shoes walking slowly on antique creaky mahogany floorboards, separated by 0.4-second silences: soft heel-to-toe contact, subtle old wood plank flex, dry close microphone recording, strictly isolated single steps, no hall reverb, no music, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+fast running, tap dancing, high heels stiletto, sneakers squeak, gravel, water splash, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** wooden floor footstep, indoor walk, close mic, variations
+**检索关键词：** leather shoe wooden floor single footsteps, antique floorboards walk, close mic dry, 5 variations
 
 ## 2. 用途
 
-为第一人称移动提供空间和材质反馈。
+1. **玩家第一人称移动**：在木地板（`floor_house`、`floor_gallery_2f`、`floor_evelyn_2f`）和木楼梯（`stair_a`、`stair_b`）上随机轮播 5 个单步变体，避免机械重复。
+2. **`echo_footsteps`（楼上回响脚步）**：玩家在门厅或走廊静止超过 10 秒时，在二楼位置（`y = 3.4`）以 600 Hz 低通滤波 + 轻微木梁吱呀声慢速连播 3 步。
+3. **`puzzle_safe` 第三次失败演出**：在书房门外走廊（`[-8.5, 0, -1.1]`）连播 4 步由远及近并停在门前，随后触发格雷台词「有些东西，锁着是有原因的。」
 
 ## 3. 技术规格
 

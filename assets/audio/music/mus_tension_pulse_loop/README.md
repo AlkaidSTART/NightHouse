@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 全场景（强度 ≥2） |
-| 依赖 / 复用 | TensionDirector 实现后接入 |
+| 资产 ID | `MUS_Tension_Pulse_Loop` |
+| 使用位置 | 全场景（`TensionDirector` 强度 ≥2 叠加在 `MUS_Tension_Base_Loop` 之上） |
+| 依赖 / 复用 | `story.clock_repaired`（修好落地钟）、`story.heard_recording`（听完蜡筒录音）或 `story.knows_injury_at_home`（发现浴室血迹）后激活 |
+| 剧情用途 | 以每 2 秒一次（60 BPM 二分音符，与落地钟秒针同速）的低沉闷音脉冲推进「午夜临近、证据闭环」的紧迫感 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Seamless slow tension pulse: muted low piano hits every two seconds, soft sub thump, no melody, no percussion kit, no vocals, restrained, 60 seconds, seamless loop.
+Seamless slow tension pulse stem at 60 BPM in root key D: felt-muted low piano and damped double bass pizzicato hit on note D1 once every 2 seconds (30 hits in 60 seconds), soft warm sub-bass thump, strictly no melody, no drum kit, no cymbals, no vocals, restrained Victorian chamber Noir texture, exact 60 seconds seamless loop.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+melody, chord progression, drum kit, snare, hi-hat, cymbals, EDM kick, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, cartoon sound, low quality
 ```
 
-**检索关键词：** slow tension pulse, muted piano hit, soft sub thump, seamless loop, no melody
+**检索关键词：** slow tension pulse 60 bpm root D, felt muted low piano hit every two seconds, soft sub thump, seamless loop 60s
 
 ## 2. 用途
 

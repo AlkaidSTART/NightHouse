@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 对质、录音、闪回段落 |
-| 依赖 / 复用 | TensionDirector 实现后接入 |
+| 资产 ID | `MUS_Tension_Shimmer_Loop` |
+| 使用位置 | 书房留声机播放（B8）、亚瑟/格雷对质（B9）、门厅午夜抉择（B10）及闪回段落（强度 3） |
+| 依赖 / 复用 | `story.heard_recording`、`story.case_ready`、`story.midnight` 激活，与 `MUS_Tension_Base_Loop`（D1）同调叠加 |
+| 剧情用途 | 在真相揭露与当面对质时叠加极轻的弦乐泛音，制造「空气变薄、耳鸣般的窒息感」 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Seamless high shimmer texture: bowed strings harmonics, glass-like overtones, very quiet, no melody, no rhythm, no vocals, 60 seconds, seamless loop.
+Seamless high tension shimmer stem in key of D: fragile bowed violin sul ponticello harmonics and glass-like overtones sustaining high D5 and A5, very quiet and airy, no melody, no rhythm, no percussion, no vocals, restrained psychological suspense texture, 60 BPM, exact 60 seconds seamless loop.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+melody, rhythm, drums, piercing screech, horror stinger, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, cartoon sound, low quality
 ```
 
-**检索关键词：** high string harmonics texture, glass overtones, quiet tension, seamless loop, no melody
+**检索关键词：** high string harmonics texture D5, sul ponticello shimmer, glass overtones, quiet tension, seamless loop 60s
 
 ## 2. 用途
 

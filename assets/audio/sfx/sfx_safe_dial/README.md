@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 书房保险箱 |
-| 依赖 / 复用 | `puzzle_safe` |
+| 资产 ID | `SFX_SafeDial` |
+| 使用位置 | 一层书房四位数字保险箱 `INT_prop_safe`（`puzzle_safe`，坐标 `[-7.95, 0.6, -7.34]`） |
+| 依赖 / 复用 | `puzzle_safe` 密码输入交互与错误提交反馈 |
+| 剧情用途 | 对应 `inspectables.ts` 与 `puzzles.ts`：「一只老式四位数字保险箱嵌在书架旁……转盘上第 3、4 位磨得最亮。你转了转，内部传来干涩的卡响，门纹丝不动。」涵盖拨动数字转盘刻度与密码错误时的干涩机械卡死声 |
 
 ## 快速使用
 
@@ -13,17 +15,19 @@
 
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
+**合集主提示词（单文件 4 段式：3 个转盘拨动变体 + 1 个密码错误干涩卡响，间隔 0.4 秒静音）：**
+
 ```text
-Close mechanical combination safe dial clicks, dry metal detents, slow rotation, 4 variations, no music, no voices.
+Four close-mic mechanical sounds of an antique 1897 cast-iron combination safe separated by 0.4-second silences: (1-3) three variations of heavy brass dial rotation with crisp internal tumbler wheel clicks; (4) a dry stubborn metallic handle jam clunk when testing a wrong combination code and the bolt refuses to retract. Dry close recording, no electronic beeps, no music, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+electronic keypad beep, digital buzzer, alarm siren, safe door opening, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** safe dial clicks, combination lock, metal detents, close mic
+**检索关键词：** antique safe dial clicks, mechanical combination tumbler, jammed safe handle clunk, dry metal detents, close mic
 
 ## 2. 用途
 

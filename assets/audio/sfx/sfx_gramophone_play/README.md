@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 书房 / 客厅留声机 |
-| 依赖 / 复用 | `clue_gramophone_cylinder` |
+| 资产 ID | `SFX_Gramophone_Play` |
+| 使用位置 | 一层书房留声机 `INT_prop_phonograph`（坐标 `[-6.4, 0.95, -3.14]`）、`fb_gramophone` 闪回 |
+| 依赖 / 复用 | 持有 `item_cylinder` 后在书房操作留声机（`clue_gramophone_cylinder`、`story.heard_recording`） |
+| 剧情用途 | 还原「你把蜡筒嵌进转轴，放下唱针」与「蜡筒转完最后一圈」的 1897 年机械操作仪式感 |
 
 ## 快速使用
 
@@ -13,17 +15,30 @@
 
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
+**合集主提示词（单文件 2 段式：`start` 与 `stop`，间隔 0.5 秒静音）：**
+
 ```text
-Gramophone start and stop mechanics: needle lowering, motor engaging, wax cylinder friction, mechanical click at stop, no music, no voices.
+Two close-mic mechanical operations of an 1897 wax cylinder phonograph separated by a half-second silence: (1) sliding a hollow brown wax cylinder onto a tapered brass mandrel, releasing the spring governor lever, motor spinning up and lowering the stylus needle onto the wax groove; (2) stylus reaching the end of the cylinder with a metallic stop lever click and spring motor spinning down. Dry close recording, no music, no voices.
 ```
+
+**分段独立生成提示词（Sub-prompts）：**
+
+- **Sub-1 `cylinder_start`（嵌上蜡筒、拨开制动杆、放下唱针，时长 2.0 秒）：**
+  ```text
+  Sliding a hollow wax cylinder onto a brass phonograph mandrel, clicking the metal start lever, clockwork governor whirring up and needle stylus dropping softly onto wax, close mic, dry, no music, no voices.
+  ```
+- **Sub-2 `cylinder_stop`（唱针滑到末尾、抬针或机械停转，时长 1.2 秒）：**
+  ```text
+  Antique wax cylinder phonograph needle lifting off the groove with a small brass lever click and clockwork motor gently winding down to a stop, close mic, dry, no music, no voices.
+  ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+modern DJ vinyl scratch, cassette tape button, electronic beep, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** gramophone start stop, needle drop, motor engage, wax cylinder
+**检索关键词：** wax cylinder phonograph start stop, needle drop on wax, clockwork governor engage, antique gramophone lever
 
 ## 2. 用途
 

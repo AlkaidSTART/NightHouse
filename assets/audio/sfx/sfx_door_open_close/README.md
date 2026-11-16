@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 房门交互 |
-| 依赖 / 复用 | 剧本 / 场景触发点确认后接入 |
+| 资产 ID | `SFX_DoorOpenClose` |
+| 使用位置 | 全场景 12 扇门（`DOOR_gate` 室外铁门、`DOOR_front` 别墅正门、7 扇室内可开木门、以及 6 扇初始上锁门与 3 扇永久锁闭门 `DOOR_sealed_*`） |
+| 依赖 / 复用 | `DoorSystem.ts` 开门、关门、锁闭提示（`门锁着。`）与钥匙解锁事件 |
+| 剧情用途 | 覆盖从开场第一声「推开生锈铁艺大门（B0a）」到「敲正门并关门隔绝风雨（B0c）」、再到室内探索时木门开合、拧不动锁把及用钥匙打开储物间/伊芙琳卧室的全部门交互反馈 |
 
 ## 快速使用
 
@@ -13,17 +15,46 @@
 
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
+**合集主提示词（单文件 6 段式，每段间隔 0.5 秒静音）：**
+
 ```text
-Old wooden interior door opening and closing: slow hinge creak, metal latch click, soft wooden thud at close, close microphone, no reverb, no music, no voices.
+Six distinct 1897 Victorian door interaction sounds separated by half-second silences, dry close microphone: (1) heavy wooden interior door brass handle turn, latch release and short hinge creak opening; (2) wooden interior door closing with a solid wood thud and brass latch click; (3) locked antique door brass knob rattling twice against a deadbolt without opening; (4) old brass key inserting into a mortise lock and turning heavy iron bolt; (5) outdoor rusted wrought-iron estate gate creaking open slowly in the rain; (6) three firm knocks on a heavy oak front door followed by heavy door closing shut. No music, no voices.
 ```
+
+**分段独立生成提示词（Sub-prompts，供逐条生成后拼接）：**
+
+- **Sub-1 `wood_open`（室内木门打开：`DOOR_parlor`/`dining`/`study`/`storage`/`terrace`/`evelyn_room`/`bathroom`，时长 1.2 秒）：**
+  ```text
+  Old Victorian solid wood interior door opening: brass handle depress, mortise latch click, short warm wood hinge creak, close microphone, dry, no music, no voices.
+  ```
+- **Sub-2 `wood_close`（室内木门关闭，及 B0c 正门在身后关上隔绝雨声，时长 1.0 秒）：**
+  ```text
+  Old solid wood interior door closing: gentle air push, firm wooden frame thud, brass latch clicking into strike plate, close microphone, dry, no music, no voices.
+  ```
+- **Sub-3 `locked_rattle`（门上锁反馈 `LOCKED_MESSAGE = '门锁着。'`，用于未解锁的剧情门与 `DOOR_sealed_*`，时长 0.8 秒）：**
+  ```text
+  Locked antique Victorian wooden door: brass doorknob turned and rattled twice against a stuck mortise lock bolt, solid wood resistance, door does not open, close mic, dry, no music.
+  ```
+- **Sub-4 `key_unlock`（使用 `item_storage_key` 或 `item_housekeeper_key` 首次解锁房门，时长 1.0 秒）：**
+  ```text
+  Heavy antique brass skeleton key sliding into an old iron door keyhole and turning the heavy deadbolt with a metallic clunk, close mic, dry, no music.
+  ```
+- **Sub-5 `iron_gate_open`（B0a 推开室外车道铁门 `DOOR_gate`，故事线 §1.5「玩家制造的第一个声音」，时长 2.2 秒）：**
+  ```text
+  Heavy rusted Victorian wrought-iron estate gate being pushed open on wet stone hinges, long metallic hinge groan and iron latch clank, outdoor close mic, no music, no voices.
+  ```
+- **Sub-6 `front_door_knock`（B0c 门廊敲响正门 `DOOR_front`，时长 1.2 秒）：**
+  ```text
+  Three firm restrained knocks with a heavy brass door knocker on a thick wet oak manor front door, close mic, dry, no music, no voices.
+  ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+modern electronic lock beep, automatic sliding door, screen door slap, glass shatter, horror slam, music, melody, vocals, speech, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** old wooden door creak, latch click, close thud
+**检索关键词：** old wooden door open close, locked doorknob rattle, skeleton key unlock, rusted iron gate creak, brass door knocker
 
 ## 2. 用途
 

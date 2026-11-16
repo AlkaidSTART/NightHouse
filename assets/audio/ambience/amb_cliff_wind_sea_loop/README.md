@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 西侧露台 / 崖边 |
-| 依赖 / 复用 | 拿到录音或霍尔太太证词后解锁 |
+| 资产 ID | `AMB_CliffWindSea_Loop` |
+| 使用位置 | 西侧露台与寡妇崖 `villa_cliff`（主环境层）；室外抵达段 `scene_gate`（铁门、枯树篱车道、门廊，与雨声层混合） |
+| 依赖 / 复用 | 开场 B0（`scene_gate`）即使用；室内解锁 `DOOR_terrace`（`story.heard_recording` 或 `clue.hall_testimony`）进入 `villa_cliff` 时全量淡入 |
+| 剧情用途 | 表现北海沿岸寡妇崖（Widow's Cliff）与崖下墓园浅滩的午夜满潮海浪（与 `clue_tide_table` 满潮 00:00 呼应），承载 `echo_cliff_song`、纪念石（`INT_prop_memorial_stone`）与 `fb_summer` / `fb_cliff` 闪回 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Seamless exposed cliff ambience at night: strong sea wind, distant waves breaking on rocks far below, rain gusts, no voices, no music, no sudden loud impacts.
+Seamless exposed coastal cliff ambience on a stormy 1897 night: cold North Sea wind sweeping across wet stone terrace, heavy high-tide waves crashing against rocky shoals far below the cliff, rain gusts in the wind, no seagulls, no voices, no music, no thunderclaps.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+seagulls, birds, daytime beach sound, thunderclap, ship horn, music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, cartoon sound, low quality
 ```
 
-**检索关键词：** cliff sea wind night ambience, distant waves, rain gusts, seamless loop
+**检索关键词：** cliff sea wind night ambience, distant waves on rocks, cold coastal wind, rain gusts, seamless loop, no birds
 
 ## 2. 用途
 

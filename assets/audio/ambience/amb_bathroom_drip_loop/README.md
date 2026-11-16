@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 浴室 |
-| 依赖 / 复用 | B4 医生到访后解锁 |
+| 资产 ID | `AMB_BathroomDrip_Loop` |
+| 使用位置 | 二楼浴室 `villa_bathroom`（铸铁浴缸 `bathroom_tub`、洗手盆 `bathroom_basin`、药柜 `INT_prop_medicine_cabinet`、毛巾架 `INT_prop_towel_rack`、地砖缝 `INT_prop_tile_stain`） |
+| 依赖 / 复用 | B4 格雷医生到访（`story.met_doctor`）解锁 `DOOR_bathroom` 后接入 |
+| 剧情用途 | 通过冰冷瓷砖反射与缓慢水滴，烘托伊芙琳受伤后曾在此被擦洗处理的压抑现场（`clue_bathroom_trace`），并作为 `echo_cold_spot` 的声音基底 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Seamless ambience of a cold Victorian bathroom at night: slow water drips into a tub, tiled room reverb, faint pipe resonance, no music, no voices, no sudden sounds.
+Seamless ambience of a small cold 1897 Victorian tiled bathroom at night: irregular slow water drops dripping from a brass faucet into a cast-iron bathtub, cold ceramic tile room resonance, faint old copper pipe hum, no running shower, no flushing, no music, no voices, no sudden loud sounds.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+running water stream, shower, toilet flush, footsteps, music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, cathedral reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** old bathroom night ambience, water drip, tile reverb, seamless loop
+**检索关键词：** old bathroom night ambience, irregular water drip, cast iron tub, tile reverb, pipe hum, seamless loop
 
 ## 2. 用途
 

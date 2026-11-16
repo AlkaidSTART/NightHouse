@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 钟响、录音、结局选择前 |
-| 依赖 / 复用 | TensionDirector 实现后接入 |
+| 资产 ID | `MUS_Tension_Sub_Swell` |
+| 使用位置 | 落地钟十三下敲响前（`echo_clock_thirteen`）、书房留声机放下唱针前（`INT_prop_phonograph`）、门厅午夜签字/拒签抉择前（B10） |
+| 依赖 / 复用 | 配合环境音瞬时衰减（Ducking -6 dB）单次播放 |
+| 剧情用途 | 关键叙事节点前的 3.5 秒留白填充：先抽空周围雨声，再让 D1 次低频缓慢托起，把注意力完全聚焦到接下来的钟声或人声 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-A single restrained sub-bass swell, 3 seconds, rising from silence to low pressure, no impact hit, no distortion, no music, no vocals.
+A single restrained low sub-bass tension swell on note D1 (36.7 Hz) and D2 (73.4 Hz), 3.5 seconds duration, smoothly rising from silence to a deep warm room-pressure crest and gently releasing without any impact hit, no boom, no brass braam, no distortion, no melody, no vocals.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+impact hit, trailer boom, brass horn, jump scare stinger, metallic crash, music, melody, vocals, speech, clipping, distortion, cartoon sound, low quality
 ```
 
-**检索关键词：** sub bass swell, rising low tension, no impact, cinematic restraint
+**检索关键词：** sub bass swell D1, rising low pressure tension, no impact hit, cinematic restraint 3.5s
 
 ## 2. 用途
 

@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 门厅 / 大厅 |
-| 依赖 / 复用 | B1 门厅开场后接入 |
+| 资产 ID | `AMB_HallRainWindow_Loop` |
+| 使用位置 | 门厅 `villa_hall`、客厅 `villa_parlor`、餐厅 `villa_dining`；并在室外 `scene_gate` 与二楼 `villa_evelyn_room`（低通闷化）中分层复用 |
+| 依赖 / 复用 | B1 门厅开场（`story.arrived`）后作为室内主雨声层接入 |
+| 剧情用途 | 建立暴风雨夜被困石宅的隔绝感（B0c 进门关门后雨声从室外直接冲刷切换为隔着高窗玻璃的沉闷敲击） |
 
 ## 快速使用
 
@@ -14,20 +16,22 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Seamless nighttime ambience in a Victorian entrance hall: rain striking tall windows, low wind against glass, faint wood floor resonance, distant clock tick, subtle room tone, no music, no voices, no sudden sounds.
+Seamless nighttime interior ambience in a high-ceilinged 1897 Victorian stone entrance hall: steady autumn rain pattering against tall leaded glass windows, low coastal wind pressing against window frames, deep wooden hall room tone, subtle air resonance, strictly no clock ticking, no chimes, no thunder claps, no music, no voices, no sudden sounds.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+clock ticking, clock chime, thunderclap, lightning crack, footsteps, music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy cathedral reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** Victorian hall rain window ambience, interior rain, old house room tone, seamless loop
+**检索关键词：** Victorian hall rain window ambience, interior rain on glass, old house room tone, seamless loop, no clock, no thunder
 
 ## 2. 用途
 
-门厅与大厅的区域环境层，与全局夜间底噪交叉淡化，建立开场的第一层空间感。
+门厅、客厅与餐厅的带窗区域环境层，与全局夜间底噪 `AMB_HouseNight_Loop` 交叉淡化，建立开场的第一层空间感。
+- **严禁包含走钟滴答声**：门厅落地钟在 `story.clock_repaired` 前处于停摆状态，滴答声必须完全由 `SFX_Clock_Tick_Loop` 独立控制。
+- **严禁包含炸雷声**：避免循环周期被玩家凭雷声识别出来。
 
 ## 3. 技术规格
 

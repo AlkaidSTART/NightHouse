@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 书房 |
-| 依赖 / 复用 | B2 后解锁书房时接入 |
+| 资产 ID | `AMB_StudyFireRain_Loop` |
+| 使用位置 | 一层书房 `villa_study`（主环境层）；一层客厅 `villa_parlor` 壁炉旁（`LIGHT_parlor_fire` 低音量局部叠加） |
+| 依赖 / 复用 | B2 初见亚瑟（`story.met_arthur`）解锁书房后接入；客厅开场即可以 -4 dB 叠加壁炉温暖余烬感 |
+| 剧情用途 | 营造伊芙琳死亡现场（书房壁炉石沿 `INT_prop_study_hearth`、灰烬 `INT_prop_study_ashes`、炉前新地毯 `INT_prop_study_rug`）的余烬与冷雨反差，烘托保险箱解谜、留声机播放（B8）与亚瑟对质（B9） |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Seamless interior ambience of a Victorian study at night: rain on windows, soft fireplace embers crackling, faint gas lamp hiss, paper and leather room tone, no music, no voices.
+Seamless interior ambience of a wood-lined 1897 Victorian study at night: rain tapping against window glass, dying fireplace embers softly crackling and shifting in a stone hearth, quiet book-lined room tone, no roaring flames, no clock ticking, no music, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+roaring bonfire, loud fire pops, clock ticking, music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** Victorian study night ambience, rain window, fireplace embers, gas lamp hiss, seamless loop
+**检索关键词：** Victorian study night ambience, rain window, dying fireplace embers, quiet library room tone, seamless loop
 
 ## 2. 用途
 

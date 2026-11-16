@@ -494,12 +494,12 @@ const interactables: SceneInteractable[] = [
   interact('INT_prop_corridor_mirror', [-7.6, 1.6, -0.22], 0.35, '查看走廊镜', '走廊镜，echo_mirror_delay 的位置。'),
   // 书房
   interact('INT_prop_tide_table', [-7.25, 1.55, -2.22], 0.35, '查看潮汐表', '潮汐表（clue_tide_table）。'),
-  interact('INT_prop_study_desk_drawer', [-7.5, 0.35, -4.74], 0.3, '搜索书桌抽屉', '书桌最下层抽屉（clue_clock_key、clue_medical_record）。'),
+  interact('INT_prop_study_desk_drawer', [-7.5, 0.5, -4.74], 0.4, '搜索书桌抽屉', '书桌最下层抽屉（clue_clock_key、clue_medical_record）。'),
   interact('INT_prop_study_hearth', [-10.34, 0.55, -5.4], 0.25, '查看壁炉石沿', '壁炉石沿（clue_burned_pages）。'),
   interact('INT_prop_study_ashes', [-10.34, 0.25, -4.5], 0.2, '查看壁炉灰烬', '壁炉灰烬里的账页（clue_burned_pages）。'),
   interact('INT_prop_study_rug', [-9.4, 0.12, -5], 0.4, '查看炉前地毯', '炉前地毯（clue_burned_pages）。'),
   interact('INT_prop_safe', [-7.95, 0.6, -7.34], 0.35, '查看保险箱', '保险箱，puzzle_safe 的操作位置。'),
-  interact('INT_prop_phonograph', [-6.4, 0.95, -3.14], 0.3, '查看留声机', '蜡筒留声机（clue_gramophone_cylinder 的播放位置）。'),
+  interact('INT_prop_phonograph', [-6.4, 0.95, -3.55], 0.45, '查看留声机', '蜡筒留声机（clue_gramophone_cylinder 的播放位置）。'),
   interact('INT_prop_study_bookshelf', [-9.7, 1.5, -7.35], 0.4, '查看书架', '书架上半是航海年鉴，下半是装订成册的账簿。'),
   interact('INT_prop_study_book', [-9.9, 2.35, -7.38], 0.2, '翻开《航海保险条款》', '书页停在船舶险一章，页边有铅笔批注。'),
   // 储物间
@@ -570,10 +570,7 @@ const npcSpots: SceneNpcSpot[] = [
     position: [-7.5, 0, -6.8],
     yaw: 168,
     priority: 35,
-    activeWhen: [
-      [{ flag: 'story.knows_coverup' }],
-      [{ flag: 'clue.shipping_ledger' }],
-    ],
+    activeWhen: [[{ flag: 'story.case_ready' }]],
   },
   { id: 'NPC_arthur_gallery_rail', npcId: 'npc_arthur', label: '二楼栏杆边（十三下之后）', position: [-2.5, F2, -0.5], yaw: -160, priority: 30, activeWhen: [[{ flag: 'story.clock_repaired' }]] },
   { id: 'NPC_arthur_signing_table', npcId: 'npc_arthur', label: '签字桌边（B10）', position: [0, 0, 3.15], yaw: 180, priority: 40, activeWhen: [[{ flag: 'story.midnight' }]] },

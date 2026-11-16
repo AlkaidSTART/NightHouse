@@ -423,10 +423,22 @@ export const arthurDialogues: readonly DialogueNode[] = [
     reenterLines: [{ speaker: 'npc', text: '你还站在楼下看我。' }],
     choices: [
       {
+        id: 'ask_scratch',
+        text: '你左腕上的抓痕，不是自己弄的。',
+        next: 'npc_arthur_b5_study_admission_01',
+        conditions: [{ flag: 'clue.arthur_scratch' }],
+      },
+      {
         id: 'ask_cloak',
         text: '你也去过崖边。那件斗篷还没干。',
         next: 'npc_arthur_b5_cloak_01',
         conditions: [{ flag: 'clue.arthur_cloak' }],
+      },
+      {
+        id: 'ask_recording',
+        text: '她留了一段话。你听过吗？',
+        next: 'npc_arthur_b5_recording_01',
+        conditions: [{ flag: 'story.heard_recording' }],
       },
       {
         id: 'ask_ledger',

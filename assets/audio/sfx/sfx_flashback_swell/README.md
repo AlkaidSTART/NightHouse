@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 全场景闪回 |
-| 依赖 / 复用 | `fb_*` 闪回演出 |
+| 资产 ID | `SFX_FlashbackSwell` |
+| 使用位置 | 全场景 8 处非交互闪回（`fb_letter`、`fb_summer`、`fb_photo`、`fb_fireplace`、`fb_pendulum`、`fb_luggage`、`fb_gramophone`、`fb_cliff`） |
+| 依赖 / 复用 | 触碰关键证物触发 2–4 秒闪回时的进入与退出过渡 |
+| 剧情用途 | 划定「现实调查」与「那一夜/童年夏天记忆碎片」的听觉边界，克制低沉，不做惊吓冲击 |
 
 ## 快速使用
 
@@ -13,17 +15,19 @@
 
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
+**合集主提示词（单文件 2 段式：`enter` 与 `exit`，间隔 0.5 秒静音）：**
+
 ```text
-A short reverse swell into a muffled memory, then a soft low-passed tail, 3 seconds, no melody, no voices, no sudden impact.
+Two restrained psychological memory transition sounds in root key D separated by a half-second silence: (1) Flashback Enter (1.8 seconds): a soft reversed low-passed air and warm string resonance gently pulling inward into a muffled underwater-like stillness without any sharp hit; (2) Flashback Exit (1.8 seconds): a gentle low-frequency exhale releasing back into clear room air. No melody, no vocals, no horror stinger.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+jump scare hit, loud cymbal crash, sci-fi whoosh laser, white noise riser, music melody, vocals, speech, clipping, distortion, cartoon sound, low quality
 ```
 
-**检索关键词：** reverse swell, memory transition, low-passed tail, subtle
+**检索关键词：** reverse memory swell transition, muffled flashback enter exit, low-passed air pull, subtle cinematic transition
 
 ## 2. 用途
 

@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 抽屉、柜门交互 |
-| 依赖 / 复用 | 剧本 / 场景触发点确认后接入 |
+| 资产 ID | `SFX_DrawerOpenClose` |
+| 使用位置 | 书房书桌最下层抽屉 `INT_prop_study_desk_drawer`、卧室梳妆台抽屉与蜡筒木盒 `INT_prop_vanity_drawer`、卧室大衣柜 `INT_prop_wardrobe`、浴室药柜 `INT_prop_medicine_cabinet`、储物间行李箱 `INT_prop_luggage` 与旧物箱 `INT_prop_old_items_box` |
+| 依赖 / 复用 | 家具容器类检视点（`InspectPanel` 打开时触发） |
+| 剧情用途 | 精确匹配场景文本中的容器差异：如书房「最下层抽屉卡了一下才拉开」、梳妆台「抽屉里压着一只木盒」、卧室「打开衣柜」以及浴室「打开药柜」 |
 
 ## 快速使用
 
@@ -13,17 +15,38 @@
 
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
+**合集主提示词（单文件 4 段式，每段间隔 0.5 秒静音）：**
+
 ```text
-Old wooden drawer sliding open and closing, dry wood friction, soft stop, close microphone, no reverb, no music, no voices.
+Four distinct close-mic antique Victorian wooden furniture opening sounds separated by half-second silences: (1) a heavy wooden desk bottom drawer sticking slightly on its runners before sliding open with a brass pull clink; (2) a lighter wooden vanity drawer sliding open and lifting a small hinged wooden jewelry box lid; (3) a tall mahogany wardrobe cabinet door unlatching and creaking open; (4) a small wall-mounted wooden medicine cabinet door opening with a light glass-and-wood click. Dry close recording, no music, no voices.
 ```
+
+**分段独立生成提示词（Sub-prompts）：**
+
+- **Sub-1 `stuck_desk_drawer`（书房书桌最下层抽屉 `INT_prop_study_desk_drawer`：「最下层抽屉卡了一下才拉开」，时长 1.3 秒）：**
+  ```text
+  Old wooden desk drawer sticking briefly against dry wood runners, a firm tug overcoming resistance, then sliding open with a brass drop-handle clink, close mic, dry, no music.
+  ```
+- **Sub-2 `vanity_drawer_and_box`（卧室梳妆台抽屉与蜡筒木盒 `INT_prop_vanity_drawer` / 储物间旧物箱 `INT_prop_old_items_box`，时长 1.2 秒）：**
+  ```text
+  Small antique wooden vanity drawer sliding open smoothly followed by unclasping a small velvet-lined wooden box lid, close mic, dry, no music.
+  ```
+- **Sub-3 `wardrobe_door`（卧室大衣柜门 `INT_prop_wardrobe`，时长 1.4 秒）：**
+  ```text
+  Tall antique mahogany wardrobe door latch releasing and hollow wooden cabinet door swinging open with a low wood creak, close mic, dry, no music.
+  ```
+- **Sub-4 `medicine_cabinet_and_trunk`（浴室墙面药柜 `INT_prop_medicine_cabinet` / 储物间行李箱扣 `INT_prop_luggage`，时长 0.9 秒）：**
+  ```text
+  Small wooden wall medicine cabinet door opening with a light magnetic/brass catch click and subtle wood stop, close mic, dry, no music.
+  ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+modern metal ball-bearing office drawer, slam shut, glass breaking, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** wooden drawer slide, old furniture, close thud
+**检索关键词：** stuck wooden desk drawer slide, antique wardrobe door open, small wooden box lid, medicine cabinet door click
 
 ## 2. 用途
 

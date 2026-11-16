@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 餐厅 |
-| 依赖 / 复用 | `clue_dinner_seating` |
+| 资产 ID | `SFX_DishesClink` |
+| 使用位置 | 一层餐厅 `villa_dining`（第 13 副餐具 `INT_prop_thirteenth_setting`、B3 晚宴残席三人同场戏 `npc_arthur_dinner_*`） |
+| 依赖 / 复用 | `clue_dinner_seating`、B3 餐厅对话（格雷晃动红酒杯并放下、霍尔太太摆正第 13 副餐具歪掉的餐刀） |
+| 剧情用途 | 精确服务于故事线 §1.6 与 `inspectables.ts`：「霍尔太太低头把第 13 副餐具歪掉的餐刀摆正」「格雷仰头喝干了最后一口酒」「餐巾没有拆封，酒杯倒扣着」 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Single soft porcelain and silverware clink on a dining table, restrained, close microphone, no music, no voices.
+Three subtle close-mic Victorian dining table foley variations separated by 0.4-second silences: (1) a heavy silver dinner knife being gently straightened next to a bone-china plate on a linen tablecloth; (2) a crystal wine glass being set down softly on a wooden dining table; (3) a quiet touch of antique silverware against porcelain. Restrained, dry close microphone, no kitchen clatter, no music, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+restaurant crowd chatter, kitchen dishwashing clatter, plate smashing, cheers glass toast, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** porcelain clink, silverware, dining table, subtle
+**检索关键词：** silver knife on linen tablecloth, bone china porcelain clink, crystal wine glass set down, subtle close mic
 
 ## 2. 用途
 

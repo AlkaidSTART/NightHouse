@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 对质 / 午夜选择 |
-| 依赖 / 复用 | TensionDirector 强度 3 |
+| 资产 ID | `SFX_Heartbeat_Loop` |
+| 使用位置 | 一层书房对质高潮（B9 `story.case_ready`）、一层门厅午夜签字/拒签抉择（B10 `story.midnight`） |
+| 依赖 / 复用 | `TensionDirector` 强度 3 时以极低音量（峰值 -14 dBFS）叠加在 `MUS_Tension_*` 之下 |
+| 剧情用途 | 在玩家面对遗嘱签字桌或当面拆穿亚瑟/格雷时，以克制的内耳低频搏动强化心理压迫感（本作无追逐战，绝不做急促战斗心跳） |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Seamless slow human heartbeat, low and restrained, 55 BPM, close but not thumpy, no music, no voices, no breath.
+Seamless slow restrained human heartbeat loop at 55 BPM: deep muffled internal sub-bass lub-dub pulse (around 45-80 Hz), calm but tense, close internal perspective, strictly no heavy breathing, no panting, no hospital monitor beep, no music, no voices, 30 seconds seamless loop.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+fast running heartbeat, panting, gasping breath, EKG hospital beep, horror distortion, music, melody, vocals, speech, sudden loud noises, clipping, audible loop seam, cartoon sound, low quality
 ```
 
-**检索关键词：** slow heartbeat, tense pulse, low thump, seamless loop
+**检索关键词：** slow muffled heartbeat 55 bpm, internal sub bass pulse, restrained tension heartbeat loop, no breathing
 
 ## 2. 用途
 

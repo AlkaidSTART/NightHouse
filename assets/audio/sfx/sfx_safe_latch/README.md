@@ -4,8 +4,10 @@
 
 | 项目 | 内容 |
 |---|---|
-| 使用位置 | 书房保险箱 |
-| 依赖 / 复用 | `puzzle_safe` 成功 |
+| 资产 ID | `SFX_SafeLatch` |
+| 使用位置 | 一层书房四位数字保险箱 `INT_prop_safe`（`puzzle_safe` 密码 `0314` 成功开启） |
+| 依赖 / 复用 | `puzzle_safe` 成功事件（`story.safe_opened`），取得 `clue_shipping_ledger` 与 `clue_insurance_policy` |
+| 剧情用途 | 严格对应 `puzzles.ts`：「最后一位数字对上的瞬间，锁舌缩了回去。箱门打开，里面是一叠用细绳捆好的文件。」为解开「珀耳塞福涅号」沉船日期 `0314` 提供厚重、有成就感的机械解锁反馈 |
 
 ## 快速使用
 
@@ -14,16 +16,16 @@
 ## 1. 英文生成提示词（可直接用于 AI 音效工具）
 
 ```text
-Heavy old safe latch releasing and door opening, deep metal clunk, hinge resistance, close microphone, no music, no voices.
+Antique 1897 cast-iron study safe unlocking and opening: final brass tumbler falling into place, heavy steel locking bolts retracting with a deep mechanical clunk, followed by the thick iron safe door swinging open on tight oiled hinges, close microphone, dry, no music, no voices.
 ```
 
 **负向提示词（Negative prompt）**
 
 ```text
-music, melody, vocals, speech, sudden loud noises, clipping, distortion, audible loop seam, heavy reverb, cartoon sound, low quality
+electronic lock beep, sci-fi pneumatic door hiss, explosion, music, melody, vocals, speech, sudden loud noises, clipping, distortion, heavy reverb, cartoon sound, low quality
 ```
 
-**检索关键词：** safe latch release, heavy metal clunk, safe door open
+**检索关键词：** heavy iron safe bolt retract, antique safe latch release, cast iron safe door swing open, close mic dry
 
 ## 2. 用途
 
