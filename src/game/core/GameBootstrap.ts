@@ -507,6 +507,23 @@ export class GameBootstrap {
       }
       return defaultPrompt;
     }
+    if (id === CLOCK_INTERACTABLE_ID) {
+      if (flags['story.clock_repaired'] !== true) {
+        if (flags['item.clock_key'] === true && flags['item.pendulum'] === true) {
+          return '修理与校对落地钟';
+        }
+        if (flags['item.clock_key'] === true) {
+          return '用钥匙查看落地钟';
+        }
+      }
+      return defaultPrompt;
+    }
+    if (id === SAFE_INTERACTABLE_ID) {
+      if (flags['story.safe_opened'] !== true && flags['clue.ship_painting'] === true) {
+        return '输入日期密码打开保险箱';
+      }
+      return defaultPrompt;
+    }
     if (id === STUDY_DESK_DRAWER_INTERACTABLE_ID) {
       if (
         flags['story.case_ready'] !== true &&

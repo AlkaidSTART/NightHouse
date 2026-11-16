@@ -41,6 +41,7 @@ export function ObjectivePanel({
 
   const stage = active.stage;
   const objective = stage?.objective ?? active.step.objective;
+  const hint = stage?.hint ?? active.step.hint;
   const locationId = stage?.locationId ?? active.step.locationId;
   const route = describeRoute(
     locationId,
@@ -81,6 +82,11 @@ export function ObjectivePanel({
         {metaParts.length > 0 && (
           <div className="hud-objective-meta hud-objective-reveal-2">
             {metaParts.join(' · ')}
+          </div>
+        )}
+        {hint && (
+          <div className="hud-objective-hint hud-objective-reveal-3">
+            {hint}
           </div>
         )}
       </div>

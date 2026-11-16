@@ -44,7 +44,9 @@ export const investigationThreads: readonly InvestigationThreadDefinition[] = [
     title: '阿什克罗夫特家欠了什么？',
     hint: '客厅油画背面 → 储物间旧报纸 → 书房保险箱',
     steps: [
-      { flag: 'clue.ship_painting', label: '油画背面的沉船日期' },
+      { flag: 'clue.ship_painting', label: '客厅油画背面的沉船日期' },
+      { flag: 'clue.newspaper', label: '储物间旧报纸核对海难年份' },
+      { flag: 'story.safe_opened', label: '输入日期密码(0314)开启书房保险箱' },
       { flag: 'clue.shipping_ledger', label: '账本里的保险赔款' },
       { flag: 'clue.insurance_policy', label: '埃德蒙签下的赔付单' },
     ],
@@ -62,12 +64,13 @@ export const investigationThreads: readonly InvestigationThreadDefinition[] = [
   {
     id: 'thread_clock',
     title: '第十三下从哪里来？',
-    hint: '书房潮汐表与抽屉、卧室衣柜、门厅落地钟',
+    hint: '书房抽屉与潮汐表、客厅壁炉座钟、二楼卧室衣柜、门厅落地钟',
     steps: [
-      { flag: 'clue.tide_table', label: '午夜满潮的校准依据' },
-      { flag: 'clue.clock_key', label: '书桌抽屉里的上弦钥匙' },
-      { flag: 'clue.pendulum', label: '衣柜里被藏起的摆锤' },
-      { flag: 'story.clock_repaired', label: '让落地钟敲出第十三下' },
+      { flag: 'clue.clock_key', label: '书房抽屉里的上弦钥匙' },
+      { flag: 'clue.pendulum', label: '二楼卧室衣柜里的铜摆锤' },
+      { flag: 'story.saw_mantel_clock', label: '客厅壁炉座钟的时间(23:47)' },
+      { flag: 'clue.tide_table', label: '书房潮汐表的满潮标记' },
+      { flag: 'story.clock_repaired', label: '在门厅校准落地钟(拨至23:47)并敲响' },
     ],
   },
 ];
