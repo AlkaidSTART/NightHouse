@@ -12,11 +12,7 @@ export function PauseMenu({ onResume, onExit }: PauseMenuProps) {
   return (
     <div className="overlay">
       <div className="overlay-panel">
-        <p className="overlay-eyebrow">已暂停</p>
         <h2 className="overlay-title">暂停</h2>
-        <p className="overlay-text">
-          当前进度会保存在本地浏览器中。继续游戏将重新锁定鼠标。
-        </p>
         <div className="overlay-actions">
           <button type="button" className="button button-primary" onClick={onResume}>
             继续游戏
@@ -24,6 +20,15 @@ export function PauseMenu({ onResume, onExit }: PauseMenuProps) {
           <button type="button" className="button" onClick={handleExit}>
             返回首页
           </button>
+        </div>
+        <div className="pause-controls" aria-label="按键参考">
+          <span>WASD 移动</span>
+          <span>Shift 奔跑</span>
+          <span>空格 跳跃</span>
+          <span>C 蹲下</span>
+          <span>E 交互</span>
+          <span>J 线索</span>
+          <span>Esc 暂停</span>
         </div>
       </div>
     </div>

@@ -21,6 +21,7 @@ export function HomeScreen(props: HomeScreenProps = {}) {
   const onContinue = props.onContinue ?? storeContinue;
 
   const [archiveOpen, setArchiveOpen] = useState(false);
+  const [logoBroken, setLogoBroken] = useState(false);
 
   return (
     <div className="home-screen">
@@ -28,9 +29,22 @@ export function HomeScreen(props: HomeScreenProps = {}) {
 
       <main className="home-panel">
         <header className="home-brand">
-          <p className="home-eyebrow">单人第一人称悬疑探索 · 1897</p>
-          <h1 className="home-title">午夜别墅</h1>
-          <p className="home-subtitle">MIDNIGHT VILLA</p>
+          {!logoBroken ? (
+            <>
+              <h1 className="sr-only">午夜别墅 MIDNIGHT VILLA</h1>
+              <img
+                className="home-title-art"
+                src="/assets/renders/home_title.jpg"
+                alt="午夜别墅 MIDNIGHT VILLA"
+                onError={() => setLogoBroken(true)}
+              />
+            </>
+          ) : (
+            <>
+              <h1 className="home-title">午夜别墅</h1>
+              <p className="home-subtitle">MIDNIGHT VILLA</p>
+            </>
+          )}
         </header>
 
         <nav className="home-menu" aria-label="主菜单">
@@ -59,29 +73,12 @@ export function HomeScreen(props: HomeScreenProps = {}) {
           </button>
         </nav>
 
-        {!hasSave && (
-          <p className="home-hint">暂无本地存档，开始新游戏后将自动保存。</p>
-        )}
         {notice && (
           <p className="home-notice" role="status">
             {notice}
           </p>
         )}
       </main>
-
-      <footer className="home-footer">
-        <div className="home-controls">
-          <span>W A S D 移动</span>
-          <span>鼠标 环视</span>
-          <span>Shift 奔跑</span>
-          <span>空格 跳跃</span>
-          <span>C / Ctrl 蹲下</span>
-          <span>E 交互</span>
-          <span>J 线索</span>
-          <span>Esc 暂停</span>
-        </div>
-        <p className="home-version">v0.1</p>
-      </footer>
 
       {archiveOpen && (
         <CharacterArchive onClose={() => setArchiveOpen(false)} />

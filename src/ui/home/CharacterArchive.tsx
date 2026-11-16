@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   characterArchive,
-  characterViewLabels,
   type CharacterArchiveEntry,
-  type CharacterViewKey,
 } from '../../content/characters';
 
 export interface CharacterArchiveProps {
@@ -11,14 +9,12 @@ export interface CharacterArchiveProps {
 }
 
 /**
- * 人物档案浮层：从首页主菜单进入，左侧切换人物，右侧查看设定与三视图。
- * 当渲染图文件尚未生成时隐藏破碎图片图标，仅保留文字档案。
+ * 人物档案浮层：从首页主菜单进入，左侧切换人物，右侧查看立绘与档案记录。
  */
 export function CharacterArchive({ onClose }: CharacterArchiveProps) {
   const [selectedId, setSelectedId] = useState<CharacterArchiveEntry['id']>(
     characterArchive[0]?.id ?? 'npc_arthur',
   );
-  const [view, setView] = useState<CharacterViewKey>('threeQuarter');
   const [brokenImages, setBrokenImages] = useState<Record<string, boolean>>({});
 
   const entry =
@@ -40,7 +36,7 @@ export function CharacterArchive({ onClose }: CharacterArchiveProps) {
     return null;
   }
 
-  const mainSrc = entry.renders[view];
+  const mainSrc = entry.renders.threeQuarter;
   const isMainBroken = brokenImages[mainSrc] === true;
 
   const markBroken = (src: string): void => {
@@ -94,14 +90,13 @@ export function CharacterArchive({ onClose }: CharacterArchiveProps) {
           {!isMainBroken ? (
             <img
               src={mainSrc}
-              alt={`${entry.name}${characterViewLabels.find((item) => item.key === view)?.label ?? ''}渲染图`}
+              alt={`${entry.name}肖像立绘`}
               onError={() => markBroken(mainSrc)}
             />
           ) : (
             <div className="archive-stage-placeholder">
               <p className="archive-placeholder-name">{entry.name}</p>
               <p className="archive-placeholder-latin">{entry.latin}</p>
-              <p className="archive-placeholder-hint">人物立绘渲染图待生成</p>
             </div>
           )}
         </figure>
@@ -130,31 +125,6 @@ export function CharacterArchive({ onClose }: CharacterArchiveProps) {
               <li key={detail}>{detail}</li>
             ))}
           </ul>
-          <div className="character-viewer-views" role="group" aria-label="切换视图">
-            {characterViewLabels.map((item) => {
-              const thumbSrc = entry.renders[item.key];
-              const thumbBroken = brokenImages[thumbSrc] === true;
-              return (
-                <button
-                  key={item.key}
-                  type="button"
-                  className="character-viewer-thumb"
-                  aria-pressed={view === item.key}
-                  onClick={() => setView(item.key)}
-                >
-                  {!thumbBroken && (
-                    <img
-                      src={thumbSrc}
-                      alt=""
-                      loading="lazy"
-                      onError={() => markBroken(thumbSrc)}
-                    />
-                  )}
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
-          </div>
         </div>
       </div>
     </div>
