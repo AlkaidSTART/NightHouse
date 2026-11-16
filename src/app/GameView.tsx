@@ -82,6 +82,9 @@ export function GameView({
     });
     const offPause = events.on('pause.changed', ({ paused }) => {
       setPhase(paused ? 'paused' : 'playing');
+      if (!paused) {
+        setError(null);
+      }
     });
     const offDialogue = events.on('dialogue.changed', ({ view }) => {
       setDialogue(view);
@@ -148,9 +151,26 @@ export function GameView({
     bootstrapRef.current?.resume();
   };
 
+  const handleCanvasClick = (): void => {
+    if (
+      phase === 'playing' &&
+      !dialogue &&
+      !inspection &&
+      !clues &&
+      !puzzle &&
+      !ending
+    ) {
+      handleStart();
+    }
+  };
+
   return (
     <div className="game-view">
-      <canvas ref={canvasRef} className="game-canvas" />
+      <canvas
+        ref={canvasRef}
+        className="game-canvas"
+        onClick={handleCanvasClick}
+      />
       <GameHud
         prompt={dialogue || inspection || clues || puzzle || ending ? null : prompt}
         toast={toast}

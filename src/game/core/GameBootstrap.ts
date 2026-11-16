@@ -36,7 +36,9 @@ const DOOR_INTERACTION_MIN_RADIUS = 0.6;
 const CLOCK_INTERACTABLE_ID = 'INT_prop_longcase_clock';
 const SAFE_INTERACTABLE_ID = 'INT_prop_safe';
 /** 小地图位置刷新间隔（秒）。不必每帧都推给 React。 */
-const POSE_EMIT_INTERVAL = 0.05;
+const POSE_EMIT_INTERVAL = 0.08;
+const POSE_POSITION_EPSILON_SQ = 0.02 * 0.02;
+const POSE_YAW_EPSILON = 0.5;
 
 /**
  * 灰盒走查用：开发构建下以 `?unlock=all` 打开页面时忽略门的剧情解锁条件，
@@ -110,6 +112,9 @@ export class GameBootstrap {
   private currentRegionId: string | null = null;
   private lastPrompt: string | null = null;
   private poseEmitElapsed = 0;
+  private lastEmittedPosition: Vec3Tuple | null = null;
+  private lastEmittedYaw: number | null = null;
+  private readonly preloadPromise: Promise<void>;
   private autosaveTimer: number | null = null;
   private started = false;
   private hasEntered = false;
@@ -117,6 +122,7 @@ export class GameBootstrap {
   private inspectionOpen = false;
   private journalOpen = false;
   private activePuzzle: 'clock' | 'safe' | null = null;
+  private suppressNextPointerLockError = false;
   private endingShown = false;
   private pendingEnding = false;
   private destroyed = false;
@@ -218,7 +224,7 @@ export class GameBootstrap {
     });
     app.setCanvasFillMode(pc.FILLMODE_FILL_WINDOW);
     app.setCanvasResolution(pc.RESOLUTION_AUTO);
-    app.graphicsDevice.maxPixelRatio = Math.min(window.devicePixelRatio, 2);
+    app.graphicsDevice.maxPixelRatio = Math.min(window.devicePixelRatio, 1.5);
     app.scene.ambientLight = new pc.Color(0.1, 0.105, 0.125);
     this.app = app;
 
@@ -229,18 +235,24 @@ export class GameBootstrap {
     this.unsubscribeStory = useStoryStore.subscribe((state) => {
       this.sceneManager.applyStoryFlags(state.storyFlags);
     });
+    const preloadTasks: Promise<void>[] = [];
     if (villaGreybox.modelUrl) {
-      void this.sceneManager.loadModel(villaGreybox.modelUrl).catch((error: unknown) => {
-        console.warn('场景 GLB 加载失败，继续使用灰盒几何：', error);
-      });
+      preloadTasks.push(
+        this.sceneManager.loadModel(villaGreybox.modelUrl).catch((error: unknown) => {
+          console.warn('场景 GLB 加载失败，继续使用灰盒几何：', error);
+        }),
+      );
     }
     if (villaGreybox.characterModelUrls) {
-      void this.sceneManager
-        .loadCharacterModels(villaGreybox.characterModelUrls)
-        .catch((error: unknown) => {
-          console.warn('NPC 角色模型加载失败，继续使用占位方盒：', error);
-        });
+      preloadTasks.push(
+        this.sceneManager
+          .loadCharacterModels(villaGreybox.characterModelUrls)
+          .catch((error: unknown) => {
+            console.warn('NPC 角色模型加载失败，继续使用占位方盒：', error);
+          }),
+      );
     }
+    this.preloadPromise = Promise.allSettled(preloadTasks).then(() => undefined);
     this.sceneId = scene.sceneId;
     this.doors = new DoorSystem({
       doors: villaGreybox.doors,
@@ -375,7 +387,12 @@ export class GameBootstrap {
 
     this.player.setPaused(true);
     this.app.start();
-    this.events.emit('game.ready', { sceneId: this.sceneId });
+    // 等待主场景与角色 GLB 就绪后再开放「开始探索」，避免进场后后台解析与着色器编译造成大卡顿。
+    void this.preloadPromise.then(() => {
+      if (!this.destroyed) {
+        this.events.emit('game.ready', { sceneId: this.sceneId });
+      }
+    });
   }
 
   resume(): void {
@@ -698,6 +715,7 @@ export class GameBootstrap {
     }
 
     this.player.update(dt);
+    this.nightSky.update();
     this.hands.update(dt);
     this.sceneManager.update(dt);
     // 门在 UI 打开时也继续合上，但不能把站在门边的玩家夹住。
@@ -731,9 +749,27 @@ export class GameBootstrap {
       return;
     }
     this.poseEmitElapsed = 0;
+
+    const position = this.player.getFeetPosition();
+    const rotation = this.player.getRotation();
+    const prevPos = this.lastEmittedPosition;
+    const prevYaw = this.lastEmittedYaw;
+    if (prevPos !== null && prevYaw !== null) {
+      const dx = position[0] - prevPos[0];
+      const dy = position[1] - prevPos[1];
+      const dz = position[2] - prevPos[2];
+      const distSq = dx * dx + dy * dy + dz * dz;
+      const yawDiff = Math.abs(rotation[0] - prevYaw);
+      if (distSq < POSE_POSITION_EPSILON_SQ && yawDiff < POSE_YAW_EPSILON) {
+        return;
+      }
+    }
+
+    this.lastEmittedPosition = position;
+    this.lastEmittedYaw = rotation[0];
     this.events.emit('player.position', {
-      position: this.player.getFeetPosition(),
-      rotation: this.player.getRotation(),
+      position,
+      rotation,
     });
   }
 
@@ -803,6 +839,7 @@ export class GameBootstrap {
     }
     if (!paused) {
       this.hasEntered = true;
+      this.suppressNextPointerLockError = false;
     }
     this.player.setPaused(paused);
     this.events.emit('pause.changed', { paused });
@@ -818,6 +855,10 @@ export class GameBootstrap {
     if (this.destroyed) {
       return;
     }
+    if (this.suppressNextPointerLockError) {
+      this.suppressNextPointerLockError = false;
+      return;
+    }
     this.events.emit('pause.changed', { paused: true });
     this.events.emit('game.error', {
       message: '无法锁定鼠标，请点击继续游戏后重试。',
@@ -831,6 +872,7 @@ export class GameBootstrap {
     if (this.activePuzzle) {
       if (!event.repeat && event.code === 'Escape') {
         event.preventDefault();
+        this.suppressNextPointerLockError = true;
         this.closePuzzle();
       }
       return;
@@ -841,6 +883,9 @@ export class GameBootstrap {
         (event.code === 'Escape' || event.code === 'KeyJ')
       ) {
         event.preventDefault();
+        if (event.code === 'Escape') {
+          this.suppressNextPointerLockError = true;
+        }
         this.closeClueJournal();
       }
       return;
@@ -851,6 +896,9 @@ export class GameBootstrap {
         (event.code === 'Escape' || event.code === 'KeyE')
       ) {
         event.preventDefault();
+        if (event.code === 'Escape') {
+          this.suppressNextPointerLockError = true;
+        }
         this.closeInspection();
       }
       return;
@@ -860,6 +908,15 @@ export class GameBootstrap {
       return;
     }
     if (event.repeat) {
+      return;
+    }
+    if (
+      event.code === 'Escape' &&
+      this.hasEntered &&
+      document.pointerLockElement !== this.canvas
+    ) {
+      event.preventDefault();
+      this.events.emit('pause.changed', { paused: true });
       return;
     }
     if (event.code === 'KeyJ') {
@@ -888,6 +945,7 @@ export class GameBootstrap {
 
     if (event.code === 'Escape') {
       event.preventDefault();
+      this.suppressNextPointerLockError = true;
       this.dialogue.close();
       return;
     }

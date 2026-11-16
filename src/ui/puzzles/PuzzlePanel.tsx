@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { PuzzleView } from '../../shared/types/puzzle';
+import { useDraggablePanel } from '../shared/useDraggablePanel';
 
 export interface PuzzlePanelProps {
   view: PuzzleView;
@@ -15,16 +16,20 @@ export function PuzzlePanel({
   onClose,
 }: PuzzlePanelProps) {
   const [code, setCode] = useState('');
+  const { panelRef, isDragging, panelStyle, handleProps } =
+    useDraggablePanel<HTMLElement>(view.title);
 
   return (
-    <div className="inspect-layer">
+    <div className="inspect-layer puzzle-layer">
       <article
-        className="inspect-panel puzzle-panel"
+        ref={panelRef}
+        className={`inspect-panel puzzle-panel${isDragging ? ' is-dragging' : ''}`}
+        style={panelStyle}
         role="dialog"
         aria-modal="true"
         aria-label={view.title}
       >
-        <header className="inspect-header">
+        <header className="inspect-header panel-drag-handle" {...handleProps}>
           <div>
             <p className="inspect-category">{view.category}</p>
             <h2 className="inspect-title">{view.title}</h2>
@@ -35,7 +40,7 @@ export function PuzzlePanel({
             onClick={onClose}
             aria-label="收起"
           >
-            ×
+            收起
           </button>
         </header>
 

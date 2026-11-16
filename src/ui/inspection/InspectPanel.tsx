@@ -1,4 +1,5 @@
 import type { InspectionView } from '../../shared/types/inspection';
+import { useDraggablePanel } from '../shared/useDraggablePanel';
 
 export interface InspectPanelProps {
   view: InspectionView;
@@ -6,15 +7,20 @@ export interface InspectPanelProps {
 }
 
 export function InspectPanel({ view, onClose }: InspectPanelProps) {
+  const { panelRef, isDragging, panelStyle, handleProps } =
+    useDraggablePanel<HTMLElement>(view.title);
+
   return (
     <div className="inspect-layer">
       <article
-        className="inspect-panel"
+        ref={panelRef}
+        className={`inspect-panel${isDragging ? ' is-dragging' : ''}`}
+        style={panelStyle}
         role="dialog"
         aria-modal="true"
         aria-label={view.title}
       >
-        <header className="inspect-header">
+        <header className="inspect-header panel-drag-handle" {...handleProps}>
           <div>
             <p className="inspect-category">{view.category}</p>
             <h2 className="inspect-title">{view.title}</h2>
@@ -25,7 +31,7 @@ export function InspectPanel({ view, onClose }: InspectPanelProps) {
             onClick={onClose}
             aria-label="收起"
           >
-            ×
+            收起
           </button>
         </header>
 
