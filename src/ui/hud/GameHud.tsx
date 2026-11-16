@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { content } from '../../content';
 import { investigationThreads } from '../../content/investigationThreads';
 import { resolveActiveObjective } from '../../game/story/questProgress';
@@ -29,18 +30,26 @@ export function GameHud(props: GameHudProps = {}) {
 
   const storyFlags = useStoryStore((s) => s.storyFlags);
   const discoveredClueIds = useStoryStore((s) => s.discoveredClueIds);
-  const activeObjective = resolveActiveObjective(storyFlags, content.quests);
-  const investigation = resolveInvestigationThreads(
-    storyFlags,
-    investigationThreads,
+  const activeObjective = useMemo(
+    () => resolveActiveObjective(storyFlags, content.quests),
+    [storyFlags],
   );
-  const archiveTotal = content.clues.filter(
-    (clue) => clue.priority === 'ambient',
-  ).length;
-  const archiveFound = discoveredClueIds.filter(
-    (clueId) =>
-      content.clues.find((clue) => clue.id === clueId)?.priority === 'ambient',
-  ).length;
+  const investigation = useMemo(
+    () => resolveInvestigationThreads(storyFlags, investigationThreads),
+    [storyFlags],
+  );
+  const archiveTotal = useMemo(
+    () => content.clues.filter((clue) => clue.priority === 'ambient').length,
+    [],
+  );
+  const archiveFound = useMemo(() => {
+    const ambientIds = new Set(
+      content.clues
+        .filter((clue) => clue.priority === 'ambient')
+        .map((clue) => clue.id),
+    );
+    return discoveredClueIds.filter((clueId) => ambientIds.has(clueId)).length;
+  }, [discoveredClueIds]);
   const regionId = props.regionId ?? null;
   const player = props.player ?? null;
 
@@ -64,7 +73,7 @@ export function GameHud(props: GameHudProps = {}) {
         investigation={investigation}
       />
       {props.region && <div className="hud-region">{props.region}</div>}
-      {props.showJournalHint && (
+      {props.showJournalHint && clueCount > 0 && (
         <div className="hud-journal-hint">
           <span className="hud-key">J</span>
           <span>线索</span>

@@ -14,8 +14,8 @@ export function DialoguePanel({
   onClose,
 }: DialoguePanelProps) {
   const { line, choices } = view;
-  const speaker =
-    line?.speaker === 'narration' ? '旁白' : line?.name ?? view.npcName;
+  const isNarration = line?.speaker === 'narration';
+  const speaker = isNarration ? null : (line?.name ?? view.npcName);
 
   return (
     <div className="dialogue-layer">
@@ -27,10 +27,7 @@ export function DialoguePanel({
       >
         <header className="dialogue-header">
           <div className="dialogue-heading">
-            <span className="dialogue-speaker">{speaker}</span>
-            {view.beatLabel && (
-              <span className="dialogue-beat">{view.beatLabel}</span>
-            )}
+            {speaker && <span className="dialogue-speaker">{speaker}</span>}
             {view.contextLabel && (
               <span className="dialogue-context">{view.contextLabel}</span>
             )}

@@ -37,14 +37,7 @@ export function CluePanel({ view, onClose }: CluePanelProps) {
       >
         <header className="clue-header panel-drag-handle" {...handleProps}>
           <div>
-            <p className="clue-kicker">调查记录</p>
             <h2 className="clue-title">线索</h2>
-          </div>
-          <div className="clue-summary" aria-label="线索统计">
-            <span>共 {view.total} 条</span>
-            <span>主线 {view.mainCount}</span>
-            <span>辅助 {view.supportingCount}</span>
-            <span>档案 {view.ambientCount}</span>
           </div>
           <button
             type="button"
@@ -58,8 +51,7 @@ export function CluePanel({ view, onClose }: CluePanelProps) {
 
         {view.entries.length === 0 || !selected ? (
           <div className="clue-empty">
-            <p>还没有记录任何线索。</p>
-            <p>调查房间里的信件、文件和物件，发现的内容会收进这里。</p>
+            <p>尚无线索</p>
           </div>
         ) : (
           <div className="clue-body">

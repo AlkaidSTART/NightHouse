@@ -41,7 +41,6 @@ export function ObjectivePanel({
 
   const stage = active.stage;
   const objective = stage?.objective ?? active.step.objective;
-  const hint = stage?.hint ?? active.step.hint;
   const locationId = stage?.locationId ?? active.step.locationId;
   const route = describeRoute(
     locationId,
@@ -72,27 +71,18 @@ export function ObjectivePanel({
 
   return (
     <div className="hud-objective" aria-live="polite">
-      <div className="hud-objective-header">
-        <span className="hud-objective-kicker">当前线索</span>
-      </div>
       <div
         key={`${active.step.id}:${stage?.id ?? 'final'}`}
         className="hud-objective-step"
       >
-        <div className="hud-objective-quest hud-objective-reveal-1">
-          {active.quest.title}
-        </div>
-        <div className="hud-objective-task hud-objective-reveal-2">
+        <div className="hud-objective-task hud-objective-reveal-1">
           <span>{objective}</span>
         </div>
         {metaParts.length > 0 && (
-          <div className="hud-objective-meta hud-objective-reveal-3">
+          <div className="hud-objective-meta hud-objective-reveal-2">
             {metaParts.join(' · ')}
           </div>
         )}
-        <div className="hud-objective-hint hud-objective-reveal-4">
-          {hint}
-        </div>
       </div>
 
       {visibleThreads.length > 0 && (
