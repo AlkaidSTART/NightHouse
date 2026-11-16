@@ -94,6 +94,11 @@ __pycache__/
 *.exr
 *.dds
 
+# Character archive renders are runtime UI assets used on the home screen.
+!public/assets/renders/
+!public/assets/renders/characters/
+!public/assets/renders/characters/**/*.jpg
+
 # Explicitly preserve 3D model assets and necessary structure
 !*.glb
 !*.gltf
