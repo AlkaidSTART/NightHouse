@@ -6,12 +6,14 @@ import type { DialogueView } from '../shared/types/dialogue';
 import type { EndingView } from '../shared/types/ending';
 import type { ClueJournalView } from '../shared/types/clueJournal';
 import type { InspectionView } from '../shared/types/inspection';
+import type { InventoryView } from '../shared/types/inventory';
 import type { PuzzleView } from '../shared/types/puzzle';
 import { CluePanel } from '../ui/clues/CluePanel';
 import { DialoguePanel } from '../ui/dialogue/DialoguePanel';
 import { EndingOverlay } from '../ui/ending/EndingOverlay';
 import { GameHud } from '../ui/hud/GameHud';
 import { InspectPanel } from '../ui/inspection/InspectPanel';
+import { InventoryPanel } from '../ui/inventory/InventoryPanel';
 import type { MinimapPlayerPose } from '../ui/hud/Minimap';
 import { PuzzlePanel } from '../ui/puzzles/PuzzlePanel';
 import { PrologueOverlay } from '../ui/intro/PrologueOverlay';
@@ -45,6 +47,7 @@ export function GameView({
   const [dialogue, setDialogue] = useState<DialogueView | null>(null);
   const [inspection, setInspection] = useState<InspectionView | null>(null);
   const [clues, setClues] = useState<ClueJournalView | null>(null);
+  const [inventory, setInventory] = useState<InventoryView | null>(null);
   const [puzzle, setPuzzle] = useState<PuzzleView | null>(null);
   const [ending, setEnding] = useState<EndingView | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -95,6 +98,9 @@ export function GameView({
     const offClues = events.on('clues.changed', ({ view }) => {
       setClues(view);
     });
+    const offInventory = events.on('inventory.changed', ({ view }) => {
+      setInventory(view);
+    });
     const offPuzzle = events.on('puzzle.changed', ({ view }) => {
       setPuzzle(view);
     });
@@ -135,6 +141,7 @@ export function GameView({
       offDialogue();
       offInspection();
       offClues();
+      offInventory();
       offPuzzle();
       offEnding();
       offError();
@@ -157,6 +164,7 @@ export function GameView({
       !dialogue &&
       !inspection &&
       !clues &&
+      !inventory &&
       !puzzle &&
       !ending
     ) {
@@ -172,7 +180,11 @@ export function GameView({
         onClick={handleCanvasClick}
       />
       <GameHud
-        prompt={dialogue || inspection || clues || puzzle || ending ? null : prompt}
+        prompt={
+          dialogue || inspection || clues || inventory || puzzle || ending
+            ? null
+            : prompt
+        }
         toast={toast}
         error={error}
         region={region}
@@ -183,6 +195,7 @@ export function GameView({
           !dialogue &&
           !inspection &&
           !clues &&
+          !inventory &&
           !puzzle &&
           !ending
         }
@@ -191,6 +204,7 @@ export function GameView({
         !dialogue &&
         !inspection &&
         !clues &&
+        !inventory &&
         !puzzle &&
         !ending && (
           prologueDone ? (
@@ -203,6 +217,7 @@ export function GameView({
         !dialogue &&
         !inspection &&
         !clues &&
+        !inventory &&
         !puzzle &&
         !ending && (
           <PauseMenu onResume={handleStart} onExit={onExit} />
@@ -228,6 +243,16 @@ export function GameView({
         <CluePanel
           view={clues}
           onClose={() => bootstrapRef.current?.closeClueJournal()}
+          onSwitchToInventory={() =>
+            bootstrapRef.current?.switchToInventory()
+          }
+        />
+      )}
+      {inventory && (
+        <InventoryPanel
+          view={inventory}
+          onClose={() => bootstrapRef.current?.closeInventory()}
+          onSwitchToClues={() => bootstrapRef.current?.switchToClues()}
         />
       )}
       {puzzle && (

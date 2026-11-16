@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { content } from '../../content';
 import { investigationThreads } from '../../content/investigationThreads';
+import { countHeldInventoryItems } from '../../game/inventory/inventory';
 import { resolveActiveObjective } from '../../game/story/questProgress';
 import { resolveInvestigationThreads } from '../../game/story/investigationProgress';
 import { useGameStore } from '../../stores/gameStore';
@@ -30,6 +31,7 @@ export function GameHud(props: GameHudProps = {}) {
 
   const storyFlags = useStoryStore((s) => s.storyFlags);
   const discoveredClueIds = useStoryStore((s) => s.discoveredClueIds);
+  const itemCount = countHeldInventoryItems(content.items, storyFlags);
   const activeObjective = useMemo(
     () => resolveActiveObjective(storyFlags, content.quests),
     [storyFlags],

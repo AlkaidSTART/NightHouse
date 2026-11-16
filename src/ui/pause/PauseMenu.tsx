@@ -28,6 +28,7 @@ export function PauseMenu({ onResume, onExit }: PauseMenuProps) {
           <span>C 蹲下</span>
           <span>E 交互</span>
           <span>J 线索</span>
+          <span>B 背包</span>
           <span>Esc 暂停</span>
         </div>
       </div>

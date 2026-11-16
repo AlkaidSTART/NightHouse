@@ -38,27 +38,52 @@ export const DIALOGUE_CHOICE_GUIDES: Readonly<
     ],
   },
   npc_housekeeper_evelyn_b5: {
-    hint: '先问那晚发生了什么，再顺势问她能否打开伊芙琳的房间。',
+    hint: '请她交出二楼伊芙琳房间的钥匙，并追问那晚她看见的搬运经过。',
     sequence: [
+      { choiceId: 'ask_room', label: '索取伊芙琳房间的钥匙' },
       { choiceId: 'ask_night', label: '问夜间搬运' },
-      { choiceId: 'ask_room', label: '问伊芙琳的房间' },
+    ],
+  },
+  npc_housekeeper_room_01: {
+    hint: '收好钥匙后，如果还没问清那晚的搬运经过，可以顺势继续追问。',
+    sequence: [
+      { choiceId: 'ask_night', label: '继续追问那晚的搬运经过' },
     ],
   },
   npc_housekeeper_night_01: {
     sequence: [{ choiceId: 'press', label: '继续追问搬运经过' }],
   },
   npc_housekeeper_night_02: {
-    hint: '先确认她当时是否还活着，再问她为什么多年沉默。',
+    hint: '确认她当时是否还活着、为何多年沉默，并向她索取二楼房间的钥匙。',
     sequence: [
       { choiceId: 'ask_alive', label: '确认伊芙琳当时是否还活着' },
       { choiceId: 'ask_why_silent', label: '问她为什么沉默' },
+      { choiceId: 'ask_room', label: '索取伊芙琳房间的钥匙' },
+    ],
+  },
+  npc_housekeeper_night_03: {
+    hint: '了解她的苦衷后，可请她把二楼伊芙琳房间的钥匙交给你。',
+    sequence: [
+      { choiceId: 'ask_room', label: '索取伊芙琳房间的钥匙' },
+    ],
+  },
+  npc_housekeeper_night_04: {
+    hint: '拿到她的目击证词后，请她把二楼伊芙琳房间的钥匙交给你。',
+    sequence: [
+      { choiceId: 'ask_room', label: '索取伊芙琳房间的钥匙' },
     ],
   },
   npc_housekeeper_letter_01: {
-    hint: '先问那晚的经过，再问她为什么直到现在才寄信。',
+    hint: '先索取房间钥匙或问那晚的经过，再问她为什么直到现在才寄信。',
     sequence: [
+      { choiceId: 'ask_room', label: '索取伊芙琳房间的钥匙' },
       { choiceId: 'ask_night', label: '问那晚发生了什么' },
       { choiceId: 'ask_why', label: '问她为何现在才寄信' },
+    ],
+  },
+  npc_housekeeper_letter_02: {
+    sequence: [
+      { choiceId: 'ask_room', label: '索取伊芙琳房间的钥匙' },
     ],
   },
   npc_housekeeper_study_01: {

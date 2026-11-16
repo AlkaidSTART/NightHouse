@@ -12,9 +12,14 @@ const PRIORITY_LABEL: Record<CluePriority, string> = {
 export interface CluePanelProps {
   view: ClueJournalView;
   onClose: () => void;
+  onSwitchToInventory?: () => void;
 }
 
-export function CluePanel({ view, onClose }: CluePanelProps) {
+export function CluePanel({
+  view,
+  onClose,
+  onSwitchToInventory,
+}: CluePanelProps) {
   const [selectedId, setSelectedId] = useState<string | null>(
     view.entries[0]?.id ?? null,
   );
@@ -39,14 +44,25 @@ export function CluePanel({ view, onClose }: CluePanelProps) {
           <div>
             <h2 className="clue-title">线索</h2>
           </div>
-          <button
-            type="button"
-            className="clue-close"
-            onClick={onClose}
-            aria-label="收起线索"
-          >
-            收起
-          </button>
+          <div className="panel-header-actions">
+            {onSwitchToInventory && (
+              <button
+                type="button"
+                className="panel-switch-btn"
+                onClick={onSwitchToInventory}
+              >
+                背包 (B)
+              </button>
+            )}
+            <button
+              type="button"
+              className="clue-close"
+              onClick={onClose}
+              aria-label="收起线索"
+            >
+              收起
+            </button>
+          </div>
         </header>
 
         {view.entries.length === 0 || !selected ? (

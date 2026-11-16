@@ -1,9 +1,11 @@
 import * as pc from 'playcanvas';
 import { content } from '../../content';
 import { presentEnding } from '../../content/endings';
+import { getItemByFlag } from '../../content/items';
 import { clockPuzzleContent, safePuzzleContent } from '../../content/puzzles';
 import { villaGreybox } from '../../content/scenes/villaGreybox';
 import { useStoryStore } from '../../stores/storyStore';
+import type { StoryFlagValue } from '../../shared/types/content';
 import type { PuzzleView } from '../../shared/types/puzzle';
 import type { SaveData, Vec3Tuple } from '../../shared/types/save';
 import type { SceneNpcSpot, SceneRegion, SceneSpawn } from '../../shared/types/scene';
@@ -14,6 +16,7 @@ import {
   type ConversationEndEvent,
 } from '../dialogue/DialogueSystem';
 import { InspectionSystem } from '../inspection/InspectionSystem';
+import { buildInventoryView } from '../inventory/inventory.ts';
 import { InteractionSystem } from '../interaction/InteractionSystem';
 import { PlayerController } from '../player/PlayerController';
 import { PlayerHands } from '../player/PlayerHands';
@@ -121,6 +124,7 @@ export class GameBootstrap {
   private dialogueOpen = false;
   private inspectionOpen = false;
   private journalOpen = false;
+  private inventoryOpen = false;
   private activePuzzle: 'clock' | 'safe' | null = null;
   private suppressNextPointerLockError = false;
   private endingShown = false;
@@ -164,8 +168,7 @@ export class GameBootstrap {
       host: {
         getFlags: () => useStoryStore.getState().storyFlags,
         getActiveTaskId: () => useStoryStore.getState().activeTaskId,
-        setFlag: (key, value) =>
-          useStoryStore.getState().setStoryFlag(key, value),
+        setFlag: (key, value) => this.setFlagWithItemNotice(key, value),
         discoverClue: (clueId) => {
           useStoryStore.getState().discoverClue(clueId);
         },
@@ -190,8 +193,7 @@ export class GameBootstrap {
       inspectables: content.inspectables,
       host: {
         getFlags: () => useStoryStore.getState().storyFlags,
-        setFlag: (key, value) =>
-          useStoryStore.getState().setStoryFlag(key, value),
+        setFlag: (key, value) => this.setFlagWithItemNotice(key, value),
         discoverClue: (clueId) =>
           useStoryStore.getState().discoverClue(clueId),
         getClueTitle: (clueId) => this.clueTitles.get(clueId) ?? null,
@@ -206,8 +208,7 @@ export class GameBootstrap {
 
     const puzzleHost: PuzzleHost = {
       getFlags: () => useStoryStore.getState().storyFlags,
-      setFlag: (key, value) =>
-        useStoryStore.getState().setStoryFlag(key, value),
+      setFlag: (key, value) => this.setFlagWithItemNotice(key, value),
       discoverClue: (clueId) => {
         const firstDiscovery = useStoryStore.getState().discoverClue(clueId);
         return firstDiscovery ? this.clueTitles.get(clueId) ?? clueId : null;
@@ -432,6 +433,43 @@ export class GameBootstrap {
     this.player.requestPointerLock();
   }
 
+  closeInventory(): void {
+    if (!this.inventoryOpen) {
+      return;
+    }
+    this.inventoryOpen = false;
+    this.events.emit('inventory.changed', { view: null });
+    this.player.requestPointerLock();
+  }
+
+  switchToInventory(): void {
+    if (this.journalOpen) {
+      this.journalOpen = false;
+      this.events.emit('clues.changed', { view: null });
+    }
+    if (!this.inventoryOpen) {
+      this.inventoryOpen = true;
+      this.player.setPaused(true);
+      this.lastPrompt = null;
+      this.events.emit('interaction.prompt', { text: null });
+      this.emitInventory();
+    }
+  }
+
+  switchToClues(): void {
+    if (this.inventoryOpen) {
+      this.inventoryOpen = false;
+      this.events.emit('inventory.changed', { view: null });
+    }
+    if (!this.journalOpen) {
+      this.journalOpen = true;
+      this.player.setPaused(true);
+      this.lastPrompt = null;
+      this.events.emit('interaction.prompt', { text: null });
+      this.emitClueJournal();
+    }
+  }
+
   closePuzzle(): void {
     if (!this.activePuzzle) {
       return;
@@ -480,6 +518,7 @@ export class GameBootstrap {
       this.dialogueOpen ||
       this.inspectionOpen ||
       this.journalOpen ||
+      this.inventoryOpen ||
       this.activePuzzle
     ) {
       return;
@@ -500,6 +539,7 @@ export class GameBootstrap {
       this.dialogueOpen ||
       this.inspectionOpen ||
       this.journalOpen ||
+      this.inventoryOpen ||
       this.activePuzzle
     ) {
       return;
@@ -527,10 +567,58 @@ export class GameBootstrap {
     });
   }
 
+  private openInventory(): void {
+    if (
+      this.dialogueOpen ||
+      this.inspectionOpen ||
+      this.journalOpen ||
+      this.inventoryOpen ||
+      this.activePuzzle
+    ) {
+      return;
+    }
+
+    this.inventoryOpen = true;
+    this.player.setPaused(true);
+    this.lastPrompt = null;
+    this.events.emit('interaction.prompt', { text: null });
+    this.emitInventory();
+    if (document.pointerLockElement === this.canvas) {
+      document.exitPointerLock();
+    }
+  }
+
+  private emitInventory(): void {
+    const store = useStoryStore.getState();
+    this.events.emit('inventory.changed', {
+      view: buildInventoryView({
+        items: content.items,
+        flags: store.storyFlags,
+        regionNames: this.regionNames,
+        currentRegionId: this.currentRegionId,
+      }),
+    });
+  }
+
+  private setFlagWithItemNotice(key: string, value: StoryFlagValue): void {
+    const prev = useStoryStore.getState().storyFlags[key];
+    useStoryStore.getState().setStoryFlag(key, value);
+    if (prev !== true && value === true) {
+      const item = getItemByFlag(key);
+      if (item) {
+        this.events.emit('interaction.activated', {
+          id: `item.${item.id}`,
+          message: `已收入背包：${item.title}（按 B 查看）`,
+        });
+      }
+    }
+  }
+
   private beginInspection(id: string): void {
     if (
       this.dialogueOpen ||
       this.journalOpen ||
+      this.inventoryOpen ||
       this.activePuzzle ||
       this.inspection.active
     ) {
@@ -564,6 +652,7 @@ export class GameBootstrap {
       this.dialogue.active ||
       this.inspectionOpen ||
       this.journalOpen ||
+      this.inventoryOpen ||
       this.activePuzzle
     ) {
       return;
@@ -622,6 +711,20 @@ export class GameBootstrap {
         this.events.emit('interaction.activated', {
           id: 'story.arthur_waiting',
           message: '客厅的壁炉亮着。亚瑟在那里等你。',
+        });
+        return;
+      }
+      // 在第二幕若玩家已问出霍尔太太的夜间搬运证词，转身离开时她也会主动把二楼钥匙塞给玩家。
+      if (
+        store.storyFlags['story.knows_coverup'] === true &&
+        store.storyFlags['story.housekeeper_key'] !== true
+      ) {
+        store.setStoryFlag('story.evelyn_room_open', true);
+        store.setStoryFlag('story.housekeeper_key', true);
+        this.events.emit('interaction.activated', {
+          id: 'item.item_housekeeper_key',
+          message:
+            '霍尔太太叫住转身欲走的你，把二楼伊芙琳卧室的钥匙塞进你手心（已收入背包，按 B 查看）。',
         });
       }
       return;
@@ -726,6 +829,7 @@ export class GameBootstrap {
       this.dialogueOpen ||
       this.inspectionOpen ||
       this.journalOpen ||
+      this.inventoryOpen ||
       this.activePuzzle ||
       this.endingShown
     ) {
@@ -832,6 +936,7 @@ export class GameBootstrap {
       this.dialogueOpen ||
       this.inspectionOpen ||
       this.journalOpen ||
+      this.inventoryOpen ||
       this.activePuzzle
     ) {
       this.player.setPaused(true);
@@ -887,6 +992,30 @@ export class GameBootstrap {
           this.suppressNextPointerLockError = true;
         }
         this.closeClueJournal();
+      } else if (
+        !event.repeat &&
+        (event.code === 'KeyB' || event.code === 'KeyI')
+      ) {
+        event.preventDefault();
+        this.switchToInventory();
+      }
+      return;
+    }
+    if (this.inventoryOpen) {
+      if (
+        !event.repeat &&
+        (event.code === 'Escape' ||
+          event.code === 'KeyB' ||
+          event.code === 'KeyI')
+      ) {
+        event.preventDefault();
+        if (event.code === 'Escape') {
+          this.suppressNextPointerLockError = true;
+        }
+        this.closeInventory();
+      } else if (!event.repeat && event.code === 'KeyJ') {
+        event.preventDefault();
+        this.switchToClues();
       }
       return;
     }
@@ -925,6 +1054,14 @@ export class GameBootstrap {
       }
       event.preventDefault();
       this.openClueJournal();
+      return;
+    }
+    if (event.code === 'KeyB' || event.code === 'KeyI') {
+      if (document.pointerLockElement !== this.canvas) {
+        return;
+      }
+      event.preventDefault();
+      this.openInventory();
       return;
     }
     if (event.code !== 'KeyE') {

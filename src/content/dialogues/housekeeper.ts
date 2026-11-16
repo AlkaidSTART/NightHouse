@@ -116,7 +116,13 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     id: 'npc_housekeeper_evelyn_01',
     npcId: 'npc_housekeeper',
     taskIds: ['step_housekeeper'],
-    lines: [{ speaker: 'npc', text: '小姐待下人很好。她教我认字。' }],
+    lines: [
+      { speaker: 'npc', text: '小姐待下人很好。她教我认字。' },
+      {
+        speaker: 'npc',
+        text: '二楼最里面她住过的房间一直锁着，备用钥匙我替她收在围裙口袋里。这会儿少爷在客厅等您，晚些没人的时候我再把钥匙拿给您。',
+      },
+    ],
     choices: [
       {
         id: 'back',
@@ -178,7 +184,10 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     conditions: [{ flag: 'story.met_housekeeper' }],
     taskIds: ['step_arthur'],
     lines: [
-      { speaker: 'npc', text: '少爷在客厅壁炉边等您。需要什么就叫我。' },
+      {
+        speaker: 'npc',
+        text: '少爷在客厅壁炉边等您。二楼房间的钥匙我收在身上，等您见过少爷和医生，来餐厅门边找我。',
+      },
     ],
     choices: [
       {
@@ -196,7 +205,10 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     conditions: [{ flag: 'story.met_housekeeper' }],
     taskIds: ['step_doctor'],
     lines: [
-      { speaker: 'npc', text: '少爷在长桌尽头等您。汤快凉了。' },
+      {
+        speaker: 'npc',
+        text: '少爷在长桌尽头等您，格雷医生刚到门厅。等您先问过医生那晚的事，再来找我拿二楼的钥匙。',
+      },
     ],
     choices: [
       {
@@ -269,18 +281,28 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     id: 'npc_housekeeper_evelyn_b5',
     npcId: 'npc_housekeeper',
     taskIds: ['step_coverup', 'step_evidence'],
-    lines: [{ speaker: 'npc', text: '小姐待下人很好。她教我认字。' }],
+    lines: [
+      { speaker: 'npc', text: '小姐待下人很好。她教我认字。' },
+      {
+        speaker: 'npc',
+        text: '二楼最里面她的房间一直锁着，备用钥匙我还替她收在围裙口袋里。',
+      },
+    ],
     choices: [
+      {
+        id: 'ask_room',
+        text: '她的房间还留着吗？能把钥匙给我吗？',
+        next: 'npc_housekeeper_room_01',
+        conditions: [{ flag: 'story.housekeeper_warm' }],
+        effects: [
+          flag('story.evelyn_room_open'),
+          flag('story.housekeeper_key'),
+        ],
+      },
       {
         id: 'ask_night',
         text: '那晚，你看见什么了吗？',
         next: 'npc_housekeeper_night_01',
-        conditions: [{ flag: 'story.housekeeper_warm' }],
-      },
-      {
-        id: 'ask_room',
-        text: '她的房间还留着吗？',
-        next: 'npc_housekeeper_room_01',
         conditions: [{ flag: 'story.housekeeper_warm' }],
       },
       {
@@ -395,6 +417,17 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     ],
     choices: [
       {
+        id: 'ask_room',
+        text: '她的房间还留着吗？能把钥匙给我吗？',
+        next: 'npc_housekeeper_room_01',
+        effects: [
+          flag('story.housekeeper_warm'),
+          flag('story.letter_shown'),
+          flag('story.evelyn_room_open'),
+          flag('story.housekeeper_key'),
+        ],
+      },
+      {
         id: 'ask_night',
         text: '那晚发生了什么？',
         next: 'npc_housekeeper_night_01',
@@ -435,6 +468,16 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
       { speaker: 'npc', text: '我拖了一年。我怕。' },
     ],
     choices: [
+      {
+        id: 'ask_room',
+        text: '她的房间还留着吗？能把钥匙给我吗？',
+        next: 'npc_housekeeper_room_01',
+        effects: [
+          flag('story.housekeeper_guilt'),
+          flag('story.evelyn_room_open'),
+          flag('story.housekeeper_key'),
+        ],
+      },
       {
         id: 'back',
         text: '你没有做错。',
@@ -501,6 +544,17 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
         effects: [flag('story.knows_coverup')],
       },
       {
+        id: 'ask_room',
+        text: '她的房间还留着吗？能把钥匙给我吗？',
+        next: 'npc_housekeeper_room_01',
+        conditions: [{ flag: 'story.housekeeper_warm' }],
+        effects: [
+          flag('story.knows_coverup'),
+          flag('story.evelyn_room_open'),
+          flag('story.housekeeper_key'),
+        ],
+      },
+      {
         id: 'leave',
         text: '我需要想一想。',
         next: null,
@@ -523,6 +577,18 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
       },
     ],
     choices: [
+      {
+        id: 'ask_room',
+        text: '她的房间还留着吗？能把钥匙给我吗？',
+        next: 'npc_housekeeper_room_01',
+        conditions: [{ flag: 'story.housekeeper_warm' }],
+        effects: [
+          flag('story.housekeeper_guilt'),
+          flag('story.knows_coverup'),
+          flag('story.evelyn_room_open'),
+          flag('story.housekeeper_key'),
+        ],
+      },
       {
         id: 'back',
         text: '那不是你的错。',
@@ -549,6 +615,18 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
       { speaker: 'npc', text: '但她的手是暖的。' },
     ],
     choices: [
+      {
+        id: 'ask_room',
+        text: '她的房间还留着吗？能把钥匙给我吗？',
+        next: 'npc_housekeeper_room_01',
+        conditions: [{ flag: 'story.housekeeper_warm' }],
+        effects: [
+          flag('story.knows_coverup'),
+          clue('clue_hall_testimony'),
+          flag('story.evelyn_room_open'),
+          flag('story.housekeeper_key'),
+        ],
+      },
       {
         id: 'back',
         text: '这就够了。',
@@ -577,23 +655,45 @@ export const housekeeperDialogues: readonly DialogueNode[] = [
     lines: [
       {
         speaker: 'npc',
-        text: '二楼最里面是她的房间。钥匙在围裙口袋里。',
+        text: '二楼最里面是她的房间。出事以后少爷让人锁上了，备用钥匙一直在我围裙口袋里。',
       },
       {
         speaker: 'narration',
-        text: '她把钥匙塞进你手里，低声说：',
+        text: '霍尔太太朝走廊尽头望了一眼，从围裙深处摸出一把磨得发亮的黄铜旧钥匙，塞进你手里，低声说：',
       },
-      { speaker: 'npc', text: '别让他知道是我给的。' },
       {
         speaker: 'npc',
-        text: '……小姐出事那天下午，还去门厅邮箱看过一回。其实她知道邮差早上已经来过了。',
+        text: '收进您的随身背包里，别让少爷知道是我给的。',
+      },
+      {
+        speaker: 'npc',
+        text: '……小姐出事那天下午，还去门厅邮箱看过一回。其实她知道邮差早上已经来过了。她的梳妆台和衣柜一直没人动过，您可以上去看看。',
       },
     ],
     choices: [
       {
+        id: 'ask_night',
+        text: '那晚，你在楼下还看见什么了吗？',
+        next: 'npc_housekeeper_night_01',
+        conditions: [{ flag: 'story.housekeeper_warm' }],
+        effects: [
+          flag('story.evelyn_room_open'),
+          flag('story.housekeeper_key'),
+        ],
+      },
+      {
         id: 'back',
         text: '我不会说。',
         next: 'npc_housekeeper_evelyn_b5',
+        effects: [
+          flag('story.evelyn_room_open'),
+          flag('story.housekeeper_key'),
+        ],
+      },
+      {
+        id: 'leave',
+        text: '收好钥匙：放心，我现在上楼去看看。',
+        next: null,
         effects: [
           flag('story.evelyn_room_open'),
           flag('story.housekeeper_key'),

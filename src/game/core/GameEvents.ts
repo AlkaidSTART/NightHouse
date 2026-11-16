@@ -3,6 +3,7 @@ import type { ClueJournalView } from '../../shared/types/clueJournal';
 import type { DialogueView } from '../../shared/types/dialogue';
 import type { EndingView } from '../../shared/types/ending';
 import type { InspectionView } from '../../shared/types/inspection';
+import type { InventoryView } from '../../shared/types/inventory';
 import type { PuzzleView } from '../../shared/types/puzzle';
 import type { Vec3Tuple } from '../../shared/types/save';
 
@@ -15,6 +16,7 @@ export interface GameEventMap {
   'inspection.changed': { view: InspectionView | null };
   'puzzle.changed': { view: PuzzleView | null };
   'clues.changed': { view: ClueJournalView | null };
+  'inventory.changed': { view: InventoryView | null };
   'ending.changed': { view: EndingView | null };
   'pause.changed': { paused: boolean };
   'region.changed': { regionId: string; name: string };

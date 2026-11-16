@@ -401,7 +401,7 @@ export class DialogueSystem {
     }
 
     const nextIndex = steps.findIndex(
-      (step) => !this.askedChoiceKeys.has(this.choiceKey(nodeId, step.choiceId)),
+      (step) => !this.isChoiceAsked(nodeId, step.choiceId),
     );
     return {
       hint: config.hint ?? null,
@@ -409,12 +409,32 @@ export class DialogueSystem {
         choiceId: step.choiceId,
         label: step.label,
         status: this.resolveGuideStatus(
-          this.askedChoiceKeys.has(this.choiceKey(nodeId, step.choiceId)),
+          this.isChoiceAsked(nodeId, step.choiceId),
           index,
           nextIndex,
         ),
       })),
     };
+  }
+
+  private isChoiceAsked(nodeId: string, choiceId: string): boolean {
+    if (!this.askedChoiceKeys.has(this.choiceKey(nodeId, choiceId))) {
+      return false;
+    }
+    // B5 霍尔太太的入口话题 `ask_evelyn` 下挂着「房间钥匙」与「夜间搬运」两条主线。
+    // 若玩家中途离开对话、尚未集齐这两项关键结果，重进对话时仍提示为未完成。
+    if (
+      nodeId === 'npc_housekeeper_b5_01' &&
+      choiceId === 'ask_evelyn' &&
+      this.getActiveTaskId() === 'step_coverup'
+    ) {
+      const flags = this.host.getFlags();
+      return (
+        flags['story.housekeeper_key'] === true &&
+        flags['story.knows_coverup'] === true
+      );
+    }
+    return true;
   }
 
   private resolveGuideStatus(
