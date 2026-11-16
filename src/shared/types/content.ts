@@ -97,6 +97,30 @@ export interface ClueDefinition {
   storyFlags?: string[];
 }
 
+export type ItemCategory = '钥匙' | '信件' | '机关部件' | '关键证物';
+
+/**
+ * 背包中可存放的可交互物品定义。
+ * 持有状态与使用状态均由 `storyFlags` 实时推导，避免存档状态双写。
+ */
+export interface ItemDefinition {
+  id: string;
+  title: string;
+  category: ItemCategory;
+  /** 标记玩家已获得该物品的剧情标记。 */
+  flag: string;
+  /** 获得地点（区域 ID，或 'player' 表示随身携带）。 */
+  sourceLocationId: string;
+  /** 物品对应的可交互目标区域 ID。 */
+  targetLocationId: string;
+  /** 可交互目标名称（如房门或机关名称）。 */
+  targetLabel: string;
+  description: string;
+  usage: string;
+  /** 满足任一条件时视为该物品已完成核心交互用途。 */
+  usedWhen?: StoryCondition[];
+}
+
 export type InspectTextStyle = 'body' | 'quote' | 'note' | 'signature';
 
 /** 检视面板中的一段正文。段落之间保留空行，适合信纸、日志和书籍排版。 */

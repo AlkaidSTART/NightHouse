@@ -60,4 +60,4 @@ A calm in-place walk cycle for a realistic adult NPC in an old villa. Natural ar
 
 ## 6. 备注
 
-只有确认 NPC 需要移动后再做；MVP 可先只使用 Idle。
+只有确认 NPC 需要移动后再做；当前版本可先只使用 Idle。

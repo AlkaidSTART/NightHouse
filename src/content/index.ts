@@ -3,6 +3,7 @@ import type {
   DialogueNode,
   EndingDefinition,
   InspectableDefinition,
+  ItemDefinition,
   NpcDefinition,
   PuzzleDefinition,
   QuestDefinition,
@@ -15,6 +16,7 @@ import {
 import type { DialogueChoiceGuide } from '../shared/types/content';
 import { endings } from './endings.ts';
 import { inspectables } from './inspectables.ts';
+import { items } from './items.ts';
 import { npcs } from './npcs.ts';
 import { clockPuzzleContent, safePuzzleContent } from './puzzles.ts';
 import { quests } from './quests.ts';
@@ -24,6 +26,7 @@ export interface ContentRegistry {
   dialogueChoiceGuides: Readonly<Record<string, DialogueChoiceGuide>>;
   npcs: readonly NpcDefinition[];
   clues: readonly ClueDefinition[];
+  items: readonly ItemDefinition[];
   inspectables: readonly InspectableDefinition[];
   quests: readonly QuestDefinition[];
   puzzles: readonly PuzzleDefinition[];
@@ -35,6 +38,7 @@ export const content: ContentRegistry = {
   dialogueChoiceGuides: DIALOGUE_CHOICE_GUIDES,
   npcs,
   clues,
+  items,
   inspectables,
   quests,
   puzzles: [clockPuzzleContent.definition, safePuzzleContent.definition],
