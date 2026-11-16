@@ -75,11 +75,20 @@ export function GameHud(props: GameHudProps = {}) {
         investigation={investigation}
       />
       {props.region && <div className="hud-region">{props.region}</div>}
-      {props.showJournalHint && clueCount > 0 && (
-        <div className="hud-journal-hint">
-          <span className="hud-key">J</span>
-          <span>线索</span>
-          <span className="hud-journal-count">{clueCount}</span>
+      {props.showJournalHint && (clueCount > 0 || itemCount > 0) && (
+        <div className="hud-bottom-hints">
+          {clueCount > 0 && (
+            <div className="hud-journal-hint">
+              <span className="hud-key">J</span>
+              <span>线索</span>
+              <span className="hud-journal-count">{clueCount}</span>
+            </div>
+          )}
+          <div className="hud-journal-hint hud-inventory-hint">
+            <span className="hud-key">B</span>
+            <span>背包</span>
+            <span className="hud-journal-count">{itemCount}</span>
+          </div>
         </div>
       )}
       {prompt && (

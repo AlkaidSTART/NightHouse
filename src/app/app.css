@@ -993,10 +993,17 @@ button {
   letter-spacing: 0;
 }
 
-.hud-journal-hint {
+.hud-bottom-hints {
   position: absolute;
   bottom: 22px;
   left: 28px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  pointer-events: none;
+}
+
+.hud-journal-hint {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1756,6 +1763,139 @@ button {
   outline: none;
 }
 
+.panel-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.panel-switch-btn {
+  padding: 2px 8px;
+  border: 1px solid rgba(200, 170, 110, 0.28);
+  background: rgba(200, 170, 110, 0.08);
+  color: #d6b684;
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    background 140ms ease,
+    color 140ms ease;
+}
+
+.panel-switch-btn:hover,
+.panel-switch-btn:focus-visible {
+  border-color: rgba(226, 195, 142, 0.65);
+  background: rgba(200, 170, 110, 0.16);
+  color: #f4ecda;
+  outline: none;
+}
+
+.inventory-cat-key {
+  color: #e4be82;
+}
+
+.inventory-cat-part {
+  color: #c2b69a;
+}
+
+.inventory-cat-evidence {
+  color: #d8a27a;
+}
+
+.inventory-cat-letter {
+  color: #a9b39a;
+}
+
+.inventory-status {
+  flex: none;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+.inventory-status-usable {
+  color: #e2be84;
+}
+
+.inventory-status-used {
+  color: #849a8b;
+}
+
+.inventory-usage-box {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-left: 2px solid rgba(214, 182, 132, 0.48);
+  background: linear-gradient(
+    to right,
+    rgba(200, 170, 110, 0.1),
+    rgba(200, 170, 110, 0.02) 72%,
+    transparent
+  );
+}
+
+.inventory-usage-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 8px;
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  color: #d6b684;
+}
+
+.inventory-here-badge {
+  padding: 1px 6px;
+  border: 1px solid rgba(226, 195, 142, 0.55);
+  color: #f0d9ac;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.inventory-usage-text {
+  margin: 0 0 12px;
+  font-size: var(--text-sm);
+  line-height: 1.75;
+  color: #cfc6b2;
+}
+
+.inventory-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.inventory-use-btn {
+  padding: 5px 14px;
+  border: 1px solid rgba(200, 170, 110, 0.36);
+  background: rgba(200, 170, 110, 0.1);
+  color: #ead4a9;
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    background 140ms ease,
+    color 140ms ease;
+}
+
+.inventory-use-btn:hover,
+.inventory-use-btn:focus-visible {
+  border-color: rgba(226, 195, 142, 0.72);
+  background: rgba(200, 170, 110, 0.22);
+  color: #faf3e3;
+  outline: none;
+}
+
+.inventory-inspect-note {
+  margin: 10px 0 0;
+  color: #e6d4ad;
+  font-size: var(--text-xs);
+  line-height: 1.65;
+  letter-spacing: 0.04em;
+}
+
 .clue-body {
   display: grid;
   flex: 1;
@@ -2165,9 +2305,10 @@ button {
     padding: 10px 0 8px;
   }
 
-  .hud-journal-hint {
+  .hud-bottom-hints {
     bottom: 16px;
     left: 16px;
+    gap: 12px;
   }
 }
 
