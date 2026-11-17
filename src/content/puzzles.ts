@@ -57,7 +57,7 @@ export const clockPuzzleContent: ClockPuzzleContent = {
     id: 'puzzle_clock',
     title: '落地钟',
     description:
-      '让门厅落地钟校准到 23:47，分针越过十二点时试响十三下，打开钟座暗格。',
+      '让门厅落地钟重新走动，并在正确的时刻触发十三下报时。',
     prerequisites: [
       { flag: 'item.clock_key' },
       { flag: 'item.pendulum' },
@@ -81,18 +81,18 @@ export const clockPuzzleContent: ClockPuzzleContent = {
   ],
   texts: {
     lockedWithoutKey:
-      '钟门锁着。锁孔很小，边缘有一圈新鲜的黄铜划痕。你需要一把合适的钥匙（提示：去一楼书房书桌抽屉寻找上弦钥匙）。',
+      '钟门锁着。锁孔很小，边缘有一圈新鲜的黄铜划痕。你需要一把合适的钥匙。',
     doorReady:
-      '钟门锁着，但书房抽屉里那串钥匙中有一把黄铜小钥匙，柄上刻着钟面图案。',
+      '钟门锁着。黄铜小钥匙的齿口与锁孔相合。',
     doorOpenedNoPendulum:
-      '钟门打开了。钟摆杆空着，摆锤不在钟座里。钟面停在十二点差一点的位置（提示：摆锤被藏在二楼伊芙琳卧室的衣柜深处）。',
+      '钟门打开了。钟摆杆空着，摆锤不在钟座里。钟面停在十二点差一点的位置。',
     pendulumReady:
       '钟门开着，摆锤就在你手里。把它挂回摆杆，钟才有可能重新走起来。',
     pendulumHung: '摆锤挂回了摆杆，但钟还是停着。需要上弦。',
     woundNeedsClock:
-      '你转动钥匙上弦。钟摆开始摆动，钟面却指向错误的时间。分针要拨过十二点，才能触发报时凸轮。可你得先确认现在到底几点（提示：查看客厅壁炉小座钟获取当前时间，并确认书房潮汐表）。',
+      '你转动钥匙上弦。钟摆开始摆动，钟面却指向错误的时间。分针要拨过十二点，才能触发报时凸轮。可你得先确认现在到底几点。',
     calibrationReady:
-      '客厅壁炉上的小座钟显示 23:47，潮汐表也确认午夜是满潮。把门厅钟的指针拨过十二点，校准到同一时刻（23:47）。',
+      '钟摆重新走起来了，但指针仍停在错误的位置。你已经见过能校准它的依据，把指针拨到该停下的地方。',
     doorOpened: '钟门打开了。',
     pendulumInstalled: '摆锤挂好了，钟摆轻轻晃了一下。',
     wound: '钟开始走了。齿轮咬合的声音在钟座里慢慢展开。',
@@ -108,7 +108,7 @@ export const safePuzzleContent: SafePuzzleContent = {
     id: 'puzzle_safe',
     title: '保险箱',
     description:
-      '用油画题字与报纸日期推出四位数字，打开书房保险箱，取得航运账本与保险赔付单。',
+      '从宅子里的旧记录推出四位数字，打开书房保险箱，取得航运账本与保险赔付单。',
     prerequisites: [{ flag: 'clue.ship_painting' }],
     successConditions: [{ flag: 'story.safe_opened' }],
     failureFeedback: '转盘发出干涩的卡响，箱门不动。',
@@ -119,9 +119,9 @@ export const safePuzzleContent: SafePuzzleContent = {
   code: '0314',
   texts: {
     lockedWithoutClues:
-      '箱门是四位数字转盘，第 3、4 位磨得最亮。你还没有能推出密码的依据。先去客厅看看帆船油画背面，以及储藏室的旧报纸。',
+      '箱门是四位数字转盘，第 3、4 位磨得最亮。你还没有能推出密码的依据。',
     ready:
-      '箱门是四位数字转盘，第 3、4 位磨得最亮。油画背面有珀耳塞福涅号的罗马数字日期（III·XIV），报纸证实了当年沉船。把沉船月日（3月14日）换算成四位数字（0314）。',
+      '箱门是四位数字转盘，第 3、4 位磨得最亮。你找到的日期记录能互相对上。把那个日期换算成四位数字。',
     wrongCode: '转盘发出干涩的卡响，箱门不动。',
     thirdFailure:
       '门外传来脚步声，停在书房门口。格雷医生：「有些东西，锁着是有原因的。」',

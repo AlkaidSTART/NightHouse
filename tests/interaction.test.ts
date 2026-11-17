@@ -71,8 +71,7 @@ test('偏离瞄准锥或超过交互距离的 NPC 不显示提示', () => {
   assert.equal(far.update(camera, camera.getPosition()), null);
 });
 
-
-test('书桌抽屉在稍微抬高视线时仍可选中', () => {
+test('书桌抽屉不必精确低头也能选中', () => {
   const system = new InteractionSystem(INTERACTION_DISTANCE);
   const drawer = new pc.Entity('study_drawer');
   drawer.setPosition(0, 0.5, -2.4);

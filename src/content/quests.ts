@@ -98,8 +98,8 @@ export const quests: readonly QuestDefinition[] = [
       },
       {
         id: 'step_corroborate',
-        objective: '再取得一份书证，或修好敲出第十三下的落地钟',
-        hint: '任选其一：①书房保险箱（客厅油画背面日期+旧报纸/记录推算0314）；②门厅落地钟（书房抽屉取钥匙、二楼衣柜取摆锤，参考客厅座钟校准至23:47）。',
+        objective: '找到能印证真相的第二份证据',
+        hint: '有些旧账被锁着，有些声音还没有响完。',
         locationId: 'villa_study',
         doneWhen: [
           [{ flag: 'story.safe_opened' }],

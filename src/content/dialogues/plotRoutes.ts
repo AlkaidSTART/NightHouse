@@ -33,7 +33,7 @@ export const DIALOGUE_PLOT_LABEL: Readonly<Record<string, string>> = {
   step_coverup: '与一楼的霍尔太太对话取得钥匙，并前往二楼',
   step_medical_truth: '把两份伤情证据交给格雷医生',
   step_recording: '寻找并播放伊芙琳留下的蜡筒',
-  step_corroborate: '再取得一份书证，或修好落地钟',
+  step_corroborate: '找到能印证真相的第二份证据',
   step_evidence: '整理证据，准备对质',
   step_confront: '去书房对质亚瑟',
   step_midnight: '在门厅作出午夜抉择',
