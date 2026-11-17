@@ -23,7 +23,7 @@ export function PuzzlePanel({
     <div className="inspect-layer puzzle-layer">
       <article
         ref={panelRef}
-        className={`inspect-panel puzzle-panel${isDragging ? ' is-dragging' : ''}`}
+        className={`inspect-panel puzzle-panel puzzle-panel--${view.kind}${isDragging ? ' is-dragging' : ''}`}
         style={panelStyle}
         role="dialog"
         aria-modal="true"
@@ -82,32 +82,60 @@ export function PuzzlePanel({
                 }
               }}
             >
-              <label className="puzzle-code-label" htmlFor="puzzle-code">
-                四位数字转盘
-              </label>
-              <input
-                id="puzzle-code"
-                className="puzzle-code-input"
-                value={code}
-                onChange={(event) => {
-                  const digits = event.target.value
-                    .replace(/\D/g, '')
-                    .slice(0, view.codeLength);
-                  setCode(digits);
-                }}
-                inputMode="numeric"
-                autoComplete="off"
-                maxLength={view.codeLength}
-                aria-label="保险箱密码"
-                autoFocus
-              />
-              <button
-                type="submit"
-                className="puzzle-action puzzle-submit"
-                disabled={code.length !== view.codeLength}
+              <div
+                className={`safe-lock-plate${view.codeError ? ' is-rejected' : ''}`}
               >
-                转动转盘
-              </button>
+                <span className="safe-lock-rivet safe-lock-rivet--tl" />
+                <span className="safe-lock-rivet safe-lock-rivet--tr" />
+                <span className="safe-lock-rivet safe-lock-rivet--bl" />
+                <span className="safe-lock-rivet safe-lock-rivet--br" />
+
+                <div className="safe-lock-heading" aria-hidden="true">
+                  <span>ASH CROFT</span>
+                  <span>组合锁</span>
+                </div>
+
+                <label className="safe-code-display" htmlFor="puzzle-code">
+                  <span className="safe-code-caption">密码 / COMBINATION</span>
+                  <span className="safe-code-window">
+                    <input
+                      id="puzzle-code"
+                      className="puzzle-code-input"
+                      value={code}
+                      onChange={(event) => {
+                        const digits = event.target.value
+                          .replace(/\D/g, '')
+                          .slice(0, view.codeLength);
+                        setCode(digits);
+                      }}
+                      inputMode="numeric"
+                      autoComplete="off"
+                      maxLength={view.codeLength}
+                      aria-label="保险箱密码"
+                      autoFocus
+                    />
+                  </span>
+                </label>
+
+                <div className="safe-dial-track">
+                  <span className="safe-dial-number safe-dial-number--top" aria-hidden="true">0</span>
+                  <span className="safe-dial-number safe-dial-number--right" aria-hidden="true">25</span>
+                  <span className="safe-dial-number safe-dial-number--bottom" aria-hidden="true">50</span>
+                  <span className="safe-dial-number safe-dial-number--left" aria-hidden="true">75</span>
+                  <button
+                    type="submit"
+                    className={`safe-dial-knob${code.length === view.codeLength ? ' is-ready' : ''}`}
+                    disabled={code.length !== view.codeLength}
+                    aria-label="转动转盘验证密码"
+                  >
+                    <span className="safe-dial-grip" aria-hidden="true" />
+                  </button>
+                </div>
+
+                <p className="safe-lock-instruction">
+                  输入四位数字后，按下中央转盘验证
+                </p>
+              </div>
             </form>
           )}
 

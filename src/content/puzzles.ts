@@ -44,7 +44,7 @@ export interface SafePuzzleContent {
   category: string;
   code: string;
   texts: {
-    lockedWithoutClues: string;
+    inputWithoutClues: string;
     ready: string;
     wrongCode: string;
     thirdFailure: string;
@@ -109,7 +109,6 @@ export const safePuzzleContent: SafePuzzleContent = {
     title: '保险箱',
     description:
       '从宅子里的旧记录推出四位数字，打开书房保险箱，取得航运账本与保险赔付单。',
-    prerequisites: [{ flag: 'clue.ship_painting' }],
     successConditions: [{ flag: 'story.safe_opened' }],
     failureFeedback: '转盘发出干涩的卡响，箱门不动。',
     successEvent: 'puzzle.safe',
@@ -118,8 +117,8 @@ export const safePuzzleContent: SafePuzzleContent = {
   category: '谜题 · 四位转盘',
   code: '0314',
   texts: {
-    lockedWithoutClues:
-      '箱门是四位数字转盘，第 3、4 位磨得最亮。密码来自宅子里的旧记录：先查看客厅帆船油画的正反两面，再寻找能核对日期的旧报纸或诊疗记录。',
+    inputWithoutClues:
+      '箱门是四位数字转盘，第 3、4 位磨得最亮。你可以直接拨动数字验证。没有把握时，查看客厅帆船油画的正反两面，再寻找能核对日期的旧报纸或诊疗记录。',
     ready:
       '箱门是四位数字转盘，第 3、4 位磨得最亮。客厅帆船油画的画框背面写着年月日；如果还没看过，先回去确认。把月和日各补成两位，依次组成密码。',
     wrongCode: '转盘发出干涩的卡响，箱门不动。',

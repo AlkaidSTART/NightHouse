@@ -19,7 +19,7 @@ export interface SafePuzzleView {
   title: string;
   category: string;
   description: readonly string[];
-  /** 是否已经具备推理依据；false 时不显示密码输入。 */
+  /** 是否允许输入密码；保险箱未完成时始终为 true。 */
   canTry: boolean;
   codeLength: number;
   codeError: string | null;

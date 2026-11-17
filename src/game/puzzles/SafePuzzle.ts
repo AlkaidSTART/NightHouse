@@ -7,7 +7,8 @@ const SAFE_CLUE_IDS = ['clue_shipping_ledger', 'clue_insurance_policy'] as const
 
 /**
  * 保险箱谜题：油画背面给出 PERSEPHONE — 1896.3.14，报纸确认沉船日期，
- * 四位转盘输入 0314。错误只累计尝试次数，不触发惩罚。
+ * 四位转盘输入 0314。线索用于辅助推理，不限制玩家尝试密码；
+ * 错误只累计尝试次数，不触发惩罚。
  */
 export class SafePuzzle {
   private readonly content: SafePuzzleContent;
@@ -31,9 +32,6 @@ export class SafePuzzle {
     if (flags['story.safe_opened'] === true) {
       return this.buildView(null, null, []);
     }
-    if (!this.canTry(flags)) {
-      return this.buildView(null, null, []);
-    }
     if (code.length !== this.content.code.length) {
       return this.buildView(this.content.texts.wrongCode, null, []);
     }
@@ -50,7 +48,7 @@ export class SafePuzzle {
     );
   }
 
-  private canTry(flags: StoryFlags): boolean {
+  private hasClues(flags: StoryFlags): boolean {
     return (
       flags['clue.ship_painting'] === true &&
       (flags['clue.newspaper'] === true ||
@@ -80,7 +78,8 @@ export class SafePuzzle {
   ): SafePuzzleView {
     const flags = this.host.getFlags();
     const solved = flags['story.safe_opened'] === true;
-    const canTry = !solved && this.canTry(flags);
+    const canTry = !solved;
+    const hasClues = this.hasClues(flags);
 
     return {
       kind: 'safe',
@@ -88,9 +87,9 @@ export class SafePuzzle {
       category: this.content.category,
       description: solved
         ? [this.content.texts.success]
-        : canTry
+        : hasClues
           ? [this.content.texts.ready]
-          : [this.content.texts.lockedWithoutClues],
+          : [this.content.texts.inputWithoutClues],
       canTry,
       codeLength: this.content.code.length,
       codeError,

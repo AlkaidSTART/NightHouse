@@ -132,14 +132,16 @@ test('落地钟：错误时间不打开暗格，23:47 解锁船长日志与船�
   assert.equal(puzzle.isSolved(), true);
 });
 
-test('保险箱：缺少油画或日期线索时不开放输入', () => {
+test('保险箱：线索只辅助推理，未找到线索也可以直接输入密码', () => {
   const noClues = createHost();
   const puzzle = new SafePuzzle(safePuzzleContent, noClues.host);
-  assert.equal(puzzle.open().canTry, false);
+  const noClueView = puzzle.open();
+  assert.equal(noClueView.canTry, true);
+  assert.ok(noClueView.description[0]?.includes('直接'));
 
   const paintingOnly = createHost({ 'clue.ship_painting': true });
   const paintingPuzzle = new SafePuzzle(safePuzzleContent, paintingOnly.host);
-  assert.equal(paintingPuzzle.open().canTry, false);
+  assert.equal(paintingPuzzle.open().canTry, true);
 
   const withNewspaper = createHost({
     'clue.ship_painting': true,
@@ -168,10 +170,7 @@ test('保险箱：错误密码累计尝试，第三次触发医生台词', () =>
 });
 
 test('保险箱：0314 打开箱门并记录账本与赔付单', () => {
-  const fake = createHost({
-    'clue.ship_painting': true,
-    'clue.newspaper': true,
-  });
+  const fake = createHost();
   const puzzle = new SafePuzzle(safePuzzleContent, fake.host);
 
   const view = puzzle.submit('0314');

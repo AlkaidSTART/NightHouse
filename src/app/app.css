@@ -2060,6 +2060,10 @@ button {
   width: min(500px, 100%);
 }
 
+.puzzle-panel--safe {
+  width: min(560px, 100%);
+}
+
 .puzzle-body {
   padding-bottom: 20px;
 }
@@ -2153,37 +2157,365 @@ button {
 }
 
 .puzzle-code-form {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-top: 18px;
+  margin-top: 20px;
 }
 
-.puzzle-code-label {
+.safe-lock-plate {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 22px 24px 20px;
+  border: 1px solid rgba(178, 144, 87, 0.34);
+  background:
+    linear-gradient(135deg, rgba(255, 232, 184, 0.08), transparent 22%),
+    radial-gradient(circle at 50% 35%, rgba(88, 77, 55, 0.16), transparent 58%),
+    linear-gradient(160deg, #151513 0%, #0b0c0b 52%, #12110e 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(238, 217, 172, 0.05),
+    inset 0 0 0 7px rgba(0, 0, 0, 0.34),
+    inset 0 0 44px rgba(0, 0, 0, 0.8),
+    0 18px 38px rgba(0, 0, 0, 0.38);
+  text-shadow: none;
+}
+
+.safe-lock-plate::before,
+.safe-lock-plate::after {
+  position: absolute;
+  top: 9px;
+  bottom: 9px;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(204, 164, 98, 0.22),
+    transparent
+  );
+  content: '';
+}
+
+.safe-lock-plate::before {
+  left: 9px;
+}
+
+.safe-lock-plate::after {
+  right: 9px;
+}
+
+.safe-lock-plate.is-rejected {
+  border-color: rgba(154, 78, 57, 0.44);
+  box-shadow:
+    inset 0 0 0 1px rgba(238, 217, 172, 0.05),
+    inset 0 0 0 7px rgba(0, 0, 0, 0.34),
+    inset 0 0 44px rgba(70, 16, 10, 0.28),
+    0 18px 38px rgba(0, 0, 0, 0.38);
+}
+
+.safe-lock-rivet {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(205, 179, 126, 0.34);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #8b7957, #28241c 45%, #0b0b09 75%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+.safe-lock-rivet--tl {
+  top: 8px;
+  left: 8px;
+}
+
+.safe-lock-rivet--tr {
+  top: 8px;
+  right: 8px;
+}
+
+.safe-lock-rivet--bl {
+  bottom: 8px;
+  left: 8px;
+}
+
+.safe-lock-rivet--br {
+  right: 8px;
+  bottom: 8px;
+}
+
+.safe-lock-heading {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
-  color: #8b8474;
-  font-size: 11px;
-  letter-spacing: 0.2em;
+  margin-bottom: 14px;
+  color: #86775c;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.safe-lock-heading span:first-child {
+  color: #b79a68;
+}
+
+.safe-code-display {
+  display: grid;
+  gap: 5px;
+  width: min(300px, 100%);
+  margin-bottom: 14px;
+}
+
+.safe-code-caption {
+  color: #8d8068;
+  font-size: 9px;
+  letter-spacing: 0.26em;
+  text-align: center;
+}
+
+.safe-code-window {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 10px;
+  border: 1px solid rgba(196, 161, 99, 0.28);
+  background:
+    repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(25% - 1px),
+      rgba(206, 176, 115, 0.12) calc(25% - 1px),
+      rgba(206, 176, 115, 0.12) 25%
+    ),
+    linear-gradient(180deg, #050606, #11100d 48%, #050505);
+  box-shadow:
+    inset 0 3px 9px rgba(0, 0, 0, 0.95),
+    inset 0 -1px 0 rgba(213, 183, 123, 0.12),
+    0 0 0 3px rgba(0, 0, 0, 0.28);
+}
+
+.safe-code-window::before,
+.safe-code-window::after {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: rgba(212, 184, 124, 0.22);
+  content: '';
+}
+
+.safe-code-window::before {
+  left: 4px;
+}
+
+.safe-code-window::after {
+  right: 4px;
 }
 
 .puzzle-code-input {
-  width: 148px;
-  padding: 8px 10px;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 0;
   border: none;
-  border-bottom: 1px solid rgba(220, 210, 190, 0.28);
-  background: rgba(255, 255, 255, 0.03);
-  color: #f0e8d6;
-  font-family: inherit;
-  font-size: 20px;
-  letter-spacing: 0.48em;
+  background: transparent;
+  color: #e5c98f;
+  caret-color: #d7b36f;
+  font-family: 'Courier New', 'SFMono-Regular', monospace;
+  font-size: 27px;
+  font-weight: 600;
+  letter-spacing: 0.52em;
+  line-height: 1;
   text-align: center;
+  text-indent: 0.52em;
+  text-shadow:
+    0 1px 0 rgba(255, 235, 190, 0.22),
+    0 0 13px rgba(199, 155, 76, 0.28);
   outline: none;
-  transition: border-color 140ms ease;
 }
 
-.puzzle-code-input:focus {
-  border-color: rgba(200, 170, 110, 0.55);
+.safe-code-window:focus-within {
+  border-color: rgba(222, 182, 108, 0.6);
+  box-shadow:
+    inset 0 3px 9px rgba(0, 0, 0, 0.95),
+    inset 0 -1px 0 rgba(213, 183, 123, 0.2),
+    0 0 0 3px rgba(0, 0, 0, 0.28),
+    0 0 20px rgba(183, 135, 61, 0.13);
+}
+
+.safe-dial-track {
+  position: relative;
+  width: 214px;
+  height: 214px;
+  border: 1px solid rgba(198, 163, 100, 0.32);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 0 65%, rgba(87, 74, 50, 0.22) 66% 69%, transparent 70%),
+    radial-gradient(circle at 48% 40%, #24211a 0%, #11120f 45%, #070807 76%);
+  box-shadow:
+    inset 0 0 0 5px rgba(0, 0, 0, 0.52),
+    inset 0 0 0 7px rgba(190, 154, 91, 0.14),
+    inset 0 0 34px rgba(0, 0, 0, 0.92),
+    0 10px 24px rgba(0, 0, 0, 0.5);
+}
+
+.safe-dial-track::before {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(213, 178, 111, 0.66) 0deg 0.75deg,
+    transparent 0.75deg 15deg
+  );
+  -webkit-mask: radial-gradient(circle, transparent 0 72%, #000 72.5% 100%);
+  mask: radial-gradient(circle, transparent 0 72%, #000 72.5% 100%);
+  opacity: 0.78;
+  content: '';
+}
+
+.safe-dial-track::after {
+  position: absolute;
+  inset: 31px;
+  border: 1px solid rgba(201, 166, 103, 0.22);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 18px rgba(0, 0, 0, 0.8),
+    0 0 0 17px rgba(0, 0, 0, 0.12);
+  content: '';
+}
+
+.safe-dial-number {
+  position: absolute;
+  z-index: 1;
+  color: #b99a63;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 2px #000;
+}
+
+.safe-dial-number--top {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.safe-dial-number--right {
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+.safe-dial-number--bottom {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.safe-dial-number--left {
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+
+.safe-dial-knob {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 104px;
+  height: 104px;
+  padding: 0;
+  border: 1px solid rgba(226, 197, 139, 0.38);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 28%, rgba(225, 205, 162, 0.52), transparent 13%),
+    radial-gradient(circle at 42% 38%, #94805a 0%, #5e5038 30%, #27231b 63%, #0b0b09 84%);
+  box-shadow:
+    inset 0 0 0 5px rgba(14, 13, 11, 0.58),
+    inset -10px -12px 20px rgba(0, 0, 0, 0.45),
+    0 7px 16px rgba(0, 0, 0, 0.7),
+    0 0 0 3px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition:
+    filter 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.safe-dial-knob::after {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(220, 193, 136, 0.36);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #9a855e, #312b21 60%, #090907);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.9);
+  content: '';
+}
+
+.safe-dial-grip,
+.safe-dial-grip::before {
+  position: relative;
+  width: 58px;
+  height: 7px;
+  border: 1px solid rgba(231, 207, 157, 0.24);
+  border-radius: 2px;
+  background: linear-gradient(180deg, #a58e63, #4a3e2c 52%, #17130e);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 239, 201, 0.16);
+  content: '';
+}
+
+.safe-dial-grip::before {
+  position: absolute;
+  inset: 0;
+  transform: rotate(90deg);
+}
+
+.safe-dial-knob:not(:disabled):hover,
+.safe-dial-knob:focus-visible {
+  filter: brightness(1.12);
+  outline: none;
+  box-shadow:
+    inset 0 0 0 5px rgba(14, 13, 11, 0.58),
+    inset -10px -12px 20px rgba(0, 0, 0, 0.4),
+    0 7px 16px rgba(0, 0, 0, 0.7),
+    0 0 0 3px rgba(0, 0, 0, 0.5),
+    0 0 24px rgba(192, 145, 67, 0.15);
+}
+
+.safe-dial-knob.is-ready:not(:disabled) {
+  box-shadow:
+    inset 0 0 0 5px rgba(14, 13, 11, 0.56),
+    inset -10px -12px 20px rgba(0, 0, 0, 0.38),
+    0 7px 16px rgba(0, 0, 0, 0.7),
+    0 0 0 3px rgba(0, 0, 0, 0.5),
+    0 0 26px rgba(205, 157, 74, 0.2);
+}
+
+.safe-dial-knob:not(:disabled):active {
+  transform: translate(-50%, -50%) rotate(18deg) scale(0.985);
+}
+
+.safe-dial-knob:disabled {
+  cursor: default;
+  filter: saturate(0.7) brightness(0.78);
+}
+
+.safe-lock-instruction {
+  margin: 14px 0 0;
+  color: #8f8167;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-align: center;
 }
 
 .puzzle-clues {
