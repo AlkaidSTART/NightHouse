@@ -6,6 +6,10 @@ import {
   NPC_INTERACTION_RADIUS,
 } from '../src/game/interaction/npcAim.ts';
 import { InteractionSystem } from '../src/game/interaction/InteractionSystem.ts';
+import {
+  getPropInteractionRadius,
+  INTERACTION_DISTANCE,
+} from '../src/game/interaction/interactionTuning.ts';
 
 const EYE_HEIGHT = 1.7;
 
@@ -65,4 +69,41 @@ test('偏离瞄准锥或超过交互距离的 NPC 不显示提示', () => {
     interact: () => undefined,
   });
   assert.equal(far.update(camera, camera.getPosition()), null);
+});
+
+
+test('书桌抽屉在稍微抬高视线时仍可选中', () => {
+  const system = new InteractionSystem(INTERACTION_DISTANCE);
+  const drawer = new pc.Entity('study_drawer');
+  drawer.setPosition(0, 0.5, -2.4);
+  system.register({
+    id: 'study_drawer',
+    entity: drawer,
+    radius: getPropInteractionRadius(0.4),
+    getPrompt: () => '搜索书桌抽屉',
+    canInteract: () => true,
+    interact: () => undefined,
+  });
+
+  const camera = createCamera();
+  // 抽屉在视线下方约 26.6°；只低头 13° 也应保留一个较宽松的选择范围。
+  camera.setEulerAngles(-13, 0, 0);
+  assert.equal(system.update(camera, camera.getPosition()), '搜索书桌抽屉');
+});
+
+test('小件物品在 3.3 米外仍可交互', () => {
+  const system = new InteractionSystem(INTERACTION_DISTANCE);
+  const prop = new pc.Entity('small_prop');
+  prop.setPosition(0, EYE_HEIGHT, -3.3);
+  system.register({
+    id: 'small_prop',
+    entity: prop,
+    radius: getPropInteractionRadius(0.1),
+    getPrompt: () => '查看小物件',
+    canInteract: () => true,
+    interact: () => undefined,
+  });
+
+  const camera = createCamera();
+  assert.equal(system.update(camera, camera.getPosition()), '查看小物件');
 });

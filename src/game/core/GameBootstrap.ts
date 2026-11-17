@@ -18,6 +18,10 @@ import {
 import { InspectionSystem } from '../inspection/InspectionSystem';
 import { buildInventoryView } from '../inventory/inventory.ts';
 import { InteractionSystem } from '../interaction/InteractionSystem';
+import {
+  getPropInteractionRadius,
+  INTERACTION_DISTANCE,
+} from '../interaction/interactionTuning';
 import { PlayerController } from '../player/PlayerController';
 import { PlayerHands } from '../player/PlayerHands';
 import { ClockPuzzle } from '../puzzles/ClockPuzzle';
@@ -34,7 +38,6 @@ import type { GameEventBus } from './GameEvents';
 
 const AUTOSAVE_INTERVAL_MS = 5000;
 const EYE_HEIGHT = 1.7;
-const INTERACTION_DISTANCE = 3;
 const DOOR_INTERACTION_MIN_RADIUS = 0.6;
 const CLOCK_INTERACTABLE_ID = 'INT_prop_longcase_clock';
 const SAFE_INTERACTABLE_ID = 'INT_prop_safe';
@@ -340,7 +343,7 @@ export class GameBootstrap {
       this.interaction.register({
         id: descriptor.id,
         entity: descriptor.entity,
-        radius: descriptor.radius,
+        radius: getPropInteractionRadius(descriptor.radius),
         getPrompt: () => this.getPropPrompt(descriptor.id, descriptor.prompt),
         canInteract: () => true,
         interact: () => {
