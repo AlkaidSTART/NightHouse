@@ -254,6 +254,7 @@ export const inspectables: readonly InspectableDefinition[] = [
             '灰绿色的海面上，一艘三桅帆船正穿过低云。船首下方写着船名：PERSEPHONE。',
             '画框没有贴紧墙，右侧留着一道可以伸手进去的缝。',
           ),
+          note('画框背面的旧墨水已经透出一点痕迹，也许该绕到后面看看。'),
         ],
         effects: [clue('clue_ship_painting')],
       },
@@ -493,7 +494,7 @@ export const inspectables: readonly InspectableDefinition[] = [
             '转盘上第 3、4 位磨得最亮。你转了转，内部传来干涩的卡响，门纹丝不动。',
           ),
           note(
-            '转盘边缘积着灰，只有四个位置被反复拨得发亮。密码应该来自这栋宅子自己的旧事。',
+            '转盘边缘积着灰，只有四个位置被反复拨得发亮。密码应该来自这栋宅子自己的旧事，客厅那幅帆船油画或许是起点。',
           ),
         ],
       },

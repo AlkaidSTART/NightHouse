@@ -99,7 +99,7 @@ export const quests: readonly QuestDefinition[] = [
       {
         id: 'step_corroborate',
         objective: '找到能印证真相的第二份证据',
-        hint: '有些旧账被锁着，有些声音还没有响完。',
+        hint: '第二份证据有两条路：打开书房保险箱，或修好门厅落地钟。保险箱从客厅帆船油画正反两面查起；修钟则先看客厅小座钟与书房潮汐表。',
         locationId: 'villa_study',
         doneWhen: [
           [{ flag: 'story.safe_opened' }],

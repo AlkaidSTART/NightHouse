@@ -33,3 +33,19 @@ test('玩家可见引导不提前泄露谜题答案', () => {
     false,
   );
 });
+
+test('关键谜题引导指出可执行的下一步', () => {
+  const corroborate = quests
+    .flatMap((quest) => quest.steps)
+    .find((step) => step.id === 'step_corroborate');
+
+  assert.ok(corroborate);
+  for (const keyword of ['保险箱', '落地钟', '帆船油画', '小座钟', '潮汐表']) {
+    assert.ok(corroborate.hint.includes(keyword), `任务提示缺少「${keyword}」`);
+  }
+
+  assert.ok(safePuzzleContent.texts.lockedWithoutClues.includes('帆船油画'));
+  assert.ok(safePuzzleContent.texts.ready.includes('画框背面'));
+  assert.ok(clockPuzzleContent.texts.woundNeedsClock.includes('小座钟'));
+  assert.ok(clockPuzzleContent.texts.woundNeedsClock.includes('潮汐表'));
+});
