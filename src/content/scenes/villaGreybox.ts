@@ -543,7 +543,17 @@ const D2_LATE = 'D2 待裁决：仅当格雷 B4 才到场时使用';
 const npcSpots: SceneNpcSpot[] = [
   // 霍尔太太：开门迎客 → 晚宴餐厅尽头 → 十三下后走廊口 → B10 门边
   { id: 'NPC_housekeeper_front_door', npcId: 'npc_housekeeper', label: '正门内侧（B1）', position: [1.3, 0, 6.2], yaw: 115, priority: 10, activeWhen: [[{ flag: 'story.arrived' }]] },
-  { id: 'NPC_housekeeper_dining_door', npcId: 'npc_housekeeper', label: '餐厅尽头 · 南侧（B3）', position: [10.15, 0, 5], yaw: 76, priority: 20, activeWhen: [[{ flag: 'story.arthur_talked' }]] },
+  {
+    id: 'NPC_housekeeper_dining_door',
+    npcId: 'npc_housekeeper',
+    label: '餐厅尽头 · 南侧（B3）',
+    position: [10.15, 0, 5],
+    yaw: 76,
+    priority: 20,
+    activeWhen: [[{ flag: 'story.arthur_talked' }]],
+    // 与霍尔太太单独交谈时，避免亚瑟仍站在餐桌旁形成旁观或重复抢镜。
+    dialogueHiddenNpcIds: ['npc_arthur'],
+  },
   { id: 'NPC_housekeeper_corridor_mouth', npcId: 'npc_housekeeper', label: '走廊口（十三下之后）', position: [-3.4, 0, 0.5], yaw: -120, priority: 30, activeWhen: [[{ flag: 'story.clock_repaired' }]] },
   { id: 'NPC_housekeeper_hall_door_b10', npcId: 'npc_housekeeper', label: '门边（B10）', position: [-1.6, 0, 6.3], yaw: -30, priority: 40, activeWhen: [[{ flag: 'story.midnight' }]] },
 

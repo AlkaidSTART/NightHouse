@@ -26,3 +26,15 @@ export function selectNpcStations(
 
   return selected;
 }
+
+/** 当前对话者所在站位要求临时隐藏的其他 NPC。 */
+export function resolveDialogueHiddenNpcIds(
+  selected: ReadonlyMap<SceneNpcSpot['npcId'], SceneNpcSpot>,
+  talkingNpcId: SceneNpcSpot['npcId'] | null,
+): ReadonlySet<SceneNpcSpot['npcId']> {
+  if (talkingNpcId === null) {
+    return new Set();
+  }
+  const spot = selected.get(talkingNpcId);
+  return new Set(spot?.dialogueHiddenNpcIds ?? []);
+}

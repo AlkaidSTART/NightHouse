@@ -5,6 +5,7 @@ node_modules/
 
 # Build output
 dist/
+dist-site/
 dist-ssr/
 build/
 *.tsbuildinfo
@@ -47,6 +48,7 @@ desktop.ini
 .commandcode/
 .azure/
 .copilot-azure/
+*.qoder.site
 
 # Blender backup & autosave files
 *.blend1

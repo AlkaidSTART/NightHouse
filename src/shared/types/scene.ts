@@ -112,6 +112,11 @@ export interface SceneNpcSpot {
   priority?: number;
   /** 取决于尚未裁决的事项时填写，裁决后删除多余站位。 */
   pending?: string;
+  /**
+   * 与该站位上的 NPC 一对一交谈时临时隐藏的其他 NPC。
+   * 只影响对话期间的展示，不改动剧情站位选择或后续对话入口。
+   */
+  dialogueHiddenNpcIds?: readonly SceneNpcSpot['npcId'][];
 }
 
 export interface SceneLight {

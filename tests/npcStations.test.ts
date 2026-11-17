@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { villaGreybox } from '../src/content/scenes/villaGreybox.ts';
-import { selectNpcStations } from '../src/game/scene/npcStations.ts';
+import {
+  resolveDialogueHiddenNpcIds,
+  selectNpcStations,
+} from '../src/game/scene/npcStations.ts';
 import type { StoryFlags } from '../src/game/story/conditions.ts';
 
 function stations(flags: StoryFlags): Record<string, string> {
@@ -91,6 +94,28 @@ test('NPC 站位：B5 调查期间亚瑟不在书房，整理完证据后才回�
     'story.case_ready': true,
   };
   assert.equal(stations(readyToConfront).npc_arthur, 'NPC_arthur_study_desk');
+});
+
+test('NPC 站位：与餐厅中的霍尔太太交谈时临时隐藏亚瑟', () => {
+  const selected = selectNpcStations(villaGreybox.npcSpots, {
+    ...ARRIVED,
+    'story.arthur_called': true,
+    'story.met_arthur': true,
+    'story.arthur_talked': true,
+    'story.met_doctor': true,
+    'story.doctor_time_conflict': true,
+  });
+
+  assert.equal(selected.get('npc_arthur')?.id, 'NPC_arthur_dining_head');
+  assert.deepEqual(
+    [...resolveDialogueHiddenNpcIds(selected, 'npc_housekeeper')],
+    ['npc_arthur'],
+  );
+  assert.deepEqual(
+    [...resolveDialogueHiddenNpcIds(selected, 'npc_arthur')],
+    [],
+  );
+  assert.deepEqual([...resolveDialogueHiddenNpcIds(selected, null)], []);
 });
 
 test('NPC 站位：书房对质时亚瑟正对门口', () => {

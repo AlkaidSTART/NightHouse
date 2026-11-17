@@ -19,7 +19,10 @@ import {
   NpcGesture,
   type NpcGestureProfile,
 } from './NpcGesture.ts';
-import { selectNpcStations } from './npcStations.ts';
+import {
+  resolveDialogueHiddenNpcIds,
+  selectNpcStations,
+} from './npcStations.ts';
 import {
   NPC_ANCHOR_HEIGHT,
   NPC_INTERACTION_RADIUS,
@@ -156,6 +159,12 @@ export class SceneManager {
   private readonly doorPivots = new Map<string, DoorEntry>();
   private readonly npcSpotHandles = new Map<string, NpcSpotHandle>();
   private readonly npcRoles = new Map<SceneNpcSpot['npcId'], NpcRoleRuntime>();
+  private readonly activeNpcStations = new Map<
+    SceneNpcSpot['npcId'],
+    SceneNpcSpot
+  >();
+  private dialogueHiddenNpcIds: ReadonlySet<SceneNpcSpot['npcId']> = new Set();
+  private talkingNpcId: SceneNpcSpot['npcId'] | null = null;
   private readonly characterContainers = new Map<string, CharacterContainer>();
   private readonly loadAbort = new AbortController();
   private readonly characterLoadAbort = new AbortController();
@@ -351,9 +360,12 @@ export class SceneManager {
       flags,
     );
 
-    for (const [spotId, handle] of this.npcSpotHandles) {
-      handle.root.enabled = selected.get(handle.spot.npcId)?.id === spotId;
+    this.activeNpcStations.clear();
+    for (const [npcId, spot] of selected) {
+      this.activeNpcStations.set(npcId, spot);
     }
+    this.refreshDialogueHiddenNpcs();
+    this.applyNpcSpotVisibility();
 
     for (const [npcId, runtime] of this.npcRoles) {
       const nextSpotId = selected.get(npcId)?.id ?? null;
@@ -371,11 +383,18 @@ export class SceneManager {
     if (!handle) {
       return false;
     }
-    return this.npcRoles.get(handle.spot.npcId)?.activeSpotId === spotId;
+    return (
+      this.npcRoles.get(handle.spot.npcId)?.activeSpotId === spotId &&
+      !this.dialogueHiddenNpcIds.has(handle.spot.npcId)
+    );
   }
 
   /** 对话打开/关闭时切换 NPC 的待机与说话动作；传入 null 让所有角色回到待机。 */
   setNpcTalking(npcId: SceneNpcSpot['npcId'] | null): void {
+    this.talkingNpcId = npcId;
+    this.refreshDialogueHiddenNpcs();
+    this.applyNpcSpotVisibility();
+
     for (const [id, runtime] of this.npcRoles) {
       const talking = id === npcId && runtime.activeSpotId !== null;
       if (runtime.talking === talking) {
@@ -453,6 +472,9 @@ export class SceneManager {
     this.characterContainers.clear();
     this.npcRoles.clear();
     this.npcSpotHandles.clear();
+    this.activeNpcStations.clear();
+    this.dialogueHiddenNpcIds = new Set();
+    this.talkingNpcId = null;
 
     for (const entity of this.entities) {
       entity.destroy();
@@ -541,6 +563,22 @@ export class SceneManager {
     runtime.instance.setLocalPosition(0, 0, 0);
     runtime.instance.setLocalEulerAngles(0, 180, 0);
     runtime.instance.enabled = true;
+  }
+
+  private refreshDialogueHiddenNpcs(): void {
+    this.dialogueHiddenNpcIds = resolveDialogueHiddenNpcIds(
+      this.activeNpcStations,
+      this.talkingNpcId,
+    );
+  }
+
+  private applyNpcSpotVisibility(): void {
+    for (const [spotId, handle] of this.npcSpotHandles) {
+      const selectedSpotId = this.activeNpcStations.get(handle.spot.npcId)?.id;
+      handle.root.enabled =
+        selectedSpotId === spotId &&
+        !this.dialogueHiddenNpcIds.has(handle.spot.npcId);
+    }
   }
 
   private setupNpcAnimation(runtime: NpcRoleRuntime): void {
