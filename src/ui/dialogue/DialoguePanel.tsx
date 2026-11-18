@@ -1,5 +1,9 @@
-import { useEffect, useState } from 'react';
-import type { DialogueView } from '../../shared/types/dialogue';
+import { useEffect, useMemo, useState } from 'react';
+import type {
+  DialogueChoiceView,
+  DialogueView,
+} from '../../shared/types/dialogue';
+import { buildDialogueQuestionFlow } from './dialogueQuestionFlow';
 
 export interface DialoguePanelProps {
   view: DialogueView;
@@ -8,27 +12,58 @@ export interface DialoguePanelProps {
   onClose: () => void;
 }
 
+interface FocusState {
+  nodeId: string;
+  choiceId: string | null;
+}
+
 export function DialoguePanel({
   view,
   onAdvance,
   onChoose,
   onClose,
 }: DialoguePanelProps) {
-  const { line, choices } = view;
+  const { line, choices, guide } = view;
   const isNarration = line?.speaker === 'narration';
   const speaker = isNarration ? null : (line?.name ?? view.npcName);
-  const [focusState, setFocusState] = useState<{
+  const [focusState, setFocusState] = useState<FocusState>({
+    nodeId: view.nodeId,
+    choiceId: null,
+  });
+  const [expandedState, setExpandedState] = useState<{
     nodeId: string;
-    index: number;
-  }>({ nodeId: view.nodeId, index: 0 });
+    nextChoiceId: string | null;
+    expanded: boolean;
+  }>({ nodeId: view.nodeId, nextChoiceId: null, expanded: false });
+  const questionFlow = useMemo(
+    () => buildDialogueQuestionFlow(choices, guide),
+    [choices, guide],
+  );
+  const showAdditionalChoices =
+    expandedState.nodeId === view.nodeId &&
+    expandedState.nextChoiceId === questionFlow.nextStep?.choiceId &&
+    expandedState.expanded;
 
-  const focusedIndex =
-    focusState.nodeId === view.nodeId && focusState.index < choices.length
-      ? focusState.index
-      : 0;
+  const visibleChoices = useMemo(() => {
+    if (!questionFlow.primaryChoice || !showAdditionalChoices) {
+      return questionFlow.visibleChoices;
+    }
+    return questionFlow.allChoices;
+  }, [questionFlow, showAdditionalChoices]);
+
+  const focusedIndex = Math.max(
+    0,
+    visibleChoices.findIndex(
+      (choice) =>
+        focusState.nodeId === view.nodeId &&
+        choice.id === focusState.choiceId,
+    ),
+  );
+  const hasNaturalExit = choices.some((choice) => choice.isExit);
+  const hasAdditionalChoices = questionFlow.additionalChoices.length > 0;
 
   useEffect(() => {
-    if (view.canContinue || choices.length === 0) {
+    if (view.canContinue || visibleChoices.length === 0) {
       return;
     }
 
@@ -38,7 +73,7 @@ export function DialoguePanel({
       }
       if (/^[1-9]$/.test(event.key)) {
         const idx = Number(event.key) - 1;
-        const target = choices[idx];
+        const target = visibleChoices[idx];
         if (target) {
           event.preventDefault();
           onChoose(target.id);
@@ -48,13 +83,14 @@ export function DialoguePanel({
       if (event.key === 'ArrowDown' || event.key === 's' || event.key === 'S') {
         event.preventDefault();
         setFocusState((prev) => {
-          const base =
-            prev.nodeId === view.nodeId && prev.index < choices.length
-              ? prev.index
-              : 0;
+          const currentIndex = visibleChoices.findIndex(
+            (choice) =>
+              prev.nodeId === view.nodeId && choice.id === prev.choiceId,
+          );
+          const base = currentIndex >= 0 ? currentIndex : 0;
           return {
             nodeId: view.nodeId,
-            index: (base + 1) % choices.length,
+            choiceId: visibleChoices[(base + 1) % visibleChoices.length]?.id ?? null,
           };
         });
         return;
@@ -62,19 +98,23 @@ export function DialoguePanel({
       if (event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
         event.preventDefault();
         setFocusState((prev) => {
-          const base =
-            prev.nodeId === view.nodeId && prev.index < choices.length
-              ? prev.index
-              : 0;
+          const currentIndex = visibleChoices.findIndex(
+            (choice) =>
+              prev.nodeId === view.nodeId && choice.id === prev.choiceId,
+          );
+          const base = currentIndex >= 0 ? currentIndex : 0;
           return {
             nodeId: view.nodeId,
-            index: (base - 1 + choices.length) % choices.length,
+            choiceId:
+              visibleChoices[
+                (base - 1 + visibleChoices.length) % visibleChoices.length
+              ]?.id ?? null,
           };
         });
         return;
       }
       if (event.key === 'Enter') {
-        const target = choices[focusedIndex];
+        const target = visibleChoices[focusedIndex];
         if (target) {
           event.preventDefault();
           onChoose(target.id);
@@ -84,7 +124,47 @@ export function DialoguePanel({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [view.canContinue, view.nodeId, choices, focusedIndex, onChoose]);
+  }, [
+    view.canContinue,
+    view.nodeId,
+    visibleChoices,
+    focusedIndex,
+    onChoose,
+  ]);
+
+  const renderChoice = (
+    choice: DialogueChoiceView,
+    index: number,
+    options: { primary?: boolean; supplementary?: boolean } = {},
+  ) => {
+    const className = [
+      'dialogue-choice',
+      'dialogue-choice-enter',
+      choice.guideStatus === 'next' ? 'is-recommended' : '',
+      options.primary ? 'is-primary' : '',
+      options.supplementary ? 'is-supplementary' : '',
+      index === focusedIndex ? 'is-focused' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    return (
+      <button
+        key={choice.id}
+        type="button"
+        className={className}
+        onMouseEnter={() =>
+          setFocusState({ nodeId: view.nodeId, choiceId: choice.id })
+        }
+        onClick={() => onChoose(choice.id)}
+      >
+        {index < 9 && (
+          <span className="hud-key dialogue-choice-key">{index + 1}</span>
+        )}
+        <span className="dialogue-choice-copy">{choice.text}</span>
+      </button>
+    );
+  };
 
   return (
     <div className="dialogue-layer">
@@ -113,7 +193,10 @@ export function DialoguePanel({
         </header>
 
         {line && (
-          <p className={`dialogue-text dialogue-text-${line.speaker}`}>
+          <p
+            key={`${view.nodeId}:${line.text}`}
+            className={`dialogue-text dialogue-text-${line.speaker} dialogue-text-enter`}
+          >
             {line.text}
           </p>
         )}
@@ -125,26 +208,86 @@ export function DialoguePanel({
           </button>
         )}
 
+        {!view.canContinue && choices.length > 0 && guide && (
+          <div className="dialogue-guide" aria-live="polite">
+            <div className="dialogue-guide-heading">
+              <span className="dialogue-guide-progress">
+                追问 {questionFlow.position} / {questionFlow.total}
+              </span>
+              <span className="dialogue-guide-current">
+                {questionFlow.nextStep?.label ?? '本节点追问完成'}
+              </span>
+            </div>
+            {guide.hint && <p className="dialogue-guide-hint">{guide.hint}</p>}
+            <div className="dialogue-guide-dots" aria-hidden="true">
+              {guide.steps.map((step) => (
+                <span
+                  key={step.choiceId}
+                  className={`dialogue-guide-dot is-${step.status}`}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
         {!view.canContinue && choices.length > 0 && (
           <div className="dialogue-choices">
-            {choices.map((choice, index) => (
-              <button
-                key={choice.id}
-                type="button"
-                className={`dialogue-choice${choice.guideStatus === 'next' ? ' is-recommended' : ''}${index === focusedIndex ? ' is-focused' : ''}`}
-                onMouseEnter={() =>
-                  setFocusState({ nodeId: view.nodeId, index })
-                }
-                onClick={() => onChoose(choice.id)}
-              >
-                {index < 9 && (
-                  <span className="hud-key dialogue-choice-key">
-                    {index + 1}
-                  </span>
+            {questionFlow.primaryChoice ? (
+              <>
+                {renderChoice(questionFlow.primaryChoice, 0, {
+                  primary: true,
+                })}
+                {questionFlow.navigationChoices.map((choice, index) =>
+                  renderChoice(choice, index + 1, {
+                    supplementary: true,
+                  }),
                 )}
-                <span className="dialogue-choice-copy">{choice.text}</span>
+                {hasAdditionalChoices && (
+                  <button
+                    type="button"
+                    className="dialogue-choice dialogue-choice-more dialogue-choice-enter"
+                    onClick={() =>
+                      setExpandedState({
+                        nodeId: view.nodeId,
+                        nextChoiceId: questionFlow.nextStep?.choiceId ?? null,
+                        expanded: !showAdditionalChoices,
+                      })
+                    }
+                    aria-expanded={showAdditionalChoices}
+                  >
+                    <span className="dialogue-choice-more-mark" aria-hidden="true">
+                      {showAdditionalChoices ? '−' : '+'}
+                    </span>
+                    <span className="dialogue-choice-copy">
+                      {showAdditionalChoices
+                        ? '收起其他话题'
+                        : `其他话题（${questionFlow.additionalChoices.length}）`}
+                    </span>
+                  </button>
+                )}
+                {showAdditionalChoices &&
+                  questionFlow.additionalChoices.map((choice, index) =>
+                    renderChoice(
+                      choice,
+                      questionFlow.navigationChoices.length + index + 1,
+                      { supplementary: true },
+                    ),
+                  )}
+              </>
+            ) : (
+              choices.map((choice, index) => renderChoice(choice, index))
+            )}
+
+            {!hasNaturalExit && (
+              <button
+                type="button"
+                className="dialogue-choice dialogue-choice-exit dialogue-choice-enter"
+                onClick={onClose}
+              >
+                <span className="hud-key dialogue-choice-key">Esc</span>
+                <span className="dialogue-choice-copy">结束交谈</span>
               </button>
-            ))}
+            )}
           </div>
         )}
       </section>

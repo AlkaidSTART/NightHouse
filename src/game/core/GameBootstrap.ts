@@ -34,6 +34,9 @@ import { DOOR_THICKNESS } from '../scene/sceneGeometry.ts';
 import { NightSky, NIGHT_CLEAR_COLOR } from '../scene/NightSky';
 import { SceneManager } from '../scene/SceneManager';
 import { resolveEnding } from '../story/endingResolver';
+import { resolveActiveObjective } from '../story/questProgress';
+import type { StoryFlags } from '../story/conditions';
+import { GroundPathGuide } from '../navigation/GroundPathGuide';
 import type { GameEventBus } from './GameEvents';
 import { DialoguePointerLockRestore } from './dialoguePointerLockRestore.ts';
 import { VoiceAudioPlayer } from '../audio/VoiceAudioPlayer.ts';
@@ -137,6 +140,8 @@ export class GameBootstrap {
     () => this.player.requestPointerLock(),
   );
   private readonly voiceAudio = new VoiceAudioPlayer();
+  private readonly groundPathGuide: GroundPathGuide;
+  private groundPathTargetRegionId: string | null = null;
   private inspectionOpen = false;
   private journalOpen = false;
   private inventoryOpen = false;
@@ -253,9 +258,14 @@ export class GameBootstrap {
     this.sceneManager = new SceneManager(app);
     const scene = this.sceneManager.build(villaGreybox);
     this.sceneManager.applyStoryFlags(useStoryStore.getState().storyFlags);
-    // 剧情标记变化后重新选择 NPC 站位；同一角色始终只显示一个人。
+    this.groundPathGuide = new GroundPathGuide(app);
+    this.groundPathTargetRegionId = resolveGroundPathTarget(
+      useStoryStore.getState().storyFlags,
+    );
+    // 剧情标记变化后重新选择 NPC 站位，并同步任务目标的地面路线。
     this.unsubscribeStory = useStoryStore.subscribe((state) => {
       this.sceneManager.applyStoryFlags(state.storyFlags);
+      this.groundPathTargetRegionId = resolveGroundPathTarget(state.storyFlags);
     });
     const preloadTasks: Promise<void>[] = [];
     if (villaGreybox.modelUrl) {
@@ -865,6 +875,7 @@ export class GameBootstrap {
     this.destroyed = true;
     this.dialoguePointerLockRestore.cancel();
     this.voiceAudio.dispose();
+    this.groundPathGuide.destroy();
     if (this.autosaveTimer !== null) {
       window.clearInterval(this.autosaveTimer);
       this.autosaveTimer = null;
@@ -900,17 +911,23 @@ export class GameBootstrap {
     this.hands.update(dt);
     this.sceneManager.update(dt);
     // 门在 UI 打开时也继续合上，但不能把站在门边的玩家夹住。
-    const [feetX, , feetZ] = this.player.getFeetPosition();
-    this.doors.update(dt, feetX, feetZ);
+    const feetPosition = this.player.getFeetPosition();
+    this.doors.update(dt, feetPosition[0], feetPosition[2]);
 
-    if (
+    const modalOpen =
       this.dialogueOpen ||
       this.inspectionOpen ||
       this.journalOpen ||
       this.inventoryOpen ||
-      this.activePuzzle ||
-      this.endingShown
-    ) {
+      this.activePuzzle !== null ||
+      this.endingShown;
+    this.groundPathGuide.update(
+      feetPosition,
+      this.currentRegionId,
+      this.groundPathTargetRegionId,
+      !modalOpen,
+    );
+    if (modalOpen) {
       return;
     }
 
@@ -1273,6 +1290,11 @@ function findRegion(
     }
   }
   return null;
+}
+
+function resolveGroundPathTarget(flags: StoryFlags): string | null {
+  const active = resolveActiveObjective(flags, content.quests);
+  return active?.stage?.locationId ?? active?.step.locationId ?? null;
 }
 
 function isSavedPositionValid(

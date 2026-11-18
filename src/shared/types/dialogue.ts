@@ -16,6 +16,10 @@ export interface DialogueChoiceView {
   guideOrder: number | null;
   /** 当前选项在本次交谈中的提问状态。 */
   guideStatus: DialogueGuideStatus | null;
+  /** 返回上一层或离开对话，渐进提问期间始终可达。 */
+  isNavigation: boolean;
+  /** 该选项会直接结束本次交谈；宿主仍会执行选项本身的效果。 */
+  isExit: boolean;
 }
 
 export type DialogueGuideStatus = 'asked' | 'next' | 'later';

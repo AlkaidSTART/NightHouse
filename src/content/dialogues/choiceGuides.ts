@@ -3,7 +3,8 @@ import type { DialogueChoiceGuide } from '../../shared/types/content';
 /**
  * NPC 提问参考顺序。
  *
- * 这里只描述“怎样问更顺”，不替代对话选项条件，也不强制玩家按序选择。
+ * 这里描述“怎样问更顺”，并决定面板当前先展示哪个问题。其他非导航
+ * 话题会折叠在“其他话题”中；选项条件、剧情效果和自由退出不受影响。
  * 条件未满足或被当前剧情白名单过滤的话题不会出现在面板提示中。
  */
 export const DIALOGUE_CHOICE_GUIDES: Readonly<

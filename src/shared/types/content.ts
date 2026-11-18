@@ -67,8 +67,9 @@ export interface DialogueChoiceGuideStep {
 /**
  * 单个对话节点的提问引导。
  *
- * 引导只描述叙事上更顺畅的询问顺序，不限制玩家选择；条件不满足或当前
- * 剧情白名单未开放的话题会被 DialogueSystem 自动过滤。
+ * 引导决定对话面板当前突出显示哪个问题；其他非导航话题折叠在“其他话题”
+ * 中，但仍可展开选择。条件不满足或当前剧情白名单未开放的话题会被
+ * DialogueSystem 自动过滤。
  */
 export interface DialogueChoiceGuide {
   /** 当前节点的提问策略提示。 */

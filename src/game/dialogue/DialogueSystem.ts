@@ -369,6 +369,8 @@ export class DialogueSystem {
         text: choice.text,
         guideOrder: meta?.order ?? null,
         guideStatus: meta?.status ?? null,
+        isNavigation: choice.next === null || choice.id === 'back',
+        isExit: choice.next === null,
       };
     });
 

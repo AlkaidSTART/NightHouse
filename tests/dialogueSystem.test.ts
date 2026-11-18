@@ -565,6 +565,18 @@ test('提问参考给出下一步，并在返回后标记已问话题', () => {
     view.choices.find((choice) => choice.id === 'ask_evelyn')?.guideStatus,
     'next',
   );
+  assert.equal(
+    view.choices.find((choice) => choice.id === 'ask_evelyn')?.isNavigation,
+    false,
+  );
+  assert.equal(
+    view.choices.find((choice) => choice.id === 'leave')?.isExit,
+    true,
+  );
+  assert.equal(
+    view.choices.find((choice) => choice.id === 'leave')?.isNavigation,
+    true,
+  );
 
   const askWill = view.choices.find((choice) => choice.id === 'ask_will');
   assert.ok(askWill);
