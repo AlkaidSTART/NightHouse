@@ -119,7 +119,7 @@
 
 ### 音频
 
-→ [audio/README.md](./audio/README.md)（40 个资产目录，按环境音 / 音效 / 音乐 / 语音分类）
+→ [audio/README.md](./audio/README.md)（45 个资产目录，按环境音 / 音效 / 音乐 / 语音分类；语音按角色登记，逐句清单在 `vo/manifest/`）
 
 ### 材质组合
 

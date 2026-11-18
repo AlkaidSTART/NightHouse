@@ -1,0 +1,63 @@
+{
+  "model": "qwen-audio-3.1-tts-plus",
+  "voice": "longanfengyue_v3.1",
+  "voiceName": "龙安风悦_v3.1",
+  "instruction": "用普通话说话。语速自然略缓，语气真诚、微带紧迫与疲惫，像深夜独自对着留声机录下遗言般克制而笃定。不要播音腔，不要夸张戏剧化。",
+  "generatedAt": "2026-11-18T09:50:39.106Z",
+  "status": "generated_pending_listening_and_license_review",
+  "sourceFormat": "WAV native 24 kHz",
+  "runtimeFormat": "OGG Vorbis q5, 48 kHz mono",
+  "processing": "ffmpeg loudnorm I=-18 TP=-2 LRA=7; post-encoding loudness and true peak not independently measured",
+  "summary": {
+    "clips": 5,
+    "seconds": 29.222667,
+    "bytes": 267052
+  },
+  "clips": [
+    {
+      "clipId": "VO_EvelynCylinder_INT_prop_phonograph_P01",
+      "variant": "base",
+      "text": "如果有人在听这段——爸爸，亚瑟，或者任何一个还愿意听的人。",
+      "source": "assets/audio/vo/vo_evelyn_cylinder/source_plus_longanfengyue/VO_EvelynCylinder_INT_prop_phonograph_P01.wav",
+      "runtime": "public/assets/audio/vo/VO_EvelynCylinder_INT_prop_phonograph_P01.ogg",
+      "durationSeconds": 5.2,
+      "bytes": 47303
+    },
+    {
+      "clipId": "VO_EvelynCylinder_INT_prop_phonograph_P02",
+      "variant": "base",
+      "text": "珀耳塞福涅号不是沉在风暴里。是我们把它沉下去的。四个人没有上来。",
+      "source": "assets/audio/vo/vo_evelyn_cylinder/source_plus_longanfengyue/VO_EvelynCylinder_INT_prop_phonograph_P02.wav",
+      "runtime": "public/assets/audio/vo/VO_EvelynCylinder_INT_prop_phonograph_P02.ogg",
+      "durationSeconds": 5.8,
+      "bytes": 51584
+    },
+    {
+      "clipId": "VO_EvelynCylinder_INT_prop_phonograph_P03",
+      "variant": "base",
+      "text": "我不要钱。我只要他们的名字被念出来。",
+      "source": "assets/audio/vo/vo_evelyn_cylinder/source_plus_longanfengyue/VO_EvelynCylinder_INT_prop_phonograph_P03.wav",
+      "runtime": "public/assets/audio/vo/VO_EvelynCylinder_INT_prop_phonograph_P03.ogg",
+      "durationSeconds": 3.122667,
+      "bytes": 30512
+    },
+    {
+      "clipId": "VO_EvelynCylinder_INT_prop_phonograph_P04",
+      "variant": "base",
+      "text": "……亚瑟，我知道你在听。你答应过我的。",
+      "source": "assets/audio/vo/vo_evelyn_cylinder/source_plus_longanfengyue/VO_EvelynCylinder_INT_prop_phonograph_P04.wav",
+      "runtime": "public/assets/audio/vo/VO_EvelynCylinder_INT_prop_phonograph_P04.ogg",
+      "durationSeconds": 3.2,
+      "bytes": 30297
+    },
+    {
+      "clipId": "VO_EvelynCylinder_INT_prop_phonograph_P05",
+      "variant": "base",
+      "text": "……还有，艾略特。如果你真的收到了那封信，如果你真的回来了——对不起，把你也拉进这滩脏水里。但除了你，这屋里已经没有别人会听我说话了。",
+      "source": "assets/audio/vo/vo_evelyn_cylinder/source_plus_longanfengyue/VO_EvelynCylinder_INT_prop_phonograph_P05.wav",
+      "runtime": "public/assets/audio/vo/VO_EvelynCylinder_INT_prop_phonograph_P05.ogg",
+      "durationSeconds": 11.9,
+      "bytes": 107356
+    }
+  ]
+}

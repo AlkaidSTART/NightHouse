@@ -1,0 +1,549 @@
+{
+  "model": "qwen-audio-3.1-tts-plus",
+  "voice": "longanlingxin_v3.1",
+  "voiceName": "龙安灵心_v3.1",
+  "instruction": "用普通话说话。语速稳重偏慢，语气礼貌周全却带着长期守宅的拘谨与隐忧，温和中透出界限感。自然停顿，不要播音腔，不要刻意颤抖或哭喊。",
+  "generatedAt": "2026-11-18T09:50:25.729Z",
+  "status": "generated_pending_listening_and_license_review",
+  "sourceFormat": "WAV native 24 kHz",
+  "runtimeFormat": "OGG Vorbis q5, 48 kHz mono",
+  "processing": "ffmpeg loudnorm I=-18 TP=-2 LRA=7; post-encoding loudness and true peak not independently measured",
+  "summary": {
+    "clips": 59,
+    "seconds": 247.11600200000004,
+    "bytes": 2335979
+  },
+  "clips": [
+    {
+      "clipId": "VO_NpcHousekeeper_npc_arthur_dinner_will_L03",
+      "variant": "base",
+      "text": "少爷，汤已经撤了，别在饭桌上谈公事，老爷以前不喜欢的。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_arthur_dinner_will_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_arthur_dinner_will_L03.ogg",
+      "durationSeconds": 6.3,
+      "bytes": 55905
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_intro_L01",
+      "variant": "base",
+      "text": "您到了。外套给我吧，先生。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_intro_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_intro_L01.ogg",
+      "durationSeconds": 2.56,
+      "bytes": 25578
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_intro_L01_MISS",
+      "variant": "miss",
+      "text": "您到了。外套给我吧，小姐。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_intro_L01_MISS.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_intro_L01_MISS.ogg",
+      "durationSeconds": 2.48,
+      "bytes": 25219
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_intro_L02",
+      "variant": "base",
+      "text": "房间已经收拾好了。晚餐在餐厅。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_intro_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_intro_L02.ogg",
+      "durationSeconds": 3.2,
+      "bytes": 30814
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_intro_L03",
+      "variant": "base",
+      "text": "午夜之前，请别上楼。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_intro_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_intro_L03.ogg",
+      "durationSeconds": 2.32,
+      "bytes": 23516
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_intro_R01",
+      "variant": "base",
+      "text": "……还有什么需要我做的吗，先生？",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_intro_R01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_intro_R01.ogg",
+      "durationSeconds": 2.48,
+      "bytes": 24983
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_intro_R01_MISS",
+      "variant": "miss",
+      "text": "……还有什么需要我做的吗，小姐？",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_intro_R01_MISS.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_intro_R01_MISS.ogg",
+      "durationSeconds": 2.64,
+      "bytes": 26270
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_warm_L01",
+      "variant": "base",
+      "text": "……不用谢，先生。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_warm_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_warm_L01.ogg",
+      "durationSeconds": 1.44,
+      "bytes": 16216
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_warm_L01_MISS",
+      "variant": "miss",
+      "text": "……不用谢，小姐。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_warm_L01_MISS.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_warm_L01_MISS.ogg",
+      "durationSeconds": 1.44,
+      "bytes": 16186
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_warm_L02",
+      "variant": "base",
+      "text": "安静，是因为人都走了。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_warm_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_warm_L02.ogg",
+      "durationSeconds": 2.32,
+      "bytes": 23846
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_warm_L03",
+      "variant": "base",
+      "text": "……您和小姐说话的口气有点像。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_warm_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_warm_L03.ogg",
+      "durationSeconds": 3.762667,
+      "bytes": 36952
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_cold_L01",
+      "variant": "base",
+      "text": "随您。晚餐在餐厅。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_cold_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_cold_L01.ogg",
+      "durationSeconds": 2.4,
+      "bytes": 23962
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_evelyn_01_L01",
+      "variant": "base",
+      "text": "小姐待下人很好。她教我认字。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_evelyn_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_evelyn_01_L01.ogg",
+      "durationSeconds": 3.042667,
+      "bytes": 29919
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_evelyn_01_L02",
+      "variant": "base",
+      "text": "二楼最里面她住过的房间一直锁着，备用钥匙我替她收在围裙口袋里。这会儿少爷在客厅等您，晚些没人的时候我再把钥匙拿给您。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_evelyn_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_evelyn_01_L02.ogg",
+      "durationSeconds": 11.9,
+      "bytes": 105745
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_b1_L02",
+      "variant": "base",
+      "text": "……是我寄的。信退回宅子，压在老爷的文书里，我整理东西时翻出来的。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_letter_b1_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_b1_L02.ogg",
+      "durationSeconds": 6.4,
+      "bytes": 58828
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_b1_L03",
+      "variant": "base",
+      "text": "信封里那张『请务必来』的便条，也是我放的。我不知道还能找谁。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_letter_b1_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_b1_L03.ogg",
+      "durationSeconds": 5.8,
+      "bytes": 54131
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_b1_L04",
+      "variant": "base",
+      "text": "小姐写这封信的时候，一直在等您的回信。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_letter_b1_L04.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_b1_L04.ogg",
+      "durationSeconds": 3.6,
+      "bytes": 34916
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_b1_L05",
+      "variant": "base",
+      "text": "您先见过少爷吧。有些话，得等他不在场我才能说。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_letter_b1_L05.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_b1_L05.ogg",
+      "durationSeconds": 4.8,
+      "bytes": 44092
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_wait_01_L01",
+      "variant": "base",
+      "text": "少爷在客厅壁炉边等您。二楼房间的钥匙我收在身上，等您见过少爷和医生，来餐厅门边找我。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_wait_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_wait_01_L01.ogg",
+      "durationSeconds": 8.4,
+      "bytes": 76007
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_dinner_01_L01",
+      "variant": "base",
+      "text": "少爷在长桌尽头等您，格雷医生刚到门厅。等您先问过医生那晚的事，再来找我拿二楼的钥匙。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_dinner_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_dinner_01_L01.ogg",
+      "durationSeconds": 8.4,
+      "bytes": 76039
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_b5_01_L01",
+      "variant": "base",
+      "text": "您还有什么要问的吗？",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_b5_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_b5_01_L01.ogg",
+      "durationSeconds": 1.76,
+      "bytes": 19047
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_b5_01_R01",
+      "variant": "base",
+      "text": "您还有什么要问的吗？",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_b5_01_R01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_b5_01_R01.ogg",
+      "durationSeconds": 1.76,
+      "bytes": 19054
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_evelyn_b5_L01",
+      "variant": "base",
+      "text": "小姐待下人很好。她教我认字。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_evelyn_b5_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_evelyn_b5_L01.ogg",
+      "durationSeconds": 2.96,
+      "bytes": 29801
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_evelyn_b5_L02",
+      "variant": "base",
+      "text": "二楼最里面她的房间一直锁着，备用钥匙我还替她收在围裙口袋里。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_evelyn_b5_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_evelyn_b5_L02.ogg",
+      "durationSeconds": 6.2,
+      "bytes": 57033
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_cloak_01_L01",
+      "variant": "base",
+      "text": "忌日前一晚，少爷披着它出去过。回来时，袖口上都是崖边的草籽。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_cloak_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_cloak_01_L01.ogg",
+      "durationSeconds": 7.1,
+      "bytes": 63726
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_cloak_01_L02",
+      "variant": "base",
+      "text": "他没说去了哪儿。我也没问。那件斗篷我本来想收起来，可他没让。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_cloak_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_cloak_01_L02.ogg",
+      "durationSeconds": 6,
+      "bytes": 53985
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_cloak_01_L03",
+      "variant": "base",
+      "text": "您别在他面前提。他这一晚已经很难熬了。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_cloak_01_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_cloak_01_L03.ogg",
+      "durationSeconds": 4,
+      "bytes": 38336
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L01",
+      "variant": "base",
+      "text": "少爷让留的。她说小姐没见到人，位置就不能撤。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L01.ogg",
+      "durationSeconds": 4.4,
+      "bytes": 42627
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L02",
+      "variant": "base",
+      "text": "披肩是她自己缝的边。我每天摆餐具时都要摸一下，确认还在。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L02.ogg",
+      "durationSeconds": 5.5,
+      "bytes": 51328
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L03",
+      "variant": "base",
+      "text": "这屋子里总得有人记得她坐哪儿。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L03.ogg",
+      "durationSeconds": 2.56,
+      "bytes": 26479
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letters_01_L01",
+      "variant": "base",
+      "text": "小姐每次写完信，都会问我：邮差今天会不会来。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_letters_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letters_01_L01.ogg",
+      "durationSeconds": 5.5,
+      "bytes": 49862
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letters_01_L02",
+      "variant": "base",
+      "text": "后来她就不问了。信写好，放在抽屉里，过几天自己再看一遍。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_letters_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letters_01_L02.ogg",
+      "durationSeconds": 6.1,
+      "bytes": 55330
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letters_01_L03",
+      "variant": "base",
+      "text": "最后那封没写完。她写到一半，把笔放下了。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_letters_01_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letters_01_L03.ogg",
+      "durationSeconds": 4.3,
+      "bytes": 39942
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_01_L02",
+      "variant": "base",
+      "text": "……是我寄的。小姐写好后一直压在老爷的文书里。我想，总得有人知道。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_letter_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_01_L02.ogg",
+      "durationSeconds": 7.1,
+      "bytes": 63612
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_02_L01",
+      "variant": "base",
+      "text": "小姐说过，如果她出了什么事，就把这封信寄出去。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_letter_02_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_02_L01.ogg",
+      "durationSeconds": 4.7,
+      "bytes": 43781
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_02_L02",
+      "variant": "base",
+      "text": "我拖了一年。我怕。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_letter_02_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_02_L02.ogg",
+      "durationSeconds": 2.4,
+      "bytes": 24110
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_01_L01",
+      "variant": "base",
+      "text": "我在。我在楼下等门。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_night_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_01_L01.ogg",
+      "durationSeconds": 2.16,
+      "bytes": 22151
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_01_L02",
+      "variant": "base",
+      "text": "……我听见书房有声音。两个人的声音。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_night_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_01_L02.ogg",
+      "durationSeconds": 4,
+      "bytes": 37585
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_02_L01",
+      "variant": "base",
+      "text": "我站在楼梯口。灯是亮的。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_night_02_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_02_L01.ogg",
+      "durationSeconds": 2.4,
+      "bytes": 24440
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_02_L02",
+      "variant": "base",
+      "text": "后来……少爷和医生抬着什么东西下来。用床单裹着。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_night_02_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_02_L02.ogg",
+      "durationSeconds": 5.4,
+      "bytes": 50063
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_03_L01",
+      "variant": "base",
+      "text": "他们给了我一份工钱，和一句话：『老爷身体不好，别让他知道。』",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_night_03_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_03_L01.ogg",
+      "durationSeconds": 5.7,
+      "bytes": 52224
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_03_L02",
+      "variant": "base",
+      "text": "我拿了钱。这一年，我每天都在想这件事。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_night_03_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_03_L02.ogg",
+      "durationSeconds": 3.842667,
+      "bytes": 35820
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_04_L01",
+      "variant": "base",
+      "text": "医生说她没气了。我不知道。我没敢看。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_night_04_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_04_L01.ogg",
+      "durationSeconds": 4.2,
+      "bytes": 38922
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_04_L02",
+      "variant": "base",
+      "text": "但她的手是暖的。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_night_04_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_04_L02.ogg",
+      "durationSeconds": 1.44,
+      "bytes": 16674
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_room_01_L01",
+      "variant": "base",
+      "text": "二楼最里面是她的房间。出事以后少爷让人锁上了，备用钥匙一直在我围裙口袋里。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_room_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_room_01_L01.ogg",
+      "durationSeconds": 8.1,
+      "bytes": 73182
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_room_01_L03",
+      "variant": "base",
+      "text": "收进您的随身背包里，别让少爷知道是我给的。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_room_01_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_room_01_L03.ogg",
+      "durationSeconds": 3.682667,
+      "bytes": 36297
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_room_01_L04",
+      "variant": "base",
+      "text": "……小姐出事那天下午，还去门厅邮箱看过一回。其实她知道邮差早上已经来过了。她的梳妆台和衣柜一直没人动过，您可以上去看看。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_room_01_L04.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_room_01_L04.ogg",
+      "durationSeconds": 12.1,
+      "bytes": 108431
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_study_01_L01",
+      "variant": "base",
+      "text": "书房我打扫过。壁炉里的纸……是先生让我烧的。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_study_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_study_01_L01.ogg",
+      "durationSeconds": 5.6,
+      "bytes": 51042
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_study_01_L02",
+      "variant": "base",
+      "text": "我留了一角。我说不上为什么。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_study_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_study_01_L02.ogg",
+      "durationSeconds": 2.88,
+      "bytes": 28236
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_study_02_L01",
+      "variant": "base",
+      "text": "小姐在查船上的事。先生知道。他让我别多嘴。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_study_02_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_study_02_L01.ogg",
+      "durationSeconds": 4.8,
+      "bytes": 45386
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_b9_wait_01_L01",
+      "variant": "base",
+      "text": "我什么都不知道。少爷在书房。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_b9_wait_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_b9_wait_01_L01.ogg",
+      "durationSeconds": 2.8,
+      "bytes": 27782
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_confront_01_L01",
+      "variant": "base",
+      "text": "您要我在午夜说出来吗？",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_confront_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_confront_01_L01.ogg",
+      "durationSeconds": 2.24,
+      "bytes": 23672
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_will_testify_L01",
+      "variant": "base",
+      "text": "……好。我欠小姐一句话。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_will_testify_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_will_testify_L01.ogg",
+      "durationSeconds": 2.08,
+      "bytes": 21204
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_hesitate_L01",
+      "variant": "base",
+      "text": "说出来，我这份工就没了。这地方是我唯一的家。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_hesitate_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_hesitate_L01.ogg",
+      "durationSeconds": 4.3,
+      "bytes": 40121
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_midnight_01_L01",
+      "variant": "base",
+      "text": "午夜了，先生。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_midnight_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_midnight_01_L01.ogg",
+      "durationSeconds": 1.44,
+      "bytes": 15959
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_midnight_01_L01_MISS",
+      "variant": "miss",
+      "text": "午夜了，小姐。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_midnight_01_L01_MISS.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_midnight_01_L01_MISS.ogg",
+      "durationSeconds": 1.6,
+      "bytes": 16900
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_midnight_01_L02",
+      "variant": "base",
+      "text": "我就在门边。需要的时候，我在。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_midnight_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_midnight_01_L02.ogg",
+      "durationSeconds": 3.122667,
+      "bytes": 30684
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_midnight_testified_L01",
+      "variant": "base",
+      "text": "我答应过小姐。天一亮，我就去说。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_midnight_testified_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_midnight_testified_L01.ogg",
+      "durationSeconds": 3.042667,
+      "bytes": 29766
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_midnight_testified_L02",
+      "variant": "base",
+      "text": "您做您的决定。我不催您。",
+      "source": "assets/audio/vo/vo_npc_housekeeper/source_plus_longanlingxin/VO_NpcHousekeeper_npc_housekeeper_midnight_testified_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_midnight_testified_L02.ogg",
+      "durationSeconds": 2.16,
+      "bytes": 22261
+    }
+  ]
+}

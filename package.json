@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "export:glb": "node scripts/exportVillaGlb.ts",
+    "export:vo": "node scripts/exportVoManifest.ts",
     "lint": "eslint .",
     "test": "node --test \"tests/**/*.test.ts\""
   },

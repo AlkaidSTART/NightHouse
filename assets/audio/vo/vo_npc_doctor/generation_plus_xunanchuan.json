@@ -1,0 +1,396 @@
+{
+  "model": "qwen-audio-3.1-tts-plus",
+  "voice": "xunanchuan_v3.1",
+  "voiceName": "许南川",
+  "instruction": "用普通话说话。语速适中偏快，咬字清晰冷静，带有家庭医生审慎、克制、略显疏离的专业感。句尾干脆，不拖泥带水，不要播音腔，不要刻意阴森或夸张。",
+  "generatedAt": "2026-11-18T09:48:12.093Z",
+  "status": "generated_pending_listening_and_license_review",
+  "sourceFormat": "WAV native 24 kHz",
+  "runtimeFormat": "OGG Vorbis q5, 48 kHz mono",
+  "processing": "ffmpeg loudnorm I=-18 TP=-2 LRA=7; post-encoding loudness and true peak not independently measured",
+  "summary": {
+    "clips": 42,
+    "seconds": 140.25600200000002,
+    "bytes": 1353260
+  },
+  "clips": [
+    {
+      "clipId": "VO_NpcDoctor_npc_arthur_dinner_01_L02",
+      "variant": "base",
+      "text": "我们在聊这栋房子的老规矩。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_arthur_dinner_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_arthur_dinner_01_L02.ogg",
+      "durationSeconds": 1.76,
+      "bytes": 19118
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_arthur_dinner_seat_L02",
+      "variant": "base",
+      "text": "活人总得靠点仪式感才能睡得着。对吧，亚瑟？",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_arthur_dinner_seat_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_arthur_dinner_seat_L02.ogg",
+      "durationSeconds": 3.842667,
+      "bytes": 39111
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_arthur_dinner_evelyn_L02",
+      "variant": "base",
+      "text": "从医学上讲是神经衰弱。不过……她出事那天下午跟我聊过几句，脑子倒是比我们谁都清楚。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_arthur_dinner_evelyn_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_arthur_dinner_evelyn_L02.ogg",
+      "durationSeconds": 8,
+      "bytes": 73780
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_arthur_dinner_will_L02",
+      "variant": "base",
+      "text": "签了，对活着的人都好。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_arthur_dinner_will_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_arthur_dinner_will_L02.ogg",
+      "durationSeconds": 2.08,
+      "bytes": 21891
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_intro_L01",
+      "variant": "base",
+      "text": "晚上好，先生。亚瑟说您路上受了凉。让我看看。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_intro_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_intro_L01.ogg",
+      "durationSeconds": 4.5,
+      "bytes": 42527
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_intro_L01_MISS",
+      "variant": "miss",
+      "text": "晚上好，小姐。亚瑟说您路上受了凉。让我看看。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_intro_L01_MISS.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_intro_L01_MISS.ogg",
+      "durationSeconds": 4.3,
+      "bytes": 41013
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_intro_L02",
+      "variant": "base",
+      "text": "你小时候在这儿住过。那年夏天。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_intro_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_intro_L02.ogg",
+      "durationSeconds": 2.64,
+      "bytes": 25519
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_intro_R01",
+      "variant": "base",
+      "text": "还有哪里不舒服吗，先生？",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_intro_R01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_intro_R01.ogg",
+      "durationSeconds": 1.84,
+      "bytes": 18432
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_intro_R01_MISS",
+      "variant": "miss",
+      "text": "还有哪里不舒服吗，小姐？",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_intro_R01_MISS.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_intro_R01_MISS.ogg",
+      "durationSeconds": 1.68,
+      "bytes": 18470
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_summer_01_L01",
+      "variant": "base",
+      "text": "那年夏天你在这儿住了两个月。伊芙琳带你去看潮。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_summer_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_summer_01_L01.ogg",
+      "durationSeconds": 4.2,
+      "bytes": 41979
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_summer_01_L02",
+      "variant": "base",
+      "text": "她那时候就喜欢一个人往崖边跑。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_summer_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_summer_01_L02.ogg",
+      "durationSeconds": 2.16,
+      "bytes": 21214
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_purpose_L01",
+      "variant": "base",
+      "text": "不用客气，先生。算是见证吧——也是来看看亚瑟，他这一年睡得不好。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_purpose_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_purpose_L01.ogg",
+      "durationSeconds": 5.8,
+      "bytes": 55862
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_purpose_L01_MISS",
+      "variant": "miss",
+      "text": "不用客气，小姐。算是见证吧——也是来看看亚瑟，他这一年睡得不好。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_purpose_L01_MISS.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_purpose_L01_MISS.ogg",
+      "durationSeconds": 6.2,
+      "bytes": 58701
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_sleep_L01",
+      "variant": "base",
+      "text": "良心和神经是两回事，但从症状上很难分开。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_sleep_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_sleep_L01.ogg",
+      "durationSeconds": 4.4,
+      "bytes": 40844
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_sleep_L02",
+      "variant": "base",
+      "text": "……我是说，悲伤。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_sleep_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_sleep_L02.ogg",
+      "durationSeconds": 1.68,
+      "bytes": 17672
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_evelyn_01_L01",
+      "variant": "base",
+      "text": "我是医生，不是验尸官。那天太晚了，海上又起了雾。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_evelyn_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_evelyn_01_L01.ogg",
+      "durationSeconds": 4.7,
+      "bytes": 42849
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_evelyn_01_L02",
+      "variant": "base",
+      "text": "坠落、溺水。很常见的意外。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_evelyn_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_evelyn_01_L02.ogg",
+      "durationSeconds": 2.88,
+      "bytes": 28660
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_time_01_L01",
+      "variant": "base",
+      "text": "……午夜前后。具体记不清了。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_time_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_time_01_L01.ogg",
+      "durationSeconds": 2.8,
+      "bytes": 27483
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_01_L01",
+      "variant": "base",
+      "text": "……你从哪儿拿到这个的？",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_record_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_01_L01.ogg",
+      "durationSeconds": 1.2,
+      "bytes": 14234
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_01_L02",
+      "variant": "base",
+      "text": "记录可能有误。那天我很累。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_record_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_01_L02.ogg",
+      "durationSeconds": 2.56,
+      "bytes": 25289
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_02_L01",
+      "variant": "base",
+      "text": "你想要我说什么？说我在书房里看见她躺在地上？",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_record_02_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_02_L01.ogg",
+      "durationSeconds": 4,
+      "bytes": 37566
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_02_L02",
+      "variant": "base",
+      "text": "……我签了字。我只签了字。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_record_02_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_02_L02.ogg",
+      "durationSeconds": 2.32,
+      "bytes": 22607
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_b5_01_L01",
+      "variant": "base",
+      "text": "您还有问题？",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_b5_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_b5_01_L01.ogg",
+      "durationSeconds": 1.04,
+      "bytes": 12037
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_b5_01_R01",
+      "variant": "base",
+      "text": "您还有问题？",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_b5_01_R01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_b5_01_R01.ogg",
+      "durationSeconds": 1.04,
+      "bytes": 12037
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_motive_01_L01",
+      "variant": "base",
+      "text": "我不是替他瞒。我是替她瞒。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_motive_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_motive_01_L01.ogg",
+      "durationSeconds": 2.4,
+      "bytes": 23073
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_motive_01_L02",
+      "variant": "base",
+      "text": "一个未婚女子半夜死在男人书房里，报纸会怎么写她？我想让她至少被写成一个意外。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_motive_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_motive_01_L02.ogg",
+      "durationSeconds": 8.4,
+      "bytes": 76562
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_motive_01_L03",
+      "variant": "base",
+      "text": "我签了字。从那一刻起，我也成了他们的一部分。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_motive_01_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_motive_01_L03.ogg",
+      "durationSeconds": 4.4,
+      "bytes": 41325
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_evelyn_b5_L01",
+      "variant": "base",
+      "text": "我是医生，不是验尸官。那天太晚了，海上又起了雾。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_evelyn_b5_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_evelyn_b5_L01.ogg",
+      "durationSeconds": 4.7,
+      "bytes": 42849
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_evelyn_b5_L02",
+      "variant": "base",
+      "text": "坠落、溺水。很常见的意外。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_evelyn_b5_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_evelyn_b5_L02.ogg",
+      "durationSeconds": 2.88,
+      "bytes": 28660
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_b5_01_L01",
+      "variant": "base",
+      "text": "……你从哪儿拿到这个的？",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_record_b5_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_b5_01_L01.ogg",
+      "durationSeconds": 1.2,
+      "bytes": 14234
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_b5_01_L02",
+      "variant": "base",
+      "text": "记录可能有误。那天我很累。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_record_b5_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_b5_01_L02.ogg",
+      "durationSeconds": 2.56,
+      "bytes": 25289
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_b5_02_L01",
+      "variant": "base",
+      "text": "你想要我说什么？说我在书房里看见她躺在地上？",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_record_b5_02_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_b5_02_L01.ogg",
+      "durationSeconds": 4,
+      "bytes": 37566
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_b5_02_L02",
+      "variant": "base",
+      "text": "……我签了字。我只签了字。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_record_b5_02_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_b5_02_L02.ogg",
+      "durationSeconds": 2.48,
+      "bytes": 23249
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_challenge_01_L01",
+      "variant": "base",
+      "text": "那些毛巾……是之前的。她常流鼻血。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_challenge_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_challenge_01_L01.ogg",
+      "durationSeconds": 3.442667,
+      "bytes": 33610
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_challenge_02_L01",
+      "variant": "base",
+      "text": "你到底想毁掉什么？这个家？还是你自己那份？",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_challenge_02_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_challenge_02_L01.ogg",
+      "durationSeconds": 4.8,
+      "bytes": 42320
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_challenge_02_L02",
+      "variant": "base",
+      "text": "……她撞到了壁炉。我告诉过亚瑟，没救了。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_challenge_02_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_challenge_02_L02.ogg",
+      "durationSeconds": 3.682667,
+      "bytes": 35911
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_confront_wait_01_L01",
+      "variant": "base",
+      "text": "你想让我说什么？去问亚瑟吧。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_confront_wait_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_confront_wait_01_L01.ogg",
+      "durationSeconds": 2.72,
+      "bytes": 24817
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_midnight_01_L01",
+      "variant": "base",
+      "text": "我只是个医生。你们家的事，我不该管。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_midnight_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_midnight_01_L01.ogg",
+      "durationSeconds": 3.842667,
+      "bytes": 36373
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_midnight_testified_L01",
+      "variant": "base",
+      "text": "新的死亡证明我放在门厅桌上了。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_midnight_testified_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_midnight_testified_L01.ogg",
+      "durationSeconds": 2.32,
+      "bytes": 23670
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_midnight_testified_L02",
+      "variant": "base",
+      "text": "剩下的，是你们家的事。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_midnight_testified_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_midnight_testified_L02.ogg",
+      "durationSeconds": 1.92,
+      "bytes": 19523
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_testify_L01",
+      "variant": "base",
+      "text": "……我会重新写一份死亡证明。这是我唯一能做的。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_testify_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_testify_L01.ogg",
+      "durationSeconds": 3.442667,
+      "bytes": 33101
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_press_L01",
+      "variant": "base",
+      "text": "你在威胁我。……好，好。我写。",
+      "source": "assets/audio/vo/vo_npc_doctor/source_plus_xunanchuan/VO_NpcDoctor_npc_doctor_press_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcDoctor_npc_doctor_press_L01.ogg",
+      "durationSeconds": 3.442667,
+      "bytes": 32233
+    }
+  ]
+}

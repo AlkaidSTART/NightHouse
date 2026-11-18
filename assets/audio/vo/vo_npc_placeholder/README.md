@@ -54,3 +54,5 @@
 ## 6. 备注
 
 剧本确认后，再按角色卡选择配音演员或语音生成方案；不要用临时语音定稿角色声音。
+
+2026-11-18 起，具体台词已拆到按角色的资产登记中（`VO_NpcArthur`、`VO_NpcHousekeeper`、`VO_NpcDoctor`、`VO_Narrator`、`VO_EvelynCylinder`），逐句清单见 [../manifest/README.md](../manifest/README.md)。本占位不再承接具体台词，仅保留为「是否启用配音」的方案占位；删除前需先确认方案并更新 [../README.md](../README.md)。

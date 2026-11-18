@@ -1,0 +1,612 @@
+{
+  "model": "qwen3-tts-flash",
+  "voice": "Lenn",
+  "voiceName": "莱恩",
+  "generatedAt": "2026-11-18T08:03:02.093Z",
+  "status": "generated_pending_listening_and_license_review",
+  "sourceFormat": "WAV native 24 kHz",
+  "runtimeFormat": "OGG Vorbis q5, 48 kHz mono",
+  "processing": "ffmpeg loudnorm I=-18 TP=-2 LRA=7; not independently verified after lossy encoding",
+  "summary": {
+    "clips": 71,
+    "seconds": 223.19467099999991,
+    "bytes": 2265302
+  },
+  "excludedOtherSpeakers": [
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_01_L02",
+      "text": "【格雷医生】我们在聊这栋房子的老规矩。",
+      "reason": "Explicit speaker marker belongs to another NPC"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_seat_L02",
+      "text": "【格雷医生】活人总得靠点仪式感才能睡得着。对吧，亚瑟？",
+      "reason": "Explicit speaker marker belongs to another NPC"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_evelyn_L02",
+      "text": "【格雷医生】从医学上讲是神经衰弱。不过……她出事那天下午跟我聊过几句，脑子倒是比我们谁都清楚。",
+      "reason": "Explicit speaker marker belongs to another NPC"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_will_L02",
+      "text": "【格雷医生】签了，对活着的人都好。",
+      "reason": "Explicit speaker marker belongs to another NPC"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_will_L03",
+      "text": "【霍尔太太】少爷，汤已经撤了，别在饭桌上谈公事，老爷以前不喜欢的。",
+      "reason": "Explicit speaker marker belongs to another NPC"
+    }
+  ],
+  "clips": [
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_intro_L01",
+      "text": "你来了。路上不好走吧——桥断了。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_intro_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_intro_L01.ogg",
+      "durationSeconds": 2.8,
+      "bytes": 29669
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_intro_L02",
+      "text": "坐吧。父亲的事，我很抱歉。但总得有人把这件事做完。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_intro_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_intro_L02.ogg",
+      "durationSeconds": 4.8,
+      "bytes": 46642
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_intro_R01",
+      "text": "还有什么事？",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_intro_R01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_intro_R01.ogg",
+      "durationSeconds": 0.8,
+      "bytes": 11417
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_evelyn_01_L01",
+      "text": "她一直睡不好。医生说是神经衰弱。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_evelyn_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_evelyn_01_L01.ogg",
+      "durationSeconds": 3.842667,
+      "bytes": 37239
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_evelyn_01_L02",
+      "text": "那天晚上她喝了酒，一个人去了崖边。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_evelyn_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_evelyn_01_L02.ogg",
+      "durationSeconds": 3.122667,
+      "bytes": 33450
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_evelyn_01_L03",
+      "text": "我们找了她一整夜。潮水……你知道的。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_evelyn_01_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_evelyn_01_L03.ogg",
+      "durationSeconds": 5.8,
+      "bytes": 53143
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_evelyn_02_L01",
+      "text": "我不知道。也许她只是想一个人待着。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_evelyn_02_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_evelyn_02_L01.ogg",
+      "durationSeconds": 3.442667,
+      "bytes": 34938
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_evelyn_03_L01",
+      "text": "……我在这儿。她走后，我在这儿坐到天亮。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_evelyn_03_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_evelyn_03_L01.ogg",
+      "durationSeconds": 4.5,
+      "bytes": 42548
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_photo_01_L01",
+      "text": "是母亲剪的。她说看着难受。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_photo_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_photo_01_L01.ogg",
+      "durationSeconds": 2.4,
+      "bytes": 25211
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_photo_02_L01",
+      "text": "你说话很像她。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_photo_02_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_photo_02_L01.ogg",
+      "durationSeconds": 1.12,
+      "bytes": 14615
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_will_01_L01",
+      "text": "父亲把宅子和股份留给我，一部分现款留给你。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_will_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_will_01_L01.ogg",
+      "durationSeconds": 3.842667,
+      "bytes": 39217
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_will_01_L02",
+      "text": "其余捐给海事孤儿院——如果没人签字，全部归孤儿院。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_will_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_will_01_L02.ogg",
+      "durationSeconds": 4.4,
+      "bytes": 43986
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_will_02_L01",
+      "text": "父亲的良心。他晚年总说，海上的账，迟早要还。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_will_02_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_will_02_L01.ogg",
+      "durationSeconds": 5.6,
+      "bytes": 51948
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_will_03_L01",
+      "text": "律师明早来取。父亲定的时间——他说午夜之前，家里人必须到齐。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_will_03_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_will_03_L01.ogg",
+      "durationSeconds": 6.2,
+      "bytes": 57883
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_house_01_L01",
+      "text": "这房子比我年纪还大。它有自己的脾气。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_house_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_house_01_L01.ogg",
+      "durationSeconds": 2.88,
+      "bytes": 29412
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_house_01_L02",
+      "text": "壁炉上那行字是父亲刻的：守住你拥有的。他觉得这是家训。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_house_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_house_01_L02.ogg",
+      "durationSeconds": 5.7,
+      "bytes": 54334
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_house_01_L03",
+      "text": "如果半夜听见什么，别当回事。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_house_01_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_house_01_L03.ogg",
+      "durationSeconds": 3.122667,
+      "bytes": 34359
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_business_01_L01",
+      "text": "账本？你翻了我的书房。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_business_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_business_01_L01.ogg",
+      "durationSeconds": 2.24,
+      "bytes": 23352
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_business_01_L02",
+      "text": "航运不好做。父亲那一代把能抵押的都抵押了。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_business_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_business_01_L02.ogg",
+      "durationSeconds": 4.2,
+      "bytes": 40394
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_business_02_L01",
+      "text": "……那是风暴。报纸上写着。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_business_02_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_business_02_L01.ogg",
+      "durationSeconds": 2.56,
+      "bytes": 26109
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_dining_01_L01",
+      "text": "汤早撤了。你还有事？",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_dining_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_dining_01_L01.ogg",
+      "durationSeconds": 3.122667,
+      "bytes": 30354
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_dining_01_L02",
+      "text": "律师明早来。我现在没心情谈那晚。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_dining_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_dining_01_L02.ogg",
+      "durationSeconds": 3.042667,
+      "bytes": 31676
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_dining_01_R01",
+      "text": "你还有事？",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_dining_01_R01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_dining_01_R01.ogg",
+      "durationSeconds": 0.88,
+      "bytes": 11759
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_study_01_L01",
+      "text": "……现在别谈那晚。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_study_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_study_01_L01.ogg",
+      "durationSeconds": 1.04,
+      "bytes": 13217
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_study_01_L02",
+      "text": "如果你有东西要给我看，等你想清楚了再来。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_study_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_study_01_L02.ogg",
+      "durationSeconds": 3.362667,
+      "bytes": 35677
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_study_01_R01",
+      "text": "……现在别谈那晚。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_study_01_R01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_study_01_R01.ogg",
+      "durationSeconds": 1.44,
+      "bytes": 16852
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_gallery_01_L01",
+      "text": "你听见了。第十三下。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_gallery_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_gallery_01_L01.ogg",
+      "durationSeconds": 2.88,
+      "bytes": 29338
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_gallery_01_L02",
+      "text": "她走之前把这钟弄停了。我一直没让人碰它。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_gallery_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_gallery_01_L02.ogg",
+      "durationSeconds": 4,
+      "bytes": 40521
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_gallery_01_L03",
+      "text": "现在整栋房子都听见了。该问的，去书房问。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_gallery_01_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_gallery_01_L03.ogg",
+      "durationSeconds": 4,
+      "bytes": 39379
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_gallery_01_R01",
+      "text": "你还站在楼下看我。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_gallery_01_R01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_gallery_01_R01.ogg",
+      "durationSeconds": 1.76,
+      "bytes": 19499
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_study_admission_01_L01",
+      "text": "……她走后，我一直在书房。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_study_admission_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_study_admission_01_L01.ogg",
+      "durationSeconds": 1.92,
+      "bytes": 20575
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_study_admission_01_L02",
+      "text": "我没有杀她。但我也不是立刻叫人来。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_study_admission_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_study_admission_01_L02.ogg",
+      "durationSeconds": 3.042667,
+      "bytes": 30489
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_study_admission_01_L03",
+      "text": "我以为只要把门关上，天亮以后还能把这件事说成一次意外。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_study_admission_01_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_study_admission_01_L03.ogg",
+      "durationSeconds": 4.6,
+      "bytes": 44112
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_cloak_01_L01",
+      "text": "那件斗篷是她的。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_cloak_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_cloak_01_L01.ogg",
+      "durationSeconds": 2,
+      "bytes": 21648
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_cloak_01_L02",
+      "text": "前一晚我去过纪念石。我只是不想让她一个人待在那儿。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_cloak_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_cloak_01_L02.ogg",
+      "durationSeconds": 4.9,
+      "bytes": 47458
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_cloak_01_L03",
+      "text": "……别把这件事告诉别人。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_cloak_01_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_cloak_01_L03.ogg",
+      "durationSeconds": 1.6,
+      "bytes": 18749
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_recording_01_L01",
+      "text": "你听见她的声音了。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_recording_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_recording_01_L01.ogg",
+      "durationSeconds": 2.4,
+      "bytes": 26852
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_recording_01_L02",
+      "text": "关掉它。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_recording_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_recording_01_L02.ogg",
+      "durationSeconds": 0.72,
+      "bytes": 10257
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_recording_01_L03",
+      "text": "……她最后提到我了吗？",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_b5_recording_01_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_recording_01_L03.ogg",
+      "durationSeconds": 1.44,
+      "bytes": 16406
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_01_L01",
+      "text": "汤已经凉了，我让霍尔太太不必再热。坐吧，或者随便看看。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_dinner_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_dinner_01_L01.ogg",
+      "durationSeconds": 6.4,
+      "bytes": 59389
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_seat_L01",
+      "text": "父亲还在的时候定下的规矩。只要没见到人，她的位置就留着。撤掉反而奇怪。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_dinner_seat_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_dinner_seat_L01.ogg",
+      "durationSeconds": 6.9,
+      "bytes": 65827
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_evelyn_L01",
+      "text": "她那阵子把账本看得太重，整宿整宿不睡，看谁都像欠了她的债。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_dinner_evelyn_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_dinner_evelyn_L01.ogg",
+      "durationSeconds": 4.7,
+      "bytes": 46013
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_evelyn_L03",
+      "text": "格雷大夫，您的酒杯空了。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_dinner_evelyn_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_dinner_evelyn_L03.ogg",
+      "durationSeconds": 2.64,
+      "bytes": 28171
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_will_L01",
+      "text": "父亲把话写得很死。午夜之前你不签字，阿什克罗夫特这个姓氏在灰港就彻底完了。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_dinner_will_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_dinner_will_L01.ogg",
+      "durationSeconds": 6.5,
+      "bytes": 63463
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_watch_L04",
+      "text": "午夜之前，我们还有时间。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_dinner_watch_L04.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_dinner_watch_L04.ogg",
+      "durationSeconds": 2.16,
+      "bytes": 22446
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_01_L01",
+      "text": "你把所有人叫到这儿，是想干什么？",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_01_L01.ogg",
+      "durationSeconds": 3.122667,
+      "bytes": 30863
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_log_L01",
+      "text": "……你从钟里拿到的。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_log_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_log_L01.ogg",
+      "durationSeconds": 1.2,
+      "bytes": 16602
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_log_L02",
+      "text": "她真的把什么都留下了。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_log_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_log_L02.ogg",
+      "durationSeconds": 1.84,
+      "bytes": 22056
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_policy_L01",
+      "text": "父亲签的字。不是我。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_policy_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_policy_L01.ogg",
+      "durationSeconds": 2.48,
+      "bytes": 24696
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_policy_L02",
+      "text": "但钱是我花的。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_policy_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_policy_L02.ogg",
+      "durationSeconds": 1.12,
+      "bytes": 14526
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_recording_L02",
+      "text": "关掉它。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_recording_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_recording_L02.ogg",
+      "durationSeconds": 0.8,
+      "bytes": 11077
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_recording_L03",
+      "text": "求你。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_recording_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_recording_L03.ogg",
+      "durationSeconds": 0.72,
+      "bytes": 10198
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_testimony_L01",
+      "text": "她拿了钱。她答应过不说。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_testimony_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_testimony_L01.ogg",
+      "durationSeconds": 2.88,
+      "bytes": 30729
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_testimony_L02",
+      "text": "……可她还是记得她的手是暖的。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_testimony_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_testimony_L02.ogg",
+      "durationSeconds": 2.72,
+      "bytes": 29241
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_accuse_L01",
+      "text": "我没有杀她。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_accuse_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_accuse_L01.ogg",
+      "durationSeconds": 1.52,
+      "bytes": 17058
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_accuse_L02",
+      "text": "……我只是没有救她。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_accuse_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_accuse_L02.ogg",
+      "durationSeconds": 1.44,
+      "bytes": 17233
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_father_01_L01",
+      "text": "你以为是他下的令？",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_father_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_father_01_L01.ogg",
+      "durationSeconds": 1.68,
+      "bytes": 19409
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_father_01_L02",
+      "text": "他猜到了。他没有下令。他只是不再问。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_father_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_father_01_L02.ogg",
+      "durationSeconds": 4,
+      "bytes": 37784
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_mercy_L01",
+      "text": "她说……『爸爸会恨我的』。她说她不想毁了这个家。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_mercy_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_mercy_L01.ogg",
+      "durationSeconds": 5.7,
+      "bytes": 54471
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_mercy_L02",
+      "text": "然后我们吵起来。我抓住她的手腕——她往后退——",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_mercy_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_mercy_L02.ogg",
+      "durationSeconds": 3.762667,
+      "bytes": 37124
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_mercy_L04",
+      "text": "她倒下去的时候抓了我一把，我没拉住。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_mercy_L04.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_mercy_L04.ogg",
+      "durationSeconds": 3.122667,
+      "bytes": 32149
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_break_L01",
+      "text": "她撞到了壁炉。我扶她起来的时候，她已经不说话了。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_break_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_break_L01.ogg",
+      "durationSeconds": 4.2,
+      "bytes": 39950
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_break_L02",
+      "text": "我叫了格雷。他说没救了。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_break_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_break_L02.ogg",
+      "durationSeconds": 3.2,
+      "bytes": 31426
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_break_L03",
+      "text": "我们把她抬到崖边。我以为……我以为这样对所有人都好。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_break_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_break_L03.ogg",
+      "durationSeconds": 5.2,
+      "bytes": 47995
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_break_L04",
+      "text": "……23 点 55 分了。去门厅吧，文件在桌上。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_confront_break_L04.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_break_L04.ogg",
+      "durationSeconds": 4.6,
+      "bytes": 44072
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_midnight_01_L01",
+      "text": "到点了。笔在这儿。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_midnight_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_midnight_01_L01.ogg",
+      "durationSeconds": 1.76,
+      "bytes": 19904
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_midnight_01_L02",
+      "text": "签吧。然后我们都去睡一觉。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_midnight_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_midnight_01_L02.ogg",
+      "durationSeconds": 2.16,
+      "bytes": 24376
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_midnight_02_L01",
+      "text": "她不会签。但她也不会想让这个家散了。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_midnight_02_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_midnight_02_L01.ogg",
+      "durationSeconds": 3.122667,
+      "bytes": 31268
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_refuse_strong_L01",
+      "text": "你证明不了任何事。这里只有我们四个人。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_refuse_strong_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_refuse_strong_L01.ogg",
+      "durationSeconds": 4.5,
+      "bytes": 43338
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_refuse_strong_L02",
+      "text": "……但律师明早会看到这些。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_refuse_strong_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_refuse_strong_L02.ogg",
+      "durationSeconds": 2.32,
+      "bytes": 25354
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_refuse_weak_L01",
+      "text": "可以。遗嘱会按父亲的意愿处理。",
+      "source": "assets/audio/vo/vo_npc_arthur/source/VO_NpcArthur_npc_arthur_refuse_weak_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_NpcArthur_npc_arthur_refuse_weak_L01.ogg",
+      "durationSeconds": 3.2,
+      "bytes": 32410
+    }
+  ]
+}

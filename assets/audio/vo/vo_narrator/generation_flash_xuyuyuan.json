@@ -1,0 +1,122 @@
+{
+  "model": "qwen-audio-3.1-tts-flash",
+  "voice": "xuyuyuan_v3.1",
+  "voiceName": "许玉远",
+  "instruction": "用普通话说话。语速沉稳略慢，语气冷静、克制、客观，像悬疑电影里的第三人称旁白，只陈述眼前细节，不要夸张渲染或播音腔。",
+  "generatedAt": "2026-11-18T13:36:15.575Z",
+  "status": "generated_pending_listening_and_license_review",
+  "sourceFormat": "WAV native 24 kHz",
+  "runtimeFormat": "OGG Vorbis q5, 48 kHz mono",
+  "processing": "ffmpeg loudnorm I=-18 TP=-2 LRA=7; post-encoding loudness and true peak not independently measured",
+  "summary": {
+    "clips": 13,
+    "seconds": 80.69999999999999,
+    "bytes": 663463
+  },
+  "clips": [
+    {
+      "clipId": "VO_Narrator_npc_arthur_evelyn_02_L02",
+      "text": "他抬手看怀表。袖口滑下去，左腕内侧露出一道浅白色的陈年抓痕。",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_arthur_evelyn_02_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_arthur_evelyn_02_L02.ogg",
+      "durationSeconds": 7.8,
+      "bytes": 65916
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_evelyn_02_L03",
+      "text": "他说话时看着壁炉，而不是你。",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_arthur_evelyn_02_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_arthur_evelyn_02_L03.ogg",
+      "durationSeconds": 4.2,
+      "bytes": 32047
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_dinner_seat_L03",
+      "text": "霍尔太太低头把第十三副餐具歪掉的餐刀摆正，没有接话。",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_arthur_dinner_seat_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_arthur_dinner_seat_L03.ogg",
+      "durationSeconds": 6.7,
+      "bytes": 56390
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_dinner_watch_L01",
+      "text": "亚瑟看着右手边的空椅子，手指在桌布边缘轻轻敲击。",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_arthur_dinner_watch_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_arthur_dinner_watch_L01.ogg",
+      "durationSeconds": 6.2,
+      "bytes": 51255
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_dinner_watch_L02",
+      "text": "格雷仰头喝干了最后一口酒。",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_arthur_dinner_watch_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_arthur_dinner_watch_L02.ogg",
+      "durationSeconds": 3.6,
+      "bytes": 28108
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_dinner_watch_L03",
+      "text": "霍尔太太把伊芙琳椅背上的灰羊毛披肩往上提了提，免得拖到地上。",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_arthur_dinner_watch_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_arthur_dinner_watch_L03.ogg",
+      "durationSeconds": 6.9,
+      "bytes": 59502
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_confront_recording_L01",
+      "text": "伊芙琳的声音在书房里响起来。亚瑟没有动，直到录音结束。",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_arthur_confront_recording_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_arthur_confront_recording_L01.ogg",
+      "durationSeconds": 7.2,
+      "bytes": 57551
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_confront_testimony_L03",
+      "text": "亚瑟第一次没有立刻反驳。他低头看着自己的手。",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_arthur_confront_testimony_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_arthur_confront_testimony_L03.ogg",
+      "durationSeconds": 5.3,
+      "bytes": 43267
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_confront_mercy_L03",
+      "text": "他挽起左袖。手腕内侧的抓痕从手背滑向掌心。",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_arthur_confront_mercy_L03.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_arthur_confront_mercy_L03.ogg",
+      "durationSeconds": 6,
+      "bytes": 49843
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_refuse_01_L01",
+      "text": "亚瑟看着你，没有去碰那支笔。",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_arthur_refuse_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_arthur_refuse_01_L01.ogg",
+      "durationSeconds": 3.6,
+      "bytes": 28992
+    },
+    {
+      "clipId": "VO_Narrator_npc_housekeeper_letter_b1_L01",
+      "text": "你把那封盖着「无法投递」印戳的信递给她。",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_housekeeper_letter_b1_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_housekeeper_letter_b1_L01.ogg",
+      "durationSeconds": 4.6,
+      "bytes": 37429
+    },
+    {
+      "clipId": "VO_Narrator_npc_housekeeper_letter_01_L01",
+      "text": "你把信放在桌上。她看了很久，手在围裙上擦了两下。",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_housekeeper_letter_01_L01.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_housekeeper_letter_01_L01.ogg",
+      "durationSeconds": 6.5,
+      "bytes": 52111
+    },
+    {
+      "clipId": "VO_Narrator_npc_housekeeper_room_01_L02",
+      "text": "霍尔太太朝走廊尽头望了一眼，从围裙深处摸出一把磨得发亮的黄铜旧钥匙，塞进你手里，低声说：",
+      "source": "assets/audio/vo/vo_narrator/source_flash_xuyuyuan/VO_Narrator_npc_housekeeper_room_01_L02.wav",
+      "runtime": "public/assets/audio/vo/VO_Narrator_npc_housekeeper_room_01_L02.ogg",
+      "durationSeconds": 12.1,
+      "bytes": 101052
+    }
+  ]
+}

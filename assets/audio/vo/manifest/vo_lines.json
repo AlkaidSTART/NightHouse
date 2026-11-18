@@ -1,0 +1,5572 @@
+{
+  "source": {
+    "dialogues": "src/content/dialogues",
+    "inspectables": "src/content/inspectables.ts",
+    "runtimeDir": "/assets/audio/vo"
+  },
+  "totals": {
+    "byVoice": [
+      {
+        "voiceId": "npc_arthur",
+        "voiceName": "亚瑟·阿什克罗夫特",
+        "clips": 71,
+        "chars": 1132,
+        "seconds": 298.00000000000017,
+        "core": 71,
+        "pending": 0
+      },
+      {
+        "voiceId": "narrator",
+        "voiceName": "叙述者",
+        "clips": 13,
+        "chars": 309,
+        "seconds": 78.60000000000001,
+        "core": 0,
+        "pending": 13
+      },
+      {
+        "voiceId": "npc_doctor",
+        "voiceName": "埃利亚斯·格雷医生",
+        "clips": 39,
+        "chars": 681,
+        "seconds": 177.69999999999996,
+        "core": 39,
+        "pending": 0
+      },
+      {
+        "voiceId": "npc_housekeeper",
+        "voiceName": "霍尔太太",
+        "clips": 55,
+        "chars": 1152,
+        "seconds": 296.1,
+        "core": 55,
+        "pending": 0
+      },
+      {
+        "voiceId": "npc_evelyn",
+        "voiceName": "伊芙琳·阿什克罗夫特",
+        "clips": 5,
+        "chars": 165,
+        "seconds": 41.3,
+        "core": 5,
+        "pending": 0
+      }
+    ],
+    "npcClips": 165,
+    "narrationClips": 13,
+    "cylinderClips": 5,
+    "honorificClips": 7,
+    "totalSeconds": 891.7000000000002,
+    "byKind": {
+      "npc": 157,
+      "reenter-npc": 8,
+      "narration": 13,
+      "cylinder": 5
+    },
+    "byBeat": {
+      "第一幕 · 初见": 20,
+      "第二幕 · 调查": 68,
+      "第一幕 · 晚宴": 31,
+      "第三幕 · 对质": 28,
+      "第四幕 · 午夜": 16,
+      "第一幕 · 抵达": 15
+    }
+  },
+  "clips": [
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_intro_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_intro",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "你来了。路上不好走吧——桥断了。",
+      "textAlt": null,
+      "chars": 16,
+      "estSeconds": 4.2,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [
+        "story.arrived"
+      ],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_intro_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_intro_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_intro_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_intro",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "坐吧。父亲的事，我很抱歉。但总得有人把这件事做完。",
+      "textAlt": null,
+      "chars": 25,
+      "estSeconds": 6.4,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [
+        "story.arrived"
+      ],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_intro_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_intro_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_intro_R01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_intro",
+      "source": "dialogue",
+      "kind": "reenter-npc",
+      "lineNo": 1,
+      "text": "还有什么事？",
+      "textAlt": null,
+      "chars": 6,
+      "estSeconds": 1.8,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [
+        "story.arrived"
+      ],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_intro_R01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_intro_R01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "重复交谈时的替代开场句"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_evelyn_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_evelyn_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "她一直睡不好。医生说是神经衰弱。",
+      "textAlt": null,
+      "chars": 16,
+      "estSeconds": 4.2,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_evelyn_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_evelyn_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_evelyn_01_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_evelyn_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "那天晚上她喝了酒，一个人去了崖边。",
+      "textAlt": null,
+      "chars": 17,
+      "estSeconds": 4.4,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_evelyn_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_evelyn_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_evelyn_01_L03",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_evelyn_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "我们找了她一整夜。潮水……你知道的。",
+      "textAlt": null,
+      "chars": 18,
+      "estSeconds": 4.7,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_evelyn_01_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_evelyn_01_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_evelyn_02_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_evelyn_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "我不知道。也许她只是想一个人待着。",
+      "textAlt": null,
+      "chars": 17,
+      "estSeconds": 4.4,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_evelyn_02_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_evelyn_02_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_evelyn_02_L02",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_arthur_evelyn_02",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 2,
+      "text": "他抬手看怀表。袖口滑下去，左腕内侧露出一道浅白色的陈年抓痕。",
+      "textAlt": null,
+      "chars": 30,
+      "estSeconds": 7.5,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_Narrator_npc_arthur_evelyn_02_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_arthur_evelyn_02_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_evelyn_02_L03",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_arthur_evelyn_02",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 3,
+      "text": "他说话时看着壁炉，而不是你。",
+      "textAlt": null,
+      "chars": 14,
+      "estSeconds": 3.7,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_Narrator_npc_arthur_evelyn_02_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_arthur_evelyn_02_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_evelyn_03_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_evelyn_03",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "……我在这儿。她走后，我在这儿坐到天亮。",
+      "textAlt": null,
+      "chars": 20,
+      "estSeconds": 5.2,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_evelyn_03_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_evelyn_03_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_photo_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_photo_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "是母亲剪的。她说看着难受。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [
+        "clue.family_photo"
+      ],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_photo_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_photo_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_photo_02_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_photo_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "你说话很像她。",
+      "textAlt": null,
+      "chars": 7,
+      "estSeconds": 2.1,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_photo_02_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_photo_02_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_will_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_will_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "父亲把宅子和股份留给我，一部分现款留给你。",
+      "textAlt": null,
+      "chars": 21,
+      "estSeconds": 5.4,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_will_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_will_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_will_01_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_will_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "其余捐给海事孤儿院——如果没人签字，全部归孤儿院。",
+      "textAlt": null,
+      "chars": 25,
+      "estSeconds": 6.4,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_will_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_will_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_will_02_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_will_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "父亲的良心。他晚年总说，海上的账，迟早要还。",
+      "textAlt": null,
+      "chars": 22,
+      "estSeconds": 5.6,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_will_02_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_will_02_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_will_03_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_will_03",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "律师明早来取。父亲定的时间——他说午夜之前，家里人必须到齐。",
+      "textAlt": null,
+      "chars": 30,
+      "estSeconds": 7.5,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_will_03_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_will_03_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_house_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_house_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "这房子比我年纪还大。它有自己的脾气。",
+      "textAlt": null,
+      "chars": 18,
+      "estSeconds": 4.7,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_house_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_house_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_house_01_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_house_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "壁炉上那行字是父亲刻的：守住你拥有的。他觉得这是家训。",
+      "textAlt": null,
+      "chars": 27,
+      "estSeconds": 6.8,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_house_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_house_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_house_01_L03",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_house_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "如果半夜听见什么，别当回事。",
+      "textAlt": null,
+      "chars": 14,
+      "estSeconds": 3.7,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcArthur_npc_arthur_house_01_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_house_01_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_business_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_business_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "账本？你翻了我的书房。",
+      "textAlt": null,
+      "chars": 11,
+      "estSeconds": 3,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "clue.shipping_ledger"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_business_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_business_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_business_01_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_business_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "航运不好做。父亲那一代把能抵押的都抵押了。",
+      "textAlt": null,
+      "chars": 21,
+      "estSeconds": 5.4,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "clue.shipping_ledger"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_business_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_business_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_business_02_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_business_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "……那是风暴。报纸上写着。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_business_02_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_business_02_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_dining_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_dining_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "汤早撤了。你还有事？",
+      "textAlt": null,
+      "chars": 10,
+      "estSeconds": 2.8,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_arthur"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_dining_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_dining_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_dining_01_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_dining_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "律师明早来。我现在没心情谈那晚。",
+      "textAlt": null,
+      "chars": 16,
+      "estSeconds": 4.2,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_arthur"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_dining_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_dining_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_dining_01_R01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_dining_01",
+      "source": "dialogue",
+      "kind": "reenter-npc",
+      "lineNo": 1,
+      "text": "你还有事？",
+      "textAlt": null,
+      "chars": 5,
+      "estSeconds": 1.6,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_arthur"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_dining_01_R01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_dining_01_R01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "重复交谈时的替代开场句"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_study_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_study_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "……现在别谈那晚。",
+      "textAlt": null,
+      "chars": 9,
+      "estSeconds": 2.5,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_arthur"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_study_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_study_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_study_01_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_study_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "如果你有东西要给我看，等你想清楚了再来。",
+      "textAlt": null,
+      "chars": 20,
+      "estSeconds": 5.2,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_arthur"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_study_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_study_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_study_01_R01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_study_01",
+      "source": "dialogue",
+      "kind": "reenter-npc",
+      "lineNo": 1,
+      "text": "……现在别谈那晚。",
+      "textAlt": null,
+      "chars": 9,
+      "estSeconds": 2.5,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_arthur"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_study_01_R01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_study_01_R01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "重复交谈时的替代开场句"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_gallery_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_gallery_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "你听见了。第十三下。",
+      "textAlt": null,
+      "chars": 10,
+      "estSeconds": 2.8,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_arthur"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_gallery_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_gallery_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_gallery_01_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_gallery_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "她走之前把这钟弄停了。我一直没让人碰它。",
+      "textAlt": null,
+      "chars": 20,
+      "estSeconds": 5.2,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_arthur"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_gallery_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_gallery_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_gallery_01_L03",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_gallery_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "现在整栋房子都听见了。该问的，去书房问。",
+      "textAlt": null,
+      "chars": 20,
+      "estSeconds": 5.2,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_arthur"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_gallery_01_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_gallery_01_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_gallery_01_R01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_gallery_01",
+      "source": "dialogue",
+      "kind": "reenter-npc",
+      "lineNo": 1,
+      "text": "你还站在楼下看我。",
+      "textAlt": null,
+      "chars": 9,
+      "estSeconds": 2.5,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_arthur"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_gallery_01_R01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_gallery_01_R01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "重复交谈时的替代开场句"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_study_admission_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_study_admission_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "……她走后，我一直在书房。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_study_admission_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_study_admission_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_study_admission_01_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_study_admission_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "我没有杀她。但我也不是立刻叫人来。",
+      "textAlt": null,
+      "chars": 17,
+      "estSeconds": 4.4,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_study_admission_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_study_admission_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_study_admission_01_L03",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_study_admission_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "我以为只要把门关上，天亮以后还能把这件事说成一次意外。",
+      "textAlt": null,
+      "chars": 27,
+      "estSeconds": 6.8,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_study_admission_01_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_study_admission_01_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_cloak_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_cloak_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "那件斗篷是她的。",
+      "textAlt": null,
+      "chars": 8,
+      "estSeconds": 2.3,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_cloak_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_cloak_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_cloak_01_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_cloak_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "前一晚我去过纪念石。我只是不想让她一个人待在那儿。",
+      "textAlt": null,
+      "chars": 25,
+      "estSeconds": 6.4,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_cloak_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_cloak_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_cloak_01_L03",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_cloak_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "……别把这件事告诉别人。",
+      "textAlt": null,
+      "chars": 12,
+      "estSeconds": 3.3,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_cloak_01_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_cloak_01_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_recording_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_recording_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "你听见她的声音了。",
+      "textAlt": null,
+      "chars": 9,
+      "estSeconds": 2.5,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_recording_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_recording_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_recording_01_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_recording_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "关掉它。",
+      "textAlt": null,
+      "chars": 4,
+      "estSeconds": 1.4,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_recording_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_recording_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_b5_recording_01_L03",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_b5_recording_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "……她最后提到我了吗？",
+      "textAlt": null,
+      "chars": 11,
+      "estSeconds": 3,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcArthur_npc_arthur_b5_recording_01_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_b5_recording_01_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_dinner_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "汤已经凉了，我让霍尔太太不必再热。坐吧，或者随便看看。",
+      "textAlt": null,
+      "chars": 27,
+      "estSeconds": 6.8,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [
+        "story.met_arthur"
+      ],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcArthur_npc_arthur_dinner_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_dinner_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_arthur_dinner_01_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_arthur_dinner_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "我们在聊这栋房子的老规矩。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [
+        "story.met_arthur"
+      ],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_arthur_dinner_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_arthur_dinner_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_seat_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_dinner_seat",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "父亲还在的时候定下的规矩。只要没见到人，她的位置就留着。撤掉反而奇怪。",
+      "textAlt": null,
+      "chars": 35,
+      "estSeconds": 8.7,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcArthur_npc_arthur_dinner_seat_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_dinner_seat_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_arthur_dinner_seat_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_arthur_dinner_seat",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "活人总得靠点仪式感才能睡得着。对吧，亚瑟？",
+      "textAlt": null,
+      "chars": 21,
+      "estSeconds": 5.4,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_arthur_dinner_seat_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_arthur_dinner_seat_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_dinner_seat_L03",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_arthur_dinner_seat",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 3,
+      "text": "霍尔太太低头把第十三副餐具歪掉的餐刀摆正，没有接话。",
+      "textAlt": null,
+      "chars": 26,
+      "estSeconds": 6.6,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_Narrator_npc_arthur_dinner_seat_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_arthur_dinner_seat_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_evelyn_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_dinner_evelyn",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "她那阵子把账本看得太重，整宿整宿不睡，看谁都像欠了她的债。",
+      "textAlt": null,
+      "chars": 29,
+      "estSeconds": 7.3,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcArthur_npc_arthur_dinner_evelyn_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_dinner_evelyn_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_arthur_dinner_evelyn_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_arthur_dinner_evelyn",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "从医学上讲是神经衰弱。不过……她出事那天下午跟我聊过几句，脑子倒是比我们谁都清楚。",
+      "textAlt": null,
+      "chars": 41,
+      "estSeconds": 10.2,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_arthur_dinner_evelyn_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_arthur_dinner_evelyn_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_evelyn_L03",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_dinner_evelyn",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "格雷大夫，您的酒杯空了。",
+      "textAlt": null,
+      "chars": 12,
+      "estSeconds": 3.3,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcArthur_npc_arthur_dinner_evelyn_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_dinner_evelyn_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_will_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_dinner_will",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "父亲把话写得很死。午夜之前你不签字，阿什克罗夫特这个姓氏在灰港就彻底完了。",
+      "textAlt": null,
+      "chars": 37,
+      "estSeconds": 9.2,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcArthur_npc_arthur_dinner_will_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_dinner_will_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_arthur_dinner_will_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_arthur_dinner_will",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "签了，对活着的人都好。",
+      "textAlt": null,
+      "chars": 11,
+      "estSeconds": 3,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_arthur_dinner_will_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_arthur_dinner_will_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_arthur_dinner_will_L03",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_arthur_dinner_will",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "少爷，汤已经撤了，别在饭桌上谈公事，老爷以前不喜欢的。",
+      "textAlt": null,
+      "chars": 27,
+      "estSeconds": 6.8,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcHousekeeper_npc_arthur_dinner_will_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_arthur_dinner_will_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_dinner_watch_L01",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_arthur_dinner_watch",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 1,
+      "text": "亚瑟看着右手边的空椅子，手指在桌布边缘轻轻敲击。",
+      "textAlt": null,
+      "chars": 24,
+      "estSeconds": 6.1,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_Narrator_npc_arthur_dinner_watch_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_arthur_dinner_watch_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_dinner_watch_L02",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_arthur_dinner_watch",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 2,
+      "text": "格雷仰头喝干了最后一口酒。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_Narrator_npc_arthur_dinner_watch_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_arthur_dinner_watch_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_dinner_watch_L03",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_arthur_dinner_watch",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 3,
+      "text": "霍尔太太把伊芙琳椅背上的灰羊毛披肩往上提了提，免得拖到地上。",
+      "textAlt": null,
+      "chars": 30,
+      "estSeconds": 7.5,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_Narrator_npc_arthur_dinner_watch_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_arthur_dinner_watch_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_dinner_watch_L04",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_dinner_watch",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 4,
+      "text": "午夜之前，我们还有时间。",
+      "textAlt": null,
+      "chars": 12,
+      "estSeconds": 3.3,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcArthur_npc_arthur_dinner_watch_L04.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_dinner_watch_L04.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "你把所有人叫到这儿，是想干什么？",
+      "textAlt": null,
+      "chars": 16,
+      "estSeconds": 4.2,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_log_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_log",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "……你从钟里拿到的。",
+      "textAlt": null,
+      "chars": 10,
+      "estSeconds": 2.8,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_log_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_log_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_log_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_log",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "她真的把什么都留下了。",
+      "textAlt": null,
+      "chars": 11,
+      "estSeconds": 3,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_log_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_log_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_policy_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_policy",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "父亲签的字。不是我。",
+      "textAlt": null,
+      "chars": 10,
+      "estSeconds": 2.8,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_policy_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_policy_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_policy_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_policy",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "但钱是我花的。",
+      "textAlt": null,
+      "chars": 7,
+      "estSeconds": 2.1,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_policy_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_policy_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_confront_recording_L01",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_arthur_confront_recording",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 1,
+      "text": "伊芙琳的声音在书房里响起来。亚瑟没有动，直到录音结束。",
+      "textAlt": null,
+      "chars": 27,
+      "estSeconds": 6.8,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_Narrator_npc_arthur_confront_recording_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_arthur_confront_recording_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_recording_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_recording",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "关掉它。",
+      "textAlt": null,
+      "chars": 4,
+      "estSeconds": 1.4,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_recording_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_recording_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_recording_L03",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_recording",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "求你。",
+      "textAlt": null,
+      "chars": 3,
+      "estSeconds": 1.1,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_recording_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_recording_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_testimony_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_testimony",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "她拿了钱。她答应过不说。",
+      "textAlt": null,
+      "chars": 12,
+      "estSeconds": 3.3,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_testimony_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_testimony_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_testimony_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_testimony",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "……可她还是记得她的手是暖的。",
+      "textAlt": null,
+      "chars": 15,
+      "estSeconds": 4,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_testimony_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_testimony_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_confront_testimony_L03",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_arthur_confront_testimony",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 3,
+      "text": "亚瑟第一次没有立刻反驳。他低头看着自己的手。",
+      "textAlt": null,
+      "chars": 22,
+      "estSeconds": 5.6,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_Narrator_npc_arthur_confront_testimony_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_arthur_confront_testimony_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_accuse_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_accuse",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "我没有杀她。",
+      "textAlt": null,
+      "chars": 6,
+      "estSeconds": 1.8,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_accuse_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_accuse_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_accuse_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_accuse",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "……我只是没有救她。",
+      "textAlt": null,
+      "chars": 10,
+      "estSeconds": 2.8,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_accuse_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_accuse_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_father_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_father_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "你以为是他下的令？",
+      "textAlt": null,
+      "chars": 9,
+      "estSeconds": 2.5,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_father_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_father_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_father_01_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_father_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "他猜到了。他没有下令。他只是不再问。",
+      "textAlt": null,
+      "chars": 18,
+      "estSeconds": 4.7,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_father_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_father_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_mercy_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_mercy",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "她说……『爸爸会恨我的』。她说她不想毁了这个家。",
+      "textAlt": null,
+      "chars": 24,
+      "estSeconds": 6.1,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_mercy_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_mercy_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_mercy_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_mercy",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "然后我们吵起来。我抓住她的手腕——她往后退——",
+      "textAlt": null,
+      "chars": 23,
+      "estSeconds": 5.9,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_mercy_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_mercy_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_confront_mercy_L03",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_arthur_confront_mercy",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 3,
+      "text": "他挽起左袖。手腕内侧的抓痕从手背滑向掌心。",
+      "textAlt": null,
+      "chars": 21,
+      "estSeconds": 5.4,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_Narrator_npc_arthur_confront_mercy_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_arthur_confront_mercy_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_mercy_L04",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_mercy",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 4,
+      "text": "她倒下去的时候抓了我一把，我没拉住。",
+      "textAlt": null,
+      "chars": 18,
+      "estSeconds": 4.7,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_mercy_L04.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_mercy_L04.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_break_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_break",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "她撞到了壁炉。我扶她起来的时候，她已经不说话了。",
+      "textAlt": null,
+      "chars": 24,
+      "estSeconds": 6.1,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_break_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_break_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_break_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_break",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "我叫了格雷。他说没救了。",
+      "textAlt": null,
+      "chars": 12,
+      "estSeconds": 3.3,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_break_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_break_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_break_L03",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_break",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "我们把她抬到崖边。我以为……我以为这样对所有人都好。",
+      "textAlt": null,
+      "chars": 26,
+      "estSeconds": 6.6,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_break_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_break_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_confront_break_L04",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_confront_break",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 4,
+      "text": "……23 点 55 分了。去门厅吧，文件在桌上。",
+      "textAlt": null,
+      "chars": 24,
+      "estSeconds": 6.1,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcArthur_npc_arthur_confront_break_L04.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_confront_break_L04.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_midnight_01_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_midnight_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "到点了。笔在这儿。",
+      "textAlt": null,
+      "chars": 9,
+      "estSeconds": 2.5,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [
+        "story.midnight"
+      ],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcArthur_npc_arthur_midnight_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_midnight_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_midnight_01_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_midnight_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "签吧。然后我们都去睡一觉。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [
+        "story.midnight"
+      ],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcArthur_npc_arthur_midnight_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_midnight_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_midnight_02_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_midnight_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "她不会签。但她也不会想让这个家散了。",
+      "textAlt": null,
+      "chars": 18,
+      "estSeconds": 4.7,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcArthur_npc_arthur_midnight_02_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_midnight_02_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_Narrator_npc_arthur_refuse_01_L01",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_arthur_refuse_01",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 1,
+      "text": "亚瑟看着你，没有去碰那支笔。",
+      "textAlt": null,
+      "chars": 14,
+      "estSeconds": 3.7,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_Narrator_npc_arthur_refuse_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_arthur_refuse_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_refuse_strong_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_refuse_strong",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "你证明不了任何事。这里只有我们四个人。",
+      "textAlt": null,
+      "chars": 19,
+      "estSeconds": 4.9,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcArthur_npc_arthur_refuse_strong_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_refuse_strong_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_refuse_strong_L02",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_refuse_strong",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "……但律师明早会看到这些。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcArthur_npc_arthur_refuse_strong_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_refuse_strong_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcArthur_npc_arthur_refuse_weak_L01",
+      "voiceId": "npc_arthur",
+      "voiceName": "亚瑟·阿什克罗夫特",
+      "nodeId": "npc_arthur_refuse_weak",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "可以。遗嘱会按父亲的意愿处理。",
+      "textAlt": null,
+      "chars": 15,
+      "estSeconds": 4,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcArthur_npc_arthur_refuse_weak_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcArthur_npc_arthur_refuse_weak_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_intro_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_intro",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "您到了。外套给我吧，先生。",
+      "textAlt": "您到了。外套给我吧，小姐。",
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [
+        "story.arrived"
+      ],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_intro_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_intro_L01.ogg",
+      "textAltFileName": "VO_NpcHousekeeper_npc_housekeeper_intro_L01_MISS.ogg",
+      "textAltRuntimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_intro_L01_MISS.ogg",
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "含称谓占位 {honorific}：需「先生/小姐」两版，或改写为不含称谓的句子"
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_intro_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_intro",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "房间已经收拾好了。晚餐在餐厅。",
+      "textAlt": null,
+      "chars": 15,
+      "estSeconds": 4,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [
+        "story.arrived"
+      ],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_intro_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_intro_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_intro_L03",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_intro",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "午夜之前，请别上楼。",
+      "textAlt": null,
+      "chars": 10,
+      "estSeconds": 2.8,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [
+        "story.arrived"
+      ],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_intro_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_intro_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_intro_R01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_intro",
+      "source": "dialogue",
+      "kind": "reenter-npc",
+      "lineNo": 1,
+      "text": "……还有什么需要我做的吗，先生？",
+      "textAlt": "……还有什么需要我做的吗，小姐？",
+      "chars": 16,
+      "estSeconds": 4.2,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [
+        "story.arrived"
+      ],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_intro_R01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_intro_R01.ogg",
+      "textAltFileName": "VO_NpcHousekeeper_npc_housekeeper_intro_R01_MISS.ogg",
+      "textAltRuntimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_intro_R01_MISS.ogg",
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "重复交谈时的替代开场句含称谓占位 {honorific}：需「先生/小姐」两版，或改写为不含称谓的句子"
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_warm_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_warm",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "……不用谢，先生。",
+      "textAlt": "……不用谢，小姐。",
+      "chars": 9,
+      "estSeconds": 2.5,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_warm_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_warm_L01.ogg",
+      "textAltFileName": "VO_NpcHousekeeper_npc_housekeeper_warm_L01_MISS.ogg",
+      "textAltRuntimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_warm_L01_MISS.ogg",
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "含称谓占位 {honorific}：需「先生/小姐」两版，或改写为不含称谓的句子"
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_warm_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_warm",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "安静，是因为人都走了。",
+      "textAlt": null,
+      "chars": 11,
+      "estSeconds": 3,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_warm_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_warm_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_warm_L03",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_warm",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "……您和小姐说话的口气有点像。",
+      "textAlt": null,
+      "chars": 15,
+      "estSeconds": 4,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_warm_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_warm_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_cold_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_cold",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "随您。晚餐在餐厅。",
+      "textAlt": null,
+      "chars": 9,
+      "estSeconds": 2.5,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_cold_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_cold_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_evelyn_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_evelyn_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "小姐待下人很好。她教我认字。",
+      "textAlt": null,
+      "chars": 14,
+      "estSeconds": 3.7,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_evelyn_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_evelyn_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_evelyn_01_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_evelyn_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "二楼最里面她住过的房间一直锁着，备用钥匙我替她收在围裙口袋里。这会儿少爷在客厅等您，晚些没人的时候我再把钥匙拿给您。",
+      "textAlt": null,
+      "chars": 58,
+      "estSeconds": 14.2,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_evelyn_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_evelyn_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_Narrator_npc_housekeeper_letter_b1_L01",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_housekeeper_letter_b1",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 1,
+      "text": "你把那封盖着「无法投递」印戳的信递给她。",
+      "textAlt": null,
+      "chars": 20,
+      "estSeconds": 5.2,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [
+        "story.has_letter"
+      ],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_Narrator_npc_housekeeper_letter_b1_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_housekeeper_letter_b1_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_b1_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_letter_b1",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "……是我寄的。信退回宅子，压在老爷的文书里，我整理东西时翻出来的。",
+      "textAlt": null,
+      "chars": 33,
+      "estSeconds": 8.3,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [
+        "story.has_letter"
+      ],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_letter_b1_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_b1_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_b1_L03",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_letter_b1",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "信封里那张『请务必来』的便条，也是我放的。我不知道还能找谁。",
+      "textAlt": null,
+      "chars": 30,
+      "estSeconds": 7.5,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [
+        "story.has_letter"
+      ],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_letter_b1_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_b1_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_b1_L04",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_letter_b1",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 4,
+      "text": "小姐写这封信的时候，一直在等您的回信。",
+      "textAlt": null,
+      "chars": 19,
+      "estSeconds": 4.9,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [
+        "story.has_letter"
+      ],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_letter_b1_L04.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_b1_L04.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_b1_L05",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_letter_b1",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 5,
+      "text": "您先见过少爷吧。有些话，得等他不在场我才能说。",
+      "textAlt": null,
+      "chars": 23,
+      "estSeconds": 5.9,
+      "taskIds": [
+        "step_housekeeper"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与霍尔太太交谈，安顿下来"
+      ],
+      "conditions": [
+        "story.has_letter"
+      ],
+      "beat": "第一幕 · 抵达",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_letter_b1_L05.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_b1_L05.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_wait_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_wait_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "少爷在客厅壁炉边等您。二楼房间的钥匙我收在身上，等您见过少爷和医生，来餐厅门边找我。",
+      "textAlt": null,
+      "chars": 42,
+      "estSeconds": 10.4,
+      "taskIds": [
+        "step_arthur"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 在客厅壁炉旁与亚瑟交谈"
+      ],
+      "conditions": [
+        "story.met_housekeeper"
+      ],
+      "beat": "第一幕 · 初见",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_wait_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_wait_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_dinner_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_dinner_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "少爷在长桌尽头等您，格雷医生刚到门厅。等您先问过医生那晚的事，再来找我拿二楼的钥匙。",
+      "textAlt": null,
+      "chars": 42,
+      "estSeconds": 10.4,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [
+        "story.met_housekeeper"
+      ],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_dinner_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_dinner_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_b5_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_b5_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "您还有什么要问的吗？",
+      "textAlt": null,
+      "chars": 10,
+      "estSeconds": 2.8,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_housekeeper"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_b5_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_b5_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_b5_01_R01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_b5_01",
+      "source": "dialogue",
+      "kind": "reenter-npc",
+      "lineNo": 1,
+      "text": "您还有什么要问的吗？",
+      "textAlt": null,
+      "chars": 10,
+      "estSeconds": 2.8,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_housekeeper"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_b5_01_R01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_b5_01_R01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "重复交谈时的替代开场句"
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_evelyn_b5_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_evelyn_b5",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "小姐待下人很好。她教我认字。",
+      "textAlt": null,
+      "chars": 14,
+      "estSeconds": 3.7,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_evelyn_b5_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_evelyn_b5_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_evelyn_b5_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_evelyn_b5",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "二楼最里面她的房间一直锁着，备用钥匙我还替她收在围裙口袋里。",
+      "textAlt": null,
+      "chars": 30,
+      "estSeconds": 7.5,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_evelyn_b5_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_evelyn_b5_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_cloak_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_cloak_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "忌日前一晚，少爷披着它出去过。回来时，袖口上都是崖边的草籽。",
+      "textAlt": null,
+      "chars": 30,
+      "estSeconds": 7.5,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_cloak_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_cloak_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_cloak_01_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_cloak_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "他没说去了哪儿。我也没问。那件斗篷我本来想收起来，可他没让。",
+      "textAlt": null,
+      "chars": 30,
+      "estSeconds": 7.5,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_cloak_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_cloak_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_cloak_01_L03",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_cloak_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "您别在他面前提。他这一晚已经很难熬了。",
+      "textAlt": null,
+      "chars": 19,
+      "estSeconds": 4.9,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_cloak_01_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_cloak_01_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_dinner_seat_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "少爷让留的。她说小姐没见到人，位置就不能撤。",
+      "textAlt": null,
+      "chars": 22,
+      "estSeconds": 5.6,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_dinner_seat_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "披肩是她自己缝的边。我每天摆餐具时都要摸一下，确认还在。",
+      "textAlt": null,
+      "chars": 28,
+      "estSeconds": 7.1,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L03",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_dinner_seat_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "这屋子里总得有人记得她坐哪儿。",
+      "textAlt": null,
+      "chars": 15,
+      "estSeconds": 4,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_dinner_seat_01_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letters_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_letters_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "小姐每次写完信，都会问我：邮差今天会不会来。",
+      "textAlt": null,
+      "chars": 22,
+      "estSeconds": 5.6,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_letters_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letters_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letters_01_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_letters_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "后来她就不问了。信写好，放在抽屉里，过几天自己再看一遍。",
+      "textAlt": null,
+      "chars": 28,
+      "estSeconds": 7.1,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_letters_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letters_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letters_01_L03",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_letters_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "最后那封没写完。她写到一半，把笔放下了。",
+      "textAlt": null,
+      "chars": 20,
+      "estSeconds": 5.2,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_letters_01_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letters_01_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_Narrator_npc_housekeeper_letter_01_L01",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_housekeeper_letter_01",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 1,
+      "text": "你把信放在桌上。她看了很久，手在围裙上擦了两下。",
+      "textAlt": null,
+      "chars": 24,
+      "estSeconds": 6.1,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.has_letter"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_Narrator_npc_housekeeper_letter_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_housekeeper_letter_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_01_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_letter_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "……是我寄的。小姐写好后一直压在老爷的文书里。我想，总得有人知道。",
+      "textAlt": null,
+      "chars": 33,
+      "estSeconds": 8.3,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.has_letter"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_letter_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_02_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_letter_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "小姐说过，如果她出了什么事，就把这封信寄出去。",
+      "textAlt": null,
+      "chars": 23,
+      "estSeconds": 5.9,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_letter_02_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_02_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_letter_02_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_letter_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "我拖了一年。我怕。",
+      "textAlt": null,
+      "chars": 9,
+      "estSeconds": 2.5,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_letter_02_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_letter_02_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_night_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "我在。我在楼下等门。",
+      "textAlt": null,
+      "chars": 10,
+      "estSeconds": 2.8,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.housekeeper_warm"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_night_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_01_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_night_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "……我听见书房有声音。两个人的声音。",
+      "textAlt": null,
+      "chars": 18,
+      "estSeconds": 4.7,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.housekeeper_warm"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_night_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_02_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_night_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "我站在楼梯口。灯是亮的。",
+      "textAlt": null,
+      "chars": 12,
+      "estSeconds": 3.3,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_night_02_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_02_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_02_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_night_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "后来……少爷和医生抬着什么东西下来。用床单裹着。",
+      "textAlt": null,
+      "chars": 24,
+      "estSeconds": 6.1,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_night_02_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_02_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_03_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_night_03",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "他们给了我一份工钱，和一句话：『老爷身体不好，别让他知道。』",
+      "textAlt": null,
+      "chars": 30,
+      "estSeconds": 7.5,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_night_03_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_03_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_03_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_night_03",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "我拿了钱。这一年，我每天都在想这件事。",
+      "textAlt": null,
+      "chars": 19,
+      "estSeconds": 4.9,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_night_03_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_03_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_04_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_night_04",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "医生说她没气了。我不知道。我没敢看。",
+      "textAlt": null,
+      "chars": 18,
+      "estSeconds": 4.7,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_night_04_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_04_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_night_04_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_night_04",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "但她的手是暖的。",
+      "textAlt": null,
+      "chars": 8,
+      "estSeconds": 2.3,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_night_04_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_night_04_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_room_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_room_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "二楼最里面是她的房间。出事以后少爷让人锁上了，备用钥匙一直在我围裙口袋里。",
+      "textAlt": null,
+      "chars": 37,
+      "estSeconds": 9.2,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.housekeeper_warm"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_room_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_room_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_Narrator_npc_housekeeper_room_01_L02",
+      "voiceId": "narrator",
+      "voiceName": "叙述者",
+      "nodeId": "npc_housekeeper_room_01",
+      "source": "dialogue",
+      "kind": "narration",
+      "lineNo": 2,
+      "text": "霍尔太太朝走廊尽头望了一眼，从围裙深处摸出一把磨得发亮的黄铜旧钥匙，塞进你手里，低声说：",
+      "textAlt": null,
+      "chars": 44,
+      "estSeconds": 10.9,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.housekeeper_warm"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_Narrator_npc_housekeeper_room_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_Narrator_npc_housekeeper_room_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "待定",
+      "status": "待定",
+      "notes": "对话内旁白；是否启用旁白配音待定"
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_room_01_L03",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_room_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "收进您的随身背包里，别让少爷知道是我给的。",
+      "textAlt": null,
+      "chars": 21,
+      "estSeconds": 5.4,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.housekeeper_warm"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_room_01_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_room_01_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_room_01_L04",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_room_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 4,
+      "text": "……小姐出事那天下午，还去门厅邮箱看过一回。其实她知道邮差早上已经来过了。她的梳妆台和衣柜一直没人动过，您可以上去看看。",
+      "textAlt": null,
+      "chars": 60,
+      "estSeconds": 14.7,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.housekeeper_warm"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_room_01_L04.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_room_01_L04.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_study_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_study_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "书房我打扫过。壁炉里的纸……是先生让我烧的。",
+      "textAlt": null,
+      "chars": 22,
+      "estSeconds": 5.6,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_study_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_study_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_study_01_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_study_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "我留了一角。我说不上为什么。",
+      "textAlt": null,
+      "chars": 14,
+      "estSeconds": 3.7,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_study_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_study_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_study_02_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_study_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "小姐在查船上的事。先生知道。他让我别多嘴。",
+      "textAlt": null,
+      "chars": 21,
+      "estSeconds": 5.4,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_study_02_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_study_02_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_b9_wait_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_b9_wait_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "我什么都不知道。少爷在书房。",
+      "textAlt": null,
+      "chars": 14,
+      "estSeconds": 3.7,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [
+        "story.met_housekeeper"
+      ],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_b9_wait_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_b9_wait_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_confront_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_confront_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "您要我在午夜说出来吗？",
+      "textAlt": null,
+      "chars": 11,
+      "estSeconds": 3,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [
+        "story.knows_coverup"
+      ],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_confront_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_confront_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_will_testify_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_will_testify",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "……好。我欠小姐一句话。",
+      "textAlt": null,
+      "chars": 12,
+      "estSeconds": 3.3,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_will_testify_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_will_testify_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_hesitate_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_hesitate",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "说出来，我这份工就没了。这地方是我唯一的家。",
+      "textAlt": null,
+      "chars": 22,
+      "estSeconds": 5.6,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_hesitate_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_hesitate_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_midnight_01_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_midnight_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "午夜了，先生。",
+      "textAlt": "午夜了，小姐。",
+      "chars": 7,
+      "estSeconds": 2.1,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_midnight_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_midnight_01_L01.ogg",
+      "textAltFileName": "VO_NpcHousekeeper_npc_housekeeper_midnight_01_L01_MISS.ogg",
+      "textAltRuntimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_midnight_01_L01_MISS.ogg",
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "含称谓占位 {honorific}：需「先生/小姐」两版，或改写为不含称谓的句子"
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_midnight_01_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_midnight_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "我就在门边。需要的时候，我在。",
+      "textAlt": null,
+      "chars": 15,
+      "estSeconds": 4,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_midnight_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_midnight_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_midnight_testified_L01",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_midnight_testified",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "我答应过小姐。天一亮，我就去说。",
+      "textAlt": null,
+      "chars": 16,
+      "estSeconds": 4.2,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [
+        "story.housekeeper_testimony"
+      ],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_midnight_testified_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_midnight_testified_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcHousekeeper_npc_housekeeper_midnight_testified_L02",
+      "voiceId": "npc_housekeeper",
+      "voiceName": "霍尔太太",
+      "nodeId": "npc_housekeeper_midnight_testified",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "您做您的决定。我不催您。",
+      "textAlt": null,
+      "chars": 12,
+      "estSeconds": 3.3,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [
+        "story.housekeeper_testimony"
+      ],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcHousekeeper_npc_housekeeper_midnight_testified_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcHousekeeper_npc_housekeeper_midnight_testified_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_intro_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_intro",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "晚上好，先生。亚瑟说您路上受了凉。让我看看。",
+      "textAlt": "晚上好，小姐。亚瑟说您路上受了凉。让我看看。",
+      "chars": 22,
+      "estSeconds": 5.6,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [
+        "story.met_doctor"
+      ],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_intro_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_intro_L01.ogg",
+      "textAltFileName": "VO_NpcDoctor_npc_doctor_intro_L01_MISS.ogg",
+      "textAltRuntimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_intro_L01_MISS.ogg",
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "含称谓占位 {honorific}：需「先生/小姐」两版，或改写为不含称谓的句子"
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_intro_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_intro",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "你小时候在这儿住过。那年夏天。",
+      "textAlt": null,
+      "chars": 15,
+      "estSeconds": 4,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [
+        "story.met_doctor"
+      ],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_intro_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_intro_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_intro_R01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_intro",
+      "source": "dialogue",
+      "kind": "reenter-npc",
+      "lineNo": 1,
+      "text": "还有哪里不舒服吗，先生？",
+      "textAlt": "还有哪里不舒服吗，小姐？",
+      "chars": 12,
+      "estSeconds": 3.3,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [
+        "story.met_doctor"
+      ],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_intro_R01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_intro_R01.ogg",
+      "textAltFileName": "VO_NpcDoctor_npc_doctor_intro_R01_MISS.ogg",
+      "textAltRuntimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_intro_R01_MISS.ogg",
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "重复交谈时的替代开场句含称谓占位 {honorific}：需「先生/小姐」两版，或改写为不含称谓的句子"
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_summer_01_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_summer_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "那年夏天你在这儿住了两个月。伊芙琳带你去看潮。",
+      "textAlt": null,
+      "chars": 23,
+      "estSeconds": 5.9,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_summer_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_summer_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_summer_01_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_summer_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "她那时候就喜欢一个人往崖边跑。",
+      "textAlt": null,
+      "chars": 15,
+      "estSeconds": 4,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_summer_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_summer_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_purpose_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_purpose",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "不用客气，先生。算是见证吧——也是来看看亚瑟，他这一年睡得不好。",
+      "textAlt": "不用客气，小姐。算是见证吧——也是来看看亚瑟，他这一年睡得不好。",
+      "chars": 32,
+      "estSeconds": 8,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_purpose_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_purpose_L01.ogg",
+      "textAltFileName": "VO_NpcDoctor_npc_doctor_purpose_L01_MISS.ogg",
+      "textAltRuntimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_purpose_L01_MISS.ogg",
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "含称谓占位 {honorific}：需「先生/小姐」两版，或改写为不含称谓的句子"
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_sleep_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_sleep",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "良心和神经是两回事，但从症状上很难分开。",
+      "textAlt": null,
+      "chars": 20,
+      "estSeconds": 5.2,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_sleep_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_sleep_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_sleep_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_sleep",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "……我是说，悲伤。",
+      "textAlt": null,
+      "chars": 9,
+      "estSeconds": 2.5,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_sleep_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_sleep_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_evelyn_01_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_evelyn_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "我是医生，不是验尸官。那天太晚了，海上又起了雾。",
+      "textAlt": null,
+      "chars": 24,
+      "estSeconds": 6.1,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_evelyn_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_evelyn_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_evelyn_01_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_evelyn_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "坠落、溺水。很常见的意外。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_evelyn_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_evelyn_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_time_01_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_time_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "……午夜前后。具体记不清了。",
+      "textAlt": null,
+      "chars": 14,
+      "estSeconds": 3.7,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_time_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_time_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_01_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_record_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "……你从哪儿拿到这个的？",
+      "textAlt": null,
+      "chars": 12,
+      "estSeconds": 3.3,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [
+        "clue.medical_record"
+      ],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_record_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_01_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_record_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "记录可能有误。那天我很累。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [
+        "clue.medical_record"
+      ],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_record_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_02_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_record_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "你想要我说什么？说我在书房里看见她躺在地上？",
+      "textAlt": null,
+      "chars": 22,
+      "estSeconds": 5.6,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_record_02_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_02_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_02_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_record_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "……我签了字。我只签了字。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_doctor"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 向格雷医生追问伊芙琳的死"
+      ],
+      "conditions": [],
+      "beat": "第一幕 · 晚宴",
+      "fileName": "VO_NpcDoctor_npc_doctor_record_02_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_02_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_b5_01_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_b5_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "您还有问题？",
+      "textAlt": null,
+      "chars": 6,
+      "estSeconds": 1.8,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_doctor"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_b5_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_b5_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_b5_01_R01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_b5_01",
+      "source": "dialogue",
+      "kind": "reenter-npc",
+      "lineNo": 1,
+      "text": "您还有问题？",
+      "textAlt": null,
+      "chars": 6,
+      "estSeconds": 1.8,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "story.met_doctor"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_b5_01_R01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_b5_01_R01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "重复交谈时的替代开场句"
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_motive_01_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_motive_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "我不是替他瞒。我是替她瞒。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_motive_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_motive_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_motive_01_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_motive_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "一个未婚女子半夜死在男人书房里，报纸会怎么写她？我想让她至少被写成一个意外。",
+      "textAlt": null,
+      "chars": 38,
+      "estSeconds": 9.4,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_motive_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_motive_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_motive_01_L03",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_motive_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 3,
+      "text": "我签了字。从那一刻起，我也成了他们的一部分。",
+      "textAlt": null,
+      "chars": 22,
+      "estSeconds": 5.6,
+      "taskIds": [
+        "step_coverup",
+        "step_medical_truth",
+        "step_recording",
+        "step_corroborate",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 把两份伤情证据拿给格雷医生看",
+        "午夜的遗嘱 · 把蜡筒带回书房，听完伊芙琳留下的话",
+        "午夜的遗嘱 · 找到能印证真相的第二份证据",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_motive_01_L03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_motive_01_L03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_evelyn_b5_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_evelyn_b5",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "我是医生，不是验尸官。那天太晚了，海上又起了雾。",
+      "textAlt": null,
+      "chars": 24,
+      "estSeconds": 6.1,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_evelyn_b5_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_evelyn_b5_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_evelyn_b5_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_evelyn_b5",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "坠落、溺水。很常见的意外。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_evelyn_b5_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_evelyn_b5_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_b5_01_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_record_b5_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "……你从哪儿拿到这个的？",
+      "textAlt": null,
+      "chars": 12,
+      "estSeconds": 3.3,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "clue.medical_record"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_record_b5_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_b5_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_b5_01_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_record_b5_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "记录可能有误。那天我很累。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "clue.medical_record"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_record_b5_01_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_b5_01_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_b5_02_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_record_b5_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "你想要我说什么？说我在书房里看见她躺在地上？",
+      "textAlt": null,
+      "chars": 22,
+      "estSeconds": 5.6,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_record_b5_02_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_b5_02_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_record_b5_02_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_record_b5_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "……我签了字。我只签了字。",
+      "textAlt": null,
+      "chars": 13,
+      "estSeconds": 3.5,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_record_b5_02_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_record_b5_02_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_challenge_01_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_challenge_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "那些毛巾……是之前的。她常流鼻血。",
+      "textAlt": null,
+      "chars": 17,
+      "estSeconds": 4.4,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [
+        "clue.bathroom_trace",
+        "clue.medical_record"
+      ],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_challenge_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_challenge_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_challenge_02_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_challenge_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "你到底想毁掉什么？这个家？还是你自己那份？",
+      "textAlt": null,
+      "chars": 21,
+      "estSeconds": 5.4,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_challenge_02_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_challenge_02_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_challenge_02_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_challenge_02",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "……她撞到了壁炉。我告诉过亚瑟，没救了。",
+      "textAlt": null,
+      "chars": 20,
+      "estSeconds": 5.2,
+      "taskIds": [
+        "step_coverup",
+        "step_evidence"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 与一楼的霍尔太太对话取得钥匙，并前往二楼",
+        "午夜的遗嘱 · 回书房，把已经拿到的证据摊在书桌上"
+      ],
+      "conditions": [],
+      "beat": "第二幕 · 调查",
+      "fileName": "VO_NpcDoctor_npc_doctor_challenge_02_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_challenge_02_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_confront_wait_01_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_confront_wait_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "你想让我说什么？去问亚瑟吧。",
+      "textAlt": null,
+      "chars": 14,
+      "estSeconds": 3.7,
+      "taskIds": [
+        "step_confront"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 去书房对质亚瑟"
+      ],
+      "conditions": [
+        "story.met_doctor"
+      ],
+      "beat": "第三幕 · 对质",
+      "fileName": "VO_NpcDoctor_npc_doctor_confront_wait_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_confront_wait_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_midnight_01_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_midnight_01",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "我只是个医生。你们家的事，我不该管。",
+      "textAlt": null,
+      "chars": 18,
+      "estSeconds": 4.7,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [
+        "story.midnight"
+      ],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcDoctor_npc_doctor_midnight_01_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_midnight_01_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_midnight_testified_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_midnight_testified",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "新的死亡证明我放在门厅桌上了。",
+      "textAlt": null,
+      "chars": 15,
+      "estSeconds": 4,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [
+        "story.doctor_testimony"
+      ],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcDoctor_npc_doctor_midnight_testified_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_midnight_testified_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_midnight_testified_L02",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_midnight_testified",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 2,
+      "text": "剩下的，是你们家的事。",
+      "textAlt": null,
+      "chars": 11,
+      "estSeconds": 3,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [
+        "story.doctor_testimony"
+      ],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcDoctor_npc_doctor_midnight_testified_L02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_midnight_testified_L02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_testify_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_testify",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "……我会重新写一份死亡证明。这是我唯一能做的。",
+      "textAlt": null,
+      "chars": 23,
+      "estSeconds": 5.9,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcDoctor_npc_doctor_testify_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_testify_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_NpcDoctor_npc_doctor_press_L01",
+      "voiceId": "npc_doctor",
+      "voiceName": "埃利亚斯·格雷医生",
+      "nodeId": "npc_doctor_press",
+      "source": "dialogue",
+      "kind": "npc",
+      "lineNo": 1,
+      "text": "你在威胁我。……好，好。我写。",
+      "textAlt": null,
+      "chars": 15,
+      "estSeconds": 4,
+      "taskIds": [
+        "step_midnight"
+      ],
+      "questContexts": [
+        "午夜的遗嘱 · 午夜到门厅，决定签字还是拒绝"
+      ],
+      "conditions": [],
+      "beat": "第四幕 · 午夜",
+      "fileName": "VO_NpcDoctor_npc_doctor_press_L01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_NpcDoctor_npc_doctor_press_L01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": ""
+    },
+    {
+      "clipId": "VO_EvelynCylinder_INT_prop_phonograph_P01",
+      "voiceId": "npc_evelyn",
+      "voiceName": "伊芙琳·阿什克罗夫特",
+      "nodeId": "INT_prop_phonograph",
+      "source": "inspectable",
+      "kind": "cylinder",
+      "lineNo": 1,
+      "text": "如果有人在听这段——爸爸，亚瑟，或者任何一个还愿意听的人。",
+      "textAlt": null,
+      "chars": 29,
+      "estSeconds": 7.3,
+      "taskIds": [],
+      "questContexts": [],
+      "conditions": [
+        "item.cylinder"
+      ],
+      "beat": null,
+      "fileName": "VO_EvelynCylinder_INT_prop_phonograph_P01.ogg",
+      "runtimePath": "/assets/audio/vo/VO_EvelynCylinder_INT_prop_phonograph_P01.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "蜡筒录音；检视留声机时按段落顺序连续播放"
+    },
+    {
+      "clipId": "VO_EvelynCylinder_INT_prop_phonograph_P02",
+      "voiceId": "npc_evelyn",
+      "voiceName": "伊芙琳·阿什克罗夫特",
+      "nodeId": "INT_prop_phonograph",
+      "source": "inspectable",
+      "kind": "cylinder",
+      "lineNo": 2,
+      "text": "珀耳塞福涅号不是沉在风暴里。是我们把它沉下去的。四个人没有上来。",
+      "textAlt": null,
+      "chars": 32,
+      "estSeconds": 8,
+      "taskIds": [],
+      "questContexts": [],
+      "conditions": [
+        "item.cylinder"
+      ],
+      "beat": null,
+      "fileName": "VO_EvelynCylinder_INT_prop_phonograph_P02.ogg",
+      "runtimePath": "/assets/audio/vo/VO_EvelynCylinder_INT_prop_phonograph_P02.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "蜡筒录音；检视留声机时按段落顺序连续播放"
+    },
+    {
+      "clipId": "VO_EvelynCylinder_INT_prop_phonograph_P03",
+      "voiceId": "npc_evelyn",
+      "voiceName": "伊芙琳·阿什克罗夫特",
+      "nodeId": "INT_prop_phonograph",
+      "source": "inspectable",
+      "kind": "cylinder",
+      "lineNo": 3,
+      "text": "我不要钱。我只要他们的名字被念出来。",
+      "textAlt": null,
+      "chars": 18,
+      "estSeconds": 4.7,
+      "taskIds": [],
+      "questContexts": [],
+      "conditions": [
+        "item.cylinder"
+      ],
+      "beat": null,
+      "fileName": "VO_EvelynCylinder_INT_prop_phonograph_P03.ogg",
+      "runtimePath": "/assets/audio/vo/VO_EvelynCylinder_INT_prop_phonograph_P03.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "蜡筒录音；检视留声机时按段落顺序连续播放"
+    },
+    {
+      "clipId": "VO_EvelynCylinder_INT_prop_phonograph_P04",
+      "voiceId": "npc_evelyn",
+      "voiceName": "伊芙琳·阿什克罗夫特",
+      "nodeId": "INT_prop_phonograph",
+      "source": "inspectable",
+      "kind": "cylinder",
+      "lineNo": 4,
+      "text": "……亚瑟，我知道你在听。你答应过我的。",
+      "textAlt": null,
+      "chars": 19,
+      "estSeconds": 4.9,
+      "taskIds": [],
+      "questContexts": [],
+      "conditions": [
+        "item.cylinder"
+      ],
+      "beat": null,
+      "fileName": "VO_EvelynCylinder_INT_prop_phonograph_P04.ogg",
+      "runtimePath": "/assets/audio/vo/VO_EvelynCylinder_INT_prop_phonograph_P04.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "蜡筒录音；检视留声机时按段落顺序连续播放"
+    },
+    {
+      "clipId": "VO_EvelynCylinder_INT_prop_phonograph_P05",
+      "voiceId": "npc_evelyn",
+      "voiceName": "伊芙琳·阿什克罗夫特",
+      "nodeId": "INT_prop_phonograph",
+      "source": "inspectable",
+      "kind": "cylinder",
+      "lineNo": 5,
+      "text": "……还有，艾略特。如果你真的收到了那封信，如果你真的回来了——对不起，把你也拉进这滩脏水里。但除了你，这屋里已经没有别人会听我说话了。",
+      "textAlt": null,
+      "chars": 67,
+      "estSeconds": 16.4,
+      "taskIds": [],
+      "questContexts": [],
+      "conditions": [
+        "item.cylinder"
+      ],
+      "beat": null,
+      "fileName": "VO_EvelynCylinder_INT_prop_phonograph_P05.ogg",
+      "runtimePath": "/assets/audio/vo/VO_EvelynCylinder_INT_prop_phonograph_P05.ogg",
+      "textAltFileName": null,
+      "textAltRuntimePath": null,
+      "priority": "核心",
+      "status": "待录制",
+      "notes": "蜡筒录音；检视留声机时按段落顺序连续播放"
+    }
+  ]
+}
