@@ -34,7 +34,20 @@ export function buildDialogueQuestionFlow(
   choices: readonly DialogueChoiceView[],
   guide: DialogueGuideView | null,
 ): DialogueQuestionFlow {
-  const nextStep = guide?.steps.find((step) => step.status === 'next') ?? null;
+  if (!guide) {
+    return {
+      primaryChoice: null,
+      navigationChoices: [],
+      additionalChoices: [],
+      visibleChoices: choices,
+      allChoices: choices,
+      nextStep: null,
+      position: 0,
+      total: 0,
+    };
+  }
+
+  const nextStep = guide.steps.find((step) => step.status === 'next') ?? null;
   const primaryChoice = nextStep
     ? (choices.find((choice) => choice.id === nextStep.choiceId) ?? null)
     : null;
@@ -47,8 +60,8 @@ export function buildDialogueQuestionFlow(
       visibleChoices: choices,
       allChoices: choices,
       nextStep: null,
-      position: guide?.steps.length ?? 0,
-      total: guide?.steps.length ?? 0,
+      position: guide.steps.length,
+      total: guide.steps.length,
     };
   }
 

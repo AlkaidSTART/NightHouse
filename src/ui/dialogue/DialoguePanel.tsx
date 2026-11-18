@@ -71,6 +71,14 @@ export function DialoguePanel({
       if (event.repeat) {
         return;
       }
+      // 让 Tab 聚焦到的按钮保留浏览器原生 Enter 激活行为，例如展开其他话题。
+      if (
+        event.key === 'Enter' &&
+        event.target instanceof HTMLElement &&
+        event.target.closest('button')
+      ) {
+        return;
+      }
       if (/^[1-9]$/.test(event.key)) {
         const idx = Number(event.key) - 1;
         const target = visibleChoices[idx];
