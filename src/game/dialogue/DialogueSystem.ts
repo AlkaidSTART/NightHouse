@@ -336,10 +336,16 @@ export class DialogueSystem {
     const lines = session.lines.map((line, index) =>
       this.resolveLine(line, npcName, index, session),
     );
-    const lineIndex = Math.min(session.lineIndex, lines.length - 1);
-    const line =
-      session.hideLine || lines.length === 0 ? null : lines[lineIndex] ?? null;
     const canContinue = session.lineIndex < session.lines.length;
+    const lineIndex = Math.min(session.lineIndex, lines.length - 1);
+    const visibleLine =
+      session.hideLine || lines.length === 0 ? null : lines[lineIndex] ?? null;
+    // 选项阶段仍保留最后一句供阅读，但它已经不再是“当前台词”。
+    // 清空语音地址，避免宿主收到视图更新后从头重播最后一句。
+    const line =
+      visibleLine && !canContinue
+        ? { ...visibleLine, audioUrl: null }
+        : visibleLine;
     const availableChoices = canContinue
       ? []
       : this.availableChoices(

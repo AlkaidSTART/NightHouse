@@ -5,7 +5,7 @@ export interface DialogueLineView {
   /** 说话人显示名；旁白为 null。 */
   name: string | null;
   text: string;
-  /** 当前台词对应的可选语音运行路径。 */
+  /** 当前正在播放的台词语音；进入选项阶段后为 null。 */
   audioUrl: string | null;
 }
 

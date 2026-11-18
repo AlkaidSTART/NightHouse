@@ -263,6 +263,25 @@ test('逐句推进后显示选项，选项效果写入标记并跳转', () => {
   assert.equal(currentView(system).nodeId, 'npc_arthur_evelyn_01');
 });
 
+test('进入选项阶段后保留最后一句文字但不再重播语音', () => {
+  const { system } = createFixture({ 'story.arrived': true });
+  assert.equal(system.open('npc_arthur_intro'), true);
+
+  let view = currentView(system);
+  let lastLineText: string | null = null;
+  while (view.canContinue) {
+    assert.ok(view.line);
+    assert.ok(view.line.audioUrl);
+    lastLineText = view.line.text;
+    system.advance();
+    view = currentView(system);
+  }
+
+  assert.equal(view.line?.text, lastLineText);
+  assert.equal(view.line?.audioUrl, null);
+  assert.ok(view.choices.length > 0);
+});
+
 test('选项按剧情标记过滤，线索选项在获得线索后出现', () => {
   const before = createFixture(
     {
