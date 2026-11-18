@@ -59,9 +59,18 @@ export function PrologueOverlay({ onStart }: PrologueOverlayProps) {
     setIndex((prev) => (prev < beats.length - 1 ? prev + 1 : prev));
   }, [beats.length]);
 
+  const retreat = useCallback(() => {
+    setIndex((prev) => (prev > 0 ? prev - 1 : prev));
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent): void => {
       if (event.repeat) {
+        return;
+      }
+      if (event.key === 'ArrowLeft' || event.key === 'Backspace') {
+        event.preventDefault();
+        retreat();
         return;
       }
       if (
@@ -81,7 +90,7 @@ export function PrologueOverlay({ onStart }: PrologueOverlayProps) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [advance, isLast, onStart]);
+  }, [advance, retreat, isLast, onStart]);
 
   if (!current) {
     return null;
@@ -164,7 +173,11 @@ export function PrologueOverlay({ onStart }: PrologueOverlayProps) {
       </main>
 
       <footer className="prologue-stage-bottom">
-        {!isLast && <span className="prologue-hint">点击或按 E 继续</span>}
+        {!isLast && (
+          <span className="prologue-hint">
+            {index > 0 ? '← 返回 · ' : ''}点击或按 E 继续
+          </span>
+        )}
       </footer>
     </div>
   );

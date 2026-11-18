@@ -94,7 +94,6 @@ function unlitMaterial(color: pc.Color): pc.StandardMaterial {
 }
 
 export class NightSky {
-  private readonly app: pc.Application;
   private readonly camera: pc.Entity;
   private readonly root: pc.Entity;
   private readonly materials: pc.StandardMaterial[] = [];
@@ -103,7 +102,6 @@ export class NightSky {
   private destroyed = false;
 
   constructor(app: pc.Application, camera: pc.Entity) {
-    this.app = app;
     this.camera = camera;
 
     const fog = app.scene.fog;
@@ -171,7 +169,13 @@ export class NightSky {
     this.root.addChild(halo);
 
     app.root.addChild(this.root);
-    app.on('update', this.follow);
+  }
+
+  update(): void {
+    if (this.destroyed) {
+      return;
+    }
+    this.root.setPosition(this.camera.getPosition());
   }
 
   destroy(): void {
@@ -179,7 +183,6 @@ export class NightSky {
       return;
     }
     this.destroyed = true;
-    this.app.off('update', this.follow);
     this.root.destroy();
     for (const material of this.materials) {
       material.destroy();
@@ -205,8 +208,4 @@ export class NightSky {
     entity.setLocalScale(diameter, diameter, diameter);
     return entity;
   }
-
-  private readonly follow = (): void => {
-    this.root.setPosition(this.camera.getPosition());
-  };
 }

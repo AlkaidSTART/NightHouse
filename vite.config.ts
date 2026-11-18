@@ -64,6 +64,9 @@ function prunePublicAssetsPlugin(): Plugin {
 
 export default defineConfig({
   plugins: [react(), prunePublicAssetsPlugin()],
+  server: {
+    host: '127.0.0.1',
+  },
   build: {
     target: 'es2022',
     // 让 Vite 自己的哈希文件与 public/assets 分开，便于分别设置缓存策略。

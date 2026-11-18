@@ -292,3 +292,81 @@ test('落地产生冲击震动，并在衰减后归零', () => {
   );
   assert.ok(Math.abs(harness.root.getPosition().y - initialY) < 1e-6);
 });
+
+test('过滤异常超大 pointermove 脉冲并在 update 时应用正常视角旋转', () => {
+  const world = new CollisionWorld();
+  world.addSurface({
+    id: 'ground',
+    minX: -10,
+    maxX: 10,
+    minZ: -10,
+    maxZ: 10,
+    y0: 0,
+    y1: 0,
+    axis: 'x',
+  });
+
+  const canvas = {} as HTMLCanvasElement;
+  const listeners = new Map<string, (event: unknown) => void>();
+  const globals = globalThis as unknown as Record<string, unknown>;
+  globals.document = {
+    pointerLockElement: canvas,
+    addEventListener(type: string, fn: (event: unknown) => void): void {
+      listeners.set(type, fn);
+    },
+    removeEventListener(type: string): void {
+      listeners.delete(type);
+    },
+  };
+
+  const root = new pc.Entity('player');
+  root.setPosition(0, EYE_HEIGHT, 0);
+  const offset = new pc.Entity('player_camera_offset');
+  const camera = new pc.Entity('player_camera');
+  root.addChild(offset);
+  offset.addChild(camera);
+  const keyboard = new FakeKeyboard();
+  const app = { keyboard } as unknown as pc.Application;
+
+  const controller = new PlayerController({
+    app,
+    canvas,
+    root,
+    offset,
+    camera,
+    sensitivity: 1,
+    rotation: [0, 0, 0],
+    collision: world,
+    eyeHeight: EYE_HEIGHT,
+  });
+  controller.setPaused(false);
+
+  const onPointerMove = listeners.get('pointermove');
+  assert.ok(onPointerMove, '应注册 pointermove 监听');
+
+  // 异常超大脉冲（如 PointerLock 偶发跳变）应被忽略
+  onPointerMove({ movementX: 600, movementY: -400 });
+  controller.update(DT);
+  assert.deepEqual(controller.getRotation(), [0, 0, 0]);
+
+  // 正常输入应在 update 时统一生效
+  onPointerMove({ movementX: 10, movementY: -20 });
+  controller.update(DT);
+  const [yaw, pitch] = controller.getRotation();
+  assert.ok(Math.abs(yaw - -1.5) < 1e-6);
+  assert.ok(Math.abs(pitch - 3.0) < 1e-6);
+
+  controller.dispose();
+});
+
+test('超大 dt 会被钳制，避免掉帧后单步瞬移过大距离', () => {
+  const harness = createHarness();
+  const startZ = harness.controller.getFeetPosition()[2];
+
+  harness.keyboard.press(pc.KEY_W);
+  harness.controller.update(0.5);
+
+  const moved = Math.abs(harness.controller.getFeetPosition()[2] - startZ);
+  // WALK_SPEED (4.4) * MAX_STEP_DT (0.05) = 0.22m
+  assert.ok(moved <= 0.2201, `单步位移应受 MAX_STEP_DT 限制，实际 ${moved}`);
+});

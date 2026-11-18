@@ -169,6 +169,7 @@ export class SceneManager {
   private readonly loadAbort = new AbortController();
   private readonly characterLoadAbort = new AbortController();
   private model: SceneModel | null = null;
+  private skipProceduralTextures = false;
   private proceduralReleased = false;
   private destroyed = false;
 
@@ -177,6 +178,9 @@ export class SceneManager {
   }
 
   build(scene: SceneDefinition): BuiltScene {
+    // 场景配置了 GLB 时，灰盒只作加载期间的兜底几何；跳过灰盒外部贴图加载，
+    // 避免几十张高分 PNG 异步解码触发反复材质重编译与主线程卡顿。
+    this.skipProceduralTextures = Boolean(scene.modelUrl);
     for (const box of scene.boxes) {
       if (box.visible) {
         this.proceduralVisuals.push(
@@ -847,7 +851,7 @@ export class SceneManager {
     material.useMetalness = true;
     material.update();
 
-    if (spec.textureSet) {
+    if (spec.textureSet && !this.skipProceduralTextures) {
       this.applyTextureSet(material, spec);
     }
 

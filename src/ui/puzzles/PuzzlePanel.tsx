@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { PuzzleView } from '../../shared/types/puzzle';
 import { useDraggablePanel } from '../shared/useDraggablePanel';
 
@@ -16,8 +16,17 @@ export function PuzzlePanel({
   onClose,
 }: PuzzlePanelProps) {
   const [code, setCode] = useState('');
+  const [attemptCount, setAttemptCount] = useState(0);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const { panelRef, isDragging, panelStyle, handleProps } =
     useDraggablePanel<HTMLElement>(view.title);
+
+  const codeError = view.kind === 'safe' ? view.codeError : null;
+  useEffect(() => {
+    if (codeError) {
+      inputRef.current?.focus();
+    }
+  }, [codeError, attemptCount]);
 
   return (
     <div className="inspect-layer puzzle-layer">
@@ -78,11 +87,14 @@ export function PuzzlePanel({
               onSubmit={(event) => {
                 event.preventDefault();
                 if (code.length === view.codeLength) {
+                  setAttemptCount((count) => count + 1);
                   onSubmitCode(code);
+                  setCode('');
                 }
               }}
             >
               <div
+                key={attemptCount}
                 className={`safe-lock-plate${view.codeError ? ' is-rejected' : ''}`}
               >
                 <span className="safe-lock-rivet safe-lock-rivet--tl" />
@@ -98,7 +110,24 @@ export function PuzzlePanel({
                 <label className="safe-code-display" htmlFor="puzzle-code">
                   <span className="safe-code-caption">密码 / COMBINATION</span>
                   <span className="safe-code-window">
+                    <span className="safe-code-slots" aria-hidden="true">
+                      {Array.from({ length: view.codeLength }, (_, index) => {
+                        const char = code[index] ?? '';
+                        const isCurrent =
+                          index === Math.min(code.length, view.codeLength - 1) &&
+                          code.length < view.codeLength;
+                        return (
+                          <span
+                            key={index}
+                            className={`safe-code-slot${char ? ' is-filled' : ''}${isCurrent ? ' is-current' : ''}`}
+                          >
+                            {char || '·'}
+                          </span>
+                        );
+                      })}
+                    </span>
                     <input
+                      ref={inputRef}
                       id="puzzle-code"
                       className="puzzle-code-input"
                       value={code}

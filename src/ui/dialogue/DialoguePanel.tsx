@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import type { DialogueView } from '../../shared/types/dialogue';
 
 export interface DialoguePanelProps {
@@ -16,6 +17,74 @@ export function DialoguePanel({
   const { line, choices } = view;
   const isNarration = line?.speaker === 'narration';
   const speaker = isNarration ? null : (line?.name ?? view.npcName);
+  const [focusState, setFocusState] = useState<{
+    nodeId: string;
+    index: number;
+  }>({ nodeId: view.nodeId, index: 0 });
+
+  const focusedIndex =
+    focusState.nodeId === view.nodeId && focusState.index < choices.length
+      ? focusState.index
+      : 0;
+
+  useEffect(() => {
+    if (view.canContinue || choices.length === 0) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent): void => {
+      if (event.repeat) {
+        return;
+      }
+      if (/^[1-9]$/.test(event.key)) {
+        const idx = Number(event.key) - 1;
+        const target = choices[idx];
+        if (target) {
+          event.preventDefault();
+          onChoose(target.id);
+        }
+        return;
+      }
+      if (event.key === 'ArrowDown' || event.key === 's' || event.key === 'S') {
+        event.preventDefault();
+        setFocusState((prev) => {
+          const base =
+            prev.nodeId === view.nodeId && prev.index < choices.length
+              ? prev.index
+              : 0;
+          return {
+            nodeId: view.nodeId,
+            index: (base + 1) % choices.length,
+          };
+        });
+        return;
+      }
+      if (event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
+        event.preventDefault();
+        setFocusState((prev) => {
+          const base =
+            prev.nodeId === view.nodeId && prev.index < choices.length
+              ? prev.index
+              : 0;
+          return {
+            nodeId: view.nodeId,
+            index: (base - 1 + choices.length) % choices.length,
+          };
+        });
+        return;
+      }
+      if (event.key === 'Enter') {
+        const target = choices[focusedIndex];
+        if (target) {
+          event.preventDefault();
+          onChoose(target.id);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [view.canContinue, view.nodeId, choices, focusedIndex, onChoose]);
 
   return (
     <div className="dialogue-layer">
@@ -57,62 +126,26 @@ export function DialoguePanel({
         )}
 
         {!view.canContinue && choices.length > 0 && (
-          <>
-            {view.guide && (
-              <aside className="dialogue-guide" aria-label="建议提问顺序">
-                <div className="dialogue-guide-heading">
-                  <span className="dialogue-guide-title">提问参考</span>
-                  <span className="dialogue-guide-note">
-                    顺序不强制，已问过的话题会标记出来
+          <div className="dialogue-choices">
+            {choices.map((choice, index) => (
+              <button
+                key={choice.id}
+                type="button"
+                className={`dialogue-choice${choice.guideStatus === 'next' ? ' is-recommended' : ''}${index === focusedIndex ? ' is-focused' : ''}`}
+                onMouseEnter={() =>
+                  setFocusState({ nodeId: view.nodeId, index })
+                }
+                onClick={() => onChoose(choice.id)}
+              >
+                {index < 9 && (
+                  <span className="hud-key dialogue-choice-key">
+                    {index + 1}
                   </span>
-                </div>
-                {view.guide.hint && (
-                  <p className="dialogue-guide-hint">{view.guide.hint}</p>
                 )}
-                <ol className="dialogue-guide-steps">
-                  {view.guide.steps.map((step, index) => (
-                    <li
-                      key={step.choiceId}
-                      className={`dialogue-guide-step is-${step.status}`}
-                    >
-                      <span className="dialogue-guide-order" aria-hidden="true">
-                        {step.status === 'asked' ? '✓' : index + 1}
-                      </span>
-                      <span>{step.label}</span>
-                      <span className="sr-only">
-                        {step.status === 'asked'
-                          ? '，已问'
-                          : step.status === 'next'
-                            ? '，建议下一步问'
-                            : '，后续问题'}
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-              </aside>
-            )}
-            <div className="dialogue-choices">
-              {choices.map((choice, index) => (
-                <button
-                  key={choice.id}
-                  type="button"
-                  className="dialogue-choice"
-                  onClick={() => onChoose(choice.id)}
-                >
-                  <span className="dialogue-choice-index">{index + 1}</span>
-                  <span className="dialogue-choice-copy">{choice.text}</span>
-                  {(choice.guideStatus === 'next' ||
-                    choice.guideStatus === 'asked') && (
-                    <span
-                      className={`dialogue-choice-tag is-${choice.guideStatus}`}
-                    >
-                      {choice.guideStatus === 'next' ? '建议先问' : '已问'}
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
-          </>
+                <span className="dialogue-choice-copy">{choice.text}</span>
+              </button>
+            ))}
+          </div>
         )}
       </section>
     </div>

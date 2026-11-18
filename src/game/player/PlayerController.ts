@@ -18,6 +18,13 @@ const CROUCH_EYE_HEIGHT = 0.95;
 const EYE_HEIGHT_RESPONSE = 14;
 const PITCH_LIMIT = 89;
 const DEGREES_PER_PIXEL = 0.15;
+/** 单帧最大步长（秒），避免掉帧后单次位移过大导致穿模或顿挫。 */
+const MAX_STEP_DT = 0.05;
+/**
+ * 过滤 Chrome Pointer Lock 偶发的异常超大 movementX/Y 脉冲，
+ * 防止视角突然甩头或画面回退。
+ */
+const MAX_POINTER_DELTA = 250;
 /**
  * 步伐摇晃幅度刻意保持很小：这是第一人称最容易引起晕眩的部分。
  * 只做位移，不做滚转（地平线倾斜），否则视线与身体平衡感冲突更强。
@@ -47,6 +54,7 @@ export interface PlayerControllerOptions {
   offset: pc.Entity;
   camera: pc.Entity;
   sensitivity: number;
+  invertY?: boolean;
   rotation: Vec3Tuple;
   collision: CollisionWorld;
   /** 站立时视点相对脚底的高度；root 实体位于视点处。 */
@@ -69,8 +77,11 @@ export class PlayerController {
   private readonly forward = new pc.Vec3();
   private readonly right = new pc.Vec3();
   private sensitivity: number;
+  private invertY: boolean;
   private yaw: number;
   private pitch: number;
+  private pendingLookX = 0;
+  private pendingLookY = 0;
   private paused = true;
   private eyeHeight: number;
   private bodyHeight = PLAYER_HEIGHT;
@@ -95,6 +106,7 @@ export class PlayerController {
     this.standingEyeHeight = options.eyeHeight;
     this.eyeHeight = options.eyeHeight;
     this.sensitivity = options.sensitivity;
+    this.invertY = Boolean(options.invertY);
     this.yaw = options.rotation[0];
     this.pitch = options.rotation[1];
     this.bobScale = prefersReducedMotion() ? 0 : 1;
@@ -109,10 +121,18 @@ export class PlayerController {
 
   setPaused(paused: boolean): void {
     this.paused = paused;
+    if (paused) {
+      this.pendingLookX = 0;
+      this.pendingLookY = 0;
+    }
   }
 
   setSensitivity(sensitivity: number): void {
     this.sensitivity = Math.min(2, Math.max(0.05, sensitivity));
+  }
+
+  setInvertY(invertY: boolean): void {
+    this.invertY = invertY;
   }
 
   requestPointerLock(): void {
@@ -134,6 +154,8 @@ export class PlayerController {
 
   update(dt: number): void {
     if (this.paused || document.pointerLockElement !== this.canvas) {
+      this.pendingLookX = 0;
+      this.pendingLookY = 0;
       return;
     }
 
@@ -142,7 +164,11 @@ export class PlayerController {
       return;
     }
 
-    this.updateStance(dt, keyboard);
+    this.flushLookDelta();
+
+    const stepDt = Math.min(Math.max(dt, 0), MAX_STEP_DT);
+
+    this.updateStance(stepDt, keyboard);
 
     this.forward.copy(this.root.forward);
     this.forward.y = 0;
@@ -175,15 +201,15 @@ export class PlayerController {
         : keyboard.isPressed(pc.KEY_SHIFT)
           ? RUN_SPEED
           : WALK_SPEED;
-      this.move.normalize().mulScalar(speed * dt);
+      this.move.normalize().mulScalar(speed * stepDt);
       dx = this.move.x;
       dz = this.move.z;
     }
 
     this.moveHorizontal(dx, dz);
-    this.updateVertical(dt, keyboard);
-    this.updateBob(dt, speed);
-    this.shake.update(dt);
+    this.updateVertical(stepDt, keyboard);
+    this.updateBob(stepDt, speed);
+    this.shake.update(stepDt);
     this.syncRoot();
   }
 
@@ -392,11 +418,34 @@ export class PlayerController {
       return;
     }
 
-    this.yaw -= event.movementX * this.sensitivity * DEGREES_PER_PIXEL;
-    this.pitch -= event.movementY * this.sensitivity * DEGREES_PER_PIXEL;
-    this.pitch = clamp(this.pitch, -PITCH_LIMIT, PITCH_LIMIT);
-    this.applyRotation();
+    const mx = event.movementX;
+    const my = event.movementY;
+    if (
+      !Number.isFinite(mx) ||
+      !Number.isFinite(my) ||
+      Math.abs(mx) > MAX_POINTER_DELTA ||
+      Math.abs(my) > MAX_POINTER_DELTA
+    ) {
+      return;
+    }
+
+    this.pendingLookX += mx;
+    this.pendingLookY += my;
   };
+
+  private flushLookDelta(): void {
+    if (this.pendingLookX === 0 && this.pendingLookY === 0) {
+      return;
+    }
+    this.yaw -= this.pendingLookX * this.sensitivity * DEGREES_PER_PIXEL;
+    const pitchSign = this.invertY ? 1 : -1;
+    this.pitch +=
+      pitchSign * this.pendingLookY * this.sensitivity * DEGREES_PER_PIXEL;
+    this.pitch = clamp(this.pitch, -PITCH_LIMIT, PITCH_LIMIT);
+    this.pendingLookX = 0;
+    this.pendingLookY = 0;
+    this.applyRotation();
+  }
 
   private applyRotation(): void {
     this.root.setEulerAngles(0, this.yaw, 0);

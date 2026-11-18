@@ -123,10 +123,10 @@ export function InventoryPanel({
                       {item.category}
                     </span>
                     <span className="clue-entry-title">{item.title}</span>
-                    <span
-                      className={`inventory-status inventory-status-${item.status}`}
-                    >
-                      {item.statusLabel}
+                    <span className="clue-entry-place">
+                      {item.status === 'usable'
+                        ? `可用于 · ${item.targetRegionLabel}`
+                        : item.statusLabel}
                     </span>
                   </button>
                 </li>
@@ -153,20 +153,23 @@ export function InventoryPanel({
                   )}
                 </p>
                 <p className="inventory-usage-text">{selected.usage}</p>
+                <p className="inventory-inspect-note" role="status">
+                  {inspectNote ??
+                    (selected.status === 'used'
+                      ? `「${selected.title}」已完成核心用途（${selected.targetRegionLabel} · ${selected.targetLabel}），仍保留在背包中供随时核对。`
+                      : selected.isAtTargetRegion
+                        ? `你当前就在「${selected.targetRegionLabel}」。收起背包后走近「${selected.targetLabel}」按 E 即可使用。`
+                        : `前往「${selected.targetRegionLabel}」，对准「${selected.targetLabel}」按 E 即可使用。`)}
+                </p>
                 <div className="inventory-actions">
                   <button
                     type="button"
                     className="inventory-use-btn"
                     onClick={() => handleCheckUsage(selected)}
                   >
-                    检视使用方式
+                    核对使用提示
                   </button>
                 </div>
-                {inspectNote && (
-                  <p className="inventory-inspect-note" role="status">
-                    {inspectNote}
-                  </p>
-                )}
               </div>
             </article>
           </div>

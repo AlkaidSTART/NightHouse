@@ -2,6 +2,8 @@ import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { EventBus } from '../shared/events/EventBus';
 import type { GameEventMap } from '../game/core/GameEvents';
 import { SaveManager } from '../game/save/SaveManager';
+import type { PlayerSettings } from '../shared/types/save';
+import { useGameStore } from '../stores/gameStore';
 import { HomeScreen } from '../ui/home/HomeScreen';
 
 const GameView = lazy(() =>
@@ -17,6 +19,18 @@ export function App() {
   const [resume, setResume] = useState(false);
   const [hasSave, setHasSave] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const settings = useGameStore((s) => s.settings);
+  const setSettings = useGameStore((s) => s.setSettings);
+
+  const handleUpdateSettings = useCallback(
+    (next: PlayerSettings) => {
+      setSettings(next);
+      void saveManager.saveSettings(next).catch(() => {
+        setNotice('设置保存失败，仅在当前会话生效。');
+      });
+    },
+    [saveManager, setSettings],
+  );
 
   const refreshSaveState = useCallback(async () => {
     try {
@@ -33,9 +47,13 @@ export function App() {
 
     void (async () => {
       try {
-        const available = await saveManager.hasSave();
+        const [available, loadedSettings] = await Promise.all([
+          saveManager.hasSave(),
+          saveManager.loadSettings(),
+        ]);
         if (!ignore) {
           setHasSave(available);
+          setSettings(loadedSettings);
         }
       } catch {
         if (!ignore) {
@@ -48,7 +66,7 @@ export function App() {
     return () => {
       ignore = true;
     };
-  }, [saveManager]);
+  }, [saveManager, setSettings]);
 
   useEffect(() => {
     return () => {
@@ -89,6 +107,8 @@ export function App() {
     <HomeScreen
       hasSave={hasSave}
       notice={notice}
+      settings={settings}
+      onUpdateSettings={handleUpdateSettings}
       onStart={handleStart}
       onContinue={handleContinue}
     />

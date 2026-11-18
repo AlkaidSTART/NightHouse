@@ -648,6 +648,20 @@ button {
   border-radius: 50%;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
   pointer-events: none;
+  transition:
+    transform 0.16s ease,
+    border-color 0.16s ease,
+    background-color 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+.hud-crosshair.is-interactive {
+  transform: scale(1.65);
+  border-color: rgba(226, 186, 108, 0.96);
+  background-color: rgba(226, 186, 108, 0.25);
+  box-shadow:
+    0 0 0 3px rgba(226, 186, 108, 0.18),
+    0 0 10px rgba(0, 0, 0, 0.85);
 }
 
 .hud-region {
@@ -1314,97 +1328,6 @@ button {
   outline: none;
 }
 
-.dialogue-guide {
-  display: grid;
-  gap: 6px;
-  padding: 9px 11px 10px;
-  margin: 0 0 7px;
-  border-left: 2px solid rgba(214, 182, 132, 0.46);
-  background: linear-gradient(
-    to right,
-    rgba(12, 13, 15, 0.62),
-    rgba(12, 13, 15, 0.18) 72%,
-    transparent
-  );
-  color: #bdb4a2;
-}
-
-.dialogue-guide-heading {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 14px;
-}
-
-.dialogue-guide-title {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  color: #d6b684;
-}
-
-.dialogue-guide-note {
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: #80796d;
-}
-
-.dialogue-guide-hint {
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.55;
-  color: #aaa190;
-}
-
-.dialogue-guide-steps {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px 16px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.dialogue-guide-step {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
-  font-size: 11px;
-  line-height: 1.5;
-  letter-spacing: 0.03em;
-  color: #948b7c;
-}
-
-.dialogue-guide-step.is-next {
-  color: #ead6ae;
-}
-
-.dialogue-guide-step.is-asked {
-  color: #716b61;
-}
-
-.dialogue-guide-order {
-  display: inline-grid;
-  place-items: center;
-  min-width: 15px;
-  height: 15px;
-  border: 1px solid rgba(180, 160, 124, 0.3);
-  border-radius: 50%;
-  font-size: 9px;
-  line-height: 1;
-  color: #a99c84;
-}
-
-.dialogue-guide-step.is-next .dialogue-guide-order {
-  border-color: rgba(226, 195, 142, 0.7);
-  color: #f0d9ac;
-}
-
-.dialogue-guide-step.is-asked .dialogue-guide-order {
-  border-color: rgba(120, 112, 99, 0.3);
-  color: #7f786c;
-}
-
 .dialogue-choices {
   display: grid;
   gap: 4px;
@@ -1413,7 +1336,6 @@ button {
 .dialogue-choice {
   display: flex;
   align-items: baseline;
-  gap: 12px;
   width: 100%;
   padding: 9px 12px 9px 8px;
   border: none;
@@ -1430,6 +1352,31 @@ button {
     padding-left 140ms ease;
 }
 
+.dialogue-choice.is-recommended .dialogue-choice-copy {
+  color: #d3bd8f;
+  animation: dialogue-recommend-breathe 2.6s ease-in-out infinite;
+}
+
+@keyframes dialogue-recommend-breathe {
+  0%,
+  100% {
+    color: #d3bd8f;
+    text-shadow: none;
+  }
+  50% {
+    color: #fff0c8;
+    text-shadow: 0 0 8px rgba(226, 195, 142, 0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialogue-choice.is-recommended .dialogue-choice-copy {
+    animation: none;
+    color: #e4d1a1;
+    text-shadow: none;
+  }
+}
+
 .dialogue-choice:hover,
 .dialogue-choice:focus-visible {
   padding-left: 14px;
@@ -1443,42 +1390,8 @@ button {
   outline: none;
 }
 
-.dialogue-choice-index {
-  min-width: 18px;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: #9b9281;
-  transition: color 140ms ease;
-}
-
 .dialogue-choice-copy {
   flex: 1;
-}
-
-.dialogue-choice-tag {
-  flex: none;
-  align-self: center;
-  padding: 1px 6px;
-  border: 1px solid rgba(180, 160, 124, 0.28);
-  font-size: 9px;
-  line-height: 1.5;
-  letter-spacing: 0.1em;
-  white-space: nowrap;
-}
-
-.dialogue-choice-tag.is-next {
-  border-color: rgba(226, 195, 142, 0.58);
-  color: #ead4a9;
-}
-
-.dialogue-choice-tag.is-asked {
-  border-color: rgba(120, 112, 99, 0.24);
-  color: #777064;
-}
-
-.dialogue-choice:hover .dialogue-choice-index,
-.dialogue-choice:focus-visible .dialogue-choice-index {
-  color: #d6b684;
 }
 
 .panel-drag-handle {
@@ -2867,4 +2780,298 @@ button {
 .ending-body p:last-child {
   margin-bottom: 0;
 }
+
+/* ─── 对话快捷键与焦点态 ─────────────────────────── */
+.dialogue-choice {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.dialogue-choice-key {
+  flex: none;
+  min-width: 20px;
+  text-align: center;
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.dialogue-choice.is-focused {
+  border-color: rgba(222, 182, 108, 0.62);
+  background: rgba(222, 182, 108, 0.11);
+}
+
+/* ─── 线索分类筛选与未读标记 ──────────────────────── */
+.clue-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 20px 0;
+}
+
+.clue-filter-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border: 1px solid rgba(212, 184, 124, 0.2);
+  border-radius: 2px;
+  background: rgba(18, 20, 24, 0.72);
+  color: #a39a88;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.clue-filter-tab:hover {
+  border-color: rgba(212, 184, 124, 0.44);
+  color: #e2dac9;
+}
+
+.clue-filter-tab.is-active {
+  border-color: rgba(222, 182, 108, 0.72);
+  background: rgba(212, 175, 105, 0.14);
+  color: #ebd5a7;
+}
+
+.clue-filter-count {
+  font-size: 11px;
+  opacity: 0.72;
+}
+
+.clue-new-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 7px;
+  border-radius: 50%;
+  background: #e2b45a;
+  box-shadow: 0 0 6px rgba(226, 180, 90, 0.7);
+  vertical-align: middle;
+}
+
+/* ─── 保险箱 4 位独立密码格与错误微震动 ──────────── */
+.safe-code-slots {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  pointer-events: none;
+}
+
+.safe-code-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-family: 'Courier New', 'SFMono-Regular', monospace;
+  font-size: 26px;
+  font-weight: 600;
+  color: rgba(185, 165, 122, 0.25);
+  transition: color 0.12s ease, text-shadow 0.12s ease;
+}
+
+.safe-code-slot.is-filled {
+  color: #e5c98f;
+  text-shadow:
+    0 1px 0 rgba(255, 235, 190, 0.22),
+    0 0 13px rgba(199, 155, 76, 0.32);
+}
+
+.safe-code-slot.is-current {
+  color: rgba(222, 182, 108, 0.72);
+  box-shadow: inset 0 -2px 0 rgba(222, 182, 108, 0.65);
+}
+
+.safe-code-window .puzzle-code-input {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  cursor: text;
+}
+
+@keyframes safe-plate-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.safe-lock-plate.is-rejected {
+  animation: safe-plate-shake 0.34s ease;
+}
+
+/* ─── 设置面板 & 确认弹窗 ────────────────────────── */
+.settings-overlay {
+  z-index: 60;
+}
+
+.settings-panel {
+  width: min(520px, 92vw);
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.settings-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.settings-header .overlay-eyebrow,
+.settings-header .overlay-title {
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-bottom: 22px;
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(212, 184, 124, 0.14);
+}
+
+.settings-group:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.settings-group-title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: #b49a67;
+}
+
+.settings-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #ded7c6;
+}
+
+.settings-value {
+  font-variant-numeric: tabular-nums;
+  color: #d4b87c;
+}
+
+.settings-range {
+  width: 100%;
+  accent-color: #c8a25a;
+  cursor: pointer;
+}
+
+.settings-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  cursor: pointer;
+}
+
+.settings-toggle-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+  color: #ded7c6;
+}
+
+.settings-desc {
+  font-size: 12px;
+  color: #8f8878;
+}
+
+.settings-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #c8a25a;
+  cursor: pointer;
+  flex: none;
+}
+
+.settings-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.confirm-panel {
+  width: min(420px, 90vw);
+  text-align: center;
+}
+
+.confirm-copy {
+  margin: 0 0 24px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #bfb6a2;
+}
+
+/* ─── 结局调查总结 ───────────────────────────────── */
+.ending-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(212, 184, 124, 0.18);
+  background: rgba(12, 14, 17, 0.72);
+}
+
+.ending-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.ending-stat-label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #8d8676;
+}
+
+.ending-stat-value {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: #e4cfa0;
+  font-variant-numeric: tabular-nums;
+}
+
+.ending-replay-note {
+  margin: 0 0 22px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: #8f8878;
+}
+
 

@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { DEFAULT_SETTINGS } from '../game/save/defaults';
+import type { PlayerSettings } from '../shared/types/save';
 
 export type ScreenMode = 'home' | 'game';
 export type GamePhase = 'ready' | 'playing' | 'paused';
@@ -13,10 +15,12 @@ export interface GameState {
   prompt: string | null;
   toast: string | null;
   error: string | null;
+  settings: PlayerSettings;
 
   setScreen: (screen: ScreenMode) => void;
   setHasSave: (hasSave: boolean) => void;
   setSaveNotice: (notice: string | null) => void;
+  setSettings: (settings: PlayerSettings) => void;
   startNewGame: () => void;
   continueGame: () => void;
   exitToHome: () => void;
@@ -41,10 +45,12 @@ export const useGameStore = create<GameState>((set) => ({
   prompt: null,
   toast: null,
   error: null,
+  settings: DEFAULT_SETTINGS,
 
   setScreen: (screen) => set({ screen }),
   setHasSave: (hasSave) => set({ hasSave }),
   setSaveNotice: (saveNotice) => set({ saveNotice }),
+  setSettings: (settings) => set({ settings }),
 
   startNewGame: () => {
     if (toastTimer !== null) {
