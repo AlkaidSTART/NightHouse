@@ -35,6 +35,8 @@ import { NightSky, NIGHT_CLEAR_COLOR } from '../scene/NightSky';
 import { SceneManager } from '../scene/SceneManager';
 import { resolveEnding } from '../story/endingResolver';
 import type { GameEventBus } from './GameEvents';
+import { DialoguePointerLockRestore } from './dialoguePointerLockRestore.ts';
+import { VoiceAudioPlayer } from '../audio/VoiceAudioPlayer.ts';
 
 const AUTOSAVE_INTERVAL_MS = 5000;
 const EYE_HEIGHT = 1.7;
@@ -47,6 +49,8 @@ const STUDY_DESK_DRAWER_INTERACTABLE_ID = 'INT_prop_study_desk_drawer';
 const POSE_EMIT_INTERVAL = 0.08;
 const POSE_POSITION_EPSILON_SQ = 0.02 * 0.02;
 const POSE_YAW_EPSILON = 0.5;
+/** 退出对话后鼠标锁定恢复暂未完成时，用这条提示引导玩家点击重试。 */
+const POINTER_LOCK_RETRY_PROMPT = '点击画面继续探索';
 
 /**
  * 灰盒走查用：开发构建下以 `?unlock=all` 打开页面时忽略门的剧情解锁条件，
@@ -91,6 +95,8 @@ export class GameBootstrap {
       options,
       initialSave,
       settings.mouseSensitivity,
+      settings.invertY,
+      settings.voiceVolume,
       collision,
     );
   }
@@ -127,6 +133,10 @@ export class GameBootstrap {
   private started = false;
   private hasEntered = false;
   private dialogueOpen = false;
+  private readonly dialoguePointerLockRestore = new DialoguePointerLockRestore(
+    () => this.player.requestPointerLock(),
+  );
+  private readonly voiceAudio = new VoiceAudioPlayer();
   private inspectionOpen = false;
   private journalOpen = false;
   private inventoryOpen = false;
@@ -140,12 +150,15 @@ export class GameBootstrap {
     options: GameBootstrapOptions,
     save: SaveData,
     sensitivity: number,
+    invertY: boolean,
+    voiceVolume: number,
     collision: CollisionWorld,
   ) {
     this.canvas = options.canvas;
     this.events = options.events;
     this.saveManager = options.saveManager;
     this.save = save;
+    this.voiceAudio.setVolume(voiceVolume);
     this.regions = villaGreybox.regions;
     this.interaction = new InteractionSystem(
       INTERACTION_DISTANCE,
@@ -182,9 +195,11 @@ export class GameBootstrap {
         onChange: (view) => {
           this.events.emit('dialogue.changed', { view });
           if (view === null) {
+            this.voiceAudio.stop();
             this.finishDialogue();
             return;
           }
+          this.voiceAudio.play(view.line?.audioUrl ?? null);
           this.sceneManager.setNpcSpeaking(
             view.npcId,
             view.line?.speaker === 'npc',
@@ -294,6 +309,7 @@ export class GameBootstrap {
       offset: cameraOffset,
       camera,
       sensitivity,
+      invertY,
       rotation: save.player.rotation,
       collision,
       eyeHeight: EYE_HEIGHT,
@@ -386,6 +402,7 @@ export class GameBootstrap {
     document.addEventListener('pointerlockchange', this.handlePointerLockChange);
     document.addEventListener('pointerlockerror', this.handlePointerLockError);
     window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('keyup', this.handleKeyUp);
     window.addEventListener('resize', this.handleResize);
     window.addEventListener('beforeunload', this.handleBeforeUnload);
     this.autosaveTimer = window.setInterval(() => {
@@ -406,11 +423,23 @@ export class GameBootstrap {
     if (this.destroyed) {
       return;
     }
+    if (this.dialoguePointerLockRestore.active) {
+      this.dialoguePointerLockRestore.retry();
+      return;
+    }
     this.player.requestPointerLock();
   }
 
   setSensitivity(sensitivity: number): void {
     this.player.setSensitivity(sensitivity);
+  }
+
+  setInvertY(invertY: boolean): void {
+    this.player.setInvertY(invertY);
+  }
+
+  setVoiceVolume(volume: number): void {
+    this.voiceAudio.setVolume(volume);
   }
 
   advanceDialogue(): void {
@@ -709,6 +738,7 @@ export class GameBootstrap {
       return;
     }
 
+    this.dialoguePointerLockRestore.cancel();
     this.dialogueOpen = true;
     this.sceneManager.setNpcTalking(npcId);
     this.player.setPaused(true);
@@ -725,7 +755,7 @@ export class GameBootstrap {
     }
     this.dialogueOpen = false;
     this.sceneManager.setNpcTalking(null);
-    this.player.requestPointerLock();
+    this.dialoguePointerLockRestore.restore();
   }
 
   /**
@@ -809,6 +839,7 @@ export class GameBootstrap {
     }
 
     this.endingShown = true;
+    this.dialoguePointerLockRestore.cancel();
     this.player.setPaused(true);
     this.lastPrompt = null;
     this.events.emit('interaction.prompt', { text: null });
@@ -832,6 +863,8 @@ export class GameBootstrap {
     }
 
     this.destroyed = true;
+    this.dialoguePointerLockRestore.cancel();
+    this.voiceAudio.dispose();
     if (this.autosaveTimer !== null) {
       window.clearInterval(this.autosaveTimer);
       this.autosaveTimer = null;
@@ -840,6 +873,7 @@ export class GameBootstrap {
     document.removeEventListener('pointerlockchange', this.handlePointerLockChange);
     document.removeEventListener('pointerlockerror', this.handlePointerLockError);
     window.removeEventListener('keydown', this.handleKeyDown);
+    window.removeEventListener('keyup', this.handleKeyUp);
     window.removeEventListener('resize', this.handleResize);
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
 
@@ -986,6 +1020,10 @@ export class GameBootstrap {
       this.player.setPaused(true);
       return;
     }
+    if (this.dialoguePointerLockRestore.handlePointerLockChange(!paused)) {
+      this.player.setPaused(true);
+      return;
+    }
     if (!paused) {
       this.hasEntered = true;
       this.suppressNextPointerLockError = false;
@@ -1002,6 +1040,14 @@ export class GameBootstrap {
 
   private readonly handlePointerLockError = (): void => {
     if (this.destroyed) {
+      return;
+    }
+    if (this.dialoguePointerLockRestore.active) {
+      // 不弹暂停菜单：提示可以用鼠标点击画面重试锁定，避免打断刚结束的对话节奏。
+      this.events.emit('interaction.activated', {
+        id: 'pointer_lock_retry',
+        message: POINTER_LOCK_RETRY_PROMPT,
+      });
       return;
     }
     if (this.suppressNextPointerLockError) {
@@ -1089,6 +1135,7 @@ export class GameBootstrap {
       document.pointerLockElement !== this.canvas
     ) {
       event.preventDefault();
+      this.dialoguePointerLockRestore.cancel();
       this.events.emit('pause.changed', { paused: true });
       return;
     }
@@ -1126,7 +1173,7 @@ export class GameBootstrap {
 
     if (event.code === 'Escape') {
       event.preventDefault();
-      this.suppressNextPointerLockError = true;
+      this.dialoguePointerLockRestore.holdEscape();
       this.dialogue.close();
       return;
     }
@@ -1164,6 +1211,12 @@ export class GameBootstrap {
       this.dialogue.choose(choice.id);
     }
   }
+
+  private readonly handleKeyUp = (event: KeyboardEvent): void => {
+    if (event.code === 'Escape') {
+      this.dialoguePointerLockRestore.releaseEscape();
+    }
+  };
 
   private readonly handleResize = (): void => {
     this.app.resizeCanvas();

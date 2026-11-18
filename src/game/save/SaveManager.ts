@@ -202,6 +202,7 @@ function normalizeSettings(raw: unknown): PlayerSettings {
       0.05,
       2,
     ),
+    invertY: readBoolean(source.invertY, DEFAULT_SETTINGS.invertY),
     masterVolume: clamp(
       readNumber(source.masterVolume, DEFAULT_SETTINGS.masterVolume),
       0,
@@ -212,7 +213,17 @@ function normalizeSettings(raw: unknown): PlayerSettings {
       0,
       1,
     ),
+    voiceVolume: clamp(
+      readNumber(source.voiceVolume, DEFAULT_SETTINGS.voiceVolume),
+      0,
+      1,
+    ),
+    hudMinimal: readBoolean(source.hudMinimal, DEFAULT_SETTINGS.hudMinimal),
   };
+}
+
+function readBoolean(value: unknown, fallback: boolean): boolean {
+  return typeof value === 'boolean' ? value : fallback;
 }
 
 function readNumber(value: unknown, fallback: number): number {

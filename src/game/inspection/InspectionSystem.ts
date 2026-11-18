@@ -10,6 +10,7 @@ import type {
 } from '../../shared/types/inspection';
 import type { StoryFlags } from '../story/conditions.ts';
 import { areConditionsMet } from '../story/conditions.ts';
+import { EVELYN_CYLINDER_VOICE_URLS } from '../audio/voiceAssets.ts';
 
 export interface InspectionHost {
   getFlags(): StoryFlags;
@@ -73,6 +74,11 @@ export class InspectionSystem {
       category: definition.category,
       sections: variant.sections.map(toSectionView),
       newClueTitles,
+      voiceLineUrls:
+        definition.id === 'INT_prop_phonograph' &&
+        variant.when?.some((condition) => condition.flag === 'item.cylinder')
+          ? EVELYN_CYLINDER_VOICE_URLS
+          : [],
     };
     this.host.onChange(this.current);
     return true;

@@ -29,6 +29,9 @@ export interface SaveData {
 
 export interface PlayerSettings {
   mouseSensitivity: number;
+  invertY: boolean;
   masterVolume: number;
   effectsVolume: number;
+  voiceVolume: number;
+  hudMinimal: boolean;
 }

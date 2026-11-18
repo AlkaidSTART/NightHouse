@@ -1,17 +1,26 @@
 import type { InspectionView } from '../../shared/types/inspection';
+import { VoiceLineSequence } from '../dialogue/VoiceLineSequence';
 import { useDraggablePanel } from '../shared/useDraggablePanel';
 
 export interface InspectPanelProps {
   view: InspectionView;
+  voiceVolume?: number;
   onClose: () => void;
 }
 
-export function InspectPanel({ view, onClose }: InspectPanelProps) {
+export function InspectPanel({
+  view,
+  voiceVolume = 0.8,
+  onClose,
+}: InspectPanelProps) {
   const { panelRef, isDragging, panelStyle, handleProps } =
     useDraggablePanel<HTMLElement>(view.title);
 
   return (
     <div className="inspect-layer">
+      {view.voiceLineUrls.length > 0 && (
+        <VoiceLineSequence urls={view.voiceLineUrls} volume={voiceVolume} />
+      )}
       <article
         ref={panelRef}
         className={`inspect-panel${isDragging ? ' is-dragging' : ''}`}

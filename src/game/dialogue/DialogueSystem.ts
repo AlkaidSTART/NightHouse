@@ -22,6 +22,7 @@ import {
   type DialogueBeatId,
 } from '../story/dialogueBeat.ts';
 import { resolveDialogueEntry } from './dialogueEntries.ts';
+import { resolveDialogueVoiceUrl } from '../audio/voiceAssets.ts';
 
 export interface ConversationEndEvent {
   npcId: string;
@@ -67,6 +68,8 @@ interface Session {
   contextLabel: string | null;
   /** 本次会话当前节点要播放的台词（可能是重入短句）。 */
   lines: DialogueLine[];
+  /** 当前台词来自重复交谈的替代开场。 */
+  isReenter: boolean;
   /** 下一条要显示的台词；等于 lines.length 时表示进入选项阶段。 */
   lineIndex: number;
   /** 本次会话里已经展示过的节点；返回这类节点时直接进入选项阶段，避免重播台词。 */
@@ -188,6 +191,7 @@ export class DialogueSystem {
       allowedChoiceIds,
       contextLabel: options.contextLabel ?? null,
       lines: reenterLines.length > 0 ? reenterLines : node.lines,
+      isReenter: reenterLines.length > 0,
       lineIndex: reenterLines.length > 0 ? 0 : hideLine ? node.lines.length : 0,
       visited: new Set([node.id]),
       hideLine,
@@ -282,6 +286,7 @@ export class DialogueSystem {
     const revisited = session.visited.has(next.id);
     session.nodeId = next.id;
     session.lines = next.lines;
+    session.isReenter = false;
     // 返回已经看过的节点时跳过台词，直接给出该节点的选项；
     // 否则「返回上一层」会把开场白或已听过的证词整段重播。
     session.lineIndex = revisited ? next.lines.length : 0;
@@ -328,7 +333,9 @@ export class DialogueSystem {
     }
 
     const npcName = this.npcNames.get(node.npcId) ?? node.npcId;
-    const lines = session.lines.map((line) => this.resolveLine(line, npcName));
+    const lines = session.lines.map((line, index) =>
+      this.resolveLine(line, npcName, index, session),
+    );
     const lineIndex = Math.min(session.lineIndex, lines.length - 1);
     const line =
       session.hideLine || lines.length === 0 ? null : lines[lineIndex] ?? null;
@@ -496,6 +503,8 @@ export class DialogueSystem {
   private resolveLine(
     line: DialogueLine,
     npcName: string,
+    lineIndex: number,
+    session: Session,
   ): DialogueLineView {
     const text = resolveDialogueText(line.text, this.host.getFlags());
     if (line.speaker === 'npc') {
@@ -503,14 +512,60 @@ export class DialogueSystem {
       const name = match?.[1]?.trim();
       const rest = match?.[2]?.trim();
       if (name && rest) {
-        return { speaker: 'npc', name, text: rest };
+        return {
+          speaker: 'npc',
+          name,
+          text: rest,
+          audioUrl: resolveDialogueVoiceUrl({
+            nodeId: session.nodeId,
+            speaker: line.speaker,
+            lineIndex,
+            isReenter: session.isReenter,
+            npcId: name === '格雷医生' ? 'npc_doctor' : name === '霍尔太太' ? 'npc_housekeeper' : session.npcId,
+            text,
+            hasHonorificVariant: line.text.includes('{honorific}'),
+            honorific: this.getHonorific(),
+          }),
+        };
       }
-      return { speaker: 'npc', name: npcName, text };
+      return {
+        speaker: 'npc',
+        name: npcName,
+        text,
+        audioUrl: resolveDialogueVoiceUrl({
+          nodeId: session.nodeId,
+          speaker: line.speaker,
+          lineIndex,
+          isReenter: session.isReenter,
+          npcId: session.npcId,
+          text,
+          hasHonorificVariant: line.text.includes('{honorific}'),
+          honorific: this.getHonorific(),
+        }),
+      };
     }
     if (line.speaker === 'player') {
-      return { speaker: 'player', name: '我', text };
+      return { speaker: 'player', name: '我', text, audioUrl: null };
     }
-    return { speaker: 'narration', name: null, text };
+    return {
+      speaker: 'narration',
+      name: null,
+      text,
+      audioUrl: resolveDialogueVoiceUrl({
+        nodeId: session.nodeId,
+        speaker: 'narration',
+        lineIndex,
+        isReenter: session.isReenter,
+        npcId: session.npcId,
+        text,
+        hasHonorificVariant: false,
+        honorific: this.getHonorific(),
+      }),
+    };
+  }
+
+  private getHonorific(): 'sir' | 'miss' {
+    return this.host.getFlags()['player.honorific'] === 'miss' ? 'miss' : 'sir';
   }
 
   private emit(): void {

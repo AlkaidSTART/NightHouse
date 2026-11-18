@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { GameBootstrap } from '../game/core/GameBootstrap';
 import type { GameEventBus } from '../game/core/GameEvents';
 import type { SaveManager } from '../game/save/SaveManager';
+import type { PlayerSettings } from '../shared/types/save';
+import { useGameStore } from '../stores/gameStore';
 import type { DialogueView } from '../shared/types/dialogue';
 import type { EndingView } from '../shared/types/ending';
 import type { ClueJournalView } from '../shared/types/clueJournal';
@@ -53,6 +55,33 @@ export function GameView({
   const [error, setError] = useState<string | null>(null);
   // 新游戏先读序章；继续游戏时玩家已经知道来龙去脉，直接进入操作提示。
   const [prologueDone, setPrologueDone] = useState(resume);
+  const settings = useGameStore((s) => s.settings);
+  const setSettings = useGameStore((s) => s.setSettings);
+  const toastTimerRef = useRef<number | null>(null);
+
+  const showQuickToast = useCallback((message: string) => {
+    setToast(message);
+    if (toastTimerRef.current !== null) {
+      window.clearTimeout(toastTimerRef.current);
+    }
+    toastTimerRef.current = window.setTimeout(() => {
+      setToast(null);
+      toastTimerRef.current = null;
+    }, 2400);
+  }, []);
+
+  const handleUpdateSettings = useCallback(
+    (next: PlayerSettings) => {
+      setSettings(next);
+      bootstrapRef.current?.setSensitivity(next.mouseSensitivity);
+      bootstrapRef.current?.setInvertY(next.invertY);
+      bootstrapRef.current?.setVoiceVolume(next.voiceVolume);
+      void saveManager.saveSettings(next).catch(() => {
+        showQuickToast('设置保存失败，仅在当前会话生效。');
+      });
+    },
+    [saveManager, setSettings, showQuickToast],
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -149,6 +178,9 @@ export function GameView({
       if (toastTimer !== null) {
         window.clearTimeout(toastTimer);
       }
+      if (toastTimerRef.current !== null) {
+        window.clearTimeout(toastTimerRef.current);
+      }
       bootstrapRef.current?.destroy();
       bootstrapRef.current = null;
     };
@@ -156,6 +188,37 @@ export function GameView({
 
   const handleStart = (): void => {
     bootstrapRef.current?.resume();
+  };
+
+  const hasModalOpen = Boolean(
+    dialogue || inspection || clues || inventory || puzzle || ending,
+  );
+
+  useEffect(() => {
+    if (phase !== 'playing' || hasModalOpen) {
+      return;
+    }
+    const handleKeyDown = (event: KeyboardEvent): void => {
+      if (event.repeat || event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+      }
+      if (event.key === 'h' || event.key === 'H') {
+        const nextMinimal = !settings.hudMinimal;
+        handleUpdateSettings({ ...settings, hudMinimal: nextMinimal });
+        showQuickToast(
+          nextMinimal ? '已开启精简界面（按 H 恢复）' : '已恢复界面显示',
+        );
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [phase, hasModalOpen, settings, handleUpdateSettings, showQuickToast]);
+
+  const handlePrologueStart = (): void => {
+    setPrologueDone(true);
+    if (ready) {
+      handleStart();
+    }
   };
 
   const handleCanvasClick = (): void => {
@@ -210,7 +273,7 @@ export function GameView({
           prologueDone ? (
             <StartOverlay ready={ready} onStart={handleStart} />
           ) : (
-            <PrologueOverlay onStart={() => setPrologueDone(true)} />
+            <PrologueOverlay onStart={handlePrologueStart} />
           )
         )}
       {phase === 'paused' &&
@@ -220,7 +283,12 @@ export function GameView({
         !inventory &&
         !puzzle &&
         !ending && (
-          <PauseMenu onResume={handleStart} onExit={onExit} />
+          <PauseMenu
+            onResume={handleStart}
+            onExit={onExit}
+            settings={settings}
+            onUpdateSettings={handleUpdateSettings}
+          />
         )}
       {ending && <EndingOverlay ending={ending} onExit={onExit} />}
       {dialogue && (
@@ -236,6 +304,7 @@ export function GameView({
       {inspection && (
         <InspectPanel
           view={inspection}
+          voiceVolume={settings.voiceVolume}
           onClose={() => bootstrapRef.current?.closeInspection()}
         />
       )}
