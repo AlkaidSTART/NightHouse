@@ -35,6 +35,8 @@ import { NightSky, NIGHT_CLEAR_COLOR } from '../scene/NightSky';
 import { SceneManager } from '../scene/SceneManager';
 import { resolveEnding } from '../story/endingResolver';
 import { resolveActiveObjective } from '../story/questProgress';
+import { resolveObjectiveGuidance, type ObjectiveGuidance } from '../story/objectiveGuidance';
+import { buildObjectiveMarker } from '../navigation/objectiveMarker';
 import type { StoryFlags } from '../story/conditions';
 import { GroundPathGuide } from '../navigation/GroundPathGuide';
 import type { GameEventBus } from './GameEvents';
@@ -142,6 +144,10 @@ export class GameBootstrap {
   private readonly voiceAudio = new VoiceAudioPlayer();
   private readonly groundPathGuide: GroundPathGuide;
   private groundPathTargetRegionId: string | null = null;
+  private objectiveGuidance: ObjectiveGuidance | null = null;
+  private readonly guidePosition = new pc.Vec3();
+  private readonly guideOffset = new pc.Vec3();
+  private readonly guideProjection = new pc.Vec3();
   private inspectionOpen = false;
   private journalOpen = false;
   private inventoryOpen = false;
@@ -258,13 +264,11 @@ export class GameBootstrap {
     const scene = this.sceneManager.build(villaGreybox);
     this.sceneManager.applyStoryFlags(useStoryStore.getState().storyFlags);
     this.groundPathGuide = new GroundPathGuide(app);
-    this.groundPathTargetRegionId = resolveGroundPathTarget(
-      useStoryStore.getState().storyFlags,
-    );
+    this.updateObjectiveGuidance(useStoryStore.getState().storyFlags);
     // 剧情标记变化后重新选择 NPC 站位，并同步任务目标的地面路线。
     this.unsubscribeStory = useStoryStore.subscribe((state) => {
       this.sceneManager.applyStoryFlags(state.storyFlags);
-      this.groundPathTargetRegionId = resolveGroundPathTarget(state.storyFlags);
+      this.updateObjectiveGuidance(state.storyFlags);
     });
     const preloadTasks: Promise<void>[] = [];
     if (villaGreybox.modelUrl) {
@@ -949,6 +953,7 @@ export class GameBootstrap {
       return;
     }
     this.poseEmitElapsed = 0;
+    this.emitObjectiveMarker();
 
     const position = this.player.getFeetPosition();
     const rotation = this.player.getRotation();
@@ -970,6 +975,41 @@ export class GameBootstrap {
     this.events.emit('player.position', {
       position,
       rotation,
+    });
+  }
+
+  private updateObjectiveGuidance(flags: StoryFlags): void {
+    this.objectiveGuidance = resolveObjectiveGuidance(
+      flags,
+      resolveActiveObjective(flags, content.quests),
+      villaGreybox,
+    );
+    this.groundPathTargetRegionId = this.objectiveGuidance?.locationId ?? null;
+  }
+
+  private emitObjectiveMarker(): void {
+    const guide = this.objectiveGuidance;
+    const camera = this.player.camera;
+    const target = guide?.target;
+    if (!target || guide.locationId !== this.currentRegionId || !camera.camera) {
+      this.events.emit('guidance.marker', { view: null });
+      return;
+    }
+    this.guidePosition.set(...target.position);
+    this.guideOffset.sub2(this.guidePosition, camera.getPosition());
+    const projection = camera.camera.worldToScreen(this.guidePosition, this.guideProjection);
+    const width = this.canvas.clientWidth;
+    const height = this.canvas.clientHeight;
+    if (width <= 0 || height <= 0) return;
+    this.events.emit('guidance.marker', {
+      view: buildObjectiveMarker(
+        target.id,
+        target.label,
+        projection.x / width * 100,
+        projection.y / height * 100,
+        this.guideOffset.dot(camera.forward) > 0,
+        this.guideOffset.length(),
+      ),
     });
   }
 
@@ -1268,11 +1308,6 @@ function findRegion(
     }
   }
   return null;
-}
-
-function resolveGroundPathTarget(flags: StoryFlags): string | null {
-  const active = resolveActiveObjective(flags, content.quests);
-  return active?.stage?.locationId ?? active?.step.locationId ?? null;
 }
 
 function isSavedPositionValid(

@@ -1,5 +1,6 @@
 import type { ActiveObjective } from '../../game/story/questProgress';
 import type { InvestigationThreadView } from '../../game/story/investigationProgress';
+import type { ObjectiveGuidance } from '../../game/story/objectiveGuidance';
 import type { MinimapPlayerPose } from './Minimap';
 import { describeRoute } from './objectiveRoute';
 
@@ -11,38 +12,26 @@ export interface ObjectivePanelProps {
   archive?: { found: number; total: number } | null;
   /** 玩家侧的推理检查表；由剧情标记推导，不额外保存状态。 */
   investigation?: readonly InvestigationThreadView[] | null;
+  guidance?: ObjectiveGuidance | null;
 }
 
-/**
- * 筛选按顺序逐条显现的调查线：
- * 显示所有已开启或已完成的调查线，以及下一条待推进的调查线（不提前铺满未轮到的条目）。
- */
-function pickVisibleThreads(
-  threads: readonly InvestigationThreadView[],
-): readonly InvestigationThreadView[] {
-  const firstIncompleteIndex = threads.findIndex((thread) => !thread.complete);
-  return threads.filter(
-    (thread, index) =>
-      thread.complete || thread.found > 0 || index === firstIncompleteIndex,
-  );
-}
-
-/** 右上角任务目标。主线与调查线均按进度逐条推进、逐条显现。 */
+/** 主线说明调查目的；下一步只突出当前可执行的一项行动。 */
 export function ObjectivePanel({
   active,
   regionId,
   player,
   archive,
   investigation,
+  guidance,
 }: ObjectivePanelProps) {
   if (!active) {
     return null;
   }
 
   const stage = active.stage;
-  const objective = stage?.objective ?? active.step.objective;
-  const hint = stage?.hint ?? active.step.hint;
-  const locationId = stage?.locationId ?? active.step.locationId;
+  const objective = guidance?.title ?? stage?.objective ?? active.step.objective;
+  const hint = guidance?.hint ?? stage?.hint ?? active.step.hint;
+  const locationId = guidance?.locationId ?? stage?.locationId ?? active.step.locationId;
   const route = describeRoute(
     locationId,
     regionId,
@@ -53,7 +42,7 @@ export function ObjectivePanel({
   if (route) {
     metaParts.push(`${route.regionName}（${route.floorLabel}）`);
     if (route.arrived) {
-      metaParts.push('已到达');
+      metaParts.push(guidance?.target ? `寻找${guidance.target.label}` : '在此调查');
     } else if (route.distance !== null) {
       const distance = Math.max(1, Math.round(route.distance));
       const hint = route.levelHint
@@ -68,16 +57,22 @@ export function ObjectivePanel({
     }
   }
 
-  const visibleThreads = investigation ? pickVisibleThreads(investigation) : [];
+  const completedThreads = investigation?.filter((thread) => thread.complete).length ?? 0;
 
   return (
-    <div className="hud-objective" aria-live="polite">
+    <div className="hud-objective">
       <div
-        key={`${active.step.id}:${stage?.id ?? 'final'}`}
+        key={guidance?.id ?? `${active.step.id}:${stage?.id ?? 'final'}`}
         className="hud-objective-step"
       >
-        <div className="hud-objective-task hud-objective-reveal-1">
-          <span>{objective}</span>
+        <div className="hud-objective-header">
+          <span className="hud-objective-kicker">当前目标</span>
+          <span className="hud-objective-progress">{active.index + 1} / {active.total}</span>
+        </div>
+        <div className="hud-objective-quest">{active.step.objective}</div>
+        <div className="hud-objective-next" aria-live="polite" aria-atomic="true">
+          <span className="hud-objective-next-label">下一步</span>
+          <div className="hud-objective-task hud-objective-reveal-1">{objective}</div>
         </div>
         {metaParts.length > 0 && (
           <div className="hud-objective-meta hud-objective-reveal-2">
@@ -89,42 +84,21 @@ export function ObjectivePanel({
             {hint}
           </div>
         )}
+        <div className="hud-objective-controls">
+          <span className="hud-key">E</span>
+          <span>{route?.arrived ? '靠近并对准目标，出现提示后互动' : '跟随金色路线，进房后寻找菱形标记'}</span>
+        </div>
+        {guidance?.alternative && (
+          <div className="hud-objective-alternative">{guidance.alternative}</div>
+        )}
       </div>
 
-      {visibleThreads.length > 0 && (
+      {investigation && investigation.length > 0 && (
         <div className="hud-objective-leads">
           <div className="hud-objective-leads-header">
-            <span>调查线索</span>
+            <span>已查明 {completedThreads} / {investigation.length} 条调查线</span>
+            <span>J 查看线索</span>
           </div>
-          {visibleThreads.map((thread) => {
-            const nextStep = !thread.complete
-              ? thread.steps.find((step) => !step.found)
-              : undefined;
-            return (
-              <div
-                key={thread.id}
-                className={`hud-objective-lead${thread.complete ? ' is-complete' : ''}`}
-                title={thread.hint}
-              >
-                <div className="hud-objective-lead-body">
-                  <span className="hud-objective-lead-title">
-                    {thread.title}
-                  </span>
-                  {nextStep && (
-                    <span
-                      key={nextStep.flag}
-                      className="hud-objective-lead-next"
-                    >
-                      {nextStep.label}
-                    </span>
-                  )}
-                </div>
-                {thread.complete && (
-                  <span className="hud-objective-lead-count">已查明</span>
-                )}
-              </div>
-            );
-          })}
         </div>
       )}
 

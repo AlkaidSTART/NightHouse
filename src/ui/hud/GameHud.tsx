@@ -3,11 +3,15 @@ import { content } from '../../content';
 import { investigationThreads } from '../../content/investigationThreads';
 import { countHeldInventoryItems } from '../../game/inventory/inventory';
 import { resolveActiveObjective } from '../../game/story/questProgress';
+import { resolveObjectiveGuidance } from '../../game/story/objectiveGuidance';
+import { villaGreybox } from '../../content/scenes/villaGreybox';
+import type { ObjectiveMarkerView } from '../../shared/types/guidance';
 import { resolveInvestigationThreads } from '../../game/story/investigationProgress';
 import { useGameStore } from '../../stores/gameStore';
 import { useStoryStore } from '../../stores/storyStore';
 import { Minimap, type MinimapPlayerPose } from './Minimap';
 import { ObjectivePanel } from './ObjectivePanel';
+import { ObjectiveMarker } from './ObjectiveMarker';
 
 export interface GameHudProps {
   prompt?: string | null;
@@ -18,6 +22,7 @@ export interface GameHudProps {
   player?: MinimapPlayerPose | null;
   showJournalHint?: boolean;
   minimal?: boolean;
+  objectiveMarker?: ObjectiveMarkerView | null;
 }
 
 export function GameHud(props: GameHudProps = {}) {
@@ -38,6 +43,10 @@ export function GameHud(props: GameHudProps = {}) {
   const activeObjective = useMemo(
     () => resolveActiveObjective(storyFlags, content.quests),
     [storyFlags],
+  );
+  const guidance = useMemo(
+    () => resolveObjectiveGuidance(storyFlags, activeObjective, villaGreybox),
+    [storyFlags, activeObjective],
   );
   const investigation = useMemo(
     () => resolveInvestigationThreads(storyFlags, investigationThreads),
@@ -69,11 +78,8 @@ export function GameHud(props: GameHudProps = {}) {
           <Minimap
             regionId={regionId}
             player={player}
-            objectiveRegionId={
-              activeObjective?.stage?.locationId ??
-              activeObjective?.step.locationId ??
-              null
-            }
+            objectiveRegionId={guidance?.locationId ?? null}
+            objectivePosition={guidance?.target?.position}
           />
           <ObjectivePanel
             active={activeObjective}
@@ -81,10 +87,21 @@ export function GameHud(props: GameHudProps = {}) {
             player={player}
             archive={{ found: archiveFound, total: archiveTotal }}
             investigation={investigation}
+            guidance={guidance}
           />
+          {props.showJournalHint && props.objectiveMarker &&
+            props.objectiveMarker.id === guidance?.target?.id && (
+              <ObjectiveMarker view={props.objectiveMarker} />
+            )}
           {props.region && <div className="hud-region">{props.region}</div>}
-          {props.showJournalHint && (clueCount > 0 || itemCount > 0) && (
+          {props.showJournalHint && (
             <div className="hud-bottom-hints">
+              <div className="hud-journal-hint">
+                <span className="hud-key">W A S D</span><span>移动</span>
+              </div>
+              <div className="hud-journal-hint">
+                <span className="hud-key">E</span><span>调查 / 交谈</span>
+              </div>
               {clueCount > 0 && (
                 <div className="hud-journal-hint">
                   <span className="hud-key">J</span>

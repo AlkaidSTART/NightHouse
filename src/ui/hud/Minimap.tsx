@@ -19,6 +19,8 @@ export interface MinimapProps {
   player: MinimapPlayerPose | null;
   /** 当前任务目标所在区域，用于在小地图上标出路线终点。 */
   objectiveRegionId?: string | null;
+  /** 有具体调查对象时标在对象上，而不是房间中心。 */
+  objectivePosition?: Vec3Tuple | null;
 }
 
 const MIN_LABEL_WIDTH = 30;
@@ -28,6 +30,7 @@ export function Minimap({
   regionId,
   player,
   objectiveRegionId,
+  objectivePosition,
 }: MinimapProps) {
   const feetY = player?.position[1] ?? 0;
   const level = resolveMinimapLevel(regionId, feetY);
@@ -45,13 +48,13 @@ export function Minimap({
     if (!region) {
       return null;
     }
-    const center = regionCenter(region);
+    const center = objectivePosition ?? regionCenter(region);
     // 目标在别的楼层时不画在当前层，避免指针落在错误的位置。
     if (resolveMinimapLevel(objectiveRegionId, center[1]) !== model.id) {
       return null;
     }
     return worldToMinimap(model.viewport, center[0], center[2]);
-  }, [objectiveRegionId, model]);
+  }, [objectiveRegionId, objectivePosition, model]);
 
   const objectivePath = useMemo(() => {
     return buildMinimapObjectivePath(

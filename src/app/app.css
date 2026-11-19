@@ -802,7 +802,7 @@ button {
   position: absolute;
   top: 22px;
   right: 26px;
-  width: 248px;
+  width: min(300px, 30vw);
   padding: 0;
   border: none;
   background: transparent;
@@ -837,12 +837,80 @@ button {
 .hud-objective-step {
   display: grid;
   gap: 6px;
+  padding: 14px 16px;
+  border-left: 2px solid rgba(224, 180, 126, 0.65);
+  background: rgba(15, 17, 17, 0.66);
 }
 
 .hud-objective-quest {
   color: #c2b8a2;
-  font-size: var(--text-sm);
-  letter-spacing: 0.1em;
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+
+.hud-objective-next {
+  margin-top: 8px;
+}
+
+.hud-objective-next-label {
+  display: block;
+  margin-bottom: 3px;
+  color: #e0b47e;
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+}
+
+.hud-objective-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  color: #ece1cc;
+  font-size: var(--text-xs);
+  line-height: 1.6;
+}
+
+.hud-objective-alternative {
+  padding-top: 8px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(224, 180, 126, 0.16);
+  color: #b8ad98;
+  font-size: var(--text-xs);
+  line-height: 1.6;
+}
+
+.hud-objective-marker {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  width: min(180px, 20vw);
+  color: #f5d99b;
+  text-align: center;
+  text-shadow: 0 1px 4px #000, 0 0 10px #000;
+  transform: translate(-50%, -14px);
+  pointer-events: none;
+}
+
+.hud-objective-marker-symbol {
+  font-size: 27px;
+  line-height: 28px;
+}
+
+.hud-objective-marker-label {
+  padding: 3px 7px;
+  background: rgba(15, 17, 17, 0.72);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+.hud-objective-marker-direction {
+  font-size: var(--text-xs);
+}
+
+.hud-objective-marker.is-onscreen .hud-objective-marker-direction {
+  display: none;
 }
 
 .hud-objective-task {
@@ -1024,6 +1092,8 @@ button {
   display: flex;
   align-items: center;
   gap: 18px;
+  max-width: calc(100vw - 56px);
+  flex-wrap: wrap;
   pointer-events: none;
 }
 

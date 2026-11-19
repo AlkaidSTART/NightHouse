@@ -6,6 +6,7 @@ import type { InspectionView } from '../../shared/types/inspection';
 import type { InventoryView } from '../../shared/types/inventory';
 import type { PuzzleView } from '../../shared/types/puzzle';
 import type { Vec3Tuple } from '../../shared/types/save';
+import type { ObjectiveMarkerView } from '../../shared/types/guidance';
 
 export interface GameEventMap {
   'game.ready': { sceneId: string };
@@ -21,6 +22,7 @@ export interface GameEventMap {
   'pause.changed': { paused: boolean };
   'region.changed': { regionId: string; name: string };
   'player.position': { position: Vec3Tuple; rotation: Vec3Tuple };
+  'guidance.marker': { view: ObjectiveMarkerView | null };
 }
 
 export type GameEventBus = EventBus<GameEventMap>;

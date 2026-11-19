@@ -10,6 +10,7 @@ import type { ClueJournalView } from '../shared/types/clueJournal';
 import type { InspectionView } from '../shared/types/inspection';
 import type { InventoryView } from '../shared/types/inventory';
 import type { PuzzleView } from '../shared/types/puzzle';
+import type { ObjectiveMarkerView } from '../shared/types/guidance';
 import { CluePanel } from '../ui/clues/CluePanel';
 import { DialoguePanel } from '../ui/dialogue/DialoguePanel';
 import { EndingOverlay } from '../ui/ending/EndingOverlay';
@@ -46,6 +47,7 @@ export function GameView({
   const [region, setRegion] = useState<string | null>(null);
   const [regionId, setRegionId] = useState<string | null>(null);
   const [playerPose, setPlayerPose] = useState<MinimapPlayerPose | null>(null);
+  const [objectiveMarker, setObjectiveMarker] = useState<ObjectiveMarkerView | null>(null);
   const [dialogue, setDialogue] = useState<DialogueView | null>(null);
   const [inspection, setInspection] = useState<InspectionView | null>(null);
   const [clues, setClues] = useState<ClueJournalView | null>(null);
@@ -112,6 +114,9 @@ export function GameView({
     const offPlayerPose = events.on('player.position', ({ position, rotation }) => {
       setPlayerPose({ position, yaw: rotation[0] });
     });
+    const offObjectiveMarker = events.on('guidance.marker', ({ view }) => {
+      setObjectiveMarker(view);
+    });
     const offPause = events.on('pause.changed', ({ paused }) => {
       setPhase(paused ? 'paused' : 'playing');
       if (!paused) {
@@ -166,6 +171,7 @@ export function GameView({
       offActivated();
       offRegion();
       offPlayerPose();
+      offObjectiveMarker();
       offPause();
       offDialogue();
       offInspection();
@@ -253,6 +259,7 @@ export function GameView({
         region={region}
         regionId={regionId}
         player={playerPose}
+        objectiveMarker={objectiveMarker}
         showJournalHint={
           phase === 'playing' &&
           !dialogue &&
