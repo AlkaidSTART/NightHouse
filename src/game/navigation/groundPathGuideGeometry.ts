@@ -3,16 +3,18 @@ import { distance3d } from './groundRoute.ts';
 
 /** 地面指引只展示玩家附近的一段，避免长路线在画面中形成密集光带。 */
 const START_OFFSET = 1.55;
-const MARKER_SPACING = 1.45;
+export const GROUND_PATH_MARKER_SPACING = 1.45;
 const MAX_VISIBLE_DISTANCE = 11.5;
-const CORE_LENGTH = 0.52;
-const CORE_HALF_WIDTH = 0.115;
-const GLOW_LENGTH = 0.68;
-const GLOW_HALF_WIDTH = 0.2;
+const CORE_LENGTH = 0.68;
+const CORE_HEAD_HALF_WIDTH = 0.18;
+const CORE_SHAFT_HALF_WIDTH = 0.06;
+const GLOW_LENGTH = 0.82;
+const GLOW_HEAD_HALF_WIDTH = 0.24;
+const GLOW_SHAFT_HALF_WIDTH = 0.08;
 const SURFACE_OFFSET = 0.028;
 const MIN_VISIBLE_DISTANCE = 0.42;
-const NEAR_OPACITY = 0.74;
-const FAR_OPACITY = 0.1;
+const NEAR_OPACITY = 0.92;
+const FAR_OPACITY = 0.2;
 const FADE_START_DISTANCE = 1.55;
 const FADE_END_DISTANCE = MAX_VISIBLE_DISTANCE;
 const CLOSE_FADE_END_DISTANCE = 1.3;
@@ -26,12 +28,12 @@ export interface GroundPathGuideGeometry {
 }
 
 /**
- * 生成开放的 V 形地面路标。与实心三角形相比，它保留方向信息但减少发光面积；
- * 顶点透明度按路径距离衰减，让玩家先读到最近一步，而不是同时看见整条长路线。
+ * 生成完整的细箭杆与实心箭头尖。顶点透明度按路径距离衰减，让玩家先读到最近
+ * 一步，而不是同时看见整条长路线。
  */
 export function buildGroundPathGuideGeometry(
   route: readonly Vec3Tuple[],
-  routeProgress = 0,
+  routePhase = 0,
 ): GroundPathGuideGeometry | null {
   const positions: number[] = [];
   const normals: number[] = [];
@@ -42,11 +44,10 @@ export function buildGroundPathGuideGeometry(
     return null;
   }
 
-  // Keep each chevron anchored to its route position as the guide is rebuilt.
-  // Without this phase offset, every player movement shifts the whole pattern.
-  let nextMarkerDistance = START_OFFSET;
-  while (nextMarkerDistance - routeProgress < MIN_VISIBLE_DISTANCE) {
-    nextMarkerDistance += MARKER_SPACING;
+  // Preserve the marker rhythm when routes are replanned from a moving player.
+  let nextMarkerDistance = START_OFFSET - routePhase;
+  while (nextMarkerDistance < MIN_VISIBLE_DISTANCE) {
+    nextMarkerDistance += GROUND_PATH_MARKER_SPACING;
   }
   let traveled = 0;
   let markerCount = 0;
@@ -68,7 +69,7 @@ export function buildGroundPathGuideGeometry(
     );
 
     while (nextMarkerDistance <= traveled + segmentLength) {
-      const distanceAhead = nextMarkerDistance - routeProgress;
+      const distanceAhead = nextMarkerDistance;
       if (distanceAhead > MAX_VISIBLE_DISTANCE) {
         break;
       }
@@ -88,10 +89,10 @@ export function buildGroundPathGuideGeometry(
         indices,
       );
       markerCount += 1;
-      nextMarkerDistance += MARKER_SPACING;
+      nextMarkerDistance += GROUND_PATH_MARKER_SPACING;
     }
 
-    if (nextMarkerDistance - routeProgress > MAX_VISIBLE_DISTANCE) {
+    if (nextMarkerDistance > MAX_VISIBLE_DISTANCE) {
       break;
     }
     traveled += segmentLength;
@@ -101,61 +102,6 @@ export function buildGroundPathGuideGeometry(
     return null;
   }
   return { positions, normals, colors, indices, markerCount };
-}
-
-/** Find the player's nearest point along a route, with a bounded search window. */
-export function getGroundPathProgress(
-  route: readonly Vec3Tuple[],
-  position: Vec3Tuple,
-  minimumProgress = 0,
-  maximumProgress = Infinity,
-): number {
-  let traveled = 0;
-  let nearestProgress = 0;
-  let nearestDistanceSquared = Infinity;
-
-  for (let index = 1; index < route.length; index += 1) {
-    const from = route[index - 1];
-    const to = route[index];
-    if (!from || !to) {
-      continue;
-    }
-
-    const dx = to[0] - from[0];
-    const dy = to[1] - from[1];
-    const dz = to[2] - from[2];
-    const segmentLengthSquared = dx * dx + dy * dy + dz * dz;
-    const segmentLength = Math.sqrt(segmentLengthSquared);
-    if (segmentLength < 1e-6) {
-      continue;
-    }
-
-    const minT = clamp((minimumProgress - traveled) / segmentLength, 0, 1);
-    const maxT = clamp((maximumProgress - traveled) / segmentLength, 0, 1);
-    const projectedT = clamp(
-      ((position[0] - from[0]) * dx +
-        (position[1] - from[1]) * dy +
-        (position[2] - from[2]) * dz) /
-        segmentLengthSquared,
-      minT,
-      Math.max(minT, maxT),
-    );
-    const nearestX = from[0] + dx * projectedT;
-    const nearestY = from[1] + dy * projectedT;
-    const nearestZ = from[2] + dz * projectedT;
-    const distanceSquared =
-      (position[0] - nearestX) ** 2 +
-      (position[1] - nearestY) ** 2 +
-      (position[2] - nearestZ) ** 2;
-
-    if (distanceSquared < nearestDistanceSquared) {
-      nearestDistanceSquared = distanceSquared;
-      nearestProgress = traveled + segmentLength * projectedT;
-    }
-    traveled += segmentLength;
-  }
-
-  return nearestProgress;
 }
 
 function appendMarker(
@@ -172,26 +118,28 @@ function appendMarker(
   );
   const normal = normalize3d(...cross(tangent, side));
   // 先画更宽更淡的外晕，再叠亮金色核心，形成接近开放世界导航的柔光层次。
-  appendChevron(
+  appendArrow(
     center,
     tangent,
     side,
     normal,
     GLOW_LENGTH,
-    GLOW_HALF_WIDTH,
+    GLOW_HEAD_HALF_WIDTH,
+    GLOW_SHAFT_HALF_WIDTH,
     opacity * 0.13,
     positions,
     normals,
     colors,
     indices,
   );
-  appendChevron(
+  appendArrow(
     center,
     tangent,
     side,
     normal,
     CORE_LENGTH,
-    CORE_HALF_WIDTH,
+    CORE_HEAD_HALF_WIDTH,
+    CORE_SHAFT_HALF_WIDTH,
     opacity,
     positions,
     normals,
@@ -200,13 +148,14 @@ function appendMarker(
   );
 }
 
-function appendChevron(
+function appendArrow(
   center: Vec3Tuple,
   tangent: Vec3Tuple,
   side: Vec3Tuple,
   normal: Vec3Tuple,
   length: number,
-  halfWidth: number,
+  headHalfWidth: number,
+  shaftHalfWidth: number,
   opacity: number,
   positions: number[],
   normals: number[],
@@ -222,39 +171,69 @@ function appendChevron(
     normal,
     SURFACE_OFFSET,
   );
-  const backLeft = offsetPoint(
+  const headLeft = offsetPoint(
     center,
     tangent,
-    -length * 0.42,
+    length * 0.12,
     side,
-    halfWidth,
+    headHalfWidth,
     normal,
     SURFACE_OFFSET,
   );
-  const notch = offsetPoint(
+  const shoulderLeft = offsetPoint(
     center,
     tangent,
     -length * 0.08,
     side,
-    0,
+    shaftHalfWidth,
     normal,
     SURFACE_OFFSET,
   );
-  const backRight = offsetPoint(
+  const shaftEndLeft = offsetPoint(
     center,
     tangent,
     -length * 0.42,
     side,
-    -halfWidth,
+    shaftHalfWidth,
+    normal,
+    SURFACE_OFFSET,
+  );
+  const shaftEndRight = offsetPoint(
+    center,
+    tangent,
+    -length * 0.42,
+    side,
+    -shaftHalfWidth,
+    normal,
+    SURFACE_OFFSET,
+  );
+  const shoulderRight = offsetPoint(
+    center,
+    tangent,
+    -length * 0.08,
+    side,
+    -shaftHalfWidth,
+    normal,
+    SURFACE_OFFSET,
+  );
+  const headRight = offsetPoint(
+    center,
+    tangent,
+    length * 0.12,
+    side,
+    -headHalfWidth,
     normal,
     SURFACE_OFFSET,
   );
 
   const base = positions.length / 3;
   appendVertex(tip, normal, opacity, positions, normals, colors);
-  appendVertex(backLeft, normal, opacity * 0.84, positions, normals, colors);
-  appendVertex(notch, normal, opacity * 0.48, positions, normals, colors);
-  appendVertex(backRight, normal, opacity * 0.84, positions, normals, colors);
+  appendVertex(headLeft, normal, opacity * 0.92, positions, normals, colors);
+  appendVertex(shoulderLeft, normal, opacity * 0.82, positions, normals, colors);
+  appendVertex(shaftEndLeft, normal, opacity * 0.74, positions, normals, colors);
+  appendVertex(shaftEndRight, normal, opacity * 0.74, positions, normals, colors);
+  appendVertex(shoulderRight, normal, opacity * 0.82, positions, normals, colors);
+  appendVertex(headRight, normal, opacity * 0.92, positions, normals, colors);
   // 正面朝上，同时保证从楼梯斜面上看也不会被剔除。
   indices.push(
     base,
@@ -263,6 +242,15 @@ function appendChevron(
     base,
     base + 2,
     base + 3,
+    base,
+    base + 3,
+    base + 4,
+    base,
+    base + 4,
+    base + 5,
+    base,
+    base + 5,
+    base + 6,
   );
 }
 

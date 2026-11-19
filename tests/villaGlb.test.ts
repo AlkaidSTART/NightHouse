@@ -269,9 +269,16 @@ test('导出的 NPC 角色 GLB：文件齐全、身高符合设定且面数与�
     assert.ok(exported.json.materials.length > 0, `${modelUrl} 缺少材质`);
     assert.ok(exported.json.images.length > 0, `${modelUrl} 缺少贴图`);
 
-    // 绑定骨骼与两段动作是 NPC 有呼吸和说话动作的前提。
+    // 霍尔太太的长裙由独立骨骼控制，避免随两条腿直接拉扯。
+    const housekeeper = entry.id === 'npc_housekeeper';
+    const jointCount = housekeeper ? 19 : 17;
     assert.equal(exported.json.skins?.length, 1, `${modelUrl} 缺少蒙皮`);
-    assert.equal(exported.json.skins?.[0]?.joints.length, 17, `${modelUrl} 骨骼数不符`);
+    const joints = exported.json.skins?.[0]?.joints;
+    assert.equal(joints?.length, jointCount, `${modelUrl} 骨骼数不符`);
+    if (housekeeper) {
+      const jointNames = joints?.map((index) => exported.json.nodes[index]?.name);
+      assert.ok(jointNames?.includes('Skirt.L') && jointNames.includes('Skirt.R'));
+    }
     for (const mesh of exported.json.meshes) {
       for (const primitive of mesh.primitives) {
         assert.ok(
@@ -284,9 +291,9 @@ test('导出的 NPC 角色 GLB：文件齐全、身高符合设定且面数与�
     const animationNames = (exported.json.animations ?? [])
       .map((animation) => animation.name)
       .sort();
-    assert.deepEqual(animationNames, ['Idle', 'Talk'], `${modelUrl} 动作不齐`);
+    assert.deepEqual(animationNames, housekeeper ? ['Idle', 'Talk', 'Walk'] : ['Idle', 'Talk'], `${modelUrl} 动作不齐`);
     for (const animation of exported.json.animations ?? []) {
-      assert.ok(animation.channels.length >= 17 * 3, `${modelUrl} 动作通道不足`);
+      assert.ok(animation.channels.length >= jointCount * 3, `${modelUrl} 动作通道不足`);
     }
 
     let minY = Infinity;
@@ -316,7 +323,7 @@ test('导出的 NPC 角色 GLB：文件齐全、身高符合设定且面数与�
       `${modelUrl} 身高 ${height.toFixed(3)}m 与设定 ${entry.heightM}m 不符`,
     );
     assert.ok(
-      totalTriangles > 5000 && totalTriangles <= 50000,
+      totalTriangles > 5000 && totalTriangles <= (housekeeper ? 30000 : 50000),
       `${modelUrl} 三角面数超出游戏预算：${totalTriangles}`,
     );
   }

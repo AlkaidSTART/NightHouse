@@ -66,6 +66,17 @@ test('门厅到餐厅的路径经过餐厅门口并停在餐桌区域', () => {
   assert.deepEqual(points.at(-1), [7.5, 0, 3.5]);
 });
 
+test('玩家移动后重新规划的路线从最新脚底位置开始', () => {
+  const firstPosition: Vec3Tuple = [0, -0.75, 38.5];
+  const nextPosition: Vec3Tuple = [0, -0.75, 12];
+
+  const firstRoute = route('villa_hall', 'scene_gate', firstPosition);
+  const nextRoute = route('villa_hall', 'scene_gate', nextPosition);
+
+  assert.deepEqual(firstRoute[0], firstPosition);
+  assert.deepEqual(nextRoute[0], nextPosition);
+});
+
 test('从客厅去浴室会经过门厅、主楼梯和二楼浴室门', () => {
   const points = route('villa_bathroom', 'villa_parlor', [-7.5, 0, 3.5]);
   assert.ok(hasNear(points, [-3.3, 0, 3.5]), '应先经过客厅门回到门厅');

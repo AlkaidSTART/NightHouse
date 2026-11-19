@@ -1,12 +1,9 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import {
-  buildGroundPathGuideGeometry,
-  getGroundPathProgress,
-} from '../src/game/navigation/groundPathGuideGeometry.ts';
+import { buildGroundPathGuideGeometry } from '../src/game/navigation/groundPathGuideGeometry.ts';
 import type { Vec3Tuple } from '../src/shared/types/save.ts';
 
-test('长路径只生成局部 V 形路标，并让远端逐渐淡出', () => {
+test('长路径只生成局部实心箭头，并让远端逐渐淡出', () => {
   const route: Vec3Tuple[] = [
     [0, 0, 0],
     [0, 0, -20],
@@ -16,7 +13,7 @@ test('长路径只生成局部 V 形路标，并让远端逐渐淡出', () => {
   assert.ok(geometry);
   assert.ok(geometry.markerCount >= 6);
   assert.ok(geometry.markerCount <= 8);
-  assert.equal(geometry.indices.length, geometry.markerCount * 12);
+  assert.equal(geometry.indices.length, geometry.markerCount * 30);
 
   for (let index = 1; index < geometry.positions.length; index += 3) {
     const y = geometry.positions[index];
@@ -26,8 +23,8 @@ test('长路径只生成局部 V 形路标，并让远端逐渐淡出', () => {
 
   const markerOpacities: number[] = [];
   for (let marker = 0; marker < geometry.markerCount; marker += 1) {
-    const glowAlphaIndex = marker * 32 + 3;
-    const coreAlphaIndex = marker * 32 + 19;
+    const glowAlphaIndex = marker * 56 + 3;
+    const coreAlphaIndex = marker * 56 + 31;
     assert.ok(
       (geometry.colors[coreAlphaIndex] ?? 0) >
         (geometry.colors[glowAlphaIndex] ?? 0),
@@ -39,42 +36,45 @@ test('长路径只生成局部 V 形路标，并让远端逐渐淡出', () => {
   assert.ok(markerOpacities.at(-1)! >= 0.08);
 });
 
-test('玩家沿路径前进重建路标时，V 形箭头仍锚定在原来的世界位置', () => {
+test('玩家移动后从当前位置重规划，箭头相位仍与原路线连续', () => {
   const before = buildGroundPathGuideGeometry([
     [0, 0, 0],
     [0, 0, -20],
   ]);
   const after = buildGroundPathGuideGeometry(
     [
-      [0, 0, 0],
+      [0, 0, -0.55],
       [0, 0, -20],
     ],
     0.55,
   );
+  const backedUp = buildGroundPathGuideGeometry([
+    [0, 0, 0],
+    [0, 0, -20],
+  ]);
 
   assert.ok(before);
   assert.ok(after);
-  const firstCoreTipIndex = 12;
+  assert.ok(backedUp);
+  const firstCoreTipIndex = 21;
   for (const componentOffset of [0, 1, 2]) {
-    assert.ok(
-      Math.abs(
-        before.positions[firstCoreTipIndex + componentOffset]! -
-          after.positions[firstCoreTipIndex + componentOffset]!,
-      ) < 1e-6,
-    );
+    const original = before.positions[firstCoreTipIndex + componentOffset]!;
+    assert.ok(Math.abs(original - after.positions[firstCoreTipIndex + componentOffset]!) < 1e-6);
+    assert.ok(Math.abs(original - backedUp.positions[firstCoreTipIndex + componentOffset]!) < 1e-6);
   }
 });
 
-test('按路线投影计算玩家进度，并遵守回退窗口', () => {
-  const route: Vec3Tuple[] = [
+test('方向箭头由实心箭头头部和窄箭杆组成', () => {
+  const geometry = buildGroundPathGuideGeometry([
     [0, 0, 0],
-    [0, 0, -5],
-    [5, 0, -5],
-  ];
+    [0, 0, -2],
+  ]);
 
-  assert.equal(getGroundPathProgress(route, [0, 0, -2]), 2);
-  assert.equal(getGroundPathProgress(route, [0, 0, -1], 2, 4), 2);
-  assert.equal(getGroundPathProgress(route, [2, 0, -5], 3, 7), 7);
+  assert.ok(geometry);
+  assert.equal(geometry.markerCount, 1);
+  assert.equal(geometry.positions.length, 14 * 3);
+  assert.equal(geometry.indices.length, 30);
+  assert.equal(geometry.colors.length, 14 * 4);
 });
 
 test('过短路径不会生成地面路标', () => {
