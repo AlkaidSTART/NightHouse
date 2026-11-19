@@ -216,7 +216,7 @@ export function CluePanel({
         <footer className="clue-footer">
           <span>
             <span className="hud-key">↑↓</span> 切换 ·{' '}
-            <span className="hud-key">J</span> / Esc 收起
+            <span className="hud-key">J</span> 收起
           </span>
         </footer>
       </section>

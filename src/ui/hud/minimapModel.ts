@@ -5,8 +5,8 @@ import type {
   SceneRegion,
 } from '../../shared/types/scene';
 import type { Vec3Tuple } from '../../shared/types/save';
-import { villaNavigation } from '../../content/scenes/villaNavigation';
-import { findGroundRoute } from '../../game/navigation/groundRoute';
+import { villaNavigation } from '../../content/scenes/villaNavigation.ts';
+import { findGroundRoute } from '../../game/navigation/groundRoute.ts';
 
 export type MinimapLevelId = 'outdoor' | 'floor1' | 'floor2';
 

@@ -191,7 +191,9 @@ export function PuzzlePanel({
         </div>
 
         <footer className="inspect-footer">
-          <span className="puzzle-footer-hint">Esc 收起</span>
+          <span className="puzzle-footer-hint">
+            <span className="hud-key">E</span> 收起
+          </span>
         </footer>
       </article>
     </div>

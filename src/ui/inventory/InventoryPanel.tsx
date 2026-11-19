@@ -177,7 +177,7 @@ export function InventoryPanel({
 
         <footer className="clue-footer">
           <span>
-            <span className="hud-key">B</span> / Esc 收起
+            <span className="hud-key">B</span> / <span className="hud-key">I</span> 收起
           </span>
         </footer>
       </section>

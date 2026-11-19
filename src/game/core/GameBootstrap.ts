@@ -146,7 +146,6 @@ export class GameBootstrap {
   private journalOpen = false;
   private inventoryOpen = false;
   private activePuzzle: 'clock' | 'safe' | null = null;
-  private suppressNextPointerLockError = false;
   private endingShown = false;
   private pendingEnding = false;
   private destroyed = false;
@@ -908,6 +907,8 @@ export class GameBootstrap {
     }
 
     this.player.update(dt);
+    // 天穹跟随最终视点，避免远裁剪面切开偏离相机的球面而露出深色背景。
+    this.nightSky.update();
     this.hands.update(dt);
     this.sceneManager.update(dt);
     // 门在 UI 打开时也继续合上，但不能把站在门边的玩家夹住。
@@ -1043,7 +1044,6 @@ export class GameBootstrap {
     }
     if (!paused) {
       this.hasEntered = true;
-      this.suppressNextPointerLockError = false;
     }
     this.player.setPaused(paused);
     this.events.emit('pause.changed', { paused });
@@ -1067,10 +1067,6 @@ export class GameBootstrap {
       });
       return;
     }
-    if (this.suppressNextPointerLockError) {
-      this.suppressNextPointerLockError = false;
-      return;
-    }
     this.events.emit('pause.changed', { paused: true });
     this.events.emit('game.error', {
       message: '无法锁定鼠标，请点击继续游戏后重试。',
@@ -1082,22 +1078,15 @@ export class GameBootstrap {
       return;
     }
     if (this.activePuzzle) {
-      if (!event.repeat && event.code === 'Escape') {
+      if (!event.repeat && event.code === 'KeyE') {
         event.preventDefault();
-        this.suppressNextPointerLockError = true;
         this.closePuzzle();
       }
       return;
     }
     if (this.journalOpen) {
-      if (
-        !event.repeat &&
-        (event.code === 'Escape' || event.code === 'KeyJ')
-      ) {
+      if (!event.repeat && event.code === 'KeyJ') {
         event.preventDefault();
-        if (event.code === 'Escape') {
-          this.suppressNextPointerLockError = true;
-        }
         this.closeClueJournal();
       } else if (
         !event.repeat &&
@@ -1111,14 +1100,9 @@ export class GameBootstrap {
     if (this.inventoryOpen) {
       if (
         !event.repeat &&
-        (event.code === 'Escape' ||
-          event.code === 'KeyB' ||
-          event.code === 'KeyI')
+        (event.code === 'KeyB' || event.code === 'KeyI')
       ) {
         event.preventDefault();
-        if (event.code === 'Escape') {
-          this.suppressNextPointerLockError = true;
-        }
         this.closeInventory();
       } else if (!event.repeat && event.code === 'KeyJ') {
         event.preventDefault();
@@ -1127,14 +1111,8 @@ export class GameBootstrap {
       return;
     }
     if (this.inspection.active) {
-      if (
-        !event.repeat &&
-        (event.code === 'Escape' || event.code === 'KeyE')
-      ) {
+      if (!event.repeat && event.code === 'KeyE') {
         event.preventDefault();
-        if (event.code === 'Escape') {
-          this.suppressNextPointerLockError = true;
-        }
         this.closeInspection();
       }
       return;
