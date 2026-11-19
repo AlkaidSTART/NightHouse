@@ -4,6 +4,9 @@ import type {
   SceneDoor,
   SceneRegion,
 } from '../../shared/types/scene';
+import type { Vec3Tuple } from '../../shared/types/save';
+import { villaNavigation } from '../../content/scenes/villaNavigation';
+import { findGroundRoute } from '../../game/navigation/groundRoute';
 
 export type MinimapLevelId = 'outdoor' | 'floor1' | 'floor2';
 
@@ -117,6 +120,32 @@ export function worldToMinimap(
     // 北 = −Z，映射到屏幕上方。
     y: viewport.offsetY + (z - viewport.minZ) * viewport.scale,
   };
+}
+
+/** 返回当前楼层可见的任务路线；跨层时只保留玩家所在层的路段。 */
+export function buildMinimapObjectivePath(
+  playerRegionId: string | null,
+  playerPosition: Vec3Tuple | null,
+  targetRegionId: string | null,
+  level: MinimapLevelId,
+  viewport: MinimapViewport,
+): MinimapPoint[] | null {
+  if (!playerRegionId || !playerPosition || !targetRegionId || playerRegionId === targetRegionId) {
+    return null;
+  }
+  const route = findGroundRoute({
+    graph: villaNavigation,
+    targetRegionId,
+    playerRegionId,
+    playerPosition,
+  });
+  if (!route) {
+    return null;
+  }
+  const points = route
+    .filter((point) => resolveMinimapLevel(null, point[1]) === level)
+    .map((point) => worldToMinimap(viewport, point[0], point[2]));
+  return points.length > 1 ? points : null;
 }
 
 function collectVolumes(

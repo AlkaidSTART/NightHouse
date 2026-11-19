@@ -18,6 +18,10 @@ const BONE_NAMES = [
   'LowerArm.R',
   'Hand.L',
   'Hand.R',
+  'Clavicle.L',
+  'Clavicle.R',
+  'Fingers.L',
+  'Fingers.R',
 ];
 
 function buildMockNpc(name = 'npc_test'): pc.Entity {
@@ -41,11 +45,10 @@ test('NpcGesture 在对话中驱动头部、胸腔与重心微动作', () => {
   const root = buildMockNpc();
   const gesture = new NpcGesture(root, DEFAULT_NPC_GESTURE_PROFILE, {
     reducedMotion: false,
-    animated: false,
   });
 
   for (let i = 0; i < 40; i++) {
-    gesture.update(1 / 60, true, true);
+    gesture.update(1 / 60, 'speak');
   }
 
   const head = root.findByName('Head') as pc.Entity;
@@ -68,30 +71,28 @@ test('NpcGesture 在对话中驱动头部、胸腔与重心微动作', () => {
   gesture.dispose();
 });
 
-test('NpcGesture 的叠加偏移不会跨帧累积', () => {
+test('待机微动作驱动新增锁骨和手指，且与有关键帧的头部共用时不会漂移', () => {
   const root = buildMockNpc();
-  const gesture = new NpcGesture(root, DEFAULT_NPC_GESTURE_PROFILE, {
-    reducedMotion: false,
-    animated: true,
-  });
+  const gesture = new NpcGesture(root, DEFAULT_NPC_GESTURE_PROFILE, { reducedMotion: false });
   const head = root.findByName('Head') as pc.Entity;
+  const joints = ['Clavicle.L', 'Fingers.L', 'Fingers.R']
+    .map((name) => root.findByName(name) as pc.Entity);
+  const maxMagnitudes = joints.map(() => 0);
+  const keyedRotation = new pc.Quat().setFromEulerAngles(0, 20, 0);
 
-  let maxMagnitude = 0;
-  for (let i = 0; i < 120; i++) {
-    // 模拟动画组件每帧先把骨骼重置为动画姿态。
-    head.setLocalRotation(new pc.Quat(0, 0, 0, 1));
-    gesture.update(1 / 60, true, true);
-    maxMagnitude = Math.max(
-      maxMagnitude,
-      rotationMagnitude(head.getLocalRotation()),
-    );
+  for (let i = 0; i < 1200; i++) {
+    // 只有头部有关键帧，新关节保持上一帧的局部旋转。
+    head.setLocalRotation(keyedRotation);
+    gesture.update(1 / 60, 'idle');
+    joints.forEach((bone, index) => {
+      maxMagnitudes[index] = Math.max(maxMagnitudes[index] ?? 0, rotationMagnitude(bone.getLocalRotation()));
+    });
   }
 
-  assert.ok(
-    maxMagnitude < 0.2,
-    `单帧偏移应保持在小动作范围，实际最大 ${maxMagnitude}`,
-  );
-
+  maxMagnitudes.forEach((maximum) => assert.ok(maximum > 1e-3 && maximum < 0.08));
+  gesture.update(1 / 60, 'hidden');
+  joints.forEach((bone) => assert.equal(rotationMagnitude(bone.getLocalRotation()), 0));
+  assert.ok(head.getLocalRotation().equals(keyedRotation));
   gesture.dispose();
 });
 
@@ -103,7 +104,7 @@ test('NpcGesture 尊重减少动态效果设置', () => {
   const head = root.findByName('Head') as pc.Entity;
 
   for (let i = 0; i < 60; i++) {
-    gesture.update(1 / 60, true, true);
+    gesture.update(1 / 60, 'speak');
   }
 
   assert.equal(rotationMagnitude(head.getLocalRotation()), 0);
@@ -111,22 +112,19 @@ test('NpcGesture 尊重减少动态效果设置', () => {
   gesture.dispose();
 });
 
-test('NpcGesture 在对话关闭后回到静息姿态', () => {
+test('NpcGesture 在角色隐藏后还原骨骼姿态', () => {
   const root = buildMockNpc();
   const gesture = new NpcGesture(root, DEFAULT_NPC_GESTURE_PROFILE, {
     reducedMotion: false,
-    animated: false,
   });
   const head = root.findByName('Head') as pc.Entity;
 
   for (let i = 0; i < 40; i++) {
-    gesture.update(1 / 60, true, false);
+    gesture.update(1 / 60, 'listen');
   }
   assert.ok(rotationMagnitude(head.getLocalRotation()) > 1e-4);
 
-  for (let i = 0; i < 120; i++) {
-    gesture.update(0.05, false, false);
-  }
+  gesture.update(0.05, 'hidden');
   assert.ok(
     rotationMagnitude(head.getLocalRotation()) < 1e-6,
     '无动画组件时应手动还原静息旋转',
@@ -139,13 +137,12 @@ test('NpcGesture 在 dispose 后停止写入骨骼', () => {
   const root = buildMockNpc();
   const gesture = new NpcGesture(root, DEFAULT_NPC_GESTURE_PROFILE, {
     reducedMotion: false,
-    animated: false,
   });
   const head = root.findByName('Head') as pc.Entity;
 
   gesture.dispose();
   head.setLocalRotation(new pc.Quat(0, 0, 0, 1));
-  gesture.update(0.05, true, true);
+  gesture.update(0.05, 'speak');
 
   assert.equal(rotationMagnitude(head.getLocalRotation()), 0);
 });
@@ -154,7 +151,7 @@ test('NpcGesture 缺少骨骼时不抛错', () => {
   const root = new pc.Entity('npc_without_bones');
   const gesture = new NpcGesture(root);
 
-  gesture.update(1 / 60, true, true);
+  gesture.update(1 / 60, 'speak');
   gesture.dispose();
   assert.ok(true);
 });

@@ -438,7 +438,7 @@ export class SceneManager {
     retargetDoorSwing(entry.motion, open ? 90 * entry.swing : 0);
   }
 
-  /** 推进门扇与 NPC 对话微动作。由游戏循环每帧调用。 */
+  /** 推进门扇与可见 NPC 的微动作。由游戏循环每帧调用。 */
   update(dt: number): void {
     for (const entry of this.doorPivots.values()) {
       const angle = advanceDoorSwing(entry.motion, dt);
@@ -448,12 +448,10 @@ export class SceneManager {
     }
 
     for (const runtime of this.npcRoles.values()) {
+      const visible = runtime.activeSpotId !== null && runtime.instance?.enabled === true;
       runtime.gesture?.update(
         dt,
-        runtime.talking &&
-          runtime.activeSpotId !== null &&
-          runtime.instance?.enabled === true,
-        runtime.speaking,
+        !visible ? 'hidden' : !runtime.talking ? 'idle' : runtime.speaking ? 'speak' : 'listen',
       );
     }
   }

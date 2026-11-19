@@ -28,18 +28,24 @@ export const DEFAULT_NPC_GESTURE_PROFILE: NpcGestureProfile = {
 const TWO_PI = Math.PI * 2;
 const MAX_STEP = 0.05;
 
+export type NpcGestureMode = 'hidden' | 'idle' | 'listen' | 'speak';
+
 type BoneKey =
   | 'hips'
   | 'spine'
   | 'chest'
   | 'neck'
   | 'head'
+  | 'clavicleL'
+  | 'clavicleR'
   | 'upperArmL'
   | 'upperArmR'
   | 'lowerArmL'
   | 'lowerArmR'
   | 'handL'
-  | 'handR';
+  | 'handR'
+  | 'fingersL'
+  | 'fingersR';
 
 const BONE_ENTITY_NAMES: Record<BoneKey, string> = {
   hips: 'Hips',
@@ -47,12 +53,16 @@ const BONE_ENTITY_NAMES: Record<BoneKey, string> = {
   chest: 'Chest',
   neck: 'Neck',
   head: 'Head',
+  clavicleL: 'Clavicle.L',
+  clavicleR: 'Clavicle.R',
   upperArmL: 'UpperArm.L',
   upperArmR: 'UpperArm.R',
   lowerArmL: 'LowerArm.L',
   lowerArmR: 'LowerArm.R',
   handL: 'Hand.L',
   handR: 'Hand.R',
+  fingersL: 'Fingers.L',
+  fingersR: 'Fingers.R',
 };
 
 const BONE_KEYS = Object.keys(BONE_ENTITY_NAMES) as BoneKey[];
@@ -101,7 +111,9 @@ const GESTURE_DURATION: Record<GestureKind, number> = {
 
 interface BonePose {
   entity: pc.Entity;
-  restRotation: pc.Quat;
+  baseRotation: pc.Quat;
+  appliedRotation: pc.Quat;
+  hasOffset: boolean;
 }
 
 interface BoneOffset {
@@ -138,20 +150,10 @@ function damp(current: number, target: number, lambda: number, dt: number): numb
   return target + (current - target) * Math.exp(-lambda * dt);
 }
 
-/**
- * 在角色已有 Idle/Talk 动画之上叠加程序化骨骼微动作。
- *
- * 动画组件每个 `animationUpdate` 会先写入骨骼的局部姿态，而游戏循环的
- * `update` 在它之后执行，所以这里读取到的局部旋转就是本帧动画结果；
- * 叠加偏移不会跨帧累积。没有动画组件时退回静息姿态，避免骨骼漂移。
- *
- * 局部轴与 Blender 烘焙的骨架一致：X 为点头/前后俯仰，Y 为左右偏航，
- * Z 为左右侧倾；手臂只做很小的局部旋转，避免与 Talk 动作抢主导。
- */
+/** 在 Idle/Talk 播放后叠加轻微骨骼动作，新关节也能在没有动画轨道时工作。 */
 export class NpcGesture {
   private readonly profile: NpcGestureProfile;
   private readonly reducedMotion: boolean;
-  private readonly animated: boolean;
   private readonly bones = new Map<BoneKey, BonePose>();
   private readonly offsets: Record<BoneKey, BoneOffset> = {
     hips: { pitch: 0, yaw: 0, tilt: 0 },
@@ -159,23 +161,25 @@ export class NpcGesture {
     chest: { pitch: 0, yaw: 0, tilt: 0 },
     neck: { pitch: 0, yaw: 0, tilt: 0 },
     head: { pitch: 0, yaw: 0, tilt: 0 },
+    clavicleL: { pitch: 0, yaw: 0, tilt: 0 },
+    clavicleR: { pitch: 0, yaw: 0, tilt: 0 },
     upperArmL: { pitch: 0, yaw: 0, tilt: 0 },
     upperArmR: { pitch: 0, yaw: 0, tilt: 0 },
     lowerArmL: { pitch: 0, yaw: 0, tilt: 0 },
     lowerArmR: { pitch: 0, yaw: 0, tilt: 0 },
     handL: { pitch: 0, yaw: 0, tilt: 0 },
     handR: { pitch: 0, yaw: 0, tilt: 0 },
+    fingersL: { pitch: 0, yaw: 0, tilt: 0 },
+    fingersR: { pitch: 0, yaw: 0, tilt: 0 },
   };
 
   private readonly deltaQuat = new pc.Quat();
-  private readonly outQuat = new pc.Quat();
-  private readonly baseQuat = new pc.Quat();
 
   private elapsed = 0;
   private activation = 0;
   private wasActive = false;
-  private applied = false;
-  private seeded = 0x9e3779b9;
+  private wasVisible = false;
+  private speechWeight = 0;
   private seed = 0x9e3779b9;
   private nextGestureAt = 0;
   private gesture: ActiveGesture | null = null;
@@ -185,36 +189,43 @@ export class NpcGesture {
   constructor(
     root: pc.Entity,
     profile: NpcGestureProfile = DEFAULT_NPC_GESTURE_PROFILE,
-    options: { reducedMotion?: boolean; animated?: boolean } = {},
+    options: { reducedMotion?: boolean } = {},
   ) {
     this.profile = profile;
     this.reducedMotion = options.reducedMotion ?? prefersReducedMotion();
-    // 默认由实例是否带动画组件决定；测试可显式注入，模拟动画每帧重置骨骼。
-    this.animated = options.animated ?? root.anim !== undefined;
-    // 用角色名派生稳定种子，让同一个角色每次对话的微动作顺序一致。
+    // 用角色名派生稳定种子，错开不同角色的小动作。
     for (let i = 0; i < root.name.length; i++) {
-      this.seeded = (this.seeded * 31 + root.name.charCodeAt(i)) >>> 0;
+      this.seed = (this.seed * 31 + root.name.charCodeAt(i)) >>> 0;
     }
-    this.seed = this.seeded;
 
     for (const key of BONE_KEYS) {
       const node = root.findByName(BONE_ENTITY_NAMES[key]);
       if (node instanceof pc.Entity) {
         this.bones.set(key, {
           entity: node,
-          restRotation: node.getLocalRotation().clone(),
+          baseRotation: node.getLocalRotation().clone(),
+          appliedRotation: new pc.Quat(),
+          hasOffset: false,
         });
       }
     }
   }
 
-  /**
-   * @param dt 帧间隔。
-   * @param active 是否处于对话中；关闭对话后会自动淡出。
-   * @param speaking 当前是否轮到 NPC 说话；false 时按倾听状态处理。
-   */
-  update(dt: number, active: boolean, speaking: boolean): void {
+  update(dt: number, mode: NpcGestureMode): void {
     if (this.disposed || this.reducedMotion || this.bones.size === 0) {
+      return;
+    }
+
+    if (mode === 'hidden') {
+      if (this.wasVisible) {
+        this.restoreBones();
+        this.activation = 0;
+        this.speechWeight = 0;
+        this.wasActive = false;
+        this.gesture = null;
+        this.gestureEnvelope = 0;
+        this.wasVisible = false;
+      }
       return;
     }
 
@@ -223,26 +234,23 @@ export class NpcGesture {
       return;
     }
 
+    this.wasVisible = true;
+    const active = mode === 'listen' || mode === 'speak';
+    const speaking = mode === 'speak';
     if (active && !this.wasActive) {
-      this.resetMotion();
+      this.nextGestureAt = this.elapsed + 0.8 + this.random() * 1.8;
     }
     this.wasActive = active;
 
     this.activation = damp(this.activation, active ? 1 : 0, active ? 5 : 3, step);
-    if (this.activation < 0.001) {
-      if (this.applied) {
-        this.restoreBones();
-      }
-      return;
-    }
-
+    this.speechWeight = damp(this.speechWeight, speaking ? 1 : 0, speaking ? 12 : 8, step);
     this.elapsed += step;
-    this.updateGesture(step, speaking);
+    this.updateGesture(step, active, speaking);
 
     const profile = this.profile;
     const t = this.elapsed * profile.tempo;
     const phase = profile.phase;
-    const energy = profile.energy;
+    const energy = profile.energy * (0.35 + this.activation * 0.65);
     const breath = Math.sin(t * TWO_PI * 0.22 + phase);
     const sway = Math.sin(t * TWO_PI * 0.05 + phase * 0.8);
     const swayAlt = Math.cos(t * TWO_PI * 0.043 + phase * 1.4);
@@ -276,17 +284,13 @@ export class NpcGesture {
     hips.yaw = sway * 0.9 * profile.weightShift * energy;
     hips.tilt = swayAlt * 0.55 * profile.weightShift * energy;
 
-    let armSwing = 0;
-    if (speaking) {
-      const speech = this.speechEnvelope(t) * profile.speech * energy;
-      head.pitch += speech * 1.4;
-      head.yaw += Math.sin(t * TWO_PI * 0.73 + phase) * 0.5 * speech;
-      neck.pitch += speech * 0.3;
-      chest.pitch += speech * 0.35;
-      armSwing += speech * 1.1 * profile.hands;
-    }
-    this.applyGestureEnvelope();
-    armSwing += this.gestureEnvelope * 1.0 * profile.hands;
+    const speech = this.speechEnvelope(t) * profile.speech * energy * this.speechWeight;
+    head.pitch += speech * 1.4;
+    head.yaw += Math.sin(t * TWO_PI * 0.73 + phase) * 0.5 * speech;
+    neck.pitch += speech * 0.3;
+    chest.pitch += speech * 0.35;
+    this.applyGestureEnvelope(this.activation);
+    const armSwing = (speech * 1.1 + this.gestureEnvelope * this.activation) * profile.hands;
 
     this.offsets.upperArmL.pitch = armSwing * 0.5;
     this.offsets.upperArmL.tilt = armSwing * 0.2;
@@ -294,11 +298,25 @@ export class NpcGesture {
     this.offsets.upperArmR.tilt = armSwing * 0.15;
     this.offsets.lowerArmL.pitch = armSwing * 0.75;
     this.offsets.lowerArmR.pitch = armSwing * 0.55;
-    this.offsets.handL.pitch = armSwing * 0.9;
-    this.offsets.handR.pitch = armSwing * 0.7;
+    // 两侧错开呼吸、松手和开口时的动作，让肩线和手部不会同时重复同一节奏。
+    const shrug = this.gesture?.kind === 'shoulder-shift'
+      ? this.gestureEnvelope * this.activation
+      : 0;
+    this.offsets.clavicleL.tilt = (breath * 0.48 + sway * 0.3) * profile.energy + speech * 0.65 + shrug;
+    this.offsets.clavicleR.tilt = -(breath * 0.38 + swayAlt * 0.28) * profile.energy - speech * 0.35;
+    this.offsets.clavicleL.yaw = -swayAlt * 0.45 * energy - shrug * 0.65;
+    this.offsets.clavicleR.yaw = sway * 0.45 * energy;
 
-    this.applyOffsets(this.activation);
-    this.applied = true;
+    const releaseL = smoothstep(0.4, 0.95, Math.sin(t * TWO_PI * 0.19 + phase));
+    const releaseR = smoothstep(0.4, 0.95, Math.sin(t * TWO_PI * 0.157 + phase + 2.4));
+    this.offsets.handL.pitch = armSwing * 0.9 + releaseL * 0.8 * profile.hands;
+    this.offsets.handR.pitch = armSwing * 0.7 + releaseR * 0.8 * profile.hands;
+    this.offsets.handL.yaw = -releaseL * 0.65 * profile.hands;
+    this.offsets.handR.yaw = releaseR * 0.65 * profile.hands;
+    this.offsets.fingersL.pitch = (releaseL * 3.2 + speech * 3.1 + armSwing * 0.9) * profile.hands;
+    this.offsets.fingersR.pitch = (releaseR * 3.2 + speech * 2.1 + armSwing * 0.7) * profile.hands;
+
+    this.applyOffsets();
   }
 
   dispose(): void {
@@ -306,16 +324,8 @@ export class NpcGesture {
       return;
     }
     this.disposed = true;
+    this.restoreBones();
     this.bones.clear();
-  }
-
-  private resetMotion(): void {
-    this.elapsed = 0;
-    this.activation = 0;
-    this.seed = this.seeded;
-    this.gesture = null;
-    this.gestureEnvelope = 0;
-    this.nextGestureAt = 0.8 + this.random() * 1.8;
   }
 
   private random(): number {
@@ -323,7 +333,7 @@ export class NpcGesture {
     return this.seed / 0x100000000;
   }
 
-  private updateGesture(step: number, speaking: boolean): void {
+  private updateGesture(step: number, active: boolean, speaking: boolean): void {
     const gesture = this.gesture;
     if (gesture) {
       gesture.elapsed += step;
@@ -339,7 +349,7 @@ export class NpcGesture {
     }
 
     this.gestureEnvelope = 0;
-    if (this.elapsed < this.nextGestureAt) {
+    if (!active || this.elapsed < this.nextGestureAt) {
       return;
     }
 
@@ -366,8 +376,8 @@ export class NpcGesture {
     return (0.55 * syllable + 0.45 * syllableAlt) * phrase;
   }
 
-  private applyGestureEnvelope(): void {
-    const amount = this.gestureEnvelope;
+  private applyGestureEnvelope(weight: number): void {
+    const amount = this.gestureEnvelope * weight;
     if (amount <= 0) {
       return;
     }
@@ -434,38 +444,35 @@ export class NpcGesture {
     }
   }
 
-  private applyOffsets(weight: number): void {
-    for (const key of BONE_KEYS) {
-      const bone = this.bones.get(key);
-      if (!bone) {
-        continue;
-      }
+  private applyOffsets(): void {
+    for (const [key, bone] of this.bones) {
       const offset = this.offsets[key];
+      const rotation = bone.entity.getLocalRotation();
+      // PlayCanvas 只刷新有轨道的骨骼。未被刷新时沿用上一帧的基础姿态，避免偏移累积。
+      if (!bone.hasOffset || !rotation.equals(bone.appliedRotation)) {
+        bone.baseRotation.copy(rotation);
+      }
       if (offset.pitch === 0 && offset.yaw === 0 && offset.tilt === 0) {
+        this.restoreBone(bone);
         continue;
       }
-      this.baseQuat.copy(
-        this.animated ? bone.entity.getLocalRotation() : bone.restRotation,
-      );
-      this.deltaQuat.setFromEulerAngles(
-        offset.pitch * weight,
-        offset.yaw * weight,
-        offset.tilt * weight,
-      );
-      this.outQuat.mul2(this.baseQuat, this.deltaQuat);
-      bone.entity.setLocalRotation(this.outQuat);
+      this.deltaQuat.setFromEulerAngles(offset.pitch, offset.yaw, offset.tilt);
+      bone.appliedRotation.mul2(bone.baseRotation, this.deltaQuat);
+      bone.entity.setLocalRotation(bone.appliedRotation);
+      bone.hasOffset = true;
     }
   }
 
+  private restoreBone(bone: BonePose): void {
+    if (bone.hasOffset && bone.entity.getLocalRotation().equals(bone.appliedRotation)) {
+      bone.entity.setLocalRotation(bone.baseRotation);
+    }
+    bone.hasOffset = false;
+  }
+
   private restoreBones(): void {
-    if (this.animated) {
-      // 有动画组件时下一帧会用动画姿态覆盖，不需要手动还原。
-      this.applied = false;
-      return;
-    }
     for (const bone of this.bones.values()) {
-      bone.entity.setLocalRotation(bone.restRotation);
+      this.restoreBone(bone);
     }
-    this.applied = false;
   }
 }

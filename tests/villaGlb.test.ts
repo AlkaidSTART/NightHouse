@@ -271,13 +271,16 @@ test('导出的 NPC 角色 GLB：文件齐全、身高符合设定且面数与�
 
     // 霍尔太太的长裙由独立骨骼控制，避免随两条腿直接拉扯。
     const housekeeper = entry.id === 'npc_housekeeper';
-    const jointCount = housekeeper ? 19 : 17;
+    const jointCount = housekeeper ? 23 : 21;
     assert.equal(exported.json.skins?.length, 1, `${modelUrl} 缺少蒙皮`);
     const joints = exported.json.skins?.[0]?.joints;
     assert.equal(joints?.length, jointCount, `${modelUrl} 骨骼数不符`);
+    const jointNames = new Set(joints?.map((index) => exported.json.nodes[index]?.name));
+    for (const name of ['Clavicle.L', 'Clavicle.R', 'Fingers.L', 'Fingers.R']) {
+      assert.ok(jointNames.has(name), `${modelUrl} 缺少 ${name} 骨骼`);
+    }
     if (housekeeper) {
-      const jointNames = joints?.map((index) => exported.json.nodes[index]?.name);
-      assert.ok(jointNames?.includes('Skirt.L') && jointNames.includes('Skirt.R'));
+      assert.ok(jointNames.has('Skirt.L') && jointNames.has('Skirt.R'));
     }
     for (const mesh of exported.json.meshes) {
       for (const primitive of mesh.primitives) {
@@ -292,8 +295,10 @@ test('导出的 NPC 角色 GLB：文件齐全、身高符合设定且面数与�
       .map((animation) => animation.name)
       .sort();
     assert.deepEqual(animationNames, housekeeper ? ['Idle', 'Talk', 'Walk'] : ['Idle', 'Talk'], `${modelUrl} 动作不齐`);
+    // Idle/Talk 继续驱动原有骨架；肩和手指新骨骼由每帧程序化微动作驱动。
+    const animatedJointCount = jointCount - 4;
     for (const animation of exported.json.animations ?? []) {
-      assert.ok(animation.channels.length >= jointCount * 3, `${modelUrl} 动作通道不足`);
+      assert.ok(animation.channels.length >= animatedJointCount * 3, `${modelUrl} 动作通道不足`);
     }
 
     let minY = Infinity;

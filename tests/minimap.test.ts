@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { villaGreybox } from '../src/content/scenes/villaGreybox.ts';
 import {
+  buildMinimapObjectivePath,
   buildMinimapLevel,
   MINIMAP_SIZE,
   resolveMinimapLevel,
@@ -118,4 +119,43 @@ test('世界坐标映射到画布范围内，且北方向上', () => {
   );
   assert.ok(center.x > 0 && center.x < MINIMAP_SIZE);
   assert.ok(center.y > 0 && center.y < MINIMAP_SIZE);
+});
+
+test('小地图显示当前楼层的导航路径，到达目标后隐藏路径', () => {
+  const model = buildMinimapLevel(villaGreybox, 'floor1');
+  const path = buildMinimapObjectivePath(
+    'villa_hall',
+    [0, 0, 2.5],
+    'villa_dining',
+    model.id,
+    model.viewport,
+  );
+  assert.ok(path);
+  assert.ok(path.length > 2, '路径应包含门厅与餐厅门口等导航点');
+  assert.deepEqual(path[0], worldToMinimap(model.viewport, 0, 2.5));
+
+  assert.equal(
+    buildMinimapObjectivePath(
+      'villa_dining',
+      [7.5, 0, 3.5],
+      'villa_dining',
+      model.id,
+      model.viewport,
+    ),
+    null,
+  );
+});
+
+test('跨层导航只显示当前楼层路径段', () => {
+  const model = buildMinimapLevel(villaGreybox, 'floor1');
+  const path = buildMinimapObjectivePath(
+    'villa_hall',
+    [0, 0, 2.5],
+    'villa_bathroom',
+    model.id,
+    model.viewport,
+  );
+  assert.ok(path);
+  assert.ok(path.length > 1);
+  assert.ok(path.every((point) => Number.isFinite(point.x) && Number.isFinite(point.y)));
 });

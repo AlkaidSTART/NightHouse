@@ -3,7 +3,6 @@ import { villaNavigation } from '../../content/scenes/villaNavigation.ts';
 import type { Vec3Tuple } from '../../shared/types/save';
 import {
   buildGroundPathGuideGeometry,
-  GROUND_PATH_MARKER_SPACING,
 } from './groundPathGuideGeometry.ts';
 import { findGroundRoute } from './groundRoute.ts';
 
@@ -11,11 +10,7 @@ const PATH_COLOR = new pc.Color(1, 0.88, 0.44);
 const REBUILD_DISTANCE = 0.65;
 
 /**
- * 任务目标的动态地面路标。玩家移动约 0.6 米后，从当前脚底重新规划到目标的
- * 路径；箭头间距相位连续，直线路段不会因重算路径而整串滑动。
- *
- * 视觉上只显示玩家附近的一小段低亮路标，并用顶点透明度向远处衰减；
- * 这比整条高亮箭头更接近开放世界导航，也能减少地面闪烁和视觉疲劳。
+ * 任务目标的动态地面圆点。圆点只提示下一段行进方向，完整路径交给小地图展示。
  */
 export class GroundPathGuide {
   private readonly entity: pc.Entity;
@@ -26,8 +21,6 @@ export class GroundPathGuide {
   private lastBuildRegion: string | null = null;
   private lastPlayerPosition: Vec3Tuple | null = null;
   private distanceSinceRebuild = 0;
-  private routeDistanceTravelled = 0;
-  private routeDirection: Vec3Tuple = [0, 0, 0];
   private hasAttemptedRoute = false;
   private hasGeometry = false;
 
@@ -83,8 +76,6 @@ export class GroundPathGuide {
       this.lastBuildTarget = targetRegionId;
       this.lastBuildRegion = playerRegionId;
       this.distanceSinceRebuild = 0;
-      this.routeDistanceTravelled = 0;
-      this.routeDirection = [0, 0, 0];
       this.lastPlayerPosition = [
         playerPosition[0],
         playerPosition[1],
@@ -95,11 +86,6 @@ export class GroundPathGuide {
       const movedY = playerPosition[1] - this.lastPlayerPosition[1];
       const movedZ = playerPosition[2] - this.lastPlayerPosition[2];
       this.distanceSinceRebuild += Math.hypot(movedX, movedY, movedZ);
-      // Signed progress keeps the arrow rhythm steady when the player backs up.
-      this.routeDistanceTravelled +=
-        movedX * this.routeDirection[0] +
-        movedY * this.routeDirection[1] +
-        movedZ * this.routeDirection[2];
       this.lastPlayerPosition[0] = playerPosition[0];
       this.lastPlayerPosition[1] = playerPosition[1];
       this.lastPlayerPosition[2] = playerPosition[2];
@@ -117,29 +103,10 @@ export class GroundPathGuide {
         playerRegionId,
         playerPosition,
       });
-      const routePhase =
-        ((this.routeDistanceTravelled % GROUND_PATH_MARKER_SPACING) +
-          GROUND_PATH_MARKER_SPACING) %
-        GROUND_PATH_MARKER_SPACING;
-      if (!route || !this.buildMesh(route, routePhase)) {
+      if (!route || !this.buildMesh(route)) {
         this.hideGeometry();
         this.distanceSinceRebuild = 0;
         return;
-      }
-      const nextPoint = route[1];
-      if (nextPoint) {
-        const directionLength = Math.hypot(
-          nextPoint[0] - playerPosition[0],
-          nextPoint[1] - playerPosition[1],
-          nextPoint[2] - playerPosition[2],
-        );
-        if (directionLength > 1e-6) {
-          this.routeDirection = [
-            (nextPoint[0] - playerPosition[0]) / directionLength,
-            (nextPoint[1] - playerPosition[1]) / directionLength,
-            (nextPoint[2] - playerPosition[2]) / directionLength,
-          ];
-        }
       }
       this.distanceSinceRebuild = 0;
     }
@@ -154,8 +121,6 @@ export class GroundPathGuide {
     this.lastBuildRegion = null;
     this.lastPlayerPosition = null;
     this.distanceSinceRebuild = 0;
-    this.routeDistanceTravelled = 0;
-    this.routeDirection = [0, 0, 0];
     this.hasAttemptedRoute = false;
   }
 
@@ -179,8 +144,8 @@ export class GroundPathGuide {
     this.setVisible(false);
   }
 
-  private buildMesh(route: readonly Vec3Tuple[], routePhase: number): boolean {
-    const geometry = buildGroundPathGuideGeometry(route, routePhase);
+  private buildMesh(route: readonly Vec3Tuple[]): boolean {
+    const geometry = buildGroundPathGuideGeometry(route);
     if (!geometry) {
       return false;
     }

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { villaGreybox } from '../../content/scenes/villaGreybox';
 import type { Vec3Tuple } from '../../shared/types/save';
 import {
+  buildMinimapObjectivePath,
   buildMinimapLevel,
   resolveMinimapLevel,
   worldToMinimap,
@@ -51,6 +52,16 @@ export function Minimap({
     }
     return worldToMinimap(model.viewport, center[0], center[2]);
   }, [objectiveRegionId, model]);
+
+  const objectivePath = useMemo(() => {
+    return buildMinimapObjectivePath(
+      regionId,
+      player?.position ?? null,
+      objectiveRegionId ?? null,
+      model.id,
+      model.viewport,
+    );
+  }, [model, objectiveRegionId, player, regionId]);
 
   return (
     <div className="hud-minimap">
@@ -110,16 +121,21 @@ export function Minimap({
             y2={door.y2}
           />
         ))}
+        {objectivePath && (
+          <polyline
+            className="minimap-objective-path"
+            points={objectivePath
+              .map((point) => `${point.x.toFixed(2)},${point.y.toFixed(2)}`)
+              .join(' ')}
+          />
+        )}
         {objectiveMarker && (
           <g
             className="minimap-objective"
             transform={`translate(${objectiveMarker.x.toFixed(2)} ${objectiveMarker.y.toFixed(2)})`}
           >
             <circle className="minimap-objective-halo" r={6.5} />
-            <path
-              className="minimap-objective-pin"
-              d="M0 -5 L5 0 L0 5 L-5 0 Z"
-            />
+            <circle className="minimap-objective-dot" r={3.2} />
           </g>
         )}
         {marker && player && (
