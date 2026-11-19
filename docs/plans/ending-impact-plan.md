@@ -125,14 +125,14 @@
 
 以下文档均为制作规格讨论稿，不代表音频已生成或授权已确认。每份文档记录单项声音的剧情用途、制作要求、建议提示词、交付格式、接入时序和来源授权字段。
 
-- [旁白：继承体面](ending-vo-signed.md)
-- [旁白：拒绝签字（强变体）](ending-vo-refused-strong.md)
-- [旁白：拒绝签字（弱变体）](ending-vo-refused-weak.md)
-- [旁白：让她说话](ending-vo-echo.md)
-- [共享旁白：这一夜发生了什么](ending-vo-truth-recap.md)
-- [音效：落地钟十三下](ending-sfx-clock-thirteen.md)
-- [音效：继承体面](ending-sfx-signed.md)
-- [音效：拒绝签字](ending-sfx-refused.md)
+- [旁白：继承体面](audio/ending-vo-signed.md)
+- [旁白：拒绝签字（强变体）](audio/ending-vo-refused-strong.md)
+- [旁白：拒绝签字（弱变体）](audio/ending-vo-refused-weak.md)
+- [旁白：让她说话](audio/ending-vo-echo.md)
+- [共享旁白：这一夜发生了什么](audio/ending-vo-truth-recap.md)
+- [音效：落地钟十三下](audio/ending-sfx-clock-thirteen.md)
+- [音效：继承体面](audio/ending-sfx-signed.md)
+- [音效：拒绝签字](audio/ending-sfx-refused.md)
 
 ### 音频资产
 
@@ -216,7 +216,7 @@
 
 ### 10.1 统一真相回收段的因果顺序
 
-建议固定为以下六步，控制在约 50–85 秒，具体时长以配音试听为准。首版讲述稿与制作要求见[共享旁白文档](ending-vo-truth-recap.md)：
+建议固定为以下六步，控制在约 50–85 秒，具体时长以配音试听为准。首版讲述稿与制作要求见[共享旁白文档](audio/ending-vo-truth-recap.md)：
 
 1. **玩家为什么在这里**：主角是伊芙琳的表亲，迟到一年的警告信把主角带回别墅；午夜前必须决定是否签署遗嘱。
 2. **家族做了什么**：阿什克罗夫特家族为了保险金，故意让“珀耳塞福涅号”沉没；四名船员因此没有回来。

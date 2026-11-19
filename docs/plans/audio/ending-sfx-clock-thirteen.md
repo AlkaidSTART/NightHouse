@@ -4,7 +4,7 @@
 
 ## 用途
 
-为午夜结局与钟声回响提供全作核心签名音。既有资产规格：[SFX_Clock_Chime_Thirteen](../../assets/audio/sfx/sfx_clock_chime_thirteen/README.md)。该资产说明是基础制作参考；本计划额外明确它与结局旁白的混音时序。
+为午夜结局与钟声回响提供全作核心签名音。既有资产规格：[SFX_Clock_Chime_Thirteen](../../../assets/audio/sfx/sfx_clock_chime_thirteen/README.md)。该资产说明是基础制作参考；本计划额外明确它与结局旁白的混音时序。
 
 ## 声音特征
 
