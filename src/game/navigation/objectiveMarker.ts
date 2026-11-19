@@ -15,12 +15,14 @@ export function buildObjectiveMarker(
   else if (x < 10) direction = 'left';
   else if (x > 90) direction = 'right';
   else if (y < 20) direction = 'up';
-  else if (y > 78) direction = 'down';
+  else if (y > 70) direction = 'down';
   return {
     id,
     label,
     x: inFront ? Math.max(10, Math.min(90, x)) : 50,
-    y: inFront ? Math.max(20, Math.min(78, y)) : 78,
+    y: !inFront ? 65
+      : direction === 'left' || direction === 'right' ? 52
+        : Math.max(20, Math.min(70, y)),
     distance,
     direction,
   };

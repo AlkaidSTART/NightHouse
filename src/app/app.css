@@ -815,6 +815,15 @@ button {
   pointer-events: none;
 }
 
+.overlay-guidance {
+  max-width: 420px;
+  margin: 12px auto;
+  color: #c4bba6;
+  font-size: var(--text-sm);
+  line-height: 1.8;
+  text-align: center;
+}
+
 .hud-objective-header {
   display: flex;
   align-items: baseline;
@@ -878,6 +887,42 @@ button {
   color: #b8ad98;
   font-size: var(--text-xs);
   line-height: 1.6;
+}
+
+.clue-investigation {
+  flex: none;
+  margin-bottom: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(224, 180, 126, 0.18);
+  color: #c4bba6;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+}
+
+.clue-investigation summary {
+  cursor: pointer;
+  color: #e0b47e;
+}
+
+.clue-investigation ul {
+  display: grid;
+  gap: 10px;
+  max-height: min(22vh, 180px);
+  overflow-y: auto;
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+
+.clue-investigation-status {
+  margin-left: 12px;
+  color: #96ab9f;
+  font-size: var(--text-xs);
+}
+
+.clue-investigation p {
+  margin: 2px 0 0;
+  color: #a39a86;
+  font-size: var(--text-xs);
 }
 
 .hud-objective-marker {

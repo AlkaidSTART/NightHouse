@@ -16,7 +16,7 @@ export const quests: readonly QuestDefinition[] = [
       {
         id: 'step_arrive',
         objective: '进入别墅门厅',
-        hint: '沿车道走到别墅正门，推门进去。',
+        hint: '用 W / A / S / D 沿车道前进，鼠标控制视角。靠近别墅正门，对准门按 E 推开。',
         locationId: 'villa_hall',
         doneWhen: [[{ flag: 'story.arrived' }]],
       },

@@ -79,16 +79,9 @@ export const objectiveGuides: Readonly<Record<string, readonly ObjectiveGuideDef
   }],
   step_corroborate_safe: [
     {
-      id: 'guide_painting_front',
-      title: '先查看客厅的帆船油画',
-      hint: '前往客厅，调查墙上的帆船油画，寻找与保险箱有关的日期记录。',
-      target: { kind: 'prop', id: 'INT_prop_ship_painting', label: '帆船油画' },
-      until: [{ flag: 'clue.ship_painting' }],
-    },
-    {
       id: 'guide_painting_back',
       title: '查看帆船油画右侧的画框背面',
-      hint: '画框右侧留有缝隙。向右挪一点，对准背面的小标记按 E，记下题字中的日期。',
+      hint: '前往客厅帆船油画右边的贴墙处，再转向画框背面的缝隙。出现 E 提示后调查，记下题字中的日期。',
       target: { kind: 'prop', id: 'INT_prop_ship_painting_back', label: '画框背面' },
       until: [{ flag: 'story.knows_ship_date_roman' }],
     },

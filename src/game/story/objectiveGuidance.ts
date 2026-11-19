@@ -2,6 +2,7 @@ import { objectiveGuides } from '../../content/objectiveGuides.ts';
 import type { SceneDefinition } from '../../shared/types/scene';
 import type { Vec3Tuple } from '../../shared/types/save';
 import { selectNpcStations } from '../scene/npcStations.ts';
+import { NPC_ANCHOR_HEIGHT } from '../interaction/npcAim.ts';
 import { areConditionsMet, type StoryFlags } from './conditions.ts';
 import type { ActiveObjective } from './questProgress';
 
@@ -25,12 +26,12 @@ export function resolveObjectiveGuidance(
   let alternative: string | null = null;
   if (key === 'step_corroborate') {
     // 拿到钟钥匙是主线必经行为，不能单凭它误判玩家选择了修钟。
-    const clockStarted = flags['item.pendulum'] === true ||
-      flags['story.clock_door_open'] === true ||
+    const clockStarted = flags['story.clock_door_open'] === true ||
       flags['story.clock_pendulum_hung'] === true ||
       flags['story.clock_wound'] === true;
     const paintingRead = flags['story.knows_ship_date_roman'] === true;
-    const route = clockStarted && !paintingRead ? 'clock' : 'safe';
+    const route = clockStarted || (flags['item.pendulum'] === true && !paintingRead)
+      ? 'clock' : 'safe';
     key = `step_corroborate_${route}`;
     alternative = route === 'safe'
       ? '另一条调查路线：修复门厅落地钟也能推进。'
@@ -57,7 +58,7 @@ export function resolveObjectiveGuidance(
   let position: Vec3Tuple | null = null;
   if (target) {
     position = [...target.position];
-    if (definition.target.kind === 'npc') position[1] += 1.4;
+    if (definition.target.kind === 'npc') position[1] += NPC_ANCHOR_HEIGHT;
   }
   const location = position ? scene.regions.find((region) => region.volumes.some(
     ({ min, max }) => position[0] >= min[0] && position[0] <= max[0] &&

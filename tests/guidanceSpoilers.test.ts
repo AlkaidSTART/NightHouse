@@ -3,9 +3,13 @@ import { test } from 'node:test';
 import { investigationThreads } from '../src/content/investigationThreads.ts';
 import { clockPuzzleContent, safePuzzleContent } from '../src/content/puzzles.ts';
 import { quests } from '../src/content/quests.ts';
+import { objectiveGuides } from '../src/content/objectiveGuides.ts';
 
 test('玩家可见引导不提前泄露谜题答案', () => {
   const guidance = [
+    ...Object.values(objectiveGuides).flatMap((guides) =>
+      guides.flatMap((guide) => [guide.title, guide.hint]),
+    ),
     ...quests.flatMap((quest) =>
       quest.steps.flatMap((step) => [
         step.objective,

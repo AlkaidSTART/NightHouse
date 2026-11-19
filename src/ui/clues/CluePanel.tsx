@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import type { CluePriority } from '../../shared/types/content';
 import type { ClueJournalView } from '../../shared/types/clueJournal';
 import { useDraggablePanel } from '../shared/useDraggablePanel';
+import { investigationThreads } from '../../content/investigationThreads';
+import { resolveInvestigationThreads } from '../../game/story/investigationProgress';
+import { useStoryStore } from '../../stores/storyStore';
 
 const PRIORITY_LABEL: Record<CluePriority, string> = {
   main: '主线',
@@ -31,6 +34,18 @@ export function CluePanel({
   onClose,
   onSwitchToInventory,
 }: CluePanelProps) {
+  const storyFlags = useStoryStore((state) => state.storyFlags);
+  const investigation = useMemo(() => {
+    const threads = resolveInvestigationThreads(storyFlags, investigationThreads);
+    const firstIncomplete = threads.findIndex((thread) => !thread.complete);
+    return {
+      completed: threads.filter((thread) => thread.complete).length,
+      total: threads.length,
+      visible: threads.filter((thread, index) =>
+        thread.complete || thread.found > 0 || index === firstIncomplete,
+      ),
+    };
+  }, [storyFlags]);
   const [filter, setFilter] = useState<ClueFilter>('all');
   const [selectedId, setSelectedId] = useState<string | null>(() => {
     const firstId = view.entries[0]?.id ?? null;
@@ -131,6 +146,22 @@ export function CluePanel({
             </button>
           </div>
         </header>
+
+        <details className="clue-investigation">
+          <summary>调查进度 · {investigation.completed} / {investigation.total} 条已查明</summary>
+          <ul>
+            {investigation.visible.map((thread) => {
+              const next = thread.steps.find((step) => !step.found);
+              return (
+                <li key={thread.id}>
+                  <span>{thread.title}</span>
+                  <span className="clue-investigation-status">{thread.complete ? '已查明' : `${thread.found} / ${thread.total}`}</span>
+                  {next && <p>{next.label}</p>}
+                </li>
+              );
+            })}
+          </ul>
+        </details>
 
         {view.entries.length === 0 ? (
           <div className="clue-empty">
