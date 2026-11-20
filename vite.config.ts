@@ -8,12 +8,20 @@ import type { Plugin } from 'vite';
  * `public/` 里保留建模和参考资产，但生产环境只发布运行时真正需要的目录。
  * 以后新增运行时资产类型时，需要把对应根目录加到这里。
  */
-const RUNTIME_PUBLIC_ASSET_ROOTS = [
+export const RUNTIME_PUBLIC_ASSET_ROOTS = [
+  'audio',
   'models/characters',
   'renders',
   'scenes',
   'textures',
 ] as const;
+
+/** `public/` 内的相对路径是否会被发布；音频、角色模型等运行时资源必须在白名单内。 */
+export function isRuntimePublicAssetKept(relativePath: string): boolean {
+  return RUNTIME_PUBLIC_ASSET_ROOTS.some(
+    (root) => relativePath === root || relativePath.startsWith(`${root}/`),
+  );
+}
 
 async function prunePublicAssets(outDir: string): Promise<void> {
   const assetsDir = resolve(outDir, 'assets');
