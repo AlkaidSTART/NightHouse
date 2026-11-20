@@ -40,6 +40,9 @@ desktop.ini
 .idea/
 .vscode/*
 !.vscode/extensions.json
+.claude/
+.agents/
+.serena/
 *.swp
 *~
 
@@ -67,6 +70,13 @@ assets/**/tmp/
 **/_renders/
 **/renders/
 **/screenshots/
+**/archive/
+
+# Audio source and sample staging
+assets/audio/**/source/
+assets/audio/**/source_*/
+assets/audio/**/source_plus*/
+assets/audio/**/samples/
 
 # Scripts & tooling
 tools/
