@@ -1,8 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { existsSync, readFileSync } from 'node:fs';
 import { readdir, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { Plugin } from 'vite';
+import { EMPTY_VOICE_CATALOG, parseEndingVoiceCatalog } from './src/content/endingVoiceCatalogData.ts';
 
 /**
  * `public/` 里保留建模和参考资产，但生产环境只发布运行时真正需要的目录。
@@ -21,6 +24,51 @@ export function isRuntimePublicAssetKept(relativePath: string): boolean {
   return RUNTIME_PUBLIC_ASSET_ROOTS.some(
     (root) => relativePath === root || relativePath.startsWith(`${root}/`),
   );
+}
+
+const VOICE_CATALOG_ID = 'virtual:ending-voice-catalog';
+const RESOLVED_VOICE_CATALOG_ID = `\0${VOICE_CATALOG_ID}`;
+
+/**
+ * 结局旁白只在本机可用：`endingVoiceCatalog.local.json` 被忽略，不随公开仓库分发。
+ * 公开构建缺少该文件时注入空目录，结局退化为完整字幕加原创音效。
+ */
+export function endingVoiceCatalogPlugin(): Plugin {
+  const catalogFile = fileURLToPath(new URL('./endingVoiceCatalog.local.json', import.meta.url));
+  const readCatalog = () => {
+    if (!existsSync(catalogFile)) return EMPTY_VOICE_CATALOG;
+    let data: unknown;
+    try {
+      data = JSON.parse(readFileSync(catalogFile, 'utf8'));
+    } catch (error) {
+      throw new Error(`endingVoiceCatalog.local.json 不是合法 JSON：${error instanceof Error ? error.message : String(error)}`, { cause: error });
+    }
+    try {
+      return parseEndingVoiceCatalog(data);
+    } catch (error) {
+      throw new Error(`endingVoiceCatalog.local.json 校验失败：${error instanceof Error ? error.message : String(error)}`, { cause: error });
+    }
+  };
+
+  return {
+    name: 'ending-voice-catalog',
+    resolveId(source) {
+      return source === VOICE_CATALOG_ID ? RESOLVED_VOICE_CATALOG_ID : null;
+    },
+    load(id) {
+      if (id !== RESOLVED_VOICE_CATALOG_ID) return null;
+      return `export default ${JSON.stringify(readCatalog())};`;
+    },
+    configureServer(server) {
+      server.watcher.add(catalogFile);
+      server.watcher.on('change', (file) => {
+        if (resolve(file) !== catalogFile) return;
+        const module = server.moduleGraph.getModuleById(RESOLVED_VOICE_CATALOG_ID);
+        if (module) server.moduleGraph.invalidateModule(module);
+        server.ws.send({ type: 'full-reload' });
+      });
+    },
+  };
 }
 
 async function prunePublicAssets(outDir: string): Promise<void> {
@@ -71,7 +119,7 @@ function prunePublicAssetsPlugin(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), prunePublicAssetsPlugin()],
+  plugins: [react(), endingVoiceCatalogPlugin(), prunePublicAssetsPlugin()],
   server: {
     host: '127.0.0.1',
   },

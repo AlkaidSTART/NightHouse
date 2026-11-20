@@ -1,0 +1,35 @@
+{
+  "verifiedAt": "2026-11-20T07:46:17.397Z",
+  "runId": "long_sample_01",
+  "model": "qwen-audio-3.1-tts-plus",
+  "voice": "longanlingxin_v3.1",
+  "files": [
+    {
+      "file": "assets/audio/vo/vo_ending/samples/long_sample_01/truth_recap_normalized.wav",
+      "sampleRate": 24000,
+      "codec": "pcm_s16le",
+      "channels": 1,
+      "durationSeconds": 90,
+      "bytes": 4320044,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/long_sample_01/truth_recap.ogg",
+      "sampleRate": 48000,
+      "codec": "vorbis",
+      "channels": 1,
+      "durationSeconds": 90,
+      "bytes": 771128,
+      "decode": "passed"
+    }
+  ],
+  "pcmUnchanged": true,
+  "postEncodingLoudness": {
+    "integratedLufs": -20.09,
+    "truePeakDbtp": -2.94,
+    "loudnessRangeLu": 2.5
+  },
+  "manualListening": "pending_user_review",
+  "license": "pending_review",
+  "page": "assets/audio/vo/vo_ending/samples/long_sample_01/index.html"
+}

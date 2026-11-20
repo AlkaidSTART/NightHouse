@@ -1,0 +1,38 @@
+{
+  "model": "qwen-audio-3.1-tts-plus",
+  "voice": "longanlingxin_v3.1",
+  "runId": "long_sample_01",
+  "source": "docs/plans/audio/ending-vo-truth-recap.md",
+  "paragraphs": [
+    "你是伊芙琳的表亲。一年前，她给你寄出一封警告信；信迟到一年，才把你带回阿什克罗夫特宅。此刻，你必须在午夜前决定是否签署遗嘱。",
+    "阿什克罗夫特家族为了保住生意，故意让“珀耳塞福涅号”沉没，骗取保险金。原本，他们打算让船员提前离船；但风暴改变了一切。托马斯·布伦南、休·麦凯、乔纳森·里德和十六岁的塞缪尔·克罗斯，再也没有回来。",
+    "伊芙琳查到了船长留下的日志、家族的账目和保险记录。她没有立刻把材料交出去。她还希望家人亲口承认，于是把写给保险商的举报信烧掉了。她把船员的名字留了下来。",
+    "那年十一月的午夜，她在书房与亚瑟争执。亚瑟抓住了她的手腕。她挣脱时向后跌倒，后脑撞上壁炉石沿，当场死于意外。",
+    "他们没有报警。亚瑟和格雷把她的身体抬到崖边，推入满潮的海里，伪造成失足坠海。霍尔太太看见了，却没有说出她所知道的事。",
+    "现在，这一夜的真相已经拼在你面前：它不只关乎一场沉船，也关乎一个家族如何选择沉默。午夜时，你必须决定：签下遗嘱，拒绝签字，还是把那些被藏起来的名字，当众说出来。"
+  ],
+  "text": "你是伊芙琳的表亲。一年前，她给你寄出一封警告信；信迟到一年，才把你带回阿什克罗夫特宅。此刻，你必须在午夜前决定是否签署遗嘱。\n\n阿什克罗夫特家族为了保住生意，故意让“珀耳塞福涅号”沉没，骗取保险金。原本，他们打算让船员提前离船；但风暴改变了一切。托马斯·布伦南、休·麦凯、乔纳森·里德和十六岁的塞缪尔·克罗斯，再也没有回来。\n\n伊芙琳查到了船长留下的日志、家族的账目和保险记录。她没有立刻把材料交出去。她还希望家人亲口承认，于是把写给保险商的举报信烧掉了。她把船员的名字留了下来。\n\n那年十一月的午夜，她在书房与亚瑟争执。亚瑟抓住了她的手腕。她挣脱时向后跌倒，后脑撞上壁炉石沿，当场死于意外。\n\n他们没有报警。亚瑟和格雷把她的身体抬到崖边，推入满潮的海里，伪造成失足坠海。霍尔太太看见了，却没有说出她所知道的事。\n\n现在，这一夜的真相已经拼在你面前：它不只关乎一场沉船，也关乎一个家族如何选择沉默。午夜时，你必须决定：签下遗嘱，拒绝签字，还是把那些被藏起来的名字，当众说出来。",
+  "charactersIncludingParagraphBreaks": 438,
+  "textSha256": "e5f5b4d4f1de6624e4f10b615e8e35e3408e15be575df0aac2ce65446ae1f0f8",
+  "instruction": "用普通话讲述。统一中性叙述者，冷静、克制、清晰，有温度但不煽情。语速自然偏慢，低混响干声，不要耳语、哭腔、播音腔或恐怖故事腔。引号内对白也由同一叙述者转述，不模仿角色。按因果层次讲清案件，区分意外死亡和事后掩盖；人名清楚，不加评判。减少安慰感，保持客观叙述；按自然段保留呼吸空间，姓名逐个清楚读出。",
+  "status": "generated_pending_listening_and_license_review",
+  "startedAt": "2026-11-20T07:44:43.932Z",
+  "listening": "pending_user_review",
+  "scriptApproval": "long_sample_only_draft_not_final",
+  "license": "pending_review",
+  "output": "assets/audio/vo/vo_ending/samples/long_sample_01/truth_recap.wav",
+  "normalized": "assets/audio/vo/vo_ending/samples/long_sample_01/truth_recap_normalized.wav",
+  "ogg": "assets/audio/vo/vo_ending/samples/long_sample_01/truth_recap.ogg",
+  "nativeSampleRate": 24000,
+  "renderedSampleRate": 48000,
+  "processing": "Preserve provider WAV; correct RIFF/data lengths in separate copy without changing PCM; ffmpeg loudnorm I=-20 TP=-3 LRA=7; OGG Vorbis q5 mono",
+  "generatedAt": "2026-11-20T07:45:07.649Z",
+  "pcmSha256": "c7c139f4f08ddbecec9812d413dae6de119013257a9050825fd6ea40997bc566",
+  "pcmUnchanged": true,
+  "containerCorrection": {
+    "originalRiffLength": 2147483583,
+    "actualRiffLength": 4320036,
+    "originalDataLength": 2147483547,
+    "actualDataLength": 4320000
+  }
+}

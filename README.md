@@ -32,8 +32,11 @@ npm run preview    # 预览构建产物
 - `public/assets/models/characters/`
 - `public/assets/renders/`
 - `public/assets/textures/`
+- `public/assets/audio/`（结局旁白 OGG 只在本机存在，见下）
 
 新增运行时资产类型时，需要同步更新 `vite.config.ts` 中的 `RUNTIME_PUBLIC_ASSET_ROOTS`。
+
+结局旁白由本机 `endingVoiceCatalog.local.json` 注入，文件不进入版本库。公开构建没有该目录时，结局仍显示完整字幕并播放项目原创音效；本地可用 `npm run export:ending-voice-catalog` 从制作记录重建目录。
 
 ## 部署到 Vercel
 
@@ -108,5 +111,5 @@ tests/                      # 碰撞、门锁与灰盒验收测试
 ## 当前迭代缺口
 
 - 正式场景与 GLB 资产替换灰盒
-- 音频系统与设置界面
+- 结局旁白与音效已接入（见 `docs/plans/audio/ending-vo-production.md`）；旁白 OGG 与目录仅本地保留，公开构建使用完整字幕加原创音效。人工听读、真实浏览器实机试听与公开分发授权仍未完成
 - 第三方素材的授权与署名清单（目前仅使用项目内灰盒与占位资源）

@@ -852,6 +852,7 @@ export class GameBootstrap {
     }
 
     this.endingShown = true;
+    this.voiceAudio.stop();
     this.dialoguePointerLockRestore.cancel();
     this.player.setPaused(true);
     this.lastPrompt = null;

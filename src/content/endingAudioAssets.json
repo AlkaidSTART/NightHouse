@@ -1,0 +1,69 @@
+{
+  "effects": [
+    {
+      "id": "clock_standard",
+      "url": "/assets/audio/sfx/ending/clock_standard.ogg",
+      "durationSeconds": 3.6
+    },
+    {
+      "id": "clock_thirteenth",
+      "url": "/assets/audio/sfx/ending/clock_thirteenth.ogg",
+      "durationSeconds": 6
+    },
+    {
+      "id": "clock_twelve",
+      "url": "/assets/audio/sfx/ending/clock_twelve.ogg",
+      "durationSeconds": 18.450021
+    },
+    {
+      "id": "clock_thirteen",
+      "url": "/assets/audio/sfx/ending/clock_thirteen.ogg",
+      "durationSeconds": 22.200021
+    },
+    {
+      "id": "clock_thirteen_distant",
+      "url": "/assets/audio/sfx/ending/clock_thirteen_distant.ogg",
+      "durationSeconds": 22.200021
+    },
+    {
+      "id": "signed_pen",
+      "url": "/assets/audio/sfx/ending/signed_pen.ogg",
+      "durationSeconds": 1.9
+    },
+    {
+      "id": "signed_fold",
+      "url": "/assets/audio/sfx/ending/signed_fold.ogg",
+      "durationSeconds": 1.5
+    },
+    {
+      "id": "refused_evidence",
+      "url": "/assets/audio/sfx/ending/refused_evidence.ogg",
+      "durationSeconds": 2.1
+    },
+    {
+      "id": "refused_stairs",
+      "url": "/assets/audio/sfx/ending/refused_stairs.ogg",
+      "durationSeconds": 4.2
+    },
+    {
+      "id": "refused_latch",
+      "url": "/assets/audio/sfx/ending/refused_latch.ogg",
+      "durationSeconds": 0.9
+    },
+    {
+      "id": "refused_departure",
+      "url": "/assets/audio/sfx/ending/refused_departure.ogg",
+      "durationSeconds": 4.2
+    },
+    {
+      "id": "room_rain",
+      "url": "/assets/audio/sfx/ending/room_rain.ogg",
+      "durationSeconds": 12
+    },
+    {
+      "id": "gramophone_hiss",
+      "url": "/assets/audio/sfx/ending/gramophone_hiss.ogg",
+      "durationSeconds": 12
+    }
+  ]
+}

@@ -297,7 +297,7 @@ export function GameView({
             onUpdateSettings={handleUpdateSettings}
           />
         )}
-      {ending && <EndingOverlay ending={ending} onExit={onExit} />}
+      {ending && <EndingOverlay ending={ending} settings={settings} onExit={onExit} />}
       {dialogue && (
         <DialoguePanel
           view={dialogue}

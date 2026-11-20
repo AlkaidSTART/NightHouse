@@ -3010,8 +3010,35 @@ button {
 }
 
 .ending-panel {
-  width: min(560px, 100%);
+  width: min(680px, 100%);
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
   text-align: left;
+}
+
+.ending-section-title {
+  margin: 18px 0 14px;
+  color: #bcae91;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.ending-playback-status {
+  min-height: 1.5em;
+  color: #bcae91;
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+.ending-body p.ending-current-paragraph {
+  border-left: 2px solid #c8aa6e;
+  padding-left: 12px;
+  color: #fff5df;
+}
+
+.ending-panel .overlay-actions {
+  gap: 8px;
 }
 
 .ending-panel .overlay-eyebrow,

@@ -78,9 +78,21 @@ assets/audio/**/source_*/
 assets/audio/**/source_plus*/
 assets/audio/**/samples/
 
+# Ending narration is local-only until public redistribution rights are confirmed.
+/endingVoiceCatalog.local.json
+/public/assets/audio/vo/ending/
+
 # Scripts & tooling
 tools/
-scripts/
+scripts/*
+!scripts/endingVoPlan.ts
+!scripts/exportEndingVoManifest.ts
+!scripts/exportEndingVoiceCatalog.mjs
+!scripts/synthesizeEndingVo.mjs
+!scripts/normalizeProviderWav.mjs
+!scripts/generateEndingSfx.mjs
+!scripts/verifyEndingAudio.mjs
+!scripts/verifyEndingBrowser.mjs
 *.py
 *.sh
 *.bash

@@ -12,6 +12,9 @@
     "typecheck": "tsc --noEmit",
     "export:glb": "node scripts/exportVillaGlb.ts",
     "export:vo": "node scripts/exportVoManifest.ts",
+    "export:ending-vo": "node scripts/exportEndingVoManifest.ts",
+    "export:ending-voice-catalog": "node --experimental-strip-types scripts/exportEndingVoiceCatalog.mjs",
+    "tts:ending": "node scripts/synthesizeEndingVo.mjs",
     "lint": "eslint .",
     "test": "node --test \"tests/**/*.test.ts\""
   },

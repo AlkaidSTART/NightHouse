@@ -1,0 +1,298 @@
+{
+  "verifiedAt": "2026-11-20T07:24:47.541Z",
+  "model": "qwen-audio-3.1-tts-plus",
+  "runId": "audition_01",
+  "generatedClips": 9,
+  "sourceDurationSeconds": 31.76,
+  "sourceContainerIssue": "Provider WAV files declare placeholder RIFF/data sizes larger than the actual payload. Normalized copies correct only these two fields; original files and PCM samples are preserved.",
+  "listening": "pending_user_review",
+  "license": "pending_review",
+  "sourceRepairs": [
+    {
+      "original": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_cause.wav",
+      "normalized": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_cause_normalized.wav",
+      "originalRiffSize": 2147483583,
+      "actualRiffSize": 238116,
+      "originalDataSize": 2147483547,
+      "actualDataSize": 238080,
+      "pcmSha256": "32fbf741e1cbf808e8c135a7ef1823e6c3c4aba6d9686513ce992a096d25388b",
+      "pcmUnchanged": true
+    },
+    {
+      "original": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_names.wav",
+      "normalized": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_names_normalized.wav",
+      "originalRiffSize": 2147483583,
+      "actualRiffSize": 184356,
+      "originalDataSize": 2147483547,
+      "actualDataSize": 184320,
+      "pcmSha256": "beda608420e91e5bcfed7b291f84a13f09645eca799d11242ae81999c3c834d9",
+      "pcmUnchanged": true
+    },
+    {
+      "original": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_closing.wav",
+      "normalized": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_closing_normalized.wav",
+      "originalRiffSize": 2147483583,
+      "actualRiffSize": 76836,
+      "originalDataSize": 2147483547,
+      "actualDataSize": 76800,
+      "pcmSha256": "663f316b4f0a164c3c67b4cb598e51403e91d78bbebb6f8ad3e03c30b29b28d8",
+      "pcmUnchanged": true
+    },
+    {
+      "original": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_cause.wav",
+      "normalized": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_cause_normalized.wav",
+      "originalRiffSize": 2147483583,
+      "actualRiffSize": 245796,
+      "originalDataSize": 2147483547,
+      "actualDataSize": 245760,
+      "pcmSha256": "0914881746b382dca5ff89779c3c7c8481d160da69fe31b83fd14e7a41b15028",
+      "pcmUnchanged": true
+    },
+    {
+      "original": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_names.wav",
+      "normalized": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_names_normalized.wav",
+      "originalRiffSize": 2147483583,
+      "actualRiffSize": 180516,
+      "originalDataSize": 2147483547,
+      "actualDataSize": 180480,
+      "pcmSha256": "bf7f90d1d2cad391300722375bc674a51079017c7fd2a2eeaa66caa672d69dc6",
+      "pcmUnchanged": true
+    },
+    {
+      "original": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_closing.wav",
+      "normalized": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_closing_normalized.wav",
+      "originalRiffSize": 2147483583,
+      "actualRiffSize": 76836,
+      "originalDataSize": 2147483547,
+      "actualDataSize": 76800,
+      "pcmSha256": "4a174e9c4394c543d1fe0a9204ab6d3c34150115a05c1e2519b71c1a11b34ca0",
+      "pcmUnchanged": true
+    },
+    {
+      "original": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_cause.wav",
+      "normalized": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_cause_normalized.wav",
+      "originalRiffSize": 2147483583,
+      "actualRiffSize": 272676,
+      "originalDataSize": 2147483547,
+      "actualDataSize": 272640,
+      "pcmSha256": "dc805b8bb671b67da9af10521de1a6638871ffe65f268106908965e8dc8be0ec",
+      "pcmUnchanged": true
+    },
+    {
+      "original": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_names.wav",
+      "normalized": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_names_normalized.wav",
+      "originalRiffSize": 2147483583,
+      "actualRiffSize": 184356,
+      "originalDataSize": 2147483547,
+      "actualDataSize": 184320,
+      "pcmSha256": "7f15c836f595e13309d31775eaa10539529ba08cf33b76f492c303ef579ae029",
+      "pcmUnchanged": true
+    },
+    {
+      "original": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_closing.wav",
+      "normalized": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_closing_normalized.wav",
+      "originalRiffSize": 2147483583,
+      "actualRiffSize": 65316,
+      "originalDataSize": 2147483547,
+      "actualDataSize": 65280,
+      "pcmSha256": "562ebe83955a68ae5b9a3b42f89a1bf8ddcda639fa2182574b5b64fe6b368325",
+      "pcmUnchanged": true
+    }
+  ],
+  "files": [
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_cause_normalized.wav",
+      "codec": "pcm_s16le",
+      "sampleRate": 24000,
+      "channels": 1,
+      "durationSeconds": 4.96,
+      "bytes": 238124,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_cause.ogg",
+      "codec": "vorbis",
+      "sampleRate": 48000,
+      "channels": 1,
+      "durationSeconds": 5,
+      "bytes": 45733,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_names_normalized.wav",
+      "codec": "pcm_s16le",
+      "sampleRate": 24000,
+      "channels": 1,
+      "durationSeconds": 3.84,
+      "bytes": 184364,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_names.ogg",
+      "codec": "vorbis",
+      "sampleRate": 48000,
+      "channels": 1,
+      "durationSeconds": 3.842667,
+      "bytes": 36634,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_closing_normalized.wav",
+      "codec": "pcm_s16le",
+      "sampleRate": 24000,
+      "channels": 1,
+      "durationSeconds": 1.6,
+      "bytes": 76844,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_closing.ogg",
+      "codec": "vorbis",
+      "sampleRate": 48000,
+      "channels": 1,
+      "durationSeconds": 1.6,
+      "bytes": 17300,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_cause_normalized.wav",
+      "codec": "pcm_s16le",
+      "sampleRate": 24000,
+      "channels": 1,
+      "durationSeconds": 5.12,
+      "bytes": 245804,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_cause.ogg",
+      "codec": "vorbis",
+      "sampleRate": 48000,
+      "channels": 1,
+      "durationSeconds": 5.2,
+      "bytes": 47554,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_names_normalized.wav",
+      "codec": "pcm_s16le",
+      "sampleRate": 24000,
+      "channels": 1,
+      "durationSeconds": 3.76,
+      "bytes": 180524,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_names.ogg",
+      "codec": "vorbis",
+      "sampleRate": 48000,
+      "channels": 1,
+      "durationSeconds": 3.762667,
+      "bytes": 34516,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_closing_normalized.wav",
+      "codec": "pcm_s16le",
+      "sampleRate": 24000,
+      "channels": 1,
+      "durationSeconds": 1.6,
+      "bytes": 76844,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_closing.ogg",
+      "codec": "vorbis",
+      "sampleRate": 48000,
+      "channels": 1,
+      "durationSeconds": 1.6,
+      "bytes": 16735,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_cause_normalized.wav",
+      "codec": "pcm_s16le",
+      "sampleRate": 24000,
+      "channels": 1,
+      "durationSeconds": 5.68,
+      "bytes": 272684,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_cause.ogg",
+      "codec": "vorbis",
+      "sampleRate": 48000,
+      "channels": 1,
+      "durationSeconds": 5.7,
+      "bytes": 52801,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_names_normalized.wav",
+      "codec": "pcm_s16le",
+      "sampleRate": 24000,
+      "channels": 1,
+      "durationSeconds": 3.84,
+      "bytes": 184364,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_names.ogg",
+      "codec": "vorbis",
+      "sampleRate": 48000,
+      "channels": 1,
+      "durationSeconds": 3.842667,
+      "bytes": 36567,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_closing_normalized.wav",
+      "codec": "pcm_s16le",
+      "sampleRate": 24000,
+      "channels": 1,
+      "durationSeconds": 1.36,
+      "bytes": 65324,
+      "decode": "passed"
+    },
+    {
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_closing.ogg",
+      "codec": "vorbis",
+      "sampleRate": 48000,
+      "channels": 1,
+      "durationSeconds": 1.36,
+      "bytes": 15579,
+      "decode": "passed"
+    }
+  ],
+  "comparisons": [
+    {
+      "voice": "longanlingxin_v3.1",
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/comparison.ogg",
+      "codec": "vorbis",
+      "sampleRate": 48000,
+      "channels": 1,
+      "durationSeconds": 11.642667,
+      "bytes": 87597,
+      "decode": "passed"
+    },
+    {
+      "voice": "longanfengyue_v3.1",
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/comparison.ogg",
+      "codec": "vorbis",
+      "sampleRate": 48000,
+      "channels": 1,
+      "durationSeconds": 11.762667,
+      "bytes": 86677,
+      "decode": "passed"
+    },
+    {
+      "voice": "xunanchuan_v3.1",
+      "file": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/comparison.ogg",
+      "codec": "vorbis",
+      "sampleRate": 48000,
+      "channels": 1,
+      "durationSeconds": 12.102667,
+      "bytes": 93403,
+      "decode": "passed"
+    }
+  ]
+}

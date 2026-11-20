@@ -1,0 +1,186 @@
+{
+  "generatedAt": "2026-11-20T07:58:27.978Z",
+  "generator": "scripts/generateEndingSfx.mjs",
+  "seed": 18971113,
+  "source": "Original procedural synthesis: additive decaying bell partials, seeded filtered noise and transient envelopes. No samples or third-party recordings.",
+  "license": "Project-authored original assets; same usage terms as this repository. No third-party attribution required.",
+  "quality": "Technically checked; subjective realism requires listening. No claim of historical field recording.",
+  "sampleRate": 48000,
+  "assets": [
+    {
+      "id": "clock_standard",
+      "source": "assets/audio/sfx/ending/source/procedural_01/clock_standard.wav",
+      "runtime": "public/assets/audio/sfx/ending/clock_standard.ogg",
+      "durationSeconds": 3.6,
+      "peakDbfs": -6.744880749629724,
+      "strikes": [
+        0
+      ],
+      "loop": false,
+      "sha256": "217e2e13afa436d6af1c3139a2373e79e7dcd870172f501076cdef7293ce67b9"
+    },
+    {
+      "id": "clock_thirteenth",
+      "source": "assets/audio/sfx/ending/source/procedural_01/clock_thirteenth.wav",
+      "runtime": "public/assets/audio/sfx/ending/clock_thirteenth.ogg",
+      "durationSeconds": 6,
+      "peakDbfs": -6.365454116233656,
+      "strikes": [
+        0
+      ],
+      "loop": false,
+      "sha256": "20533f431066525369241283e816eb3fc647f10ca19570fd53053866b953bb09"
+    },
+    {
+      "id": "clock_twelve",
+      "source": "assets/audio/sfx/ending/source/procedural_01/clock_twelve.wav",
+      "runtime": "public/assets/audio/sfx/ending/clock_twelve.ogg",
+      "durationSeconds": 18.450020833333333,
+      "peakDbfs": -4.4340541883305455,
+      "strikes": [
+        0,
+        1.35,
+        2.7,
+        4.050000000000001,
+        5.4,
+        6.75,
+        8.100000000000001,
+        9.450000000000001,
+        10.8,
+        12.15,
+        13.5,
+        14.850000000000001
+      ],
+      "loop": false,
+      "sha256": "b91ba5db52c73fe663b7cf3fcd9dc1fb2c24e9b628cb2d6c01887e837fa55828"
+    },
+    {
+      "id": "clock_thirteen",
+      "source": "assets/audio/sfx/ending/source/procedural_01/clock_thirteen.wav",
+      "runtime": "public/assets/audio/sfx/ending/clock_thirteen.ogg",
+      "durationSeconds": 22.200020833333333,
+      "peakDbfs": -4.4340541883305455,
+      "strikes": [
+        0,
+        1.35,
+        2.7,
+        4.050000000000001,
+        5.4,
+        6.75,
+        8.100000000000001,
+        9.450000000000001,
+        10.8,
+        12.15,
+        13.5,
+        14.850000000000001,
+        16.200000000000003
+      ],
+      "loop": false,
+      "sha256": "1da40c7e6c4b1f6ca67e76b95cb801853fa92b4caa0d8a3dd4544702c45f21eb"
+    },
+    {
+      "id": "clock_thirteen_distant",
+      "source": "assets/audio/sfx/ending/source/procedural_01/clock_thirteen_distant.wav",
+      "runtime": "public/assets/audio/sfx/ending/clock_thirteen_distant.ogg",
+      "durationSeconds": 22.200020833333333,
+      "peakDbfs": -14.804332985888296,
+      "strikes": [
+        0,
+        1.35,
+        2.7,
+        4.050000000000001,
+        5.4,
+        6.75,
+        8.100000000000001,
+        9.450000000000001,
+        10.8,
+        12.15,
+        13.5,
+        14.850000000000001,
+        16.200000000000003
+      ],
+      "loop": false,
+      "sha256": "500fe1aef424d220535ffcfda3191b68647457864bd167028c0c5b7dd3fa9c41"
+    },
+    {
+      "id": "signed_pen",
+      "source": "assets/audio/sfx/ending/source/procedural_01/signed_pen.wav",
+      "runtime": "public/assets/audio/sfx/ending/signed_pen.ogg",
+      "durationSeconds": 1.9,
+      "peakDbfs": -22.605044011275382,
+      "strikes": [],
+      "loop": false,
+      "sha256": "dfc9a5d30482c6317f08fd8bd507eb0fafdb12756a8bc6b4e70e0b4ef08cf1fe"
+    },
+    {
+      "id": "signed_fold",
+      "source": "assets/audio/sfx/ending/source/procedural_01/signed_fold.wav",
+      "runtime": "public/assets/audio/sfx/ending/signed_fold.ogg",
+      "durationSeconds": 1.5,
+      "peakDbfs": -16.581352833796032,
+      "strikes": [],
+      "loop": false,
+      "sha256": "784ec13aa5442138e27bcdbae50c3060ce21f8db17163d491a7fcb969785d57a"
+    },
+    {
+      "id": "refused_evidence",
+      "source": "assets/audio/sfx/ending/source/procedural_01/refused_evidence.wav",
+      "runtime": "public/assets/audio/sfx/ending/refused_evidence.ogg",
+      "durationSeconds": 2.1,
+      "peakDbfs": -17.174423221830338,
+      "strikes": [],
+      "loop": false,
+      "sha256": "e014257f8b9fe9a7cbb90880916ecebe9c0fda14df37d10055b14ef5310d3d91"
+    },
+    {
+      "id": "refused_stairs",
+      "source": "assets/audio/sfx/ending/source/procedural_01/refused_stairs.wav",
+      "runtime": "public/assets/audio/sfx/ending/refused_stairs.ogg",
+      "durationSeconds": 4.2,
+      "peakDbfs": -14.62443454088483,
+      "strikes": [],
+      "loop": false,
+      "sha256": "4df21479b7b4dd9cdb0bd33ecce90824b0cbeda414158adec87ac55ca467e1dd"
+    },
+    {
+      "id": "refused_latch",
+      "source": "assets/audio/sfx/ending/source/procedural_01/refused_latch.wav",
+      "runtime": "public/assets/audio/sfx/ending/refused_latch.ogg",
+      "durationSeconds": 0.9,
+      "peakDbfs": -11.192905234074328,
+      "strikes": [],
+      "loop": false,
+      "sha256": "288e32a2cd50a91df170977084a461c7324fbb5f82367599d9f290638cc42798"
+    },
+    {
+      "id": "refused_departure",
+      "source": "assets/audio/sfx/ending/source/procedural_01/refused_departure.wav",
+      "runtime": "public/assets/audio/sfx/ending/refused_departure.ogg",
+      "durationSeconds": 4.2,
+      "peakDbfs": -13.759332412523637,
+      "strikes": [],
+      "loop": false,
+      "sha256": "739fb7a91b15ca549fde741edb7099ac5559ce4808932d84f7f345776c4714ae"
+    },
+    {
+      "id": "room_rain",
+      "source": "assets/audio/sfx/ending/source/procedural_01/room_rain.wav",
+      "runtime": "public/assets/audio/sfx/ending/room_rain.ogg",
+      "durationSeconds": 12,
+      "peakDbfs": -28.1015090971928,
+      "strikes": [],
+      "loop": true,
+      "sha256": "d83a406caac684c4957a3373b18fcbbe25d76ad5a87ac3deed62c5b8546cfcf0"
+    },
+    {
+      "id": "gramophone_hiss",
+      "source": "assets/audio/sfx/ending/source/procedural_01/gramophone_hiss.wav",
+      "runtime": "public/assets/audio/sfx/ending/gramophone_hiss.ogg",
+      "durationSeconds": 12,
+      "peakDbfs": -32.144446579638355,
+      "strikes": [],
+      "loop": true,
+      "sha256": "020cc0dba8cecce9d01727ce4baf4660180164ff50cfbcffaf08c5e8f8788092"
+    }
+  ]
+}

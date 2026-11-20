@@ -1,0 +1,114 @@
+{
+  "model": "qwen-audio-3.1-tts-plus",
+  "mode": "samples",
+  "runId": "audition_01",
+  "textSha256": "d368694c37ff2eddfa105ebc15626e904029795c73754aa3ea283c101c2293e4",
+  "startedAt": "2026-11-20T07:22:55.365Z",
+  "status": "generated_pending_listening_and_license_review",
+  "license": "pending_review",
+  "listening": "pending_review",
+  "nativeSampleRate": 24000,
+  "renderedSampleRate": 48000,
+  "processing": "ffmpeg loudnorm I=-20 TP=-3 LRA=7; OGG Vorbis q5 mono; post-encode loudness not independently measured",
+  "clips": [
+    {
+      "clipId": "Sample_cause_longanlingxin_v3.1",
+      "voice": "longanlingxin_v3.1",
+      "voiceName": "龙安灵心",
+      "text": "她挣脱时向后跌倒，后脑撞上壁炉石沿，当场死于意外。",
+      "instruction": "用普通话讲述。统一中性叙述者，冷静、克制、清晰，有温度但不煽情。语速自然偏慢，低混响干声，不要耳语、哭腔、播音腔或恐怖故事腔。引号内对白也由同一叙述者转述，不模仿角色。按因果层次讲清案件，区分意外死亡和事后掩盖；人名清楚，不加评判。",
+      "estimatedSeconds": 7.1,
+      "output": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_cause.wav",
+      "generatedAt": "2026-11-20T07:22:57.375Z",
+      "renderStatus": "rendered_pending_listening"
+    },
+    {
+      "clipId": "Sample_names_longanlingxin_v3.1",
+      "voice": "longanlingxin_v3.1",
+      "voiceName": "龙安灵心",
+      "text": "塞缪尔·克罗斯，舱面学徒，十六岁。",
+      "instruction": "用普通话讲述。统一中性叙述者，冷静、克制、清晰，有温度但不煽情。语速自然偏慢，低混响干声，不要耳语、哭腔、播音腔或恐怖故事腔。引号内对白也由同一叙述者转述，不模仿角色。名字逐一清晰，克制中逐渐增加重量，结尾有温度但不是胜利宣言。",
+      "estimatedSeconds": 4.5,
+      "output": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_names.wav",
+      "generatedAt": "2026-11-20T07:22:59.937Z",
+      "renderStatus": "rendered_pending_listening"
+    },
+    {
+      "clipId": "Sample_closing_longanlingxin_v3.1",
+      "voice": "longanlingxin_v3.1",
+      "voiceName": "龙安灵心",
+      "text": "没有人再提伊芙琳。",
+      "instruction": "用普通话讲述。统一中性叙述者，冷静、克制、清晰，有温度但不煽情。语速自然偏慢，低混响干声，不要耳语、哭腔、播音腔或恐怖故事腔。引号内对白也由同一叙述者转述，不模仿角色。礼貌、疏离，安静地收束挫败感，不渲染威胁。",
+      "estimatedSeconds": 3.1,
+      "output": "assets/audio/vo/vo_ending/samples/audition_01/longanlingxin_v3.1/Sample_closing.wav",
+      "generatedAt": "2026-11-20T07:23:01.653Z",
+      "renderStatus": "rendered_pending_listening"
+    },
+    {
+      "clipId": "Sample_cause_longanfengyue_v3.1",
+      "voice": "longanfengyue_v3.1",
+      "voiceName": "龙安风悦",
+      "text": "她挣脱时向后跌倒，后脑撞上壁炉石沿，当场死于意外。",
+      "instruction": "用普通话讲述。统一中性叙述者，冷静、克制、清晰，有温度但不煽情。语速自然偏慢，低混响干声，不要耳语、哭腔、播音腔或恐怖故事腔。引号内对白也由同一叙述者转述，不模仿角色。按因果层次讲清案件，区分意外死亡和事后掩盖；人名清楚，不加评判。",
+      "estimatedSeconds": 7.1,
+      "output": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_cause.wav",
+      "generatedAt": "2026-11-20T07:23:04.520Z",
+      "renderStatus": "rendered_pending_listening"
+    },
+    {
+      "clipId": "Sample_names_longanfengyue_v3.1",
+      "voice": "longanfengyue_v3.1",
+      "voiceName": "龙安风悦",
+      "text": "塞缪尔·克罗斯，舱面学徒，十六岁。",
+      "instruction": "用普通话讲述。统一中性叙述者，冷静、克制、清晰，有温度但不煽情。语速自然偏慢，低混响干声，不要耳语、哭腔、播音腔或恐怖故事腔。引号内对白也由同一叙述者转述，不模仿角色。名字逐一清晰，克制中逐渐增加重量，结尾有温度但不是胜利宣言。",
+      "estimatedSeconds": 4.5,
+      "output": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_names.wav",
+      "generatedAt": "2026-11-20T07:23:07.336Z",
+      "renderStatus": "rendered_pending_listening"
+    },
+    {
+      "clipId": "Sample_closing_longanfengyue_v3.1",
+      "voice": "longanfengyue_v3.1",
+      "voiceName": "龙安风悦",
+      "text": "没有人再提伊芙琳。",
+      "instruction": "用普通话讲述。统一中性叙述者，冷静、克制、清晰，有温度但不煽情。语速自然偏慢，低混响干声，不要耳语、哭腔、播音腔或恐怖故事腔。引号内对白也由同一叙述者转述，不模仿角色。礼貌、疏离，安静地收束挫败感，不渲染威胁。",
+      "estimatedSeconds": 3.1,
+      "output": "assets/audio/vo/vo_ending/samples/audition_01/longanfengyue_v3.1/Sample_closing.wav",
+      "generatedAt": "2026-11-20T07:23:08.775Z",
+      "renderStatus": "rendered_pending_listening"
+    },
+    {
+      "clipId": "Sample_cause_xunanchuan_v3.1",
+      "voice": "xunanchuan_v3.1",
+      "voiceName": "许南川",
+      "text": "她挣脱时向后跌倒，后脑撞上壁炉石沿，当场死于意外。",
+      "instruction": "用普通话讲述。统一中性叙述者，冷静、克制、清晰，有温度但不煽情。语速自然偏慢，低混响干声，不要耳语、哭腔、播音腔或恐怖故事腔。引号内对白也由同一叙述者转述，不模仿角色。按因果层次讲清案件，区分意外死亡和事后掩盖；人名清楚，不加评判。",
+      "estimatedSeconds": 7.1,
+      "output": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_cause.wav",
+      "generatedAt": "2026-11-20T07:23:10.902Z",
+      "renderStatus": "rendered_pending_listening"
+    },
+    {
+      "clipId": "Sample_names_xunanchuan_v3.1",
+      "voice": "xunanchuan_v3.1",
+      "voiceName": "许南川",
+      "text": "塞缪尔·克罗斯，舱面学徒，十六岁。",
+      "instruction": "用普通话讲述。统一中性叙述者，冷静、克制、清晰，有温度但不煽情。语速自然偏慢，低混响干声，不要耳语、哭腔、播音腔或恐怖故事腔。引号内对白也由同一叙述者转述，不模仿角色。名字逐一清晰，克制中逐渐增加重量，结尾有温度但不是胜利宣言。",
+      "estimatedSeconds": 4.5,
+      "output": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_names.wav",
+      "generatedAt": "2026-11-20T07:23:13.157Z",
+      "renderStatus": "rendered_pending_listening"
+    },
+    {
+      "clipId": "Sample_closing_xunanchuan_v3.1",
+      "voice": "xunanchuan_v3.1",
+      "voiceName": "许南川",
+      "text": "没有人再提伊芙琳。",
+      "instruction": "用普通话讲述。统一中性叙述者，冷静、克制、清晰，有温度但不煽情。语速自然偏慢，低混响干声，不要耳语、哭腔、播音腔或恐怖故事腔。引号内对白也由同一叙述者转述，不模仿角色。礼貌、疏离，安静地收束挫败感，不渲染威胁。",
+      "estimatedSeconds": 3.1,
+      "output": "assets/audio/vo/vo_ending/samples/audition_01/xunanchuan_v3.1/Sample_closing.wav",
+      "generatedAt": "2026-11-20T07:23:14.982Z",
+      "renderStatus": "rendered_pending_listening"
+    }
+  ]
+}
